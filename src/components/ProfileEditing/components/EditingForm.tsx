@@ -1,9 +1,13 @@
-import { Row, Col, Input, Form, Radio, RadioChangeEvent, DatePicker, Space, Select } from "antd"
-import { AvatarUpload } from "./AvatarUpload";
-import { useState } from "react";
-import dayjs from 'dayjs';
+import { Row, Col, Input, Form, Radio, DatePicker, Space, Select, UploadFile } from "antd"
+import { PhotoUpload } from "./PhotoUpload";
+import {  useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
+import { useAppSelector } from "hooks/hooks";
+import { listOfHobbies, genderOptions, getFormFields, famStatusOptions } from "utils/profileOptions";
+import { SelectTag } from "./SelectTag";
+import { useEditProfile } from "hooks/useEditProfile";
+
 
 interface EditingFormProps {
     buttonText: string;
@@ -11,163 +15,193 @@ interface EditingFormProps {
 
 
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
-    const [gender, setGender] = useState('Male');
-    const genderOptions = [
-        { label: 'Male', value: 'Male' },
-        { label: 'Female', value: 'Female' },
-    ];
+    const [form] = Form.useForm();
+    const userData = useAppSelector(state => state.userData.user)
+    const [fileList, setFileList] = useState<UploadFile<any>[]>([])
+    const { createUserProfile } = useEditProfile()
 
-    const famStatusOptions = [
-        { label: 'Single', value: 'single' },
-        { label: 'In a relationship', value: 'relationship' },
-        { label: 'Married', value: 'Married' },
-        { label: 'Engaged', value: 'Engaged' },
-        { label: 'Divorced', value: 'Divorced' },
-    ]
+    const onChangeImg = ({fileList: newFileList}:any) => {
+        setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
+    }
 
-    const onChangeGenderValue = ({ target: { value } }: RadioChangeEvent) => {
-        setGender(value);
-    };
-
-
+    const defaultUserAvatar:UploadFile<any>[] = [{
+        thumbUrl: userData.userAvatar,
+        name: `avatar${userData.userName}`,
+        uid: `${userData.registerDate}`,
+        crossOrigin: '',
+        type: 'image/jpeg',
+        status: 'done',
+    }]
+    
+    useEffect(() => {
+        if (Object.keys(userData).length === 0) return;
+        setFileList(defaultUserAvatar)
+    }, [userData])
+    
+    const dateFormat = 'DD/MM/YYYY';
     const maxDate = new Date().getFullYear() - 90;
     const minDate = new Date().getFullYear() - 16;
 
+
     return (
         <Form 
+            form={form}
+            name="editingForm"
             layout="vertical" 
-            style={{width: '100%', maxWidth: 700}}
-            labelAlign="left"
-            labelWrap
-            wrapperCol={{ flex: 1 }}
-            colon={false}
-            // labelCol={{ flex: '10px'}}
-              
-            // labelCol={{ span: 8 }} 
-            // wrapperCol={{ span: 16 }}
+            style={{width: '100%', maxWidth: 700 }}
+            labelCol={{ span: 16 }}
+            wrapperCol={{ span: 16 }}
+            autoComplete="off"
+            fields={getFormFields(userData)}
+            onFinish={(values) => {
+                console.warn(values); 
+                createUserProfile(values)
+            }}
         >
-            <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                <Row gutter={24} justify={"center"} align={'middle'}>
-                    <Col xs={24} lg={10}>
-                        <Form.Item
-                            name="avatar"
-                            // rules={[{ required: true, message: 'Please enter user name' }]}
-                        >
-                            <AvatarUpload/>
+            <Space 
+                direction="vertical" 
+                size="middle" 
+                style={{ display: 'flex' }}
+            >
+                <Row 
+                    gutter={24} 
+                    justify={"space-between"} 
+                    align={'middle'}
+                >
+                    <Col xs={24} lg={12}>
+                        <Form.Item name={'userAvatar'}>
+                            <PhotoUpload 
+                                fileList={fileList}
+                                onChange={onChangeImg}
+                                role="avatar"
+                            />
                         </Form.Item>
                     </Col>
-                    <Col xs={24} lg={10}>
+                    <Col xs={24} lg={12}>
                         <Form.Item
                             label="Name"
                             name="userName"
+                            wrapperCol={{span: 24, offset: 0}}
                             rules={[{ required: true, message: 'Please enter your name' }]}
                         >
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            label="Surame"
+                            label="Surname"
                             name="userSurname"
+                            wrapperCol={{span: 24, offset: 0}}
                             rules={[{ required: true, message: 'Please enter your surname' }]}
                         >
                             <Input />
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={24} justify={"center"} align={'middle'}>
-                    <Col xs={24} lg={10}>
+                <Row 
+                    gutter={24} 
+                    justify={"space-between"} 
+                    align={'middle'}
+                >
+                    <Col xs={24} lg={12}>
                         <Form.Item
                             label="Gender"
                             name="userGender"
                             rules={[{ required: true, message: 'Please select your gender' }]}
-                            
-                            // labelCol={{ style: { order: 2 } }}
+                            labelAlign="left"
+                            wrapperCol={{span: 10, offset: 0}}
                         >
                             <Radio.Group 
                                 options={genderOptions} 
-                                onChange={onChangeGenderValue} 
-                                value={gender} 
                                 optionType="button" 
                             />
                         </Form.Item>
                     </Col>
-                    <Col xs={24} lg={10}>
+                    <Col xs={24} lg={12}>
                         <Form.Item
                             label="Birthday"
                             name="userBirthday"
-
+                            labelAlign="left"
+                            wrapperCol={{span: 10, offset: 0}}
                             rules={[{ required: true, message: 'Please chose your birth date' }]}
                         >
                             <DatePicker 
-                                defaultValue={dayjs('01/01/2000')} format={'DD/MM/YYYY'} 
-                                disabledDate={d => !d || d.isAfter(`${minDate}-12-31`) || d.isBefore(`${maxDate}-01-01`) }
+                                format={dateFormat} 
+                                disabledDate={d => !d || d.isAfter(`${minDate}/12/31`) || d.isBefore(`${maxDate}/01/01`) }
                             />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row 
-                    gutter={24} 
-                    justify={"center"} 
+                    gutter={24}  
+                    justify={"space-between"} 
                     align={'middle'}
                 >
-                    <Col span={10}>
-                         <Form.Item
-                            label="Choose your family status"
-                            name="userFamStatus"
-                            // rules={[{ required: true, message: 'Please write down your city' }]}
-                        >
-                            <Select
-                                // defaultValue=""
-                                style={{ width: 300 }}
-                                // onChange={handleChange}
-                                options={famStatusOptions}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={24}  justify={"center"} align={'middle'}>
-                    <Col xs={24} lg={10}>
-                        <Form.Item
-                            label="City"
-                            name="userCity"
-                            rules={[{ required: true, message: 'Please write down your city' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} lg={10}>
+                    <Col xs={24} lg={12}>
                         <Form.Item
                             label="Country"
                             name="userCountry"
+                            wrapperCol={{span: 24, offset: 0}}
                             rules={[{ required: true, message: 'Please write down your country' }]}
                         >
-                            <Input />
+                            <Input/>
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} lg={12}>
+                        <Form.Item
+                            label="City"
+                            name="userCity"
+                            wrapperCol={{span: 24, offset: 0}}
+                            rules={[{ required: true, message: 'Please write down your city' }]}
+                        >
+                            <Input/>
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={24}  justify={"center"} align={'middle'}>
-                    <Col xs={24} lg={10}>
+                <Row 
+                    gutter={24} 
+                    justify={"space-between"} 
+                    align={'middle'}
+                >
+                    <Col span={12}>
                         <Form.Item
+                            label="Choose your family status"
+                            name="userFamStatus"
+                            wrapperCol={{span: 24, offset: 0}}
+                        >
+                            <Select options={famStatusOptions} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row 
+                    gutter={24}  
+                    justify={"space-between"} 
+                    align={'middle'}
+                >
+                    <Col xs={24} lg={24}>
+                        <Form.Item 
                             label="Interests/hobbies"
                             name="userInterests"
-                            // rules={[{ required: true, message: 'Surname' }]}
+                            wrapperCol={{span: 24, offset: 0}}
                         >
-                            <TextArea
-                                // value={value}
-                                // onChange={(e) => setValue(e.target.value)}
-                                placeholder="Put down some information about your interests or hobbies..."
-                                autoSize={{ minRows: 3, maxRows: 5 }}
+                            <Select
+                                mode="multiple"
+                                tagRender={SelectTag}
+                                options={listOfHobbies} 
                             />
                         </Form.Item>
                     </Col>
-                    <Col xs={24} lg={10}>
+                </Row>
+                <Row
+                    gutter={24}  
+                    justify={"space-between"} 
+                    align={'middle'}
+                >
+                    <Col xs={24} lg={24}>
                         <Form.Item
                             label="About"
                             name="userAbout"
-                            // rules={[{ required: true, message: 'Please share some sentences about your personality' }]}
+                            wrapperCol={{span: 24, offset: 0}}
                         >
                             <TextArea
-                                // value={value}
-                                // onChange={(e) => setValue(e.target.value)}
                                 placeholder="Please share some sentences about your personality..."
                                 autoSize={{ minRows: 3, maxRows: 5 }}
                             />

@@ -13,6 +13,7 @@ export const Avatar:React.FC<AvatarProps> = ({photo, border, size}) => {
             src={photo} 
             border={border} 
             size={size}
+            alt="avatar"
         />
     )
 }

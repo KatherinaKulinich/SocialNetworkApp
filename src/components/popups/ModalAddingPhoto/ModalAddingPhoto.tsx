@@ -1,4 +1,4 @@
-import { AvatarUpload } from "@components/ProfileEditing/components/AvatarUpload";
+import { PhotoUpload } from "@components/ProfileEditing/components/PhotoUpload";
 import { ModalDefault } from "../ModalDefault/ModalDefault"
 import { Form, TextField } from "./ModalAddingPhoto.styled";
 import { theme } from "@styles/Theme";
@@ -17,7 +17,7 @@ export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, o
             onCloseModal={onCloseModal}
         >
             <Form>
-                <AvatarUpload/>
+                <PhotoUpload uploadText="Add new photo"/>
                 <TextField placeholder="Photo description"/>
                 <SecondaryButton 
                     buttonColor={theme.colors.regular} 

@@ -8,9 +8,9 @@ export const ChatBackground:React.FC = () => {
     return (
         <Container>
             <SubTitle text='Choose a background for chats'/>
-            <BackgroundForm layout="vertical">
-                <Form.Item>
-                    <Group defaultValue={backgrounds[0].value}>
+            <BackgroundForm layout="vertical" initialValues={{chatBackground: backgrounds[0].value}}>
+                <Form.Item name='chatBackground'>
+                    <Group>
                         {backgrounds.map(item => (
                             <RadioItem 
                                 value={item.value} 

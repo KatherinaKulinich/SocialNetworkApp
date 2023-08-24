@@ -15,6 +15,7 @@ import { ProfileCreatingPage } from "./pages/ProfileCreatingPage"
 import { ChatPage } from "./pages/ChatPage/ChatPage"
 import { FriendProfilePage } from "./pages/FriendProfilePage"
 import { FriendsPhotosPage } from "./pages/FriendPhotosPage"
+import { RequireAuth } from "hoc/RequireAuth"
 
 
 export const App:React.FC = () => {
@@ -27,26 +28,68 @@ export const App:React.FC = () => {
                 >
                     <Route element={<IntroPage/>} index/>
                     <Route path="login" element={<LoginPage/>}/>
-                    <Route path="profileCreating" element={<ProfileCreatingPage/>}/>
+                    <Route path="profileCreating" element={
+                        <RequireAuth>
+                            <ProfileCreatingPage/>
+                        </RequireAuth>
+                    }/>
                 </Route>
                 <Route 
                     path="/" 
                     element={<MainLayout/>}
                 >
-                    <Route path="myProfile" element={<MyProfilePage/>}/>
-                    <Route path="myPhotos" element={<MyPhotosPage/>}/>
-                    <Route path="myFriends" element={<MyFriendsPage/>}/>
-                    <Route path="myFriends/profile" element={<FriendProfilePage/>}/>
-                    <Route path="myFriends/photos" element={<FriendsPhotosPage/>}/>
-                    <Route path="myChats" element={<MyChatsPage/>}/>
-                    <Route path="myChats/chat" element={<ChatPage/>}/>
-                    <Route path="settings" element={<SettingsPage/>}/>
-                    <Route path="search" element={<SearchPage/>}/>
-                    <Route path="birthdays" element={<BirthDaysAlertsPage/>}/>
+                    <Route path="myProfile" element={
+                        <RequireAuth>
+                            <MyProfilePage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="myPhotos" element={
+                        <RequireAuth>
+                            <MyPhotosPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="myFriends" element={
+                        <RequireAuth>
+                            <MyFriendsPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="myFriends/profile" element={
+                        <RequireAuth>
+                            <FriendProfilePage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="myFriends/photos" element={
+                        <RequireAuth>
+                            <FriendsPhotosPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="myChats" element={
+                        <RequireAuth>
+                            <MyChatsPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="myChats/chat" element={
+                        <RequireAuth>
+                            <ChatPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="settings" element={
+                        <RequireAuth>
+                            <SettingsPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="search" element={
+                        <RequireAuth>
+                            <SearchPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="birthdays" element={
+                        <RequireAuth>
+                            <BirthDaysAlertsPage/>
+                        </RequireAuth>
+                    }/>
                 </Route>
-                <Route 
-                    element={<SecondaryLayout/>}
-                >
+                <Route element={<SecondaryLayout/>}>
                     <Route path="*" element={<Page404Error/>}/>
                 </Route>
             </Routes>

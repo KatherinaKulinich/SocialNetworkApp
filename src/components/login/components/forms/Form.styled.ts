@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { theme } from '@styles/Theme';
-import { FlexCenter, FullSize, Font } from '@styles/mixins';
+import { FlexCenter, FullSize, Font, Column } from '@styles/mixins';
+import { Field, Form } from 'formik';
+
 
 export interface FormContainerProps {
     $login: boolean;
@@ -55,7 +57,7 @@ export const LoginContent = styled.div`
     gap: 10px;
 `;
 
-export const Form = styled.form`
+export const LogForm = styled(Form)`
     width: 100%;
     ${FlexCenter};
     flex-direction: column;
@@ -68,13 +70,13 @@ export const Title = styled.h1`
     text-transform: uppercase;
 `;
 
-export const Input = styled.input`
+export const Input = styled(Field)`
     padding: 12px 15px;
     width: 100%;
     background-color: ${theme.colors.lightGray};
     border: none;
     border-radius: 7px;
-    outline-color: ${theme.colors.regular};
+    outline-color: ${theme.colors.regularLight};
 `;
 
 export const Button = styled.button`
@@ -97,6 +99,14 @@ export const Button = styled.button`
 
 export const Text = styled.p`
     ${Font({size: '12px', line: '15px', color: theme.colors.textColor})};
-    font-size: 12px;
-    line-height: 15px;
+`
+
+export const ErrorMessage = styled.p`
+    ${Font({size: '10px', line: '12px', color: theme.colors.regular})};
+`
+
+export const FieldContainer = styled.div`
+    width: 100%;
+    ${Column};
+    gap: 5px;
 `

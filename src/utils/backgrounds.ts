@@ -15,7 +15,7 @@ import bgClouds from '@images/chatBg/bgClouds.svg';
 export const backgrounds = [
     {
         id: 1,
-        value: "rays",
+        value: "default",
         url: bgRays,
     },
     {

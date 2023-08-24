@@ -78,6 +78,6 @@ export const Image = styled.img<FormContainerProps>`
 `
 
 export const Text = styled.p`
-    ${Font({size: '19px', line: '21px', color: theme.colors.regularDark})};
+    ${Font({size: '19px', line: '21px', color: theme.colors.white})};
     text-transform: uppercase;
 `

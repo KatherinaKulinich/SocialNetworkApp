@@ -3,7 +3,7 @@ import { IconContext } from "react-icons";
 
 interface IconProps {
     icon: React.ReactNode;
-    iconColor: string;
+    iconColor?: string;
     iconSize: string;
 }
 

@@ -1,47 +1,9 @@
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import React, { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
-
-// import PersonIcon from '@mui/icons-material/Person';
-// import PeopleIcon from '@mui/icons-material/People';
-// import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-// import ChatIcon from '@mui/icons-material/Chat';
-// import SettingsIcon from '@mui/icons-material/Settings';
-
 import { theme } from '@styles/Theme';
 import styled from 'styled-components';
 import { navItems } from "utils/navigationItems";
-
-
-
-
-// const NavItems = [
-//     {
-//         label: 'profile',
-//         value: 'myProfile',
-//         icon: <PersonIcon />,  
-//     },
-//     {
-//         label: 'friends',
-//         value: 'myFriends',
-//         icon: <PeopleIcon />,  
-//     },
-//     {
-//         label: 'chats',
-//         value: 'myChats',
-//         icon: <ChatIcon />,  
-//     },
-//     {
-//         label: 'photos',
-//         value: 'myPhotos',
-//         icon: <PhotoLibraryIcon />,  
-//     },
-//     {
-//         label: 'settings',
-//         value: 'settings',
-//         icon: <SettingsIcon />,  
-//     },
-// ]
 
 
 
@@ -82,11 +44,9 @@ export const BottomMobileNav:React.FC = () => {
                 <BottomNavigationAction 
                     sx={{ 
                         color: `#FFFFFF`,
-
                         ":hover": {
                             color: `${theme.colors.regular}`,
                         },
-
                         ".Mui-selected, svg": {
                             width: '30px',
                             height: '30px',

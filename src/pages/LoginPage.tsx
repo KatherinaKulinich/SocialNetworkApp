@@ -9,6 +9,7 @@ import { Wrapper } from "@components/layout/components/Wrapper/Wrapper"
 
 
 export const LoginPage:React.FC = () => {
+    
     const {width} = useWindowSize();
     const [isLogin, setIsLogin] = useState(true)
 
