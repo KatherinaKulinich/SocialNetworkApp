@@ -27,7 +27,7 @@ export const genderOptions = [
 
 export const famStatusOptions = [
     { label: 'Single', value: 'single' },
-    { label: 'In a relationship', value: 'relationship' },
+    { label: 'In a relationship', value: 'In a relationship' },
     { label: 'Married', value: 'Married' },
     { label: 'Engaged', value: 'Engaged' },
     { label: 'Divorced', value: 'Divorced' },

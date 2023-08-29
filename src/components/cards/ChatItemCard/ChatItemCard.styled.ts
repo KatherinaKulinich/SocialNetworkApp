@@ -47,6 +47,7 @@ export const UserName = styled.p`
 export const MessageText = styled.p`
     ${Font({size: '11px', line: '13px', color: theme.colors.mediumGray})};
     max-width: 120px;
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     background-size: 100%;
@@ -54,6 +55,9 @@ export const MessageText = styled.p`
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
-    background-image: linear-gradient(90deg, #5a5858 0%, #dcdcdc 89%);
+    background-image: linear-gradient(90deg, #5a5858 0%, #dcdcdc 90%);
 `
+
+
+
 

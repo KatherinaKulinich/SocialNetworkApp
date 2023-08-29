@@ -40,7 +40,7 @@ export const useFirebaseAuth = () => {
                 await setDoc(doc(db, 'users', user.uid), {
                     userId: user.uid,
                     userName: name,
-                    userSurname: name,
+                    userSurname: surname,
                     fullname: `${name} ${surname}`,
                     registerDate: Date.now(),
                     userAvatar: getRandomAvatar(),

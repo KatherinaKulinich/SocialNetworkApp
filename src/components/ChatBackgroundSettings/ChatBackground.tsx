@@ -3,12 +3,31 @@ import { Group, Background, Container, RadioItem, BackgroundForm } from "./ChatB
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
 import { SubTitle } from "@components/text/Subtitle";
 import { backgrounds } from "utils/backgrounds";
+import { useAppSelector } from "hooks/hooks";
+import { useEditProfile } from "hooks/useEditProfile";
+
+
 
 export const ChatBackground:React.FC = () => {
+    const [form] = Form.useForm();
+    const { chatBackground } = useAppSelector(state => state.userData.user)
+    const { updateChatBackground } = useEditProfile();
+    
+
+
     return (
         <Container>
             <SubTitle text='Choose a background for chats'/>
-            <BackgroundForm layout="vertical" initialValues={{chatBackground: backgrounds[0].value}}>
+            <BackgroundForm 
+                form={form}
+                name="editingBackground"
+                layout="vertical" 
+                initialValues={{chatBackground}}
+                onFinish={(values:any) => {
+                    console.log(values)
+                    updateChatBackground(values.chatBackground)
+                }}
+            >
                 <Form.Item name='chatBackground'>
                     <Group>
                         {backgrounds.map(item => (

@@ -15,12 +15,13 @@ export interface UserFullData {
     userFamStatus: string;
     userCity: string;
     userCountry: string;
+    userLocation: string;
     userInterests: string[];
     userAbout: string;
     chatBackground: string;
-    friends: string[];
-    photos: Photo[],
-    chats: Chat[],
+    friends?: string[];
+    photos?: Photo[],
+    chats?: Chat[],
 }
 
 

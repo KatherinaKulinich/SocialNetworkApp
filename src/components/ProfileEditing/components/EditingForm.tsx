@@ -7,6 +7,7 @@ import { useAppSelector } from "hooks/hooks";
 import { listOfHobbies, genderOptions, getFormFields, famStatusOptions } from "utils/profileOptions";
 import { SelectTag } from "./SelectTag";
 import { useEditProfile } from "hooks/useEditProfile";
+import { UserFullData } from "types/UserFullDataType";
 
 
 interface EditingFormProps {
@@ -16,7 +17,7 @@ interface EditingFormProps {
 
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
     const [form] = Form.useForm();
-    const userData = useAppSelector(state => state.userData.user)
+    const userData:UserFullData  = useAppSelector(state => state.userData.user)
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
     const { createUserProfile } = useEditProfile()
 
@@ -54,7 +55,6 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
             autoComplete="off"
             fields={getFormFields(userData)}
             onFinish={(values) => {
-                console.warn(values); 
                 createUserProfile(values)
             }}
         >

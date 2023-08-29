@@ -5,17 +5,18 @@ import { Field, Subtitle, RegularText } from "./DataItem.styled";
 interface DataItemProps {
     icon: React.ReactNode;
     itemName: string;
-    itemValue: string;
+    itemValue?: string | React.ReactNode;
+    direction: 'column' | 'row';
 }
 
-export const DataItem:React.FC<DataItemProps> = ({icon, itemName, itemValue}) => {
+export const DataItem:React.FC<DataItemProps> = ({icon, itemName, itemValue, direction}) => {
     return (
-        <Field>
+        <Field $direction={direction}>
             <Subtitle>
                 {
                     <Icon 
                         icon={icon} 
-                        iconSize={'20px'} 
+                        iconSize={'18px'} 
                         iconColor={theme.colors.regular}
                     />
                 } {itemName}: 

@@ -6,24 +6,26 @@ import { useCallback } from "react"
 import { getUserAge } from "utils/profileOptions"
 import { useAppSelector } from "./hooks"
 import { useNavigate } from "react-router-dom"
+import { UserFullData } from "types/UserFullDataType"
 
 export const useEditProfile = () => {
-    const userData = useAppSelector(state => state.userData.user);
+    const userData:UserFullData  = useAppSelector(state => state.userData.user);
     const navigate = useNavigate();
+    const userRef = doc(db, "users", userData.userId);
 
 
 
     const createUserProfile = useCallback(async (
         {userName, userSurname, userGender, userBirthday, userFamStatus, userCity, userCountry, userAbout, userInterests, userAvatar}:any) => {
 
-        message.loading('Creating profile...')
+        await message.loading('Updating profile...')
 
         const month = (userBirthday.$M <= 9 ? `0${userBirthday.$M + 1}` : (userBirthday.$M + 1))
         const day = (userBirthday.$D <= 9 ? `0${userBirthday.$D}` : userBirthday.$D) 
 
 
         if (userData.userId) {
-            const userRef = doc(db, "users", userData.userId);
+            // const userRef = doc(db, "users", userData.userId);
             
             await updateDoc(userRef, {
                 userName,
@@ -40,13 +42,16 @@ export const useEditProfile = () => {
                 userFamStatus,
                 userCity,
                 userCountry,
+                userLocation: `${userCountry}, ${userCity}`,
                 userInterests,
                 userAbout,
-                chatBackground: 'default'
+                chatBackground: 'default',
+                friends: [],
+                photos: [],
             })
             .then(async () => {
                 
-                if (userAvatar.fileList.length) {
+                if (userAvatar?.fileList?.length || userAvatar !== undefined) {
 
                     const avatar = userAvatar.fileList[0]
                     const metadata = {
@@ -61,7 +66,10 @@ export const useEditProfile = () => {
                             await updateDoc(userRef, {
                                 userAvatar: downloadURL,
                             });
+                            await message.success('Created!')
+                            await navigate('/myProfile')
                         })
+                    return
                 }
                 await message.success('Created!')
                 await navigate('/myProfile')
@@ -70,8 +78,21 @@ export const useEditProfile = () => {
     }, [userData])
 
 
+    const updateChatBackground = useCallback( async (bg: string) => {
+        await message.loading('Updating chat background...');
+
+        if (userData.userId) {
+            await updateDoc(userRef, {
+                chatBackground: bg,
+            })
+            await message.success('Created!')
+        }
+    }, [userData])
+
+
     
     return {
-        createUserProfile
+        createUserProfile,
+        updateChatBackground
     }
 }
