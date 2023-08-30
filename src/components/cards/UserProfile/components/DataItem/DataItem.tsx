@@ -1,6 +1,6 @@
 import { theme } from "../../../../../styles/Theme";
 import { Icon } from "../../../../icons/Icon";
-import { Field, Subtitle, RegularText } from "./DataItem.styled";
+import { Field, Subtitle, ItemValue} from "./DataItem.styled";
 
 interface DataItemProps {
     icon: React.ReactNode;
@@ -21,9 +21,9 @@ export const DataItem:React.FC<DataItemProps> = ({icon, itemName, itemValue, dir
                     />
                 } {itemName}: 
             </Subtitle>
-            <RegularText>
+            <ItemValue>
                 {itemValue}
-            </RegularText>
+            </ItemValue>
         </Field>
     )
 }

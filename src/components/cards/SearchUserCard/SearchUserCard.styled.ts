@@ -16,6 +16,7 @@ export const UserCard = styled(Link)`
     display:flex;
     align-items: center;
     justify-content: space-between;
+    /* gap: 20px; */
     cursor: pointer;
 
     &:hover {
@@ -33,11 +34,13 @@ export const Flex = styled.div`
 `
 export const CardContent = styled(Flex)`
     gap: 15px;
+    
 `
 export const UserInfo = styled.div`
     display:flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 11px;
+    max-width: 200px;
 `
 
 export const UserName = styled.p`

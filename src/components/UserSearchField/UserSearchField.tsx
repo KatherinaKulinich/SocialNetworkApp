@@ -1,23 +1,55 @@
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Form, FormButton, InputField } from './UserSearchField.styled';
+import { Field, InputField } from './UserSearchField.styled';
 import { Icon } from '../icons/Icon';
-import { ImSearch } from 'react-icons/Im';
+import { RiUserSearchLine } from 'react-icons/Ri';
 import { theme } from "../../styles/Theme";
+import { Paper } from '@mui/material';
 
 
-export const UserSearchField:React.FC = () => {
+interface UserSearchFieldProps {
+    searchOptions: any[];
+    handleChange: (event: any, value: string) => void;
+    label: string;
+    value: string;
+    handleInputChange: (event: any, value: string) => void;
+    inputValue: string;
+}
+
+
+export const UserSearchField:React.FC<UserSearchFieldProps> = (
+    {searchOptions, handleChange, label, value, inputValue, handleInputChange}) => {
+
     return (
-        <Form>
+        <Field>
+            <Icon 
+                iconSize={'30px'} 
+                iconColor={theme.colors.mediumGray}
+                icon={<RiUserSearchLine/>}
+            />
             <Autocomplete
                 clearOnBlur
                 id="userSearch"
                 size="small"
-                options={top100Films}
-                sx={{ width: '100%' }}
+                options={searchOptions}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                onChange={handleChange}
+                value={value}
+                inputValue={inputValue}
+                onInputChange={handleInputChange}
+                sx={{ width: '100%'}}
+                PaperComponent={(props) => (
+                    <Paper
+                        sx={{
+                            background: "rgba(255, 255, 255, .9)",
+                            color: `${theme.colors.darkGray}`,
+                            fontSize: "20px",
+                        }}
+                        {...props}
+                    />
+                )}
                 renderInput={(params) => <InputField  
-                        {...params} 
-                        label="Start typing username..." 
+                        {...params}   
+                        label={`Start typing ${label}...`} 
                         variant="standard"
                         sx={{
                             "& input": {
@@ -28,23 +60,6 @@ export const UserSearchField:React.FC = () => {
                     />
                 }
             />
-            <FormButton>
-                <Icon 
-                    icon={<ImSearch/>} 
-                    iconSize="25px" 
-                    iconColor="#969696"
-                />
-            </FormButton>
-        </Form>
+        </Field>
     )
 }
-
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 }
-]

@@ -1,18 +1,24 @@
 import { Select } from "antd"
+import { FilterField, Label } from "./Filter.styled";
 
 
 interface FilterProps {
     handleChange: (event:any) => void;
-    options: any[];
+    filterOptions: any[];
 }
 
-export const Filter:React.FC<FilterProps> = ({handleChange, options}) => {
+export const Filter:React.FC<FilterProps> = ({handleChange, filterOptions}) => {
     return (
-        <Select
-            defaultValue="lucy"
-            style={{ width: 120 }}
-            onChange={handleChange}
-            options={options}
-        />
+        <FilterField>
+            <Label>
+                Search by:
+            </Label>
+            <Select
+                defaultValue={filterOptions[0].value}
+                style={{ width: 150 }}
+                onChange={handleChange}
+                options={filterOptions}
+            />
+        </FilterField>
     )
 }

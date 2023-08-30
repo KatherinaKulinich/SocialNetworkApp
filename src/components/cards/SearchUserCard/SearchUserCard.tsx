@@ -10,12 +10,13 @@ interface SearchUserCardProps {
     link: string;
     userAvatar: string;
     userFullName: string;
-    userAge: string;
+    userAge: number;
     userLocation: string;
+    userInterests: string[];
 }
 
 export const SearchUserCard:React.FC<SearchUserCardProps> = (
-    {link, userAvatar, userFullName, userAge, userLocation}) => {
+    {link, userAvatar, userFullName, userAge, userLocation, userInterests}) => {
 
     return (
         <UserCard to={link}>
@@ -49,11 +50,14 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = (
                             {userLocation}
                         </Text>
                     </Flex>
+                    <Text>
+                        {userInterests.join(', ')}
+                    </Text>
                 </UserInfo>
             </CardContent>
             <Icon 
                 icon={<MdDoubleArrow/>} 
-                iconSize="40px" 
+                iconSize="50px" 
                 iconColor={theme.colors.regular}
             /> 
             

@@ -1,6 +1,6 @@
 import { Comment } from  'react-loader-spinner'
 
-export const Spinner:React.FC = () => {
+export const LoaderComment:React.FC = () => {
     return (
         <Comment
             visible={true}

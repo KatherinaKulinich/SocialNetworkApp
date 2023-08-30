@@ -6,7 +6,7 @@ import { RiUserFill, RiUserSearchFill } from 'react-icons/Ri';
 
 export const navItems = [
     {
-        label: 'User search',
+        label: 'Users search',
         value: 'search',
         icon: RiUserSearchFill,  
     },

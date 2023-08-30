@@ -31,7 +31,7 @@ interface UserProfileProps {
 
 export const UserProfile:React.FC<UserProfileProps> = (
     {fullname, age, birthday, gender, location, famStatus, interests, aboutInfo, avatar, friendsQuantity, photos, friends}) => {
-    console.warn(photos);
+
         
 
 

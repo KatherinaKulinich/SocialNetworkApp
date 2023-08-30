@@ -32,3 +32,15 @@ export const RegularText = styled(Subtitle)`
 
 `
 
+export const ItemValue = styled.div`
+    white-space: wrap;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color:  ${theme.colors.textColor};
+`
+

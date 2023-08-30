@@ -18,6 +18,11 @@ export const getRandomAvatar = () => {
     return avatars[randomNumber]
 }
 
+export  const filterOptions = [
+    {label: 'Name', value: 'name'},
+    {label: 'Interests', value: 'interests'},
+    {label: 'Location', value: 'location'},
+]
 
 export const genderOptions = [
     { label: 'Male', value: 'Male' },

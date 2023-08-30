@@ -53,7 +53,7 @@ export const App:React.FC = () => {
                             <MyFriendsPage/>
                         </RequireAuth>
                     }/>
-                    <Route path="myFriends/profile" element={
+                    <Route path="myFriends/:userName/profile" element={
                         <RequireAuth>
                             <FriendProfilePage/>
                         </RequireAuth>
