@@ -1,10 +1,14 @@
-import { SetStateAction, useCallback, useState } from "react";
+import { fetchFilteredUsers, fetchRandomUsers, fetchUsersOptions } from "rdx/slices/usersSlice";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { UserFullData } from "types/UserFullDataType";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { useUserData } from "./useUserData";
 
 
 
 
 export const useUsersSearch = () => {
+    const dispatch = useAppDispatch();
     const [filterValue, setFilterValue] = useState('name')
     const [searchValue, setSearchValue] = useState('')
     const [inputValue, setInputValue] = useState('')
@@ -14,119 +18,83 @@ export const useUsersSearch = () => {
     
     const [loading, setLoading] = useState(false)
 
-    const [randomUsers, setRandomUsers] = useState<UserFullData[]>([])
     const [showRandomUsers, setShowRandomUsers] = useState(false)
 
+    const namesOptions = useAppSelector(state => state.users.optionsNames)
+    const locationsOptions = useAppSelector(state => state.users.optionsLocations)
+    const interestsOptions = useAppSelector(state => state.users.optionsInterests)
+ 
+
+    const { userCity, userCountry, userId } = useUserData()
 
 
-    const onChangeFilterValue = useCallback((value: SetStateAction<string>) => {
+    useEffect(() => {
+        dispatch(fetchUsersOptions())
+    }, [dispatch, filterValue])
+
+
+    useEffect(() => {
+        dispatch(fetchRandomUsers(userCountry, userCity, userId))
+    }, [dispatch, userCountry, userCity])
+
+
+    const randomUsers = useAppSelector(state => state.users.randomUsers)
+    const foundUsers = useAppSelector(state => state.users.filteredUsers)
+    const errorMessage = useAppSelector(state => state.users.error)
+
+
+    useEffect(() => {
+        checkSearchState()
+    }, [inputValue, searchValue])
+
+
+
+    const onChangeFilterValue = useCallback((value: string) => {
         setFilterValue(value)
         setSearchValue('')
     }, [filterValue])
 
-    const onChangeSearchValue = useCallback((event:any, value:SetStateAction<string>) => {
+    const onChangeSearchValue = useCallback((event:any, value:string) => {
         setSearchValue(value)
     }, [searchValue])
 
 
-    const onChangeInputValue = useCallback((event:any, value:SetStateAction<string>) => {
+    const onChangeInputValue = useCallback((event:any, value:string) => {
         setInputValue(value)
     }, [inputValue])
 
 
-    const getRandomUsers = useCallback((users:UserFullData[]) => {
-        let usersArray: UserFullData[] = [];
 
-        for (let i = 0; i < 5; i++) {
-            let random = Math.floor(Math.random() * users.length) + 1;
-            usersArray.push(users[random])
-        }
-        setRandomUsers([...new Set(usersArray)])
-    }, [])
+    useEffect(() => {
+        setFilteredUsers(foundUsers)
+    }, [foundUsers])
 
 
 
-    const getSearchOptions = useCallback((users:UserFullData[]) => {
-        let options:any[] = [];
 
-        if (filterValue === 'name') {
-            options = [];
-            users.map((user: UserFullData) => {
-                const { fullname } = user;
-                options.push(fullname)
-            })
-            return options;
-        }
-
-        if (filterValue === 'interests') {
-            options = [];
-            let arrayInterests:any[] = [];
-
-            users.map((user: UserFullData) => {
-                const { userInterests } = user;
-                arrayInterests.push(userInterests)
-            })
-            options = [...new Set(arrayInterests.flat())]
-            return options;
-        }
-        
-        if (filterValue === 'location') {
-            options = [];
-            let arrayLocations:any[] = [];
-
-            users.map((user: UserFullData) => {
-                const { userLocation } = user;
-                arrayLocations.push(userLocation)
-            })
-            options = [...new Set(arrayLocations.flat())]
-            return options;
-        }
-        return options;
-    }, [filterValue])
-
-
-
-    const getFilteredUsers = useCallback((users:UserFullData[]) => {
+    const getFilteredUsers = useCallback(() => {
         setFilteredUsers([])
 
         if (inputValue === searchValue) {
             if (filterValue === 'name') {
-                users.map((user) => {
-                    const { fullname } = user;
-    
-                    if (fullname === searchValue) {
-                        setFilteredUsers(prev => [...prev, user])
-                    }
-                })
+                dispatch(fetchFilteredUsers('fullname', searchValue))
                 return
             }
             if (filterValue === 'location') {
-                users.map((user) => {
-                    const { userLocation } = user;
-    
-                    if (userLocation === searchValue) {
-                        setFilteredUsers(prev => [...prev, user])
-                    }
-                })
+                dispatch(fetchFilteredUsers('userLocation', searchValue))
                 return
             }
             if (filterValue === 'interests') {
-                users.map((user) => {
-                    const { userInterests } = user;
-    
-                    if (userInterests.includes(searchValue)) {
-                        setFilteredUsers(prev => [...prev, user])
-                    }
-                })
+                dispatch(fetchFilteredUsers('userInterests', searchValue))
                 return
             }
         }
-    }, [filterValue, searchValue, inputValue])
+    }, [filterValue, searchValue, inputValue,  foundUsers, filteredUsers])
 
 
 
 
-    const checkSearchState = useCallback((users:UserFullData[]) => {
+    const checkSearchState = useCallback(() => {
         setFilteredUsers([])
 
         if (inputValue && searchValue) {
@@ -147,7 +115,7 @@ export const useUsersSearch = () => {
                 setShowEmptyUsersImg(false)
                 setLoading(false)
                 setShowRandomUsers(false)
-                getFilteredUsers(users)
+                getFilteredUsers()
                 return
             }
             return
@@ -170,16 +138,21 @@ export const useUsersSearch = () => {
             setShowRandomUsers(true)
             return
         }
-    }, [inputValue, searchValue])
+        if (errorMessage !== '' ) {
+            setShowEmptyUsersImg(false)
+            setLoading(false)
+            setShowRandomUsers(false)
+            setFilteredUsers([])
+            return
+        }
+    }, [inputValue, searchValue, errorMessage])
 
 
 
 
     
     return {
-        getRandomUsers,
         checkSearchState,
-        getSearchOptions,
         inputValue,
         searchValue,
         filterValue,
@@ -187,9 +160,13 @@ export const useUsersSearch = () => {
         onChangeSearchValue,
         onChangeInputValue,
         loading,
-        randomUsers,
         showRandomUsers,
         filteredUsers,
-        showEmptyUsersImg
+        showEmptyUsersImg,
+        randomUsers,
+        namesOptions,
+        interestsOptions, 
+        locationsOptions,
+        errorMessage
     }
 }

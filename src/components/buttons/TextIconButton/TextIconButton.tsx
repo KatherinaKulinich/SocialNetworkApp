@@ -6,7 +6,7 @@ interface TextIconButtonProps {
     text: string;
     icon: React.ReactNode;
     color: string;
-    textSize: number;
+    textSize: string;
     iconSize: string;
     buttonType: 'button' |'submit';
     onClickHandler?: () => void;

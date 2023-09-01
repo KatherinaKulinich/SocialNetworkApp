@@ -11,9 +11,13 @@ import emptyPhoto from '@images/defaultPhoto.jpg';
 import { FriendsPreview } from "./components/FriendsPreview/FriendsPreview";
 import { PiUsersFourFill } from "react-icons/Pi";
 import { IoMdImages } from "react-icons/Io";
+import { Paragraph } from "@components/text/Paragraph";
+import { theme } from "@styles/Theme";
 
 
 interface UserProfileProps {
+    role: 'myProfile' | 'userProfile';
+    name: string;
     fullname: string;
     age: number;
     gender: string;
@@ -30,7 +34,7 @@ interface UserProfileProps {
 
 
 export const UserProfile:React.FC<UserProfileProps> = (
-    {fullname, age, birthday, gender, location, famStatus, interests, aboutInfo, avatar, friendsQuantity, photos, friends}) => {
+    {fullname, age, birthday, gender, location, famStatus, interests, aboutInfo, avatar, friendsQuantity, photos, friends, name, role}) => {
 
         
 
@@ -80,7 +84,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
                     />
                     <DataItem 
                         icon={<ImLocation/>} 
-                        itemName={'Lives in'} 
+                        itemName={role === 'userProfile' ? 'Lives in' : 'Live in'} 
                         itemValue={location}
                         direction='row'
                     />
@@ -117,7 +121,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
             <Box>
                 <DataItem 
                     icon={<BsFillInfoCircleFill/>} 
-                    itemName={'About me'} 
+                    itemName={role === 'userProfile' ? `About ${name}` : 'About me'} 
                     itemValue={aboutInfo}
                     direction='column'
                 />
@@ -126,7 +130,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
                 <PreviewContainer>
                     <DataItem 
                         icon={<IoMdImages/>} 
-                        itemName={'My photos'} 
+                        itemName={role === 'userProfile' ? `${name}'s photos` : 'My photos'} 
                         direction='column'
                     />
                     {photos?.length > 0 ? (
@@ -134,9 +138,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
                             See more...
                         </PageLink>
                     ) : (
-                        <RegularText>
-                            no photos yet
-                        </RegularText>
+                        <Paragraph text="no photos yet" color={theme.colors.regular}/>
                     )}
                     <PhotoPreview 
                         photos={getUserPhotos(photos)} 
@@ -147,7 +149,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
                 <PreviewContainer>
                     <DataItem 
                         icon={<PiUsersFourFill/>} 
-                        itemName={'My friends'} 
+                        itemName={role === 'userProfile' ? `${name}'s friends` : 'My friends'} 
                         direction='column'
                     />
                     {friends?.length > 0 ? (
@@ -155,9 +157,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
                             See more...
                         </PageLink>
                     ) : (
-                        <RegularText>
-                            no friends yet
-                        </RegularText>
+                        <Paragraph text="no friends yet" color={theme.colors.regular}/>
                     )}
                     <FriendsPreview 
                         friends={[]} 

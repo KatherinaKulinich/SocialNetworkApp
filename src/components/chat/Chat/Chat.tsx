@@ -3,13 +3,13 @@ import { MessageInput } from "../components/MessageInput/MessageInput"
 import { Message } from "../components/Message/Message"
 import user1 from '@images/userTest.jpg'
 import user2 from '@images/user2.jpg'
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
-import { theme } from "@styles/Theme"
 import emptyChat from '@images/emptyChat.svg'
 import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text } from "./Chat.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
-import { backgrounds } from "utils/backgrounds";
+import { backgrounds } from "utils/backgrounds"
+import { useUserData } from "hooks/useUserData"
 
 
 
@@ -21,10 +21,28 @@ import { backgrounds } from "utils/backgrounds";
 export const Chat:React.FC = () => {
     const [messages, setMessages] = useState(['1'])
 
+    const [bgUrl, setBgUrl] = useState('')
+    const { chatBackground } = useUserData();
+
+    const getUserBgImage = useCallback(() => {
+        backgrounds.map((img) => {
+            if (chatBackground === img.value) {
+                return setBgUrl(img.url)
+            }
+        })
+    }, [backgrounds, chatBackground, bgUrl])
+
+    useEffect(() => {
+        getUserBgImage()
+    }, [backgrounds, chatBackground, bgUrl])
+    
+ 
+    
+
     return (
         <Container>
             <ChatHeader/>
-            <ContainerBackground $url={backgrounds[0].url}>
+            <ContainerBackground $url={bgUrl}>
                 {messages.length > 0 ? (
                     <MessagesContainer>
                         <MessageRow $sender="me">

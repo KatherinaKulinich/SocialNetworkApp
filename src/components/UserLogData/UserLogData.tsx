@@ -1,29 +1,16 @@
 import { Container, NameContainer, Text } from './UserLogData.styled';
 import { Icon } from '@components/icons/Icon';
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { PiUserCircleLight } from 'react-icons/Pi'
 import { Avatar } from '@components/Avatar/Avatar';
-import { useAuth } from 'hooks/useAuth';
-import { fetchUserFullData } from 'rdx/slices/userDataSlice';
-import { useEffect } from 'react';
 import { theme } from '@styles/Theme';
+import { useUserData } from 'hooks/useUserData';
 
 
 
 
 export const UserLogData:React.FC = () => {
-    const dispatch = useAppDispatch()
-    const { userId } = useAuth()
-    const { userAvatar, userName, userSurname } = useAppSelector(state => state.userData.user)
 
-    useEffect(() => {
-        if (userId !== null && userId !== undefined ) {
-            dispatch(fetchUserFullData(userId))
-        }
-    }, [dispatch, userId])
-    
-
-    
+    const { userAvatar, userName, userSurname } = useUserData()
 
 
     return (

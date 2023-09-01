@@ -1,55 +1,56 @@
 import img from '@images/search.svg'
 import errorImg from '@images/nousers.svg';
+import errorImg2 from '@images/error1.svg';
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { UserSearchField } from '@components/UserSearchField/UserSearchField'
 import { SearchUserCard } from '@components/cards/SearchUserCard/SearchUserCard'
 import { ListContainer } from '@components/containers/ListContainer/ListContainer'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer'
 import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage'
-import { useEffect } from 'react'
 import { Filter } from '@components/Filter/Filter';
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { fetchUsers } from 'rdx/slices/usersSlice';
 import { SubTitle } from '@components/text/Subtitle';
 import { LoaderGlass } from '@components/loaders/LoaderGlass';
 import { Paragraph } from '@components/text/Paragraph';
 import { theme } from '@styles/Theme';
-import { filterOptions } from 'utils/profileOptions';
+import { selectOptions } from 'utils/profileOptions';
 import { useUsersSearch } from 'hooks/useUsersSearch';
+import { useCallback, useEffect, useState } from 'react';
+import { useAppDispatch } from 'hooks/hooks';
+import { fetchUsersOptions } from 'rdx/slices/usersSlice';
 
 
 
 
 
 export const SearchPage:React.FC = () => {
-    const dispatch = useAppDispatch();
 
-    const { getRandomUsers, checkSearchState, getSearchOptions } = useUsersSearch();
-    const { inputValue, searchValue, filterValue, onChangeFilterValue, onChangeInputValue, onChangeSearchValue } = useUsersSearch();
-    const { loading, randomUsers, showEmptyUsersImg, showRandomUsers, filteredUsers  } = useUsersSearch();
-
-    
-    useEffect(() => {
-        dispatch(fetchUsers())
-    }, [dispatch])
-    
-    const allUsers = useAppSelector(state => state.users.users)
-
-
-    useEffect(() => {
-        if (allUsers.length > 5) {
-            getRandomUsers(allUsers)
+    const [filterOptions, setFilterOptions] = useState<any[]>([])
+    const { inputValue, searchValue, filterValue, onChangeFilterValue, onChangeInputValue, onChangeSearchValue, loading, randomUsers, showEmptyUsersImg, showRandomUsers, filteredUsers, namesOptions, interestsOptions, locationsOptions, errorMessage  } = useUsersSearch();
+  
+    const getSearchOptions = useCallback(() => {
+        setFilterOptions([])
+        
+        if (filterValue === 'name') {
+            setFilterOptions(namesOptions)
+            return;
         }
-    },[allUsers])
+        if (filterValue === 'interests') {
+            setFilterOptions(interestsOptions)
+            return;
+        }
+        if (filterValue === 'location') {
+            setFilterOptions(locationsOptions)
+            return;
+        }
+    }, [filterValue, namesOptions, interestsOptions, locationsOptions])
 
 
     useEffect(() => {
-        checkSearchState(allUsers)
-    }, [inputValue, searchValue])
+        getSearchOptions()
+    }, [filterValue, namesOptions, interestsOptions, locationsOptions])
 
-
-
-
+    
+    
 
     return (
         <PageContainer>
@@ -59,11 +60,11 @@ export const SearchPage:React.FC = () => {
                 titleSecond='search'
             />
             <Filter 
-                filterOptions={filterOptions} 
+                filterOptions={selectOptions} 
                 handleChange={onChangeFilterValue}
             />
             <UserSearchField 
-                searchOptions={getSearchOptions(allUsers)} 
+                searchOptions={filterOptions} 
                 handleChange={onChangeSearchValue}
                 label={filterValue}
                 value={searchValue}
@@ -95,11 +96,12 @@ export const SearchPage:React.FC = () => {
                                         userAge={user.userBirthday.age} 
                                         userLocation={user.userLocation}
                                         userInterests={user.userInterests}
+                                        userId={user.userId}
                                     />
                     })
                 )}
 
-                {filteredUsers.length > 0 && (
+                {!showRandomUsers && filteredUsers.length > 0 && (
                     filteredUsers.map(user => (
                         <SearchUserCard 
                             key={user.userId}
@@ -109,14 +111,21 @@ export const SearchPage:React.FC = () => {
                             userAge={user.userBirthday.age} 
                             userLocation={user.userLocation}
                             userInterests={user.userInterests}
+                            userId={user.userId}
                         />
                     ))
                 )}
 
                 {showEmptyUsersImg && (
                     <ImageErrorMessage 
-                        image={errorImg} 
+                        image={errorImg2} 
                         text={`no users for this query: ${inputValue}`}
+                    />
+                )}
+                {errorMessage.length > 0 && (
+                    <ImageErrorMessage 
+                        image={errorImg} 
+                        text={`Sorry, but something went wrong!`}
                     />
                 )}
             </ListContainer>

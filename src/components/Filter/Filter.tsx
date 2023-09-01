@@ -3,7 +3,7 @@ import { FilterField, Label } from "./Filter.styled";
 
 
 interface FilterProps {
-    handleChange: (event:any) => void;
+    handleChange: (value: string) => void;
     filterOptions: any[];
 }
 
@@ -14,7 +14,7 @@ export const Filter:React.FC<FilterProps> = ({handleChange, filterOptions}) => {
                 Search by:
             </Label>
             <Select
-                defaultValue={filterOptions[0].value}
+                defaultValue={filterOptions[0]?.value}
                 style={{ width: 150 }}
                 onChange={handleChange}
                 options={filterOptions}

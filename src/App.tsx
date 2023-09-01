@@ -68,7 +68,7 @@ export const App:React.FC = () => {
                             <MyChatsPage/>
                         </RequireAuth>
                     }/>
-                    <Route path="myChats/chat" element={
+                    <Route path="myChats/:userName/chat" element={
                         <RequireAuth>
                             <ChatPage/>
                         </RequireAuth>
