@@ -8,18 +8,40 @@ import { PageContainer } from '@components/containers/PageContainer/PageContaine
 import { CardsContainer } from '@components/containers/CardsContainer/CardsContainer';
 import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage';
 import { SecondaryButton } from '@components/buttons/SecondaryButton/SecondaryButton';
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useUserData } from 'hooks/useUserData';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { fetchFriends } from 'rdx/slices/friendsSlice';
+import { UserFullData } from 'types/UserFullDataType';
 
 
 
 export const MyFriendsPage:React.FC = () => {
-    const [friends, setFriends] = useState([])
+    const dispatch = useAppDispatch()
+    const [friends, setFriends] = useState<UserFullData[]>([])
     const navigate = useNavigate()
 
     const onGoToSearch = useCallback(() => {
         navigate('/search')
     },[])
+
+    const {userData} = useUserData()
+
+    useEffect(() => {
+        dispatch(fetchFriends(userData))
+    }, [dispatch, userData])
+
+    const friendsData = useAppSelector(state => state.friends.friendsData)
+    const errorMessage = useAppSelector(state => state.friends.errorMessage)
+
+
+    useEffect(() => {
+        if (friendsData !== undefined) {
+            setFriends(friendsData)
+        }
+    }, [friendsData, friends])
+    
 
 
     return (
@@ -31,27 +53,12 @@ export const MyFriendsPage:React.FC = () => {
             />
             {friends.length > 0 ? (
                 <CardsContainer>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Dmitrievna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA, jjjjjjjjjjjjjjjj jjjjj'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
-                    <FriendCard photo={user} age={23} location={'Kyiv, UA'} fullName='Anna Ivanova'/>
+                    {friends.map(friend => (
+                        <FriendCard 
+                            key={friend.userId}
+                            user={friend}
+                        />
+                    ))}
                 </CardsContainer>
             ) : (
                 <>
@@ -66,6 +73,12 @@ export const MyFriendsPage:React.FC = () => {
                         onClickHandler={onGoToSearch}
                     />
                 </>
+            )}
+            {errorMessage !== '' && (
+                <ImageErrorMessage
+                    image={errorImg} 
+                    text="Something went wrong...Please, try later"
+                />
             )}
         </PageContainer>
     )

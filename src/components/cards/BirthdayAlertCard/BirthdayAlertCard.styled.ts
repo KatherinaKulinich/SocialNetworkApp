@@ -15,6 +15,7 @@ export const Card =  styled.div`
     align-items: center;
     justify-content: space-between;
     ${BoxShadow};
+    cursor: pointer;
 
     @media ${device.lg} {
         padding: 15px 22px;

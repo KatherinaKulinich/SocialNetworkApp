@@ -6,31 +6,29 @@ import { Avatar } from "@components/Avatar/Avatar";
 import { getSelectedUserData, fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { useAppDispatch } from "hooks/hooks";
 import { useCallback } from "react";
+import { UserFullData } from "types/UserFullDataType";
 
 
 
 interface SearchUserCardProps {
-    userId: string;
-    link: string;
-    userAvatar: string;
-    userFullName: string;
-    userAge: number;
-    userLocation: string;
-    userInterests: string[];
+    user: UserFullData,
 }
 
-export const SearchUserCard:React.FC<SearchUserCardProps> = (
-    {link, userAvatar, userFullName, userAge, userLocation, userInterests, userId}) => {
+export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
+    const { userAvatar, fullname, userBirthday, userLocation, userInterests } = user;
 
     const dispatch = useAppDispatch();
     
     const getUserProfile = useCallback(() => {
-        dispatch(fetchSelectedUserData(userId))
-    }, [userId])
+        dispatch(getSelectedUserData(user))
+    }, [dispatch])
 
     
     return (
-        <UserCard to={link} onClick={getUserProfile}>
+        <UserCard 
+            to={`/myFriends/${fullname}/profile`} 
+            onClick={getUserProfile}
+        >
             <CardContent>
                 <Avatar 
                     photo={userAvatar} 
@@ -39,7 +37,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = (
                 />
                 <UserInfo>
                     <UserName>
-                        {userFullName}
+                        {fullname}
                     </UserName>
                     <Flex>
                         <Icon 
@@ -48,7 +46,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = (
                             iconColor={theme.colors.mediumGray}
                         /> 
                         <Text>
-                            {userAge} y.o.
+                            {userBirthday.age} y.o.
                         </Text>
                     </Flex>
                     <Flex>

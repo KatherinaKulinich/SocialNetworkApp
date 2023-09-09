@@ -3,19 +3,37 @@ import { Icon } from "../../icons/Icon";
 import { Age, BirthdayField, Card, DateField, Text, UserInfo, DateText } from "./BirthdayAlertCard.styled";
 import { HiCake } from 'react-icons/Hi'
 import { theme } from "@styles/Theme";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserFullData } from "types/UserFullDataType";
+import { getSelectedUserData } from "rdx/slices/usersSlice";
+import { useAppDispatch } from "hooks/hooks";
 
 
 interface BirthdayAlertCardProps {
-    userAvatar: string;
-    userName: string;
-    userBirthDate: string;
+    // userAvatar: string;
+    // userName: string;
+    // userBirthDate: string;
+    // futureAge: number
+    user: UserFullData,
 }
 
-export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = (
-    {userAvatar, userName, userBirthDate}) => {
+
+export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
+
+    const {fullname, userAvatar, userBirthday } = user;
+    
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch()
+
+    const onGoToUserPage = useCallback(() => {
+        navigate(`/myFriends/${fullname}/profile`)
+        dispatch(getSelectedUserData(user))
+    }, [dispatch])
+
 
     return (
-        <Card>
+        <Card onClick={onGoToUserPage}>
             <DateField>
                 <Icon 
                     icon={<HiCake/>} 
@@ -24,18 +42,18 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = (
                 />
                 <BirthdayField>
                     <DateText>
-                        {userBirthDate}
+                        {userBirthday.fullDate}
                     </DateText>
                     <Text>
                         will celebrate 
-                        <Age>25</Age>
+                        <Age>{userBirthday.age + 1}</Age>
                         y.o
                     </Text>
                 </BirthdayField>
             </DateField>
             <UserInfo>
                 <Text>
-                    {userName}
+                    {fullname}
                 </Text>
                 <Avatar 
                     photo={userAvatar} 

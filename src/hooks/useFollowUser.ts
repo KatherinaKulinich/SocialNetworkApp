@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "./hooks"
 import { useUserData } from "./useUserData"
 import { message } from "antd"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
+import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 
 
 
@@ -13,9 +14,18 @@ import { fetchUserFullData } from "rdx/slices/userDataSlice"
 export const useFollowUser = () => {
 
     const { userId, friends:  userFriends} = useAppSelector(state => state.users.selectedUser)
-    const { friends: myFriends} = useUserData()
+    const { userData } = useUserData()
+    const { friends: myFriends } = userData;
+
     const dispatch = useAppDispatch()
     const { userId: myId } = useAuth()
+    
+    // useEffect(() => {
+    //     dispatch(fetchSelectedUserData(userId))
+    // }, [userId])
+
+    // console.log('user', userId);
+    
 
     // useEffect(() => {
     //     if (myId !== null && myId !== undefined ) {
@@ -57,10 +67,8 @@ export const useFollowUser = () => {
     const addFriend = useCallback(
         async (ref:DocumentReference<DocumentData, DocumentData>, id:string, friendsArray:string[]) => {
 
-        console.log(friendsArray);
         const newFriendsArray:string[] = [...friendsArray, id]
-        console.log(newFriendsArray);
-    
+
         await updateDoc(ref, {
             friends: newFriendsArray
         })
@@ -86,8 +94,8 @@ export const useFollowUser = () => {
  
         if (userRef && myRef) {
             await message.loading('Adding to friends...')
-            await addFriendToMe()
-            await addMeToFriend() 
+            addFriendToMe()
+            addMeToFriend() 
             await message.success('Added!')
         }
         
@@ -126,8 +134,8 @@ export const useFollowUser = () => {
     const stopBeingFriendsWithUser = useCallback(async() => {
         if (userRef && myRef) {
             await message.loading('Removing from friends...')
-            await removeFriendFromMe()
-            await removeMeFromFriend()
+            removeFriendFromMe()
+            removeMeFromFriend()
             await message.success('Removed!')
         }
     }, [myRef, userRef])
@@ -162,15 +170,13 @@ export const useFollowUser = () => {
         if (myRef && userRef) {
             if (isFriend === true) {
                 await stopBeingFriendsWithUser()
-                await setIsFriend(false)
+                setIsFriend(false)
 
                 return
             }
             await becomeFriendsWithUser()
-            await setIsFriend(true)
+            setIsFriend(true)
         }
-
-    
 
     }, [isFriend, myRef, userRef])
 

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userAuthSlice from "./slices/userAuthSlice";
 import userDataSlice from "./slices/userDataSlice";
 import usersSlice from "./slices/usersSlice";
+import friendsSlice from "./slices/friendsSlice";
 
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
         userAuth: userAuthSlice,
         userData: userDataSlice,
         users: usersSlice,
+        friends: friendsSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

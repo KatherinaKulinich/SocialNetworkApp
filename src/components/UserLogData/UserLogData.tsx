@@ -10,14 +10,14 @@ import { useUserData } from 'hooks/useUserData';
 
 export const UserLogData:React.FC = () => {
 
-    const { userAvatar, userName, userSurname } = useUserData()
+    const { userData } = useUserData()
 
 
     return (
         <Container>
-            {userAvatar ? (
+            {userData?.userAvatar ? (
                 <Avatar 
-                    photo={userAvatar}
+                    photo={userData?.userAvatar}
                     border={`${theme.colors.lightGray}`}
                     size={'50px'}
                 />  
@@ -30,10 +30,10 @@ export const UserLogData:React.FC = () => {
             )}
             <NameContainer>
                 <Text>
-                    {userName}
+                    {userData?.userName}
                 </Text>
                 <Text>
-                    {userSurname}
+                    {userData?.userSurname}
                 </Text>
             </NameContainer>        
         </Container>

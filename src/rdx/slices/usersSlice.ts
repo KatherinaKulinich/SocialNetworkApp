@@ -48,6 +48,7 @@ const usersSlice = createSlice({
 
         getSelectedUserData(state, action: PayloadAction<UserFullData>) {
             state.selectedUser = action.payload
+            console.warn(state.selectedUser);
         },
         getErrorMessage(state, action: PayloadAction<any>) {
             state.error = action.payload;
@@ -56,22 +57,25 @@ const usersSlice = createSlice({
 })
 
 
-export const fetchUsersOptions = () => {
+export const fetchUsersOptions = (myFullName: string) => {
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
         
         try {
             dispatch(getErrorMessage(''))
 
             const ref = query(collection(db, "users"));
-            const unsubscribe = onSnapshot(ref, (querySnapshot) => {
+            onSnapshot(ref, (querySnapshot) => {
                 let names:string[] = [];
                 let locations:string[] = [];
                 let interests:any[] = [];
 
                 querySnapshot.forEach((doc) => {
-                    names.push(doc.data().fullname)
                     locations.push(doc.data().userLocation)
                     interests.push(doc.data().userInterests)
+                    
+                    if (doc.data().fullname !== myFullName) {
+                        names.push(doc.data().fullname)
+                    }
                 });
 
                 dispatch(getUsersInterests([...new Set(interests.flat())]))
@@ -114,7 +118,7 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
             const refCountry = query(collection(db, "users"), where("userCountry", "==", `${myCountry}`), limit(6));
             const refGeneral = query(collection(db, "users"), limit(6));
 
-            const unsubCity = onSnapshot(refCity, (querySnapshot) => {
+            onSnapshot(refCity, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     users.push(doc.data())
                 });
@@ -125,7 +129,7 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
                 }
             })
             
-            const unsubCountry = onSnapshot(refCountry, (querySnapshot) => {
+            onSnapshot(refCountry, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     users.push(doc.data())
                 });
@@ -136,7 +140,7 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
                 }
             })
 
-            const unsubGeneral = onSnapshot(refGeneral, (querySnapshot) => {
+            onSnapshot(refGeneral, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     users.push(doc.data())
                 });
@@ -150,7 +154,7 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 }
 
 
-export const fetchFilteredUsers = (key:string, value: string) => {
+export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
 
         try {
@@ -164,12 +168,15 @@ export const fetchFilteredUsers = (key:string, value: string) => {
             }
             
             const ref = query(collection(db, "users"), where(`${key}`, `${sign}`, `${value}`));
-            const unsubCity = onSnapshot(ref, 
+
+            onSnapshot(ref, 
                 (querySnapshot) => {
                     let users: any[] = [];
 
                     querySnapshot.forEach((doc) => {
-                        users.push(doc.data())
+                        if (doc.data().userId !== myId) {
+                            users.push(doc.data())
+                        }
                     });
 
                     dispatch(getFilteredUsers(users))
@@ -193,7 +200,10 @@ export const fetchSelectedUserData = (userId:string) => {
         
         try {
             dispatch(getErrorMessage(''))
-            const unsub = onSnapshot(doc(db, "users", userId), (doc) => {
+
+            onSnapshot(doc(db, "users", userId), (doc) => {
+                console.log(doc.data());
+                
                 dispatch(getSelectedUserData(doc.data() as UserFullData))
             });
 

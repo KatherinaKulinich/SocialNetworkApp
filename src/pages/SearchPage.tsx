@@ -15,8 +15,8 @@ import { theme } from '@styles/Theme';
 import { selectOptions } from 'utils/profileOptions';
 import { useUsersSearch } from 'hooks/useUsersSearch';
 import { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch } from 'hooks/hooks';
-import { fetchUsersOptions } from 'rdx/slices/usersSlice';
+import { UserFullData } from 'types/UserFullDataType';
+
 
 
 
@@ -24,8 +24,28 @@ import { fetchUsersOptions } from 'rdx/slices/usersSlice';
 
 export const SearchPage:React.FC = () => {
 
+    const [filterValue, setFilterValue] = useState('name')
+    const [searchValue, setSearchValue] = useState('')
+    const [inputValue, setInputValue] = useState('')
     const [filterOptions, setFilterOptions] = useState<any[]>([])
-    const { inputValue, searchValue, filterValue, onChangeFilterValue, onChangeInputValue, onChangeSearchValue, loading, randomUsers, showEmptyUsersImg, showRandomUsers, filteredUsers, namesOptions, interestsOptions, locationsOptions, errorMessage  } = useUsersSearch();
+
+    const onChangeFilterValue = useCallback((value: string) => {
+        setFilterValue(value)
+        setSearchValue('')
+    }, [filterValue])
+
+    const onChangeSearchValue = useCallback((event:any, value:string) => {
+        setSearchValue(value)
+    }, [searchValue])
+
+
+    const onChangeInputValue = useCallback((event:any, value:string) => {
+        setInputValue(value)
+    }, [inputValue])
+
+
+    const {loading, randomUsers, showEmptyUsersImg, showRandomUsers, filteredUsers, namesOptions, interestsOptions, locationsOptions, errorMessage  } = useUsersSearch(filterValue, inputValue, searchValue);
+
   
     const getSearchOptions = useCallback(() => {
         setFilterOptions([])
@@ -86,17 +106,11 @@ export const SearchPage:React.FC = () => {
             {loading && <LoaderGlass/>}
             <ListContainer>
                 {showRandomUsers && randomUsers?.length > 0 && (
-                    randomUsers.map(user => {
+                    randomUsers.map((user:UserFullData) => {
                         if (user !== undefined) 
                             return  <SearchUserCard 
                                         key={user.userId}
-                                        link={`/myFriends/${user.fullname}/profile`} 
-                                        userAvatar={user.userAvatar} 
-                                        userFullName={user.fullname} 
-                                        userAge={user.userBirthday.age} 
-                                        userLocation={user.userLocation}
-                                        userInterests={user.userInterests}
-                                        userId={user.userId}
+                                        user={user}
                                     />
                     })
                 )}
@@ -105,13 +119,7 @@ export const SearchPage:React.FC = () => {
                     filteredUsers.map(user => (
                         <SearchUserCard 
                             key={user.userId}
-                            link={`/myFriends/${user.fullname}/profile`} 
-                            userAvatar={user.userAvatar} 
-                            userFullName={user.fullname} 
-                            userAge={user.userBirthday.age} 
-                            userLocation={user.userLocation}
-                            userInterests={user.userInterests}
-                            userId={user.userId}
+                            user={user}
                         />
                     ))
                 )}

@@ -3,7 +3,8 @@ import { device } from "@styles/Breakpoints";
 import { FullSize } from "@styles/mixins";
 
 export const Cards = styled.div`
-    ${FullSize};
+    width: 100%;
+    /* ${FullSize}; */
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;

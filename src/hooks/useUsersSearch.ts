@@ -7,29 +7,24 @@ import { useUserData } from "./useUserData";
 
 
 
-export const useUsersSearch = () => {
+export const useUsersSearch = (filterValue:string, inputValue:string, searchValue:string) => {
     const dispatch = useAppDispatch();
-    const [filterValue, setFilterValue] = useState('name')
-    const [searchValue, setSearchValue] = useState('')
-    const [inputValue, setInputValue] = useState('')
-
     const [filteredUsers, setFilteredUsers] = useState<UserFullData[]>([])
     const [showEmptyUsersImg, setShowEmptyUsersImg] = useState(false)
     
     const [loading, setLoading] = useState(false)
-
     const [showRandomUsers, setShowRandomUsers] = useState(false)
 
     const namesOptions = useAppSelector(state => state.users.optionsNames)
     const locationsOptions = useAppSelector(state => state.users.optionsLocations)
     const interestsOptions = useAppSelector(state => state.users.optionsInterests)
  
-
-    const { userCity, userCountry, userId } = useUserData()
+    const { userData } = useUserData()
+    const { userCity, userCountry, userId, fullname } = userData;
 
 
     useEffect(() => {
-        dispatch(fetchUsersOptions())
+        dispatch(fetchUsersOptions(fullname))
     }, [dispatch, filterValue])
 
 
@@ -38,31 +33,14 @@ export const useUsersSearch = () => {
     }, [dispatch, userCountry, userCity])
 
 
-    const randomUsers = useAppSelector(state => state.users.randomUsers)
-    const foundUsers = useAppSelector(state => state.users.filteredUsers)
-    const errorMessage = useAppSelector(state => state.users.error)
+    const randomUsers:UserFullData[]  = useAppSelector(state => state.users.randomUsers)
+    const foundUsers:UserFullData[] = useAppSelector(state => state.users.filteredUsers)
+    const errorMessage:string = useAppSelector(state => state.users.error)
 
 
     useEffect(() => {
         checkSearchState()
     }, [inputValue, searchValue])
-
-
-
-    const onChangeFilterValue = useCallback((value: string) => {
-        setFilterValue(value)
-        setSearchValue('')
-    }, [filterValue])
-
-    const onChangeSearchValue = useCallback((event:any, value:string) => {
-        setSearchValue(value)
-    }, [searchValue])
-
-
-    const onChangeInputValue = useCallback((event:any, value:string) => {
-        setInputValue(value)
-    }, [inputValue])
-
 
 
     useEffect(() => {
@@ -77,15 +55,15 @@ export const useUsersSearch = () => {
 
         if (inputValue === searchValue) {
             if (filterValue === 'name') {
-                dispatch(fetchFilteredUsers('fullname', searchValue))
+                dispatch(fetchFilteredUsers('fullname', searchValue, userId))
                 return
             }
             if (filterValue === 'location') {
-                dispatch(fetchFilteredUsers('userLocation', searchValue))
+                dispatch(fetchFilteredUsers('userLocation', searchValue, userId))
                 return
             }
             if (filterValue === 'interests') {
-                dispatch(fetchFilteredUsers('userInterests', searchValue))
+                dispatch(fetchFilteredUsers('userInterests', searchValue, userId))
                 return
             }
         }
@@ -153,12 +131,6 @@ export const useUsersSearch = () => {
     
     return {
         checkSearchState,
-        inputValue,
-        searchValue,
-        filterValue,
-        onChangeFilterValue,
-        onChangeSearchValue,
-        onChangeInputValue,
         loading,
         showRandomUsers,
         filteredUsers,

@@ -14,6 +14,7 @@ export const Card = styled.div`
     justify-content: space-between;
     gap: 20px;
     ${BoxShadow};
+    height:initial;
 `
 
 
@@ -25,7 +26,7 @@ export const ActionsContainer = styled.div`
 `
 
 export const ActionLink = styled(Link)`
-    ${Font({size: '14px', weight: '600', line: '17px', color: theme.colors.regularDark})};
+    ${Font({size: '16px', weight: '800', line: '18px', color: theme.colors.regularDark})};
     text-transform: uppercase;
     text-decoration:none;
 
@@ -40,12 +41,12 @@ export const Name = styled.h3`
 `
 
 export const PersonalInfo = styled.div`
-    ${FlexCenter};
+    ${Column};
     gap: 7px;
     text-align: center;
 `
 
 export const Text = styled.p`
-    ${Font({size: '16px', line: '19px', color: theme.colors.textColor})};
+    ${Font({size: '13px', line: '15px', color: theme.colors.mediumGray})};
     text-transform: uppercase;
 `

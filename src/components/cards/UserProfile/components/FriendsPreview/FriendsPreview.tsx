@@ -4,10 +4,11 @@ import { DefaultImage, FriendCard, FriendsBox, Name } from "./FriendsPreview.sty
 import { Avatar } from "@components/Avatar/Avatar";
 import { theme } from "@styles/Theme";
 import defaultAvatar from '@images/avatar.jpg';
+import { UserFullData } from "types/UserFullDataType";
 
 
 interface FriendsPreviewProps {
-    friends: any[];
+    friends: UserFullData[];
     link: string;
 }
 
@@ -20,7 +21,6 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({friends, link}) =>
 
     
     let defaultAvatarsList = [];
-
     for (let i = 0; i < 9 - friends?.length; i++) {
         defaultAvatarsList.push(
             <DefaultImage key={`1${i}`}>
@@ -40,12 +40,12 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({friends, link}) =>
                 friends.map((friend, index) => (
                     <FriendCard key={index}>
                         <Avatar 
-                            photo={friend.url} 
+                            photo={friend.userAvatar} 
                             border={theme.colors.lightGray}
                             size="30px"
                         />
                         <Name>
-                            {friend.name}
+                            {friend.fullname}
                         </Name>
                     </FriendCard>     
                 ))

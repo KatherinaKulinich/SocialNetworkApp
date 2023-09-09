@@ -4,12 +4,24 @@ import { UserProfile } from "@components/cards/UserProfile/UserProfile"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { getRandomAvatar } from "utils/profileOptions";
 import { useUserData } from 'hooks/useUserData'
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { fetchFriends } from 'rdx/slices/friendsSlice';
+import { useEffect } from 'react';
 
 
 
 
 export const MyProfilePage:React.FC = () => {
-    const userData = useUserData() 
+    const dispatch = useAppDispatch()
+    const { userData } = useUserData() 
+    
+    useEffect(() => {
+        dispatch(fetchFriends(userData))
+    }, [dispatch, userData])
+
+    const friendsData = useAppSelector(state => state.friends.friendsData)
+    // console.log(friendsData);
+    
 
     
     return (
@@ -34,7 +46,7 @@ export const MyProfilePage:React.FC = () => {
                     birthday={userData.userBirthday.fullDate} 
                     avatar={userData.userAvatar || getRandomAvatar()}
                     photos={userData.photos || []}
-                    friends={userData.friends || []}
+                    friends={friendsData || []}
                 />
             )}
         </PageContainer>

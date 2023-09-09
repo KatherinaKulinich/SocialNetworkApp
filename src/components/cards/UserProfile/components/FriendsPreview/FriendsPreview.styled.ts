@@ -10,9 +10,10 @@ export const FriendsBox = styled.div`
     flex-wrap:wrap;
     gap: 3px;
     align-items:center;
-    ${BoxShadow};
+    text-align: center;
     background-color: ${theme.colors.lightGray};
     cursor: pointer;
+    ${BoxShadow};
 `
 
 export const FriendCard = styled.div`
@@ -26,7 +27,7 @@ export const FriendCard = styled.div`
 `
 
 export const Name = styled.p`
-    ${Font({size: '10px', weight: '500', line: '12px', color: theme.colors.regularDark})};
+    ${Font({size: '8px', weight: '400', line: '10px', color: theme.colors.regularDark})};
     text-transform: uppercase;
 `
 

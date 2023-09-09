@@ -1,40 +1,52 @@
 import { Avatar } from "@components/Avatar/Avatar";
 import { theme } from "@styles/Theme";
 import { ActionLink, ActionsContainer,Card, Name, PersonalInfo, Text } from "./FriendCard.styled";
+import { UserFullData } from "types/UserFullDataType";
+import { useAppDispatch } from "hooks/hooks";
+import { getSelectedUserData } from "rdx/slices/usersSlice";
+import { useCallback } from "react";
 
 interface FriendCardProps {
-    photo: string;
-    fullName: string;
-    age: number;
-    location: string;
+    user: UserFullData,
 }
 
-export const FriendCard:React.FC<FriendCardProps> = (
-    {photo, fullName, age, location}) => {
+export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
+    const { userLocation, userAvatar, fullname, userBirthday } = user;
+
+    const dispatch = useAppDispatch()
+
+    const onSaveUserData = useCallback(() => {
+        dispatch(getSelectedUserData(user))
+        console.log(user);
+        
+    }, [dispatch])
 
     return (
         <Card>
             <Avatar 
-                photo={photo} 
+                photo={userAvatar} 
                 border={theme.colors.regular} 
                 size="70px"
             />
             <PersonalInfo>
                 <Name>
-                    {fullName}
+                    {fullname}
                 </Name>
                 <Text>
-                    {`${age} y.o`}
+                    {`${userBirthday.age} y.o`}
                 </Text>
                 <Text>
-                    {location}
+                    {userLocation}
                 </Text>
             </PersonalInfo>
             <ActionsContainer>
-                <ActionLink to={'/myChats/chat'}>
+                <ActionLink to={`/myChats/${fullname}/chat`}>
                     Chat
                 </ActionLink>
-                <ActionLink to={'/myFriends/profile'}>
+                <ActionLink 
+                    to={`/myFriends/${fullname}/profile`} 
+                    onClick={onSaveUserData}
+                >
                     Profile
                 </ActionLink>
             </ActionsContainer>

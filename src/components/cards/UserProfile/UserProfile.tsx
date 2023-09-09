@@ -13,6 +13,7 @@ import { PiUsersFourFill } from "react-icons/Pi";
 import { IoMdImages } from "react-icons/Io";
 import { Paragraph } from "@components/text/Paragraph";
 import { theme } from "@styles/Theme";
+import { UserFullData } from "types/UserFullDataType";
 
 
 interface UserProfileProps {
@@ -29,7 +30,7 @@ interface UserProfileProps {
     birthday: string;
     avatar: string;
     photos: Photo[];
-    friends: string[]
+    friends: UserFullData[]
 }
 
 
@@ -160,7 +161,7 @@ export const UserProfile:React.FC<UserProfileProps> = (
                         <Paragraph text="no friends yet" color={theme.colors.regular}/>
                     )}
                     <FriendsPreview 
-                        friends={[]} 
+                        friends={friends} 
                         link="/myFriends"
                     />
                 </PreviewContainer>

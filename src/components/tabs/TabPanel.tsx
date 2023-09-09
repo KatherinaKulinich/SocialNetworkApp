@@ -20,10 +20,11 @@ export const TabPanel = (props: TabPanelProps) => {
             id={`tabpanel-${index}`}
             aria-labelledby={`tab-${index}`}
             {...other}
+            style={{ width: '100%'}}
         >
             {value === index && (
-                <Box sx={{ p: 2 }}>
-                    <Typography component={'div'}>
+                <Box sx={{ p: 2,  width: '100%' }}>
+                    <Typography component={'div'} sx={{ width: '100%', display: 'flex', justifyContent: 'center'}}>
                         {children}
                     </Typography>
                 </Box>

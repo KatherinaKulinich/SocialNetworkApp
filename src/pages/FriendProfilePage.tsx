@@ -25,9 +25,10 @@ export const FriendProfilePage:React.FC = () => {
         navigate(`/myChats/${user.fullname}/chat`)
     },[])
 
+    const user:UserFullData = useAppSelector((state:any) => state.users.selectedUser)
     const { isFriend, onFriends } = useFollowUser()
 
-    const user:UserFullData = useAppSelector((state:any) => state.users.selectedUser)
+
    
 
     return (
@@ -74,7 +75,7 @@ export const FriendProfilePage:React.FC = () => {
                     birthday={user.userBirthday.fullDate} 
                     avatar={user.userAvatar} 
                     photos={user.photos || []} 
-                    friends={user.friends || []}
+                    friends={[]}
                 />
             )}
         </PageContainer>
