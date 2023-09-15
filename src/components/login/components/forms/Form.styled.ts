@@ -20,7 +20,8 @@ export const LoginContainer = styled.div<FormContainerProps>`
     z-index: 2;
     ${props => (props.$login !== true ? `transform: translateX(100%); opacity: 0; z-index: 1;` : null)};
     border-right: 2px solid ${theme.colors.regular};
-    background-color: #f7f7f7;
+    background-color: #fbfbfb;
+    /* background-color: #f7f7f7; */
 `;
 
 export const ContainerMobile = styled.div`

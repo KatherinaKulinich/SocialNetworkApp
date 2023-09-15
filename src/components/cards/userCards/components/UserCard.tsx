@@ -1,28 +1,36 @@
-import { Avatar } from "@components/Avatar/Avatar";
-import { theme } from "@styles/Theme";
-import { ActionLink, ActionsContainer,Card, Name, PersonalInfo, Text } from "./FriendCard.styled";
-import { UserFullData } from "types/UserFullDataType";
+
 import { useAppDispatch } from "hooks/hooks";
 import { getSelectedUserData } from "rdx/slices/usersSlice";
 import { useCallback } from "react";
+import { PersonalInfo, Name, ActionsContainer, Card, Text } from './UserCard.styled'
+import { UserFullData } from "types/UserFullDataType";
+import { useNavigate } from "react-router-dom";
+import { Avatar } from "@components/Avatar/Avatar";
+import { theme } from "@styles/Theme";
 
-interface FriendCardProps {
+
+interface UserCardProps {
+    children: React.ReactNode,
     user: UserFullData,
+    path: 'myFriends' | 'users'
 }
 
-export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
+
+
+export const UserCard:React.FC<UserCardProps> = ({children, user, path}) => {
     const { userLocation, userAvatar, fullname, userBirthday } = user;
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const onSaveUserData = useCallback(() => {
         dispatch(getSelectedUserData(user))
-        console.log(user);
-        
+        navigate(`${path}/${fullname}/profile`)
     }, [dispatch])
 
+    
     return (
-        <Card>
+        <Card onClick={onSaveUserData}>
             <Avatar 
                 photo={userAvatar} 
                 border={theme.colors.regular} 
@@ -40,16 +48,9 @@ export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
                 </Text>
             </PersonalInfo>
             <ActionsContainer>
-                <ActionLink to={`/myChats/${fullname}/chat`}>
-                    Chat
-                </ActionLink>
-                <ActionLink 
-                    to={`/myFriends/${fullname}/profile`} 
-                    onClick={onSaveUserData}
-                >
-                    Profile
-                </ActionLink>
+                {children}
             </ActionsContainer>
         </Card>
     )
 }
+

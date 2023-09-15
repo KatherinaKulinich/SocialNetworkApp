@@ -6,7 +6,7 @@ import { FullSize } from "@styles/mixins";
 
 export const DrawerContainer = styled.div`
     ${FullSize};
-    padding: 30px 20px;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -15,12 +15,12 @@ export const DrawerContainer = styled.div`
 export const SubContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 40px;
 `
 
 export const LoginContainer = styled(SubContainer)`
     align-items: end;
-    gap: 20px;
+    gap: 14px;
 `
 
 export const DrawerFooter = styled.div`
@@ -28,23 +28,30 @@ export const DrawerFooter = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 20px;
+    padding-top: 12px;
     border-top: 1px solid #FFF;
+
+    @media ${device.sm} {
+        padding-top: 20px;
+    };
 `
 
 export const Image = styled.img`
-    width: 160px;
-    height: 200px;
-    align-self: center;
+    display: none;
+    /* width: 160px;
+    height: 200px; */
+    
 
     @media ${device.sm} {
-        width: 360px;
-        height: 400px;
+        display: block;
+        align-self: center;
+        width: 300px;
+        height: 350px;
     };
 `
 
 export const Links = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
 `

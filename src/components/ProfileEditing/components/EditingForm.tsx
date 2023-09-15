@@ -18,8 +18,8 @@ interface EditingFormProps {
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
     const [form] = Form.useForm();
     const userData:UserFullData  = useAppSelector(state => state.userData.user)
-    const [fileList, setFileList] = useState<UploadFile<any>[]>([])
     const { createUserProfile } = useEditProfile()
+    const [fileList, setFileList] = useState<UploadFile<any>[]>([])
 
     const onChangeImg = ({fileList: newFileList}:any) => {
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))

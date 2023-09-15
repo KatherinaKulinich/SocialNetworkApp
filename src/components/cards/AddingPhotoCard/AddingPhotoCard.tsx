@@ -3,7 +3,11 @@ import Image from '@images/addNewPhoto.jpg';
 import { RegularButton } from "../../buttons/RegularButton/RegularButton";
 
 
-export const AddingPhotoCard:React.FC = () => {
+interface AddingPhotoCardProps {
+    onOpenModal: () => void;
+}
+
+export const AddingPhotoCard:React.FC<AddingPhotoCardProps> = ({onOpenModal}) => {
     return (
         <Card>
             <CardImage src={Image}/>
@@ -11,6 +15,7 @@ export const AddingPhotoCard:React.FC = () => {
                 <RegularButton 
                     buttonText="Add new photo" 
                     buttonType="button"
+                    onClickHandler={onOpenModal}
                 />
             </Content>
         </Card>

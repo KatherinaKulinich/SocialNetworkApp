@@ -1,9 +1,10 @@
 import { theme } from "@styles/Theme";
 import { Column } from "@styles/mixins";
 import { styled } from "styled-components";
+import { Form } from "antd";
 
 
-export const Form = styled.form`
+export const ModalForm = styled(Form)`
     width: 100%;
     padding: 30px;
     ${Column};

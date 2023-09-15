@@ -26,7 +26,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     
     return (
         <UserCard 
-            to={`/myFriends/${fullname}/profile`} 
+            to={`/users/${fullname}/profile`} 
             onClick={getUserProfile}
         >
             <CardContent>

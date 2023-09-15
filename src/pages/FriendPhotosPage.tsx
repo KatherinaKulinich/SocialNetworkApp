@@ -16,7 +16,7 @@ import { styled } from "styled-components"
 
 
 
-export const FriendsPhotosPage:React.FC = () => {
+export const FriendPhotosPage:React.FC = () => {
     const navigate = useNavigate();
 
     const onGoToProfile = useCallback(() => {
@@ -34,7 +34,7 @@ export const FriendsPhotosPage:React.FC = () => {
                     icon={<MdDoubleArrow style={{ transform: 'rotate(180deg)' }} />} 
                     text={"back to Anna's profile"} 
                     color={theme.colors.regularDark} 
-                    textSize={16} 
+                    textSize={'16px'} 
                     iconSize={"30px"} 
                     buttonType={"button"}
                     fontWeight={600}

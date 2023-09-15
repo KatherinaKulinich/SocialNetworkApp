@@ -1,9 +1,9 @@
 import img from '@images/friends2.svg'
-import user from '@images/userTest.jpg';
-import errorImg from '@images/nofriends.svg'
+import imgError from '@images/error2.svg';
+import imgNoUsers from '@images/nofriends.svg'
 import { theme } from '@styles/Theme';
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
-import { FriendCard } from '@components/cards/FriendCard/FriendCard'
+import { FriendCard } from '@components/cards/userCards/FriendCard'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
 import { CardsContainer } from '@components/containers/CardsContainer/CardsContainer';
 import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage';
@@ -63,7 +63,7 @@ export const MyFriendsPage:React.FC = () => {
             ) : (
                 <>
                     <ImageErrorMessage
-                        image={errorImg} 
+                        image={imgNoUsers} 
                         text="You haven't added any friends yet"
                     />
                     <SecondaryButton 
@@ -76,7 +76,7 @@ export const MyFriendsPage:React.FC = () => {
             )}
             {errorMessage !== '' && (
                 <ImageErrorMessage
-                    image={errorImg} 
+                    image={imgError} 
                     text="Something went wrong...Please, try later"
                 />
             )}

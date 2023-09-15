@@ -1,8 +1,10 @@
 import { PhotoUpload } from "@components/ProfileEditing/components/PhotoUpload";
 import { ModalDefault } from "../ModalDefault/ModalDefault"
-import { Form, TextField } from "./ModalAddingPhoto.styled";
+import { ModalForm, TextField } from "./ModalAddingPhoto.styled";
 import { theme } from "@styles/Theme";
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
+import { Form, UploadFile } from "antd";
+import { useCallback, useState } from "react";
 
 interface ModalAddingPhotoProps {
     isModalOpen: boolean;
@@ -10,22 +12,51 @@ interface ModalAddingPhotoProps {
 }
 
 export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, onCloseModal}) => {
+    const [fileList, setFileList] = useState<UploadFile<any>[]>([])
+    const [form] = Form.useForm();
+
+    const onChangeImg = ({fileList: newFileList}:any) => {
+        setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
+    }
+
+    const addNewPhoto = useCallback((event:any) => {
+        // event.preventDefault()
+        console.warn(event);
+        onCloseModal()
+        
+    }, [])
+
     return (
         <ModalDefault 
             title={"Add new photo"} 
             isModalOpen={isModalOpen} 
             onCloseModal={onCloseModal}
         >
-            <Form>
-                <PhotoUpload uploadText="Add new photo"/>
-                <TextField placeholder="Photo description"/>
+            <ModalForm 
+                onFinish={addNewPhoto}
+                form={form}
+                name='newPhotoAdditing'
+            >
+                <Form.Item 
+                    name='photoUpload'
+                    rules={[{ required: true, message: 'Please choose a photo from your device' }]}
+                >
+                    <PhotoUpload
+                        onChange={onChangeImg}
+                        fileList={fileList}
+                        role='photo'
+                    />
+                </Form.Item>
+                <Form.Item name='photoDescription' style={{width: '100%'}}>
+                    <TextField placeholder="Photo description" style={{width: '100%'}}/>
+                </Form.Item>
                 <SecondaryButton 
                     buttonColor={theme.colors.regular} 
                     buttonText="Save"
                     onClickHandler={onCloseModal}
-                    type="button"
+                    type="submit"
                 />
-            </Form>
+            </ModalForm>
         </ModalDefault>
     )
 }

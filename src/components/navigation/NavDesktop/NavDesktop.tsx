@@ -17,7 +17,7 @@ export const NavDesktop:React.FC = () => {
                     {
                         <Icon 
                             icon={<item.icon/>}
-                            iconSize="25px"
+                            iconSize="22px"
                             iconColor="#fff"
                         />
                     } 

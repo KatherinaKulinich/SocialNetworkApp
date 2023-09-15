@@ -9,7 +9,7 @@ export const Cards = styled.div`
     flex-wrap: wrap;
     align-items: stretch;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
 
     @media ${device.sm} {
         gap: 20px;

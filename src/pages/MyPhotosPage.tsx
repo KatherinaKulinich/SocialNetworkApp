@@ -44,7 +44,7 @@ export const MyPhotosPage:React.FC = () => {
                 titleSecond='photos'
             />
             <PhotosContainer>
-                <AddingPhotoCard/>
+                <AddingPhotoCard onOpenModal={onToggleModalAdding}/>
                 <PhotoCard 
                     imgPath={img1} 
                     description='lalalalalalalahhhhhhhhhh hhhhhhhhhhhhhh hhhhhhhhhhhhhhh hhhhhhhhhhhhhhh lallalallalala lalalalalalalahhhhhhhhhh hhhhhhhhhhhhhh hhhhhhhhhhhhhhh hhhhhhhhhhhhhhh lallalallalala lalalalalalalahhhhhhhhhh hhhhhhhhhhhhhh hhhhhhhhhhhhhhh hhhhhhhhhhhhhhh lallalallalala' 

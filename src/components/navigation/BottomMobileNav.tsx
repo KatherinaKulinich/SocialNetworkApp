@@ -20,7 +20,9 @@ const Link = styled(NavLink)`
 
 
 export const BottomMobileNav:React.FC = () => {
-    const links = navItems.slice(1, 6);
+    const navMobItems = ['myFeed', 'myProfile', 'myChats', 'myPhotos', 'myPosts'];
+    const links = navItems.filter((item:any) => navMobItems.includes(item.value))
+
     const [value, setValue] = React.useState(0);
 
     const onChangeValue = useCallback((newValue: any) => {
@@ -48,15 +50,10 @@ export const BottomMobileNav:React.FC = () => {
                             color: `${theme.colors.regular}`,
                         },
                         ".Mui-selected, svg": {
-                            width: '30px',
-                            height: '30px',
+                            width: '26px',
+                            height: '26px',
                         },
-                        // ".Mui-selected, path": {
-                        //     width: '50px',
-                        //     height: '50px',
-                        // }
                     }}
-                    // label={item.label}
                     value={item.value}
                     icon={<item.icon/>} 
                     component={Link}
