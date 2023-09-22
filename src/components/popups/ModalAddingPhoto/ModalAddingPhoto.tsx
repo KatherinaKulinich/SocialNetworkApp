@@ -5,6 +5,7 @@ import { theme } from "@styles/Theme";
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
 import { Form, UploadFile } from "antd";
 import { useCallback, useState } from "react";
+import { usePhotos } from "hooks/usePhotos";
 
 interface ModalAddingPhotoProps {
     isModalOpen: boolean;
@@ -14,17 +15,22 @@ interface ModalAddingPhotoProps {
 export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, onCloseModal}) => {
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
     const [form] = Form.useForm();
+    const { addNewPhoto } = usePhotos()
 
     const onChangeImg = ({fileList: newFileList}:any) => {
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
     }
 
-    const addNewPhoto = useCallback((event:any) => {
-        // event.preventDefault()
-        console.warn(event);
+    const saveNewPhoto = useCallback(async (values:any) => {
         onCloseModal()
+        form.resetFields()
+        setFileList([])
+
+        await addNewPhoto(values)
         
-    }, [])
+    }, [form, isModalOpen])
+
+    
 
     return (
         <ModalDefault 
@@ -33,7 +39,7 @@ export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, o
             onCloseModal={onCloseModal}
         >
             <ModalForm 
-                onFinish={addNewPhoto}
+                onFinish={saveNewPhoto}
                 form={form}
                 name='newPhotoAdditing'
             >
@@ -47,8 +53,14 @@ export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, o
                         role='photo'
                     />
                 </Form.Item>
-                <Form.Item name='photoDescription' style={{width: '100%'}}>
-                    <TextField placeholder="Photo description" style={{width: '100%'}}/>
+                <Form.Item 
+                    name='photoDescription' 
+                    style={{width: '100%'}}
+                >
+                    <TextField 
+                        placeholder="Photo description" 
+                        style={{width: '100%'}}
+                    />
                 </Form.Item>
                 <SecondaryButton 
                     buttonColor={theme.colors.regular} 

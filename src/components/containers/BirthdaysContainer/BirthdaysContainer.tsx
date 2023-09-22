@@ -31,7 +31,7 @@ export const BirthdaysContainer:React.FC = () => {
         setUsersNextMonth([])
 
         const currentMonth = new Date().getMonth()
-        const currentDay = new Date().getDay()
+        const currentDay = new Date().getDate()
 
 
         usersArray.map(user => {

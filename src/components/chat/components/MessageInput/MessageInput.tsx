@@ -5,9 +5,12 @@ import { MdOutlineImageSearch, MdSend} from "react-icons/Md"
 
 interface MessageInputProps {
     role: "comment" | 'message';
-}
+    inputValue: string;
+    onChangeInputValue:React.ChangeEventHandler<HTMLInputElement>
+    onSubmitText: (value:any) => void;
+ }
 
-export const MessageInput:React.FC<MessageInputProps> = ({role}) => {
+export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onChangeInputValue, onSubmitText}) => {
     return (
         <MessageForm>
             <MessageField>
@@ -18,7 +21,11 @@ export const MessageInput:React.FC<MessageInputProps> = ({role}) => {
                         iconColor='bebebe'
                     /> 
                 </IconButton>
-                <MessageText placeholder='message text...'/>
+                <MessageText 
+                    placeholder='message text...'
+                    value={inputValue}
+                    onChange={onChangeInputValue}
+                />
                 {role === "message" && (
                     <IconButton>
                         <Icon 
@@ -29,7 +36,7 @@ export const MessageInput:React.FC<MessageInputProps> = ({role}) => {
                     </IconButton>
                 )}
             </MessageField>
-            <SendButton>
+            <SendButton onClick={onSubmitText}>
                 <Icon 
                     icon={<MdSend/>} 
                     iconSize="40px" 

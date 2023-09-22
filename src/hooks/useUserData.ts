@@ -17,13 +17,15 @@ export const useUserData = () => {
         if (userId !== null && userId !== undefined ) {
             dispatch(fetchUserFullData(userId))
         }
-    }, [])
+    }, [dispatch])
 
     const userData:UserFullData = useAppSelector(state => state.userData.user)
+    // console.log(userData);
+    
 
     useEffect(() => {
         dispatch(fetchFriends(userData))
-    },[dispatch, userData])
+    },[dispatch])
 
     const myFriendsData = useAppSelector(state => state.friends.friendsData)
     

@@ -156,7 +156,7 @@ export const useFollowUser = () => {
 
     useEffect(() => {
         checkUser(userId)
-    }, [userId])
+    }, [])
 
 
 

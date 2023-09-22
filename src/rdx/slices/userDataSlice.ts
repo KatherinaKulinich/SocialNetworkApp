@@ -40,7 +40,7 @@ export const fetchUserFullData = (userId: string) => {
 
         try {
             const docRef = doc(db, "users", userId);
-            const unsub = onSnapshot(docRef, (doc) => {
+            onSnapshot(docRef, (doc) => {
                 dispatch(getUserData(doc.data()))            
             })
         } catch (error:any) {

@@ -17,7 +17,7 @@ export const MyProfilePage:React.FC = () => {
     
     useEffect(() => {
         dispatch(fetchFriends(userData))
-    }, [dispatch, userData])
+    }, [dispatch])
 
     const friendsData = useAppSelector(state => state.friends.friendsData)
     // console.log(friendsData);

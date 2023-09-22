@@ -1,4 +1,10 @@
+import { StorageReference } from "firebase/storage";
+
+
+
 export interface Photo {
+    photoId: string,
+    fileRef: string;
     url: string;
     description: string;
     date: number;

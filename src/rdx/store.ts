@@ -3,6 +3,7 @@ import userAuthSlice from "./slices/userAuthSlice";
 import userDataSlice from "./slices/userDataSlice";
 import usersSlice from "./slices/usersSlice";
 import friendsSlice from "./slices/friendsSlice";
+import userContentSlice from "./slices/userContentSlice";
 
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
         userData: userDataSlice,
         users: usersSlice,
         friends: friendsSlice,
+        content: userContentSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
