@@ -1,14 +1,15 @@
 import { CommentCard } from "@components/cards/CommentCard/CommentCard";
 import { ModalDefault } from "../ModalDefault/ModalDefault"
 import { CommentsBox, Container, Photo, PhotoContent, Text } from "./ModalComments.styled";
-import textPhoto from '@images/test/6.jpg';
 import { MessageInput } from "@components/chat/components/MessageInput/MessageInput";
 import { useAppSelector, useAppDispatch } from "hooks/hooks";
 import { useCallback, useEffect, useState } from "react";
-import { usePhotos } from "hooks/usePhotos";
+import { useMyPhotos } from "hooks/useMyPhotos";
 import { useUserData } from "hooks/useUserData";
 import { Comment } from "types/Photo";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
+import { message } from "antd";
+
 
 
 interface ModalCommentsProps {
@@ -21,10 +22,11 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
 
     const selectedPhoto = useAppSelector(state => state.content.selectedPhoto);
     const { url, description, comments } = selectedPhoto;
-    const { sendNewComment } = usePhotos()
+    const { sendNewComment } = useMyPhotos()
     const { userData } = useUserData()
-    const { photos } = userData
     const dispatch = useAppDispatch()
+    const { photos } = userData;
+
 
 
     const [commentValue, setCommentValue] = useState('')
@@ -34,24 +36,34 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
     }, [])
 
 
-    const onSaveNewComment = useCallback(() => {
+    const onSaveNewComment = useCallback( async () => {
+        await message.loading('adding comment...', 4)
         sendNewComment(commentValue, selectedPhoto, userData)
         setCommentValue('')
-    }, [commentValue, selectedPhoto, userData, comments])
+        getCurrentComments()
+        await message.success('done')
+    }, [commentValue, selectedPhoto, userData, comments, photos])
 
 
     const [photoComments, setPhotoComments] = useState<Comment[]>([])
         
     const getCurrentComments = useCallback(() => {
-        setPhotoComments(comments)
-        console.log(selectedPhoto.comments);
-    }, [userData, comments])
+        if (userData.photos) {
+            userData.photos.map((photo) => {
+                if (photo.photoId === selectedPhoto.photoId) {
+                    setPhotoComments(photo.comments)
+                    return
+                }
+                return photo
+            })
+        }
+    }, [userData, selectedPhoto])
 
     useEffect(() => {
         getCurrentComments()
-        // dispatch(getSelectedUserPhoto())
-        
-    }, [userData, comments])
+    }, [userData, selectedPhoto])
+
+    
 
     
 

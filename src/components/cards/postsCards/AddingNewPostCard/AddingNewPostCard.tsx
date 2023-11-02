@@ -4,10 +4,26 @@ import { CreatingPostField, TextField, CardImage, Wrap } from "./AddingNewPostCa
 import image from '@images/newPost.svg'
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from "@styles/Theme"
-// import { BsSendCheck } from "react-icons/Bs"
 import { GiCheckMark } from "react-icons/gi"
+import { useCallback, useState } from "react"
+import { useManageMyContent } from "hooks/useManageMyContent"
+
+
 
 export const AddingNewPostCard:React.FC = () => {
+    const { addNewPost } = useManageMyContent()
+    const [postText, setPostText] = useState('')
+
+    const onChangePostText:React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((event) => {
+        setPostText(event.target.value)
+    }, [])
+
+    const onSavePost = useCallback(() => {
+        addNewPost(postText)
+        setPostText('')
+    }, [postText])
+
+
     return (
         <PostCard 
             header={
@@ -19,8 +35,8 @@ export const AddingNewPostCard:React.FC = () => {
                 <CreatingPostField>
                     <CardImage src={image}/>
                     <TextField 
-                        // value={value}
-                        // onChange={(e) => setValue(e.target.value)}
+                        value={postText}
+                        onChange={onChangePostText}
                         placeholder="Type smth..."
                         autoSize={{ minRows: 5, maxRows: 5 }}
                     />
@@ -30,14 +46,13 @@ export const AddingNewPostCard:React.FC = () => {
                 <Wrap>
                     <TextIconButton 
                         text='Save post' 
-                        // icon={<BsSendCheck/>} 
                         icon={<GiCheckMark/>} 
                         color={theme.colors.regularDark} 
                         textSize={"16px"} 
                         iconSize={"20px"} 
                         buttonType={"button"} 
                         fontWeight={600}
-                        // onClickHandler={onChatToUser}
+                        onClickHandler={onSavePost}
                     />
                 </Wrap>
             }

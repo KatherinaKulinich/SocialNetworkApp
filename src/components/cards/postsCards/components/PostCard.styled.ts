@@ -12,12 +12,12 @@ export const CardContainer = styled.div`
     border-radius: 15px;
     ${BoxShadow};
     ${Column};
-    gap: 10px;
+    /* gap: 10px; */
     align-items: center;
 
     @media ${device.sm} {
         padding: 25px;
-        gap: 20px;
+        /* gap: 20px; */
     };
 `
 
@@ -30,27 +30,6 @@ export const CardHeader = styled.div`
     border-bottom: 1px solid ${theme.colors.lightGray};
 `
 
-// export const UserData = styled.div`
-//     display: flex;
-//     align-items: center;
-//     gap: 5px;
-// `
-// export const Date = styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     gap: 3px;
-//     align-items: end;
-// `
-
-// export const Text = styled.p`
-//     ${Font({size: '12px', line: '16px', color: theme.colors.mediumGray})};
-// `
-
-// export const PostTime = styled(Text)`
-//     font-size: 9px;
-// `
-
-
 export const CardFooter = styled.div`
     width:100%;
     display: flex;
@@ -62,7 +41,6 @@ export const CardFooter = styled.div`
 
 export const  MainContent = styled.div`
     width: 100%;
-    padding: 7px;
-
+    /* padding: 10px; */
 `
 

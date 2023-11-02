@@ -6,11 +6,12 @@ import { FaRegEdit} from 'react-icons/Fa'
 import { RiDeleteBinLine } from 'react-icons/Ri'
 import { useCallback, useEffect, useState } from "react";
 import { Photo } from "types/Photo";
-import { usePhotos } from "hooks/usePhotos";
+import { useMyPhotos } from "hooks/useMyPhotos";
 import { Popconfirm } from "antd";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch } from "hooks/hooks";
 import { useUserData } from "hooks/useUserData";
+import { useManageMyContent } from "hooks/useManageMyContent";
 
 interface PhotoCardProps {
     photo: Photo;
@@ -21,12 +22,13 @@ interface PhotoCardProps {
 
 
 export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments}) => {
-    const { url, description, likes, comments } = photo;
+    const { photoUrl, photoDescription, photoLikes, photoComments } = photo;
 
     const dispatch = useAppDispatch()
     const { userData } = useUserData()
     const { photos } = userData
-    const {  deleteUserPhoto, checkUserLikeReaction, onToggleLike  } = usePhotos()
+    const { deleteMyContent } = useManageMyContent()
+    const { checkUserLikeReaction, onToggleLike  } = useMyPhotos()
 
     const onOpenModalEditing = useCallback(() => {
         dispatch(getSelectedUserPhoto(photo))
@@ -40,7 +42,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
 
 
     const onDeletePhoto = useCallback(() => {
-        deleteUserPhoto(photo)
+        deleteMyContent(photo)
     }, [photos])
 
     const [isPhotoLiked, setIsPhotoLiked] = useState(false)
@@ -61,7 +63,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
         
     return (
         <Card>
-            <CardImage src={url}/>
+            <CardImage src={photoUrl}/>
 
             <Content>
                 { owner === 'me' && (
@@ -99,7 +101,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                     </Actions>
                 ) }
                 <PhotoDescription>
-                    {description}
+                    {photoDescription}
                 </PhotoDescription>
                 <Actions>
                     <Action onClick={() => onToggleLike(userData.userId, photo)}>
@@ -109,7 +111,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                             iconSize='30px'
                         />
                         <Text>
-                            {likes.length}
+                            {photoLikes.length}
                         </Text>
                     </Action>
                     <Action onClick={onOpenModalComments}>
@@ -117,7 +119,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                             Comments
                         </Comments>
                          <Text>
-                            {comments.length}
+                            {photoComments.length}
                         </Text>
                     </Action>
                 </Actions>

@@ -6,29 +6,20 @@ import { PhotoCard } from '@components/cards/PhotoCard/PhotoCard';
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
 import { PhotosContainer } from '@components/containers/PhotosContainer/PhotosContainer';
 import { ModalEditing } from '@components/popups/ModalEditing/ModalEditing';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ModalAddingPhoto } from '@components/popups/ModalAddingPhoto/ModalAddingPhoto';
 import { ModalComments } from '@components/popups/ModalComments/ModalComments';
 import { useUserData } from 'hooks/useUserData';
 import { Photo } from 'types/Photo';
-import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage';
-import { usePhotos } from 'hooks/usePhotos';
-import { useAppDispatch } from 'hooks/hooks';
-import { useAuth } from 'hooks/useAuth';
-import { fetchUserFullData } from 'rdx/slices/userDataSlice';
+import { Post } from 'types/Post';
+import { useAppSelector } from 'hooks/hooks';
+import { useMyPhotos } from 'hooks/useMyPhotos';
+import { useManageMyContent } from 'hooks/useManageMyContent';
+
 
 
 
 export const MyPhotosPage:React.FC = () => {
-    // const dispatch = useAppDispatch()
-    // const { userId } = useAuth()
-
-    // useEffect(() => {
-    //     if (userId !== null && userId !== undefined ) {
-    //         dispatch(fetchUserFullData(userId))
-    //     }
-    // }, [dispatch, userId])
-    
     const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
     const onOpenModalEdition = useCallback(() => {
         setIsModalEditionOpen(true)
@@ -46,10 +37,6 @@ export const MyPhotosPage:React.FC = () => {
         setIsModalAddingPhoto(false)
     }, [isModalAddingPhotoOpen])
     
-    // const onToggleModalAdding = useCallback(() => {
-    //     setIsModalAddingPhoto(!isModalAddingPhotoOpen)
-    // }, [isModalAddingPhotoOpen])
-
 
     const [isModalComments, setIsModalComments] = useState(false)
     const onOpenModalComments = useCallback(() => {
@@ -61,23 +48,11 @@ export const MyPhotosPage:React.FC = () => {
 
 
     const { userData } = useUserData()
-    const { photos } = userData
+    const { photos } = userData;
 
-    // const { onSelectPhotoToUpdate } = usePhotos()
+    const { editMyContent } = useManageMyContent()
+    const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
 
-    // const onOpenModalForEditing = useCallback((item:Photo) => {
-    //     // onSelectPhotoToUpdate(item)
-    //     onToggleModalEdition()
-    // }, [isModalEditionOpen])
-    // const [userPhotos, setUserPhotos] = useState<Photo[]>([])
-
-    // useEffect(() => {
-    //     if (photos) {
-    //         setUserPhotos(photos)
-    //         console.log(photos);
-    //     }
-    // }, [photos])
- 
     
 
 
@@ -90,11 +65,10 @@ export const MyPhotosPage:React.FC = () => {
             />
             <PhotosContainer>
                 <AddingPhotoCard onOpenModal={onOpenModalAdding}/>
-                
                 {photos !== undefined && photos.length > 0 && (
                     photos?.map((item:Photo) => (
                         <PhotoCard 
-                            key={item.date}
+                            key={item.photoId}
                             photo={item}
                             owner="me"
                             onOpenModalForEditing={onOpenModalEdition}
@@ -103,13 +77,16 @@ export const MyPhotosPage:React.FC = () => {
                     ))
                 )}
             </PhotosContainer>
-            <ModalEditing 
-                isModalOpen={isModalEditionOpen} 
-                onCloseModal={onCloseModalEdition} 
-            />
             <ModalAddingPhoto 
                 isModalOpen={isModalAddingPhotoOpen} 
                 onCloseModal={onCloseModalAdding}
+            />
+            <ModalEditing 
+                isModalOpen={isModalEditionOpen}
+                onCloseModal={onCloseModalEdition} 
+                onEditContent={editMyContent} 
+                selectedObject={selectedPhoto} 
+                currentValue={selectedPhoto.photoDescription}            
             />
             <ModalComments 
                 isModalOpen={isModalComments} 

@@ -4,13 +4,15 @@ import { StorageReference } from "firebase/storage";
 
 export interface Photo {
     photoId: string,
-    fileRef: string;
-    url: string;
-    description: string;
-    date: number;
-    likes: string[],
-    comments: Comment[],
+    photoFileRef: string;
+    photoUrl: string;
+    photoDescription: string;
+    photoDate: number;
+    photoLikes: string[],
+    photoComments: Comment[],
 }
+
+
 
 export interface Comment {
     userId: string;

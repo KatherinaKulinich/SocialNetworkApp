@@ -5,7 +5,8 @@ import { theme } from "@styles/Theme";
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
 import { Form, UploadFile } from "antd";
 import { useCallback, useState } from "react";
-import { usePhotos } from "hooks/usePhotos";
+// import { useMyPhotos } from "hooks/useMyPhotos";
+import { useManageMyContent } from "hooks/useManageMyContent";
 
 interface ModalAddingPhotoProps {
     isModalOpen: boolean;
@@ -15,7 +16,7 @@ interface ModalAddingPhotoProps {
 export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, onCloseModal}) => {
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
     const [form] = Form.useForm();
-    const { addNewPhoto } = usePhotos()
+    const { addNewPhoto } = useManageMyContent()
 
     const onChangeImg = ({fileList: newFileList}:any) => {
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))

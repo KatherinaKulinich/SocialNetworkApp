@@ -24,9 +24,7 @@ export const useEditProfile = () => {
         const day = (userBirthday.$D <= 9 ? `0${userBirthday.$D}` : userBirthday.$D) 
 
 
-        if (userData.userId) {
-            // const userRef = doc(db, "users", userData.userId);
-            
+        if (userData.userId) {         
             await updateDoc(userRef, {
                 userName,
                 userSurname,
@@ -48,11 +46,10 @@ export const useEditProfile = () => {
                 chatBackground: 'default',
                 friends: [],
                 photos: [],
+                posts: [],
             })
             .then(async () => {
-                
                 if (userAvatar?.fileList?.length || userAvatar !== undefined) {
-
                     const avatar = userAvatar.fileList[0]
                     const metadata = {
                         contentType: avatar.type,  

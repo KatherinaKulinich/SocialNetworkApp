@@ -57,13 +57,13 @@ export const PhotoUpload:React.FC<PhotoUploadProps> = ({onChange, role, fileList
             <Upload 
                 method="post"
                 fileList={fileList}
-                onChange={onChange}
+                listType={role === 'avatar' ? "picture-circle" : "picture-card"}
                 multiple={false}
                 maxCount={1}
                 style={{padding: 3, objectFit: 'cover'}}
-                listType={role === 'avatar' ? "picture-circle" : "picture-card"}
-                beforeUpload={beforeUpload}
                 onPreview={handlePreview}
+                onChange={onChange}
+                beforeUpload={beforeUpload}
             >
                 <div>
                     <Icon

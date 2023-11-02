@@ -2,55 +2,51 @@ import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryBu
 import { ModalDefault } from "../ModalDefault/ModalDefault"
 import { Container, TextField } from "./ModalEditing.styled";
 import { theme } from "@styles/Theme";
-import { usePhotos } from "hooks/usePhotos";
+import { useMyPhotos } from "hooks/useMyPhotos";
 import { useCallback, useEffect, useState } from "react";
 import { useAppSelector } from "hooks/hooks";
+import { Photo } from "types/Photo";
+import { Post } from "types/Post";
 
-
+type EditableObject = Post | Photo
 
 interface ModalEditingProps {
     isModalOpen: boolean;
     onCloseModal: () => void;
+    onEditContent: (value:string, item: Post | Photo) => void;
+    selectedObject: Post | Photo;
+    currentValue: string;
 }
 
 
-export const ModalEditing:React.FC<ModalEditingProps> = ({isModalOpen, onCloseModal}) => {
-
-    const { editUserPhoto } = usePhotos();
-    
-    const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
-
-    
-    const [inputValue, setInputValue] = useState<string>('')
+export const ModalEditing:React.FC<ModalEditingProps> = ({isModalOpen, onCloseModal, onEditContent, selectedObject, currentValue}) => {
+    const [inputValue, setInputValue] = useState<string>('') 
     
     const onChangeInputValue:React.ChangeEventHandler<HTMLTextAreaElement>  = useCallback((event) => {
         setInputValue(event.target.value)
     }, [])
     
     useEffect(() => {
-        if (selectedPhoto?.description !== undefined) {
-            setInputValue(selectedPhoto.description)
+        if (currentValue) {
+            setInputValue(currentValue)
         }
-    }, [selectedPhoto])
-    
-    
+    }, [currentValue])
     
     const onSaveChanges= useCallback(() => {
-        editUserPhoto(inputValue, selectedPhoto)
+        onEditContent(inputValue, selectedObject)
         onCloseModal()
-    }, [inputValue, selectedPhoto])
+    }, [inputValue, selectedObject])
 
     
     
 
     return (
-        <ModalDefault title={`Edit photo description`} 
+        <ModalDefault title={`Edit description`} 
             isModalOpen={isModalOpen} 
             onCloseModal={onCloseModal}
         >
             <Container>
                 <TextField  
-                    // defaultValue={selectedPhoto?.description}
                     value={inputValue}
                     onChange={onChangeInputValue}
                 />

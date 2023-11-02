@@ -1,6 +1,6 @@
 import { theme } from "@styles/Theme";
 import { Column, Font } from "@styles/mixins";
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 
 export const Container = styled.div`
     ${Column};
@@ -31,6 +31,11 @@ export const Text = styled.p`
     text-align: left;
 `
 
+const lastCommentAnimation = keyframes`
+    0% {background-color: ${theme.colors.regularLight}}
+    100% {background-color: rgba(220, 220, 220, .2)}
+`
+
 export const CommentsBox = styled.div`
     padding: 20px;
     width: 100%;
@@ -38,4 +43,13 @@ export const CommentsBox = styled.div`
     gap: 10px;
     height: min(220px, 220px);
     overflow-y: auto;
+
+    &:last-child {
+        background-color:red;
+        animation-name: ${lastCommentAnimation};
+        animation-duration: 0.5s
+    }
 `
+
+
+

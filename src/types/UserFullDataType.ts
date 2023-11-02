@@ -1,5 +1,6 @@
 import { Chat } from "./Chat";
 import { Photo } from "./Photo";
+import { Post } from "./Post";
 
 
 
@@ -22,6 +23,7 @@ export interface UserFullData {
     friends?: string[];
     photos?: Photo[],
     chats?: Chat[],
+    posts: Post[]
 }
 
 

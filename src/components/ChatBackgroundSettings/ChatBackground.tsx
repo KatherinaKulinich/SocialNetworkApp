@@ -24,7 +24,6 @@ export const ChatBackground:React.FC = () => {
                 layout="vertical" 
                 initialValues={{chatBackground}}
                 onFinish={(values:any) => {
-                    console.log(values)
                     updateChatBackground(values.chatBackground)
                 }}
             >
@@ -41,7 +40,10 @@ export const ChatBackground:React.FC = () => {
                     </Group>
                 </Form.Item>
                 <Form.Item>
-                    <RegularButton buttonText="Save background" buttonType="submit"/>
+                    <RegularButton 
+                        buttonText="Save background" 
+                        buttonType="submit"
+                    />
                 </Form.Item>
             </BackgroundForm>
         </Container>

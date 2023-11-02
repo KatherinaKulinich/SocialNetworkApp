@@ -1,50 +1,126 @@
 import { UserFullData } from "types/UserFullDataType"
 import { PostCard } from "../components/PostCard"
-import { UserData, PostTime, Text, Reactions, ReactionItem, Date, CommentsButton } from "./UserPostCard.styled"
+import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent } from "./UserPostCard.styled"
 import { Avatar } from "@components/Avatar/Avatar"
 import { theme } from "@styles/Theme"
+import { Post } from "types/Post"
+import { useCallback, useState } from "react"
+import { Reaction } from "types/Post"
+import { RadioChangeEvent, Popconfirm } from "antd"
+import { reactionsArray } from "utils/profileOptions"
+import { DeleteOutlined } from "@ant-design/icons"
+import { useManageMyContent } from "hooks/useManageMyContent"
+import { useUserData } from "hooks/useUserData"
+import { getSelectedUserPost } from "rdx/slices/userContentSlice"
+import { useAppDispatch } from "hooks/hooks"
+
 
 
 interface UserPostCardProps {
-    user?: UserFullData,
-    post?: any,
+    post: Post,
+    owner: 'me' | 'friend';
+    onOpenModalForEditing: () => void;
+    onOpenModalWithComments: () => void;
 }
 
-export const UserPostCard:React.FC<UserPostCardProps> = ({}) => {
+export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments}) => {
+    const {postOwnerName, postOwnerAvatar, postDate, postReactions, postComments, postText} = post;
+    const { deleteMyContent } = useManageMyContent()
+    const { userData } = useUserData()
+    const { posts } = userData;
+    const dispatch = useAppDispatch()
+
+    const [reactionValue, setReactionValue] = useState('')
+    const onChangeReactionValue = ({ target: { value }}: RadioChangeEvent) => {
+        setReactionValue(value)
+    }
+
+    const date = new Date(postDate);
+
+    const removePost = useCallback(() => {
+        deleteMyContent(post)
+    }, [posts])
+
+    const onOpenModalEditing = useCallback(() => {
+        dispatch(getSelectedUserPost(post))
+        onOpenModalForEditing()
+    }, [dispatch, posts])
+
+
+    
+    
+
     return (
         <PostCard 
             header={
                 <>
-                    <UserData>
+                    <UserInfo>
                         <Avatar 
-                            photo={""} 
+                            photo={postOwnerAvatar} 
                             border={theme.colors.regularLight} 
                             size={"30px"}
                         />
-                        <Text>Anna</Text>
-                    </UserData>
-                    <Date>
-                        <Text>16 March</Text>
-                        <PostTime>11:34</PostTime>
-                    </Date>
+                        <Text>{postOwnerName}</Text>
+                    </UserInfo>
+                    <Info>
+                        {postDate && (
+                            <DateField>
+                                <Text>{`${date.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(postDate)} ` }</Text>
+                                <PostTime>{`${date.getHours()}:${date.getMinutes()}`}</PostTime>
+                            </DateField>
+                        )}
+                    </Info>
                 </>
             } 
             content={
-                <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente, repudiandae eaque. Sed quidem delectus quae, ipsa dignissimos molestiae ducimus velit aut aperiam animi numquam cumque magni. Hic minima incidunt vitae!
-                    Ad in corporis unde vero nostrum natus. Placeat laboriosam dicta ratione inventore recusandae? Omnis consequuntur eligendi fuga perferendis provident nostrum repellendus magnam, voluptas laboriosam? Suscipit vero magni tempore pariatur quas.
-                </p>
+                <>
+                    <PostContent>
+                        <p>
+                            {postText}
+                        </p>
+                    </PostContent>
+                    {owner === 'me' && (
+                       <PostControls>
+                            <ControlButton onClick={onOpenModalEditing}>
+                                Edit post
+                            </ControlButton>
+                            <Popconfirm
+                                title="Delete this post"
+                                description="Are you sure to delete this post?"
+                                icon={<DeleteOutlined style={{ color: 'lightGray' }} />}
+                                onConfirm={removePost}
+                            >
+                                <ControlButton>
+                                    Delete post
+                                </ControlButton>
+                            </Popconfirm>
+                       </PostControls>
+                    )}
+                </>
             } 
             footer={
                 <>
-                    <Reactions>
-                        <ReactionItem $items={'3'}><p>🥰</p></ReactionItem>
-                        <ReactionItem $items={'5'}><p>😂</p></ReactionItem>
-                        <ReactionItem $items={'11'}><p>😎</p></ReactionItem>
-                        <ReactionItem $items={'0'}><p>😞</p></ReactionItem>
-                        <ReactionItem $items={'123'}><p>😳</p></ReactionItem>
+                    <Reactions 
+                        value={reactionValue} 
+                        onChange={onChangeReactionValue}
+                        // disabled
+                    >
+                        {postReactions?.map((reactionItem:Reaction) => {
+                            return reactionsArray.map((arrayItem) => {
+                                return arrayItem.value === reactionItem.value && 
+                                    (
+                                        <ReactionItem 
+                                            value={reactionItem.value} 
+                                            $items={reactionItem.usersReactions.length} 
+                                            key={reactionItem.value}
+                                        >
+                                            <p>{arrayItem.label}</p>
+                                        </ReactionItem>
+                                    )
+                            })
+                        })}
                     </Reactions>
-                    <CommentsButton $items={'23'}>
+                    <CommentsButton $items={postComments.length}>
                         Comments
                     </CommentsButton>
                 </>

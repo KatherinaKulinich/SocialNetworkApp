@@ -1,7 +1,11 @@
 import { Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
-import { styled } from "styled-components";
+import { styled, keyframes } from "styled-components";
 
+const lastCommentAnimation = keyframes`
+    0% {background-color: ${theme.colors.regularLight}}
+    100% {background-color: rgba(220, 220, 220, .2)}
+`
 
 export const Card = styled.div`
     width: 100%;
@@ -12,6 +16,11 @@ export const Card = styled.div`
     padding: 8px;
     border-radius: 5px;
     background-color: rgba(220, 220, 220, .2);
+
+    &:last-child {
+        animation-name: ${lastCommentAnimation};
+        animation-duration: 1s
+    }
 `
 
 export const Name = styled.p`

@@ -18,6 +18,33 @@ export const getRandomAvatar = () => {
     return avatars[randomNumber]
 }
 
+export const reactionsArray = [
+    {
+        label: '🥰',
+        value: 'lovely'
+    },
+    {
+        label: '😂',
+        value: 'funny'
+    },
+    {
+        label: '😎',
+        value: 'cool'
+    },
+    {
+        label: '😞',
+        value: 'sad'
+    },
+    {
+        label: '😳',
+        value: 'surprised'
+    },
+    {
+        label: '🥳',
+        value: 'congrats'
+    },
+]
+
 export  const selectOptions = [
     {label: 'Name', value: 'name'},
     {label: 'Interests', value: 'interests'},
