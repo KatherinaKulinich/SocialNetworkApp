@@ -46,6 +46,11 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
         onOpenModalForEditing()
     }, [dispatch, posts])
 
+    const onOpenModalComments = useCallback(() => {
+        dispatch(getSelectedUserPost(post))
+        onOpenModalWithComments()
+    }, [dispatch, posts])
+
 
     
     
@@ -120,7 +125,10 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                             })
                         })}
                     </Reactions>
-                    <CommentsButton $items={postComments.length}>
+                    <CommentsButton 
+                        $items={postComments.length} 
+                        onClick={onOpenModalComments}
+                    >
                         Comments
                     </CommentsButton>
                 </>

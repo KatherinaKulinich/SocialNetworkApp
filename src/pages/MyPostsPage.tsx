@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Post } from "types/Post"
 import imageNoPosts from '@images/noposts.svg'
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing"
+import { ModalComments } from "@components/popups/ModalComments/ModalComments"
 import { useAppSelector } from "hooks/hooks"
 
 
@@ -71,11 +72,12 @@ export const MyPostsPage: React.FC = () => {
                 selectedObject={selectedPost} 
                 currentValue={selectedPost.postText}            
             />
-            {/* <ModalComments 
+            <ModalComments 
                 isModalOpen={isModalComments} 
                 onCloseModal={onCloseModalComments}
-                role='photo'
-            /> */}
+                selectedContent={selectedPost}
+                contentOwner={userData}
+            />
         </PageContainer>
     )
 }

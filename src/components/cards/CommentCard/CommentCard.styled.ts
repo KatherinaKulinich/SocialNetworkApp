@@ -24,7 +24,7 @@ export const Card = styled.div`
 `
 
 export const Name = styled.p`
-    ${Font({size: '12px', line: '13px', color: theme.colors.mediumGray})};
+    ${Font({size: '10px', line: '13px', color: theme.colors.regularDark})};
     text-transform: uppercase;
 `
 export const Comment = styled.p`
@@ -32,7 +32,7 @@ export const Comment = styled.p`
 `
 
 export const Time = styled(Name)`
-    color: ${theme.colors.lightGray};
+    color: ${theme.colors.mediumGray};
 `
 
 

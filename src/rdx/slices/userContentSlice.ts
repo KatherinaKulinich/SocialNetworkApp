@@ -21,7 +21,7 @@ const userContentSlice = createSlice({
         getSelectedUserPhoto(state, action: PayloadAction<Photo>) {
             state.selectedPhoto = action.payload
         },
-        getSelectedUserPost(state, action: PayloadAction<any>) {
+        getSelectedUserPost(state, action: PayloadAction<Post>) {
             state.selectedPost = action.payload
         }
     }

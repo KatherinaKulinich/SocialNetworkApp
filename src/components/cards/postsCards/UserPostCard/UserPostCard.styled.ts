@@ -47,15 +47,13 @@ export const ReactionItem = styled(Radio)<{$items: number}>`
         content: ${(props) => `"${props.$items}"`};
         top: -9px;
         right: -9px;
-        ${Font({size: '7px', weight: '600' ,line: '9px', color: theme.colors.white})};
+        ${Font({size: '8px', weight: '500' ,line: '9px', color: theme.colors.white})};
         background-color: ${theme.colors.regular};
         border-radius: 50%;
         ${FlexCenter};
         padding: 4px;
         width: 18px;
         height: 18px;
-        /* max-width: 22px;
-        max-height: 15px; */
     }
 
     &:hover p {
@@ -108,7 +106,7 @@ export const CommentsButton = styled.button<{$items: number}>`
         content: ${(props) => `"${props.$items}"`};
         top: -9px;
         right: -9px;
-        ${Font({size: '7px', weight: '600' ,line: '9px', color: theme.colors.white})};
+        ${Font({size: '8px', weight: '500' ,line: '9px', color: theme.colors.white})};
         background-color: ${theme.colors.regular};
         border-radius: 50%;
         ${FlexCenter};

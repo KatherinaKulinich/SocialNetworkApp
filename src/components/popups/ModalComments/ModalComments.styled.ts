@@ -19,7 +19,7 @@ export const PhotoContent = styled.div`
     border-bottom: 1px solid ${theme.colors.lightGray};
 `
 
-export const Photo = styled.img`
+export const PhotoField = styled.img`
     width: 100px;
     height: 100px;
     border-radius: 5px;

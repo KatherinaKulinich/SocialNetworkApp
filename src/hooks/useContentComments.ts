@@ -12,48 +12,55 @@ import { Post } from "types/Post";
 
 export const useContentComments = () => {
     const { userData : {userId:myId, fullname, userAvatar, photos:myPhotos, posts:myPosts}} = useUserData()
+    const { userData } = useUserData()
 
 
 
-    const sendCommentPost = useCallback((postItem:Post, allPosts:Post[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
-        const currentCommentsArray = postItem.postComments;
-        const newCommentsArray = [...currentCommentsArray, newComment];
-        const updatedContentItem = {...postItem, postComments: newCommentsArray};
-
-        const updatedContentArray = allPosts?.map((post:Post) => {
-            if (post.postId === updatedContentItem.postId) {
-                return updatedContentItem
-            }
-            return post
-        })
-
-        updateDoc(ref, {
-            posts: updatedContentArray,
-        })
-    }, [])
-
-
-    const sendCommentPhoto = useCallback((photoItem:Photo, allPhotos:Photo[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
-        const currentCommentsArray = photoItem.photoComments;
-        const newCommentsArray = [...currentCommentsArray, newComment];
-        const updatedContentItem = {...photoItem, postComments: newCommentsArray};
-
-        const updatedContentArray = allPhotos?.map((photo:Photo) => {
-            if (photo.photoId === updatedContentItem.photoId) {
-                return updatedContentItem
-            }
-            return photo
-        })
-
-        updateDoc(ref, {
-            photos: updatedContentArray,
-        })
-    }, [])
-
+    const sendCommentPost = useCallback((currentPost:Post, allPosts:Post[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
+        const selectedPost = allPosts?.find(post => post.postId === currentPost.postId)
+        
+        if (selectedPost) {
+            const currentCommentsArray = selectedPost?.postComments;
+            const newCommentsArray = [...currentCommentsArray, newComment];
+            const updatedContentItem = {...selectedPost, postComments: newCommentsArray};
     
+            const updatedContentArray = allPosts?.map((post:Post) => {
+                if (post.postId === updatedContentItem.postId) {
+                    return updatedContentItem
+                }
+                return post
+            })
+            updateDoc(ref, {
+                posts: updatedContentArray,
+            })
+        }
+    }, [])
 
 
-    const saveContentComment = useCallback((newCommentText:string, contentItem:Photo | Post, user:UserFullData) => {
+    const sendCommentPhoto = useCallback((currentPhoto:Photo, allPhotos:Photo[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
+        const selectedPhoto = allPhotos?.find(photo => photo.photoId === currentPhoto.photoId)
+
+        if (selectedPhoto) {
+            const currentCommentsArray = selectedPhoto?.photoComments;
+    
+            const newCommentsArray = [...currentCommentsArray, newComment]; 
+            const updatedContentItem = {...selectedPhoto, photoComments: newCommentsArray};
+    
+            const updatedContentArray = allPhotos?.map((photo:Photo) => {
+                if (photo.photoId === updatedContentItem.photoId) {
+                    return updatedContentItem
+                }
+                return photo
+            })
+            updateDoc(ref, {
+                photos: updatedContentArray,
+            })
+        }
+    }, [])
+
+
+
+    const saveContentComment = useCallback((newCommentText:string, contentItem:Post | Photo, user:UserFullData) => {
         const { userId, posts:userPosts, photos:userPhotos } = user;
 
         const newComment:CommentItem = {
@@ -75,6 +82,8 @@ export const useContentComments = () => {
             }
             sendCommentPost(contentItem, userPosts, userRef, newComment)
         } else if ('photoId' in contentItem) {
+            console.log(myPhotos);
+            
             if (userId === myId) {
                 sendCommentPhoto(contentItem, myPhotos as Photo[], myRef, newComment)
                 return
@@ -82,7 +91,7 @@ export const useContentComments = () => {
             sendCommentPhoto(contentItem, userPhotos as Photo[], userRef, newComment)
         }
 
-    }, [myPosts, myPhotos])
+    }, [myPosts, myPhotos, userData])
 
 
 

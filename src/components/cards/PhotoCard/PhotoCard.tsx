@@ -11,23 +11,28 @@ import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch } from "hooks/hooks";
 import { useUserData } from "hooks/useUserData";
 import { useManageMyContent } from "hooks/useManageMyContent";
+import { usePhotosLikes } from "hooks/usePhotosLikes";
+import { UserFullData } from "types/UserFullDataType";
 
 interface PhotoCardProps {
     photo: Photo;
     owner: 'me' | 'friend';
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
+    onToggleLike: (item:Photo, user:UserFullData) => void;
 }
 
 
-export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments}) => {
+
+
+export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, onToggleLike}) => {
     const { photoUrl, photoDescription, photoLikes, photoComments } = photo;
 
     const dispatch = useAppDispatch()
     const { userData } = useUserData()
     const { photos } = userData
     const { deleteMyContent } = useManageMyContent()
-    const { checkUserLikeReaction, onToggleLike  } = useMyPhotos()
+    const { checkUserLikeReaction } = usePhotosLikes()
 
     const onOpenModalEditing = useCallback(() => {
         dispatch(getSelectedUserPhoto(photo))
@@ -47,7 +52,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
     const [isPhotoLiked, setIsPhotoLiked] = useState(false)
 
     const checkUserLike = useCallback(() => {
-        if (checkUserLikeReaction(userData.userId, photo)) {
+        if (checkUserLikeReaction(photo)) {
             setIsPhotoLiked(true)
             return
         }
@@ -103,7 +108,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                     {photoDescription}
                 </PhotoDescription>
                 <Actions>
-                    <Action onClick={() => onToggleLike(userData.userId, photo)}>
+                    <Action onClick={() => onToggleLike(photo, userData)}>
                         <Icon 
                             icon={isPhotoLiked ? (<BsSuitHeartFill/>) : (<BsSuitHeart/>)} 
                             iconColor={theme.colors.regular} 

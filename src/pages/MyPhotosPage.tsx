@@ -14,6 +14,7 @@ import { Photo } from 'types/Photo';
 import { Post } from 'types/Post';
 import { useAppSelector } from 'hooks/hooks';
 import { useManageMyContent } from 'hooks/useManageMyContent';
+import { usePhotosLikes } from 'hooks/usePhotosLikes';
 
 
 
@@ -50,6 +51,7 @@ export const MyPhotosPage:React.FC = () => {
     const { photos } = userData;
 
     const { editMyContent } = useManageMyContent()
+    const { onToggleLike } = usePhotosLikes()
     const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
 
     
@@ -72,6 +74,7 @@ export const MyPhotosPage:React.FC = () => {
                             owner="me"
                             onOpenModalForEditing={onOpenModalEdition}
                             onOpenModalWithComments={onOpenModalComments}
+                            onToggleLike={(photo, userData) => onToggleLike(photo, userData)}
                         />
                     ))
                 )}
@@ -90,7 +93,8 @@ export const MyPhotosPage:React.FC = () => {
             <ModalComments 
                 isModalOpen={isModalComments} 
                 onCloseModal={onCloseModalComments}
-                role='photo'
+                selectedContent={selectedPhoto}
+                contentOwner={userData}
             />
         </PageContainer>
     )

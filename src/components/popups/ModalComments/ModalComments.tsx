@@ -1,35 +1,32 @@
 import { CommentCard } from "@components/cards/CommentCard/CommentCard";
 import { ModalDefault } from "../ModalDefault/ModalDefault"
-import { CommentsBox, Container, Photo, PhotoContent, Text } from "./ModalComments.styled";
+import { CommentsBox, Container, PhotoField, PhotoContent, Text } from "./ModalComments.styled";
 import { MessageInput } from "@components/chat/components/MessageInput/MessageInput";
-import { useAppSelector, useAppDispatch } from "hooks/hooks";
 import { useCallback, useEffect, useState } from "react";
-import { useMyPhotos } from "hooks/usePhotosLikes";
-import { useUserData } from "hooks/useUserData";
-import { Comment } from "types/Photo";
-import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
+import { CommentItem, Photo } from "types/Photo";
 import { message } from "antd";
+import { useContentComments } from "hooks/useContentComments";
+import { Post } from "types/Post";
+import { UserFullData } from "types/UserFullDataType";
+
 
 
 
 interface ModalCommentsProps {
     isModalOpen: boolean;
     onCloseModal: () => void;
-    role: 'photo' | 'post';
+    selectedContent: Post | Photo;
+    contentOwner: UserFullData;
 }
 
-export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onCloseModal, role}) => {
-
-    const selectedPhoto = useAppSelector(state => state.content.selectedPhoto);
-    const { url, description, comments } = selectedPhoto;
-    const { sendNewComment } = useMyPhotos()
-    const { userData } = useUserData()
-    const dispatch = useAppDispatch()
-    const { photos } = userData;
 
 
+export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onCloseModal, selectedContent, contentOwner}) => {
 
+    const { photos } = contentOwner;
+    const { saveContentComment } = useContentComments()
     const [commentValue, setCommentValue] = useState('')
+
 
     const onChangeCommentValue:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
         setCommentValue(event.target.value)
@@ -38,34 +35,43 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
 
     const onSaveNewComment = useCallback( async () => {
         await message.loading('adding comment...', 4)
-        sendNewComment(commentValue, selectedPhoto, userData)
+        saveContentComment(commentValue, selectedContent, contentOwner)
         setCommentValue('')
         getCurrentComments()
         await message.success('done')
-    }, [commentValue, selectedPhoto, userData, comments, photos])
+    }, [selectedContent, contentOwner, commentValue, photos])
 
 
-    const [photoComments, setPhotoComments] = useState<Comment[]>([])
+    const [currentComments, setCurrentComments] = useState<CommentItem[]>([])
         
     const getCurrentComments = useCallback(() => {
-        if (userData.photos) {
-            userData.photos.map((photo) => {
-                if (photo.photoId === selectedPhoto.photoId) {
-                    setPhotoComments(photo.comments)
-                    return
-                }
-                return photo
-            })
+        if ('photoId' in selectedContent) {
+            if (contentOwner.photos) {
+                contentOwner.photos.map((photo) => {
+                    if (photo.photoId === selectedContent.photoId) {
+                        setCurrentComments(photo.photoComments)
+                        return
+                    }
+                    return photo
+                })
+            }
+        } else if ('postId' in selectedContent) {
+            if (contentOwner.posts) {
+                contentOwner.posts.map((post) => {
+                    if (post.postId === selectedContent.postId) {
+                        setCurrentComments(post.postComments)
+                        return
+                    }
+                    return post
+                })
+            }
         }
-    }, [userData, selectedPhoto])
+    }, [contentOwner, selectedContent])
 
     useEffect(() => {
         getCurrentComments()
-    }, [userData, selectedPhoto])
+    }, [contentOwner, selectedContent])
 
-    
-
-    
 
     return (
         <ModalDefault 
@@ -75,28 +81,28 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
         >
             <Container>
                 <PhotoContent>
-                    {role === 'photo' && (
-                        <Photo src={url}/>
+                    {'photoId' in selectedContent && (
+                        <PhotoField src={selectedContent?.photoUrl}/>
                     )}
                     <Text>
-                        {description}
+                        {'photoId' in selectedContent ? selectedContent.photoDescription : selectedContent.postText }
                     </Text>
                 </PhotoContent>
                 <CommentsBox>
-                    {photoComments?.length > 0 ? (
-                        photoComments?.map((item:Comment) => (
+                    {currentComments?.length > 0 ? (
+                        currentComments?.map((item:CommentItem) => (
                             <CommentCard 
                                 key={`${item.date}${item.userId}`}
                                 userAvatar={item.userAvatar} 
                                 userName={item.userName}
                                 commentText={item.text}
-                                commentDate={''}
-                                commentTime={''}
+                                commentDate={`${new Date(item.date).getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(item.date)}`}
+                                commentTime={`${new Date(item.date).getHours()}:${new Date(item.date).getMinutes()}`}
                             />
                         ))
                         ) : (
                             <Text>
-                                There are no comments for this photo yet
+                                There are no comments here yet
                             </Text>
                     )}
                 </CommentsBox>
