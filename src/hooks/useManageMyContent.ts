@@ -8,7 +8,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import { Post, Reaction } from "types/Post"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { useAppDispatch } from "./hooks"
-import { Photo } from "types/Photo"
+import { CommentItem, Photo } from "types/Photo"
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage"
 
 
@@ -47,7 +47,7 @@ export const useManageMyContent = () => {
                     photoDescription: photoDescription,
                     photoDate: Date.now(),
                     photoLikes: [],
-                    photoComments: [],
+                    photoComments: [] as CommentItem[],
                 }
 
                 if (photos !== undefined) {
@@ -78,7 +78,7 @@ export const useManageMyContent = () => {
             postOwnerAvatar: userAvatar,
             postDate: Date.now(),
             postReactions,
-            postComments: [],
+            postComments: [] as CommentItem[],
         }
 
         if (posts !== undefined) {

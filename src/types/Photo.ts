@@ -9,12 +9,12 @@ export interface Photo {
     photoDescription: string;
     photoDate: number;
     photoLikes: string[],
-    photoComments: Comment[],
+    photoComments: CommentItem[],
 }
 
 
 
-export interface Comment {
+export interface CommentItem {
     userId: string;
     userName: string;
     userAvatar: string;

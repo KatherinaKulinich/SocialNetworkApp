@@ -13,7 +13,6 @@ import { useUserData } from 'hooks/useUserData';
 import { Photo } from 'types/Photo';
 import { Post } from 'types/Post';
 import { useAppSelector } from 'hooks/hooks';
-import { useMyPhotos } from 'hooks/useMyPhotos';
 import { useManageMyContent } from 'hooks/useManageMyContent';
 
 

@@ -6,7 +6,7 @@ import { FaRegEdit} from 'react-icons/Fa'
 import { RiDeleteBinLine } from 'react-icons/Ri'
 import { useCallback, useEffect, useState } from "react";
 import { Photo } from "types/Photo";
-import { useMyPhotos } from "hooks/useMyPhotos";
+import { useMyPhotos } from "hooks/usePhotosLikes";
 import { Popconfirm } from "antd";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch } from "hooks/hooks";

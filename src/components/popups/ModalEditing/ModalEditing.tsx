@@ -2,7 +2,6 @@ import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryBu
 import { ModalDefault } from "../ModalDefault/ModalDefault"
 import { Container, TextField } from "./ModalEditing.styled";
 import { theme } from "@styles/Theme";
-import { useMyPhotos } from "hooks/useMyPhotos";
 import { useCallback, useEffect, useState } from "react";
 import { useAppSelector } from "hooks/hooks";
 import { Photo } from "types/Photo";

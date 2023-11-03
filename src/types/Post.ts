@@ -1,4 +1,4 @@
-import { Comment } from "./Photo";
+import { CommentItem } from "./Photo";
 
 
 export interface Post {
@@ -8,7 +8,7 @@ export interface Post {
     postOwnerAvatar: string,
     postDate: any,
     postReactions: Reaction[]
-    postComments: Comment[],
+    postComments: CommentItem[],
 }
 
 export interface Reaction {

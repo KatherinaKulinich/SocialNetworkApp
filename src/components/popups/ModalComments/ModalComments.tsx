@@ -4,7 +4,7 @@ import { CommentsBox, Container, Photo, PhotoContent, Text } from "./ModalCommen
 import { MessageInput } from "@components/chat/components/MessageInput/MessageInput";
 import { useAppSelector, useAppDispatch } from "hooks/hooks";
 import { useCallback, useEffect, useState } from "react";
-import { useMyPhotos } from "hooks/useMyPhotos";
+import { useMyPhotos } from "hooks/usePhotosLikes";
 import { useUserData } from "hooks/useUserData";
 import { Comment } from "types/Photo";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
