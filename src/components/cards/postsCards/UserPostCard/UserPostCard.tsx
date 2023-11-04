@@ -4,7 +4,7 @@ import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsB
 import { Avatar } from "@components/Avatar/Avatar"
 import { theme } from "@styles/Theme"
 import { Post } from "types/Post"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Reaction } from "types/Post"
 import { RadioChangeEvent, Popconfirm } from "antd"
 import { reactionsArray } from "utils/profileOptions"
@@ -13,6 +13,7 @@ import { useManageMyContent } from "hooks/useManageMyContent"
 import { useUserData } from "hooks/useUserData"
 import { getSelectedUserPost } from "rdx/slices/userContentSlice"
 import { useAppDispatch } from "hooks/hooks"
+import { usePostsReactions } from "hooks/usePostsReactions"
 
 
 
@@ -21,39 +22,56 @@ interface UserPostCardProps {
     owner: 'me' | 'friend';
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
+    postOwner: UserFullData;
 }
 
-export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments}) => {
+export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner}) => {
     const {postOwnerName, postOwnerAvatar, postDate, postReactions, postComments, postText} = post;
+
+    const { posts } = postOwner;
+
     const { deleteMyContent } = useManageMyContent()
     const { userData } = useUserData()
-    const { posts } = userData;
     const dispatch = useAppDispatch()
+    const { addReaction, checkMyReaction } = usePostsReactions()
 
     const [reactionValue, setReactionValue] = useState('')
-    const onChangeReactionValue = ({ target: { value }}: RadioChangeEvent) => {
+    const [initialValue, setInitialValue] = useState<string | false>(false)
+
+
+    const onChangeReactionValue = useCallback(({ target: { value }}: RadioChangeEvent) => {
         setReactionValue(value)
-    }
+        addReaction(post, postOwner, value)
+    },[post, postOwner])
 
     const date = new Date(postDate);
 
     const removePost = useCallback(() => {
         deleteMyContent(post)
-    }, [posts])
+    }, [post])
 
     const onOpenModalEditing = useCallback(() => {
         dispatch(getSelectedUserPost(post))
         onOpenModalForEditing()
-    }, [dispatch, posts])
+    }, [dispatch, post])
 
     const onOpenModalComments = useCallback(() => {
         dispatch(getSelectedUserPost(post))
         onOpenModalWithComments()
-    }, [dispatch, posts])
+    }, [dispatch, post])
 
 
-    
-    
+    useEffect(() => {
+        setInitialValue(checkMyReaction(post))
+    }, [post])
+
+    useEffect(() => {
+        if (initialValue) {
+            setReactionValue(initialValue)
+        }
+    }, [initialValue])
+
+
 
     return (
         <PostCard 
@@ -108,7 +126,6 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                     <Reactions 
                         value={reactionValue} 
                         onChange={onChangeReactionValue}
-                        // disabled
                     >
                         {postReactions?.map((reactionItem:Reaction) => {
                             return reactionsArray.map((arrayItem) => {

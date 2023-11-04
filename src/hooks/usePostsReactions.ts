@@ -9,21 +9,22 @@ import { doc, updateDoc } from "firebase/firestore";
 
 
 
+
 export const usePostsReactions = () => {
 
     const { userData } = useUserData()
-    const { userId:myId, userName, posts:myPosts } = userData;
+    const { userId:myId, posts:myPosts } = userData;
     const myRef = doc(db, "users", myId);
     
 
     const checkMyReaction = useCallback((post:Post):string | false => {
         const reactions = post?.postReactions;
 
-        reactions.forEach((reaction) => {
-            if (reaction.usersReactions.includes(myId)) {
-                return reaction.value
+        for (let i = 0; i < reactions.length; i++) {
+            if (reactions[i].usersReactions.includes(myId)) {
+                return reactions[i].value
             }
-        })
+        }
         return false
     }, [userData])
 
@@ -31,32 +32,22 @@ export const usePostsReactions = () => {
     const addReaction = useCallback((selectedPost:Post, user:UserFullData, reactionValue:string) => {
         const {userId, posts:userPosts} = user;
         const userRef = doc(db, "users", userId);
-
         const currentReaction = checkMyReaction(selectedPost)
+
         if (currentReaction === reactionValue) return;
 
         const currentReactionsArray:Reaction[] = selectedPost?.postReactions;
-
         const newPostReactionsArray:Reaction[] = currentReactionsArray.map((item:Reaction) => {
             if (item.value === reactionValue) {
-                item.usersReactions = [...item.usersReactions, myId]
-                return item
+                const newReactions = [...item.usersReactions, myId]
+                return {...item, usersReactions: newReactions }
             }
-            item.usersReactions.filter(id => id !== myId)
-            return item
+            
+            const filteredReactions = item.usersReactions.filter(id => id !== myId)
+            return {...item, usersReactions: filteredReactions}
         })
 
-        // const updatedPostReactions = newPostReactionsArray.map((item:Reaction) => {
-        //     if (item.value === reactionValue) return;
-        //     item.usersReactions.filter(id => id !== myId)
-        //     return item
-        // })
-
-        console.log(newPostReactionsArray);
-
         const updatedPost = {...selectedPost, postReactions: newPostReactionsArray}
-
-
 
         if (myId === userId) {
             const updatedPostsArray = myPosts?.map((item:Post) => {

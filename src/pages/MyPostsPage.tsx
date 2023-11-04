@@ -16,6 +16,7 @@ import { useAppSelector } from "hooks/hooks"
 
 
 
+
 export const MyPostsPage: React.FC = () => {
     const { userData } = useUserData()
     const { posts} = userData;
@@ -23,6 +24,7 @@ export const MyPostsPage: React.FC = () => {
     const selectedPost = useAppSelector(state => state.content.selectedPost)
 
     const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
+
     const onOpenModalEdition = useCallback(() => {
         setIsModalEditionOpen(true)
     }, [isModalEditionOpen])
@@ -38,6 +40,7 @@ export const MyPostsPage: React.FC = () => {
     const onCloseModalComments = useCallback(() => {
         setIsModalComments(false)
     }, [isModalComments])
+
 
 
     return (
@@ -56,7 +59,9 @@ export const MyPostsPage: React.FC = () => {
                             post={postItem}
                             key={postItem.postId} 
                             onOpenModalForEditing={onOpenModalEdition} 
-                            onOpenModalWithComments={onOpenModalComments}                        />
+                            onOpenModalWithComments={onOpenModalComments}
+                            postOwner={userData} 
+                        />
                     ))
                 ) : (
                     <ImageErrorMessage 
