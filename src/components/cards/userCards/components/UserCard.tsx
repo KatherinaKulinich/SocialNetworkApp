@@ -1,32 +1,31 @@
-
-import { useAppDispatch } from "hooks/hooks";
-import { getSelectedUserData } from "rdx/slices/usersSlice";
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "hooks/hooks";
+import { theme } from "@styles/Theme";
 import { PersonalInfo, Name, ActionsContainer, Card, Text } from './UserCard.styled'
 import { UserFullData } from "types/UserFullDataType";
-import { useNavigate } from "react-router-dom";
 import { Avatar } from "@components/Avatar/Avatar";
-import { theme } from "@styles/Theme";
+import { fetchFriends, fetchSelectedUser } from "rdx/slices/friendsSlice";
 
 
 interface UserCardProps {
     children: React.ReactNode,
     user: UserFullData,
-    path: 'myFriends' | 'users'
 }
 
 
 
-export const UserCard:React.FC<UserCardProps> = ({children, user, path}) => {
-    const { userLocation, userAvatar, fullname, userBirthday } = user;
+export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
+    const { userLocation, userAvatar, userFullname, userBirthday, userId } = user;
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     const onSaveUserData = useCallback(() => {
-        dispatch(getSelectedUserData(user))
-        navigate(`${path}/${fullname}/profile`)
-    }, [dispatch])
+        dispatch(fetchSelectedUser(userId))
+        dispatch(fetchFriends(user))
+        navigate(`/users/${userFullname}/profile`)
+    }, [dispatch, userId])
 
     
     return (
@@ -38,7 +37,7 @@ export const UserCard:React.FC<UserCardProps> = ({children, user, path}) => {
             />
             <PersonalInfo>
                 <Name>
-                    {fullname}
+                    {userFullname}
                 </Name>
                 <Text>
                     {`${userBirthday.age} y.o`}

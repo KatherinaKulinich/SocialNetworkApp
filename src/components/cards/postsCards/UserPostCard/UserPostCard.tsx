@@ -19,7 +19,7 @@ import { usePostsReactions } from "hooks/usePostsReactions"
 
 interface UserPostCardProps {
     post: Post,
-    owner: 'me' | 'friend';
+    owner: 'myProfile' | 'userProfile';
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
     postOwner: UserFullData;
@@ -102,7 +102,7 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                             {postText}
                         </p>
                     </PostContent>
-                    {owner === 'me' && (
+                    {owner === 'myProfile' && (
                        <PostControls>
                             <ControlButton onClick={onOpenModalEditing}>
                                 Edit post

@@ -15,7 +15,7 @@ export const PhotosBox = styled.div`
     cursor: pointer;
 `
 
-export const Photo = styled.img`
+export const PhotoSrc = styled.img`
     width: 70px;
     height: 70px;
     object-fit: cover;

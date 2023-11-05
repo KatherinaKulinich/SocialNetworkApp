@@ -3,10 +3,10 @@ import { MdDoubleArrow, MdOutlinePermContactCalendar, MdLocationOn } from "react
 import { Icon } from "../../icons/Icon";
 import { theme } from "@styles/Theme";
 import { Avatar } from "@components/Avatar/Avatar";
-import { getSelectedUserData, fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { useAppDispatch } from "hooks/hooks";
 import { useCallback } from "react";
 import { UserFullData } from "types/UserFullDataType";
+import { fetchFriends, fetchSelectedUser } from "rdx/slices/friendsSlice";
 
 
 
@@ -15,18 +15,19 @@ interface SearchUserCardProps {
 }
 
 export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
-    const { userAvatar, fullname, userBirthday, userLocation, userInterests } = user;
+    const { userAvatar, userFullname, userBirthday, userLocation, userInterests, userId } = user;
 
     const dispatch = useAppDispatch();
     
     const getUserProfile = useCallback(() => {
-        dispatch(getSelectedUserData(user))
-    }, [dispatch])
+        dispatch(fetchSelectedUser(userId))
+        dispatch(fetchFriends(user))
+    }, [dispatch, user, userId])
 
     
     return (
         <UserCard 
-            to={`/users/${fullname}/profile`} 
+            to={`/users/${userFullname}/profile`} 
             onClick={getUserProfile}
         >
             <CardContent>
@@ -37,7 +38,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                 />
                 <UserInfo>
                     <UserName>
-                        {fullname}
+                        {userFullname}
                     </UserName>
                     <Flex>
                         <Icon 

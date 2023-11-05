@@ -202,8 +202,6 @@ export const fetchSelectedUserData = (userId:string) => {
             dispatch(getErrorMessage(''))
 
             onSnapshot(doc(db, "users", userId), (doc) => {
-                console.log(doc.data());
-                
                 dispatch(getSelectedUserData(doc.data() as UserFullData))
             });
 

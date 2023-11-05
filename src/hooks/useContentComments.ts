@@ -11,7 +11,7 @@ import { Post } from "types/Post";
 
 
 export const useContentComments = () => {
-    const { userData : {userId:myId, fullname, userAvatar, photos:myPhotos, posts:myPosts}} = useUserData()
+    const { userData : {userId:myId, userFullname, userAvatar, photos:myPhotos, posts:myPosts}} = useUserData()
     const { userData } = useUserData()
 
 
@@ -52,6 +52,7 @@ export const useContentComments = () => {
                 }
                 return photo
             })
+
             updateDoc(ref, {
                 photos: updatedContentArray,
             })
@@ -65,7 +66,7 @@ export const useContentComments = () => {
 
         const newComment:CommentItem = {
             userId,
-            userName: fullname,
+            userName: userFullname,
             userAvatar,
             text: newCommentText,
             date: Date.now(),
@@ -92,9 +93,6 @@ export const useContentComments = () => {
         }
 
     }, [myPosts, myPhotos, userData])
-
-
-
 
 
     return {

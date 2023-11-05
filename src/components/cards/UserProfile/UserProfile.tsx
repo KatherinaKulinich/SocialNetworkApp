@@ -5,73 +5,45 @@ import { BsFillInfoCircleFill } from 'react-icons/Bs'
 import { ProfileAvatar } from "./components/ProfileAvatar/ProfileAvatar";
 import { DataItem } from "./components/DataItem/DataItem";
 import { PhotoPreview } from "./components/PhotosPreview/PhotoPreview";
-import { useCallback } from "react";
-import { Photo } from "types/Photo";
-import emptyPhoto from '@images/defaultPhoto.jpg';
 import { FriendsPreview } from "./components/FriendsPreview/FriendsPreview";
-import { PiUsersFourFill } from "react-icons/Pi";
-import { IoMdImages } from "react-icons/Io";
-import { Paragraph } from "@components/text/Paragraph";
-import { theme } from "@styles/Theme";
+import { PostPreview } from "./components/PostsPreview/PostPreview";
 import { UserFullData } from "types/UserFullDataType";
+import { useAppSelector } from "hooks/hooks";
+import { getRandomAvatar } from "utils/profileOptions";
 
 
 interface UserProfileProps {
     role: 'myProfile' | 'userProfile';
-    name: string;
-    fullname: string;
-    age: number;
-    gender: string;
-    friendsQuantity: number;
-    location: string;
-    famStatus: string;
-    interests: string[];
-    aboutInfo: string;
-    birthday: string;
-    avatar: string;
-    photos: Photo[];
-    friends: UserFullData[]
+    user:UserFullData;
 }
 
 
-export const UserProfile:React.FC<UserProfileProps> = (
-    {fullname, age, birthday, gender, location, famStatus, interests, aboutInfo, avatar, friendsQuantity, photos, friends, name, role}) => {
+export const UserProfile:React.FC<UserProfileProps> = ({user, role}) => {
+    const { userName, userFullname, userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation, friends } = user;
 
+    const userAge = userBirthday.age;
+    const userBirthDate = userBirthday.fullDate
+
+    const linkToFriendsPage = role === 'myProfile' ? '/myFriends' : `/users/${userFullname}/friends`
+    const linkToPhotosPage = role === 'myProfile' ? '/myPhotos' : `/users/${userFullname}/photos`
         
-
-
-    const getUserPhotos = useCallback((photos: Photo[]):string[] => {
-        const previewPhotos = photos.map(photo => photo.url);
-
-        if (previewPhotos.length < 9 || previewPhotos.length === 0) {
-            const difference = 9 - photos.length;
-
-            for (let i = 0; i < difference; i++) {
-                previewPhotos.push(emptyPhoto)
-            }
-            return previewPhotos;
-        }
-        previewPhotos.splice(9)
-        return previewPhotos 
-    },[])
-    
 
 
     return (
         <Container>
             <MainInfo>
-                <ProfileAvatar userAvatarImg={avatar}/>
+                <ProfileAvatar userAvatarImg={userAvatar ? userAvatar : getRandomAvatar()}/>
                 <PersonalMainInfo>
                     <Name>
-                        {fullname}
+                        {userFullname}
                     </Name>
                     <Field>
                         <Subtitle> age: </Subtitle>
-                        <RegularText> {age} y.o. </RegularText>
+                        <RegularText> {userAge} y.o. </RegularText>
                     </Field>
                     <Field>
                         <Subtitle> gender: </Subtitle>
-                        <RegularText> {gender} </RegularText>
+                        <RegularText> {userGender} </RegularText>
                     </Field>
                 </PersonalMainInfo>
             </MainInfo>
@@ -80,25 +52,25 @@ export const UserProfile:React.FC<UserProfileProps> = (
                     <DataItem 
                         icon={<FaUsers/>} 
                         itemName={'Friends'} 
-                        itemValue={`${friendsQuantity}`}
+                        itemValue={`${friends?.length}`}
                         direction='row'
                     />
                     <DataItem 
                         icon={<ImLocation/>} 
                         itemName={role === 'userProfile' ? 'Lives in' : 'Live in'} 
-                        itemValue={location}
+                        itemValue={userLocation}
                         direction='row'
                     />
                     <DataItem 
                         icon={<FaHeart/>} 
                         itemName={'Family status'} 
-                        itemValue={famStatus}
+                        itemValue={userFamStatus || 'no data'}
                         direction='row'
                     />
                     <DataItem 
                         icon={<FaBirthdayCake/>} 
                         itemName={'Birthday'} 
-                        itemValue={birthday}
+                        itemValue={userBirthDate}
                         direction='row'
                     />
                 </Box>
@@ -108,13 +80,17 @@ export const UserProfile:React.FC<UserProfileProps> = (
                         itemName={'Interests/hobbies'} 
                         direction='column'
                         itemValue={
-                            <HobbiesList>
-                                {interests?.map((item, index) => (
-                                    <HobbyItem key={index}>
-                                        {item}
-                                    </HobbyItem>
-                                ))}
-                            </HobbiesList>
+                            userInterests ? (
+                                <HobbiesList>
+                                    {userInterests?.map((item, index) => (
+                                        <HobbyItem key={index}>
+                                            {item}
+                                        </HobbyItem>
+                                    ))}
+                                </HobbiesList>
+                            ) : (
+                                'no data'
+                            ) 
                         }
                     />
                 </Box>
@@ -122,50 +98,27 @@ export const UserProfile:React.FC<UserProfileProps> = (
             <Box>
                 <DataItem 
                     icon={<BsFillInfoCircleFill/>} 
-                    itemName={role === 'userProfile' ? `About ${name}` : 'About me'} 
-                    itemValue={aboutInfo}
+                    itemName={role === 'userProfile' ? `About ${userName}` : 'About me'} 
+                    itemValue={userAbout || 'no data'}
                     direction='column'
                 />
             </Box>
             <InfoContainer>
-                <PreviewContainer>
-                    <DataItem 
-                        icon={<IoMdImages/>} 
-                        itemName={role === 'userProfile' ? `${name}'s photos` : 'My photos'} 
-                        direction='column'
-                    />
-                    {photos?.length > 0 ? (
-                        <PageLink to={"/myPhotos"}>
-                            See more...
-                        </PageLink>
-                    ) : (
-                        <Paragraph text="no photos yet" color={theme.colors.regular}/>
-                    )}
-                    <PhotoPreview 
-                        photos={getUserPhotos(photos)} 
-                        link="/myPhotos"
-                    />
-                </PreviewContainer>
-
-                <PreviewContainer>
-                    <DataItem 
-                        icon={<PiUsersFourFill/>} 
-                        itemName={role === 'userProfile' ? `${name}'s friends` : 'My friends'} 
-                        direction='column'
-                    />
-                    {friends?.length > 0 ? (
-                        <PageLink to={"/myFriends"}>
-                            See more...
-                        </PageLink>
-                    ) : (
-                        <Paragraph text="no friends yet" color={theme.colors.regular}/>
-                    )}
-                    <FriendsPreview 
-                        friends={friends} 
-                        link="/myFriends"
-                    />
-                </PreviewContainer>
+                <PhotoPreview
+                    link={linkToPhotosPage}
+                    role={role}
+                    user={user}
+                />
+                <FriendsPreview
+                    link={linkToFriendsPage}
+                    role={role}
+                    user={user}
+                />
             </InfoContainer>
+            <PostPreview
+                postOwner={role}
+                ownerData={user}
+            />
         </Container>
     )
 }

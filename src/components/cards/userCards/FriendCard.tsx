@@ -1,6 +1,4 @@
 import { UserFullData } from "types/UserFullDataType";
-import { useAppDispatch } from "hooks/hooks";
-import { getSelectedUserData } from "rdx/slices/usersSlice";
 import { useCallback } from "react";
 import { UserCard } from "./components/UserCard";
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton";
@@ -13,32 +11,20 @@ interface FriendCardProps {
 }
 
 export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
-    const { userLocation, userAvatar, fullname, userBirthday, userGender } = user;
-
+    const { userFullname, userGender } = user;
     const navigate = useNavigate()
 
-    // const dispatch = useAppDispatch()
-
-    // const onSaveUserData = useCallback(() => {
-    //     dispatch(getSelectedUserData(user))
-    //     console.log(user);
-        
-    // }, [dispatch])
 
     const onChatToUser = useCallback(() => {
-        navigate(`/myChats/${fullname}/chat`)
+        navigate(`/myChats/${userFullname}/chat`)
     }, [])
 
 
 
     return (
-        <UserCard 
-            user={user} 
-            path="myFriends"
-        >
+        <UserCard user={user} >
             <TextIconButton 
                 text={`Chat to ${userGender === 'Female' ? 'her' : 'him'}`} 
-                // text={`Chat to ${user.userName}`} 
                 icon={<BsFillChatHeartFill/>} 
                 color={theme.colors.regularDark} 
                 textSize={"12px"} 

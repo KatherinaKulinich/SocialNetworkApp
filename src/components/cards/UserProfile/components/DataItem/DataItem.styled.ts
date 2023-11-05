@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import { theme } from "@styles/Theme";
 
 export const Field = styled.div<{$direction: string}>`
-    width: 100%;
     display: flex;
     gap: 16px;
     align-items: center;

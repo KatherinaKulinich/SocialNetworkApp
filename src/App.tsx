@@ -13,14 +13,15 @@ import { MyPhotosPage } from "./pages/MyPhotosPage"
 import { BirthDaysAlertsPage } from "./pages/BirthdaysAlertsPage"
 import { ProfileCreatingPage } from "./pages/ProfileCreatingPage"
 import { ChatPage } from "./pages/ChatPage/ChatPage"
-import { FriendProfilePage } from "./pages/FriendProfilePage"
-import { FriendPhotosPage } from "pages/FriendPhotosPage"
+import { UserProfilePage } from "./pages/UserProfilePage"
+import { UserPhotosPage } from "pages/UserPhotosPage"
+import { UserFriendsPage } from "pages/UserFriendsPage"
 import { RequireAuth } from "hoc/RequireAuth"
 import { MyFeedPage } from "pages/MyFeedPage"
 import { MyPostsPage } from "pages/MyPostsPage"
 import { MyFollowingListPage } from "pages/MyFollowingListPage"
 import { MyFriendRequestsPage } from "pages/MyFriendRequestsPage"
-import { FriendPostsPage } from "pages/FriendPostsPage"
+
 
 
 
@@ -80,27 +81,28 @@ export const App:React.FC = () => {
                             <MyFriendRequestsPage/>
                         </RequireAuth>
                     }/>
-                    {["myFriends/:userName/profile","users/:userName/profile" ].map((path, index) => (
+                    <Route path="users/:userName/profile" element={
+                        <RequireAuth>
+                            <UserProfilePage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="users/:userName/photos" element={
+                        <RequireAuth>
+                            <UserPhotosPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="users/:userName/friends" element={
+                       <RequireAuth>
+                            <UserFriendsPage/>
+                        </RequireAuth>
+                    }/>
+                    {/* {["friends/:userName/friends","users/:userName/friends" ].map((path, index) => (
                         <Route key={index} path={path} element={
                             <RequireAuth>
-                                <FriendProfilePage/>
+                                <UserFriendsPage/>
                             </RequireAuth>
                         } />
-                    ))}
-                    {["myFriends/:userName/photos","users/:userName/photos" ].map((path, index) => (
-                        <Route key={index} path={path} element={
-                            <RequireAuth>
-                                <FriendPhotosPage/>
-                            </RequireAuth>
-                        } />
-                    ))}
-                    {["myFriends/:userName/posts","users/:userName/posts" ].map((path, index) => (
-                        <Route key={index} path={path} element={
-                            <RequireAuth>
-                                <FriendPostsPage/>
-                            </RequireAuth>
-                        } />
-                    ))}
+                    ))} */}
                     <Route path="myChats" element={
                         <RequireAuth>
                             <MyChatsPage/>

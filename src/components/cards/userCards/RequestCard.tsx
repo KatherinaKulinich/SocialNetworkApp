@@ -11,10 +11,7 @@ interface RequestCardProps {
 
 export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
     return (
-        <UserCard 
-            user={user} 
-            path='users'
-        >
+        <UserCard user={user}>
             <>
                 <TextIconButton 
                     text='Delete' 

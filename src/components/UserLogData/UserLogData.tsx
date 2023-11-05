@@ -11,6 +11,8 @@ import { useUserData } from 'hooks/useUserData';
 export const UserLogData:React.FC = () => {
 
     const { userData } = useUserData()
+    console.warn(userData);
+    
 
 
     return (

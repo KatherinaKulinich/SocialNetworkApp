@@ -10,10 +10,7 @@ interface FollowingCardProps {
 
 export const FollowingCard:React.FC<FollowingCardProps> = ({user}) => {
     return (
-        <UserCard 
-            user={user} 
-            path="users"
-        >
+        <UserCard user={user}  >
             <TextIconButton 
                 text='Unfollow' 
                 icon={<FaUserSlash/>} 

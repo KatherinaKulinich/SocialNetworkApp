@@ -13,7 +13,8 @@ import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 
 export const useFollowUser = () => {
 
-    const { userId, friends:  userFriends} = useAppSelector(state => state.users.selectedUser)
+    const { userId, friends: userFriends} = useAppSelector(state => state.friends.selectedUser)
+    // const { userId, friends: userFriends} = useAppSelector(state => state.users.selectedUser)
     const { userData } = useUserData()
     const { friends: myFriends } = userData;
 
@@ -77,7 +78,6 @@ export const useFollowUser = () => {
 
     const addFriendToMe = useCallback(() => {
         if (myRef !== undefined && myFriends !== undefined) {
-            console.log(userId)
             addFriend(myRef, userId, myFriends)
         }
     }, [myRef, userId, myFriends])

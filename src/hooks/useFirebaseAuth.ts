@@ -41,7 +41,7 @@ export const useFirebaseAuth = () => {
                     userId: user.uid,
                     userName: name,
                     userSurname: surname,
-                    fullname: `${name} ${surname}`,
+                    userFullname: `${name} ${surname}`,
                     registerDate: Date.now(),
                     userAvatar: getRandomAvatar(),
                 }, { merge: true })
@@ -112,7 +112,7 @@ export const useFirebaseAuth = () => {
                 userId: user.uid,
                 userName: user.displayName?.split(" ")[0],
                 userSurname: user.displayName?.split(" ")[1],
-                fullname: user.displayName,
+                userFullname: user.displayName,
                 registerDate: Date.now(),
                 userAvatar: user.photoURL ? changePhotoSize(user.photoURL) : getRandomAvatar(),
             }, { merge: true })

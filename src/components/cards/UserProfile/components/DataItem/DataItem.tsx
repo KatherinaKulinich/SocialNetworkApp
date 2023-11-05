@@ -1,9 +1,9 @@
-import { theme } from "../../../../../styles/Theme";
-import { Icon } from "../../../../icons/Icon";
+import { theme } from "@styles/Theme";
+import { Icon } from "@components/icons/Icon";
 import { Field, Subtitle, ItemValue} from "./DataItem.styled";
 
 interface DataItemProps {
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     itemName: string;
     itemValue?: string | React.ReactNode;
     direction: 'column' | 'row';

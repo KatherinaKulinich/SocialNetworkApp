@@ -6,7 +6,7 @@ import Radio from "antd/lib/radio";
 export const UserInfo = styled.div`
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
 `
 export const DateField = styled.div`
     display: flex;

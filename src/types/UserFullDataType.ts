@@ -8,7 +8,7 @@ export interface UserFullData {
     userId: string;
     userName: string;
     userSurname: string;
-    fullname: string;
+    userFullname: string;
     registerDate: number;
     userAvatar: string;
     userGender: string;
@@ -20,9 +20,9 @@ export interface UserFullData {
     userInterests: string[];
     userAbout: string;
     chatBackground: string;
-    friends?: string[];
-    photos?: Photo[],
-    chats?: Chat[],
+    friends: string[];
+    photos: Photo[],
+    chats: Chat[],
     posts: Post[]
 }
 

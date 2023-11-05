@@ -28,7 +28,7 @@ export const useEditProfile = () => {
             await updateDoc(userRef, {
                 userName,
                 userSurname,
-                fullname: `${userName} ${userSurname}`,
+                userFullname: `${userName} ${userSurname}`,
                 userGender,
                 userBirthday:  {
                     fullDate: `${day}/${month}/${userBirthday.$y}`,
@@ -69,7 +69,7 @@ export const useEditProfile = () => {
                     return
                 }
                 await message.success('Created!')
-                await navigate('/myProfile')
+                navigate('/myProfile')
             })
         }
     }, [userData])

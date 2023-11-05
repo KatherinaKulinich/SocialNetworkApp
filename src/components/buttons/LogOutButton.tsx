@@ -25,7 +25,7 @@ export const LogOutButton:React.FC = () => {
             message.info(`See you next time, ${userData.userName}! Have a good rest of the day!`, 5)
             navigate('/login')
         }
-    }, [isAuth])
+    }, [isAuth, userData])
 
 
     return (
