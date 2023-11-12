@@ -1,7 +1,7 @@
+import imageNoPosts from '@images/noposts.svg'
 import { DataItem } from "../DataItem/DataItem"
 import { PostsContainer, PreviewContainer } from "./PostPreview.styled"
 import { Post } from "types/Post"
-import imageNoPosts from '@images/noposts.svg'
 import { UserPostCard } from "@components/cards/postsCards/UserPostCard/UserPostCard"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
 import { UserFullData } from "types/UserFullDataType"
@@ -16,7 +16,7 @@ import { useState, useCallback } from "react"
 interface PostPreviewProps {
     postOwner: 'myProfile'| 'userProfile';
     ownerData: UserFullData;
- }
+}
 
 
 
@@ -26,8 +26,11 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) 
     const { editMyContent } = useManageMyContent()
     const selectedPost = useAppSelector(state => state.content.selectedPost)
 
-    const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
 
+
+
+
+    const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
     const onOpenModalEdition = useCallback(() => {
         setIsModalEditionOpen(true)
     }, [isModalEditionOpen])

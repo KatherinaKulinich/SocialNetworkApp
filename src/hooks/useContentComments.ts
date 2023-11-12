@@ -3,20 +3,27 @@ import { DocumentData, DocumentReference, doc, updateDoc } from "firebase/firest
 import { useCallback } from "react";
 import { CommentItem, Photo } from "types/Photo";
 import { UserFullData } from "types/UserFullDataType";
-import { useUserData } from "./useUserData";
 import { Post } from "types/Post";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { fetchUserFullData } from "rdx/slices/userDataSlice";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 
 
 
 
 
-export const useContentComments = () => {
-    const { userData : {userId:myId, userFullname, userAvatar, photos:myPhotos, posts:myPosts}} = useUserData()
-    const { userData } = useUserData()
+export const useContentComments = (contentOwner:UserFullData) => {
+    const dispatch = useAppDispatch()
+
+    const userData = useAppSelector(state => state.userData.user)
+
+    const {userId:myId, userFullname, userAvatar, photos:myPhotos, posts:myPosts} = userData
+    const { userId, posts:userPosts, photos:userPhotos } = contentOwner;
+    const myRef = doc(db, "users", myId);
+    const userRef = doc(db, "users", userId);
 
 
-
-    const sendCommentPost = useCallback((currentPost:Post, allPosts:Post[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
+    const sendCommentPost = async (currentPost:Post, allPosts:Post[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
         const selectedPost = allPosts?.find(post => post.postId === currentPost.postId)
         
         if (selectedPost) {
@@ -30,14 +37,16 @@ export const useContentComments = () => {
                 }
                 return post
             })
-            updateDoc(ref, {
+            await updateDoc(ref, {
                 posts: updatedContentArray,
             })
+            myId && dispatch(fetchUserFullData(myId))
+            userId &&  dispatch(fetchSelectedUserData(userId))
         }
-    }, [])
+    }
 
 
-    const sendCommentPhoto = useCallback((currentPhoto:Photo, allPhotos:Photo[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
+    const sendCommentPhoto = async (currentPhoto:Photo, allPhotos:Photo[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
         const selectedPhoto = allPhotos?.find(photo => photo.photoId === currentPhoto.photoId)
 
         if (selectedPhoto) {
@@ -53,17 +62,18 @@ export const useContentComments = () => {
                 return photo
             })
 
-            updateDoc(ref, {
+            await updateDoc(ref, {
                 photos: updatedContentArray,
             })
+            myId && dispatch(fetchUserFullData(myId))
+            userId &&  dispatch(fetchSelectedUserData(userId))
         }
-    }, [])
+    }
 
 
 
-    const saveContentComment = useCallback((newCommentText:string, contentItem:Post | Photo, user:UserFullData) => {
-        const { userId, posts:userPosts, photos:userPhotos } = user;
-
+    const saveContentComment = useCallback((newCommentText:string, contentItem:Post | Photo) => {
+    
         const newComment:CommentItem = {
             userId,
             userName: userFullname,
@@ -72,10 +82,6 @@ export const useContentComments = () => {
             date: Date.now(),
         }
 
-        const myRef = doc(db, "users", myId);
-        const userRef = doc(db, "users", userId);
-
-
         if ('postId' in contentItem) {
             if (userId === myId) {
                 sendCommentPost(contentItem, myPosts, myRef, newComment)
@@ -83,8 +89,6 @@ export const useContentComments = () => {
             }
             sendCommentPost(contentItem, userPosts, userRef, newComment)
         } else if ('photoId' in contentItem) {
-            console.log(myPhotos);
-            
             if (userId === myId) {
                 sendCommentPhoto(contentItem, myPhotos as Photo[], myRef, newComment)
                 return
@@ -92,7 +96,9 @@ export const useContentComments = () => {
             sendCommentPhoto(contentItem, userPhotos as Photo[], userRef, newComment)
         }
 
-    }, [myPosts, myPhotos, userData])
+        
+
+    }, [myPosts, myPhotos, userPhotos, userPosts, myId, userId])
 
 
     return {

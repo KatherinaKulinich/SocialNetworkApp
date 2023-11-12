@@ -1,7 +1,7 @@
 import { AddingPhotoCard } from "@components/cards/AddingPhotoCard/AddingPhotoCard";
 import { Photos } from "./PhotosContainer.styled"
 import { Image } from 'antd';
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Photo } from "types/Photo";
 import { PhotoCard } from "@components/cards/PhotoCard/PhotoCard";
 import { ModalAddingPhoto } from "@components/popups/ModalAddingPhoto/ModalAddingPhoto";
@@ -11,20 +11,26 @@ import { useManageMyContent } from "hooks/useManageMyContent";
 import { usePhotosLikes } from "hooks/usePhotosLikes";
 import { UserFullData } from "types/UserFullDataType";
 import { useAppSelector } from "hooks/hooks";
+import { useCheckMyContentReaction } from "hooks/useCheckMyContentReaction";
 
 interface PhotosContainerProps {
     owner: 'me' | 'friend';
-    user: UserFullData;
+    userOwner: UserFullData;
+    myUserData: UserFullData
 }
 
 
-export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, user}) => {
-    const { photos } = user;
+export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner, myUserData}) => {
+    const { photos } = userOwner;
+    const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
 
     const { editMyContent } = useManageMyContent()
-    const { onToggleLike } = usePhotosLikes()
-    const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
+    const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
+    const { togglePhotoLike } = usePhotosLikes(userOwner, myUserData)
     
+
+
+
     const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
     const onOpenModalEdition = useCallback(() => {
         setIsModalEditionOpen(true)
@@ -52,6 +58,7 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, user}) =>
     }, [isModalComments])
 
 
+
     return (
         <>
             <Photos>
@@ -67,7 +74,8 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, user}) =>
                                 owner={owner}
                                 onOpenModalForEditing={onOpenModalEdition}
                                 onOpenModalWithComments={onOpenModalComments}
-                                onToggleLike={(item, user) => onToggleLike(item, user)}
+                                onToggleLike={(item) => togglePhotoLike(item)}
+                                isPhotoLiked={checkMyPhotoLike(item)}
                             />
                         ))
                     )}
@@ -89,7 +97,7 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, user}) =>
                 isModalOpen={isModalComments} 
                 onCloseModal={onCloseModalComments}
                 selectedContent={selectedPhoto}
-                contentOwner={user}
+                contentOwner={userOwner}
             />
         </>
     )

@@ -1,4 +1,5 @@
-import logoImg from '@images/logo.png'
+import logoImg from '@images/logo2.svg'
+// import logoImg from '@images/logo.png'
 import { LogoContainer, LogoIcon, NameContainer, TextContainer, TextMain, TextSecondary } from "./Logo.styled"
 
 

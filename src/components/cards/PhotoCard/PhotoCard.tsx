@@ -8,61 +8,52 @@ import { useCallback, useEffect, useState } from "react";
 import { Photo } from "types/Photo";
 import { Popconfirm } from "antd";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
-import { useAppDispatch } from "hooks/hooks";
-import { useUserData } from "hooks/useUserData";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
+// import { useUserData } from "hooks/useUserData";
 import { useManageMyContent } from "hooks/useManageMyContent";
 import { usePhotosLikes } from "hooks/usePhotosLikes";
 import { UserFullData } from "types/UserFullDataType";
+import { useCheckMyContentReaction } from "hooks/useCheckMyContentReaction";
 
 interface PhotoCardProps {
     photo: Photo;
     owner: 'me' | 'friend';
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
-    onToggleLike: (item:Photo, user:UserFullData) => void;
+    onToggleLike: (item:Photo) => void;
+    isPhotoLiked: boolean;
 }
 
 
 
 
-export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, onToggleLike}) => {
+export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, onToggleLike, isPhotoLiked}) => {
     const { photoUrl, photoDescription, photoLikes, photoComments } = photo;
 
+    const userData = useAppSelector(state => state.userData.user)
+    const {photos} = userData
+    
     const dispatch = useAppDispatch()
-    const { userData } = useUserData()
-    const { photos } = userData
     const { deleteMyContent } = useManageMyContent()
-    const { checkUserLikeReaction } = usePhotosLikes()
+
+
+
 
     const onOpenModalEditing = useCallback(() => {
         dispatch(getSelectedUserPhoto(photo))
         onOpenModalForEditing()
-    }, [dispatch, photos])
+    }, [dispatch, photo, photos])
 
     const onOpenModalComments = useCallback(() => {
         dispatch(getSelectedUserPhoto(photo))
         onOpenModalWithComments()
-    }, [dispatch, photos])
+    }, [dispatch, photo, photos])
 
 
     const onDeletePhoto = useCallback(() => {
         deleteMyContent(photo)
-    }, [photos])
+    }, [photo])
 
-    const [isPhotoLiked, setIsPhotoLiked] = useState(false)
-
-    const checkUserLike = useCallback(() => {
-        if (checkUserLikeReaction(photo)) {
-            setIsPhotoLiked(true)
-            return
-        }
-        setIsPhotoLiked(false)
-    }, [userData, isPhotoLiked])
-
-    useEffect(() => {
-        checkUserLike()
-    }, [userData,isPhotoLiked])
-    
 
         
     return (
@@ -108,7 +99,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                     {photoDescription}
                 </PhotoDescription>
                 <Actions>
-                    <Action onClick={() => onToggleLike(photo, userData)}>
+                    <Action onClick={() => onToggleLike(photo)}>
                         <Icon 
                             icon={isPhotoLiked ? (<BsSuitHeartFill/>) : (<BsSuitHeart/>)} 
                             iconColor={theme.colors.regular} 

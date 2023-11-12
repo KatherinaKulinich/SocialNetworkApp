@@ -1,9 +1,13 @@
 import { useCallback } from "react"
-import { useUserData } from "./useUserData";
+// import { useUserData } from "./useUserData";
 import { Post, Reaction } from "types/Post";
 import { UserFullData } from "types/UserFullDataType";
 import { db } from "firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { useCheckMyContentReaction } from "./useCheckMyContentReaction";
+import { fetchUserFullData } from "rdx/slices/userDataSlice";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 
 
 
@@ -11,28 +15,20 @@ import { doc, updateDoc } from "firebase/firestore";
 
 
 export const usePostsReactions = () => {
-
-    const { userData } = useUserData()
+    const dispatch = useAppDispatch()
+    const userData = useAppSelector(state => state.userData.user)
     const { userId:myId, posts:myPosts } = userData;
     const myRef = doc(db, "users", myId);
+
+    const { checkMyPostReaction } = useCheckMyContentReaction(userData)
     
 
-    const checkMyReaction = useCallback((post:Post):string | false => {
-        const reactions = post?.postReactions;
-
-        for (let i = 0; i < reactions.length; i++) {
-            if (reactions[i].usersReactions.includes(myId)) {
-                return reactions[i].value
-            }
-        }
-        return false
-    }, [userData])
 
 
-    const addReaction = useCallback((selectedPost:Post, user:UserFullData, reactionValue:string) => {
+    const addReaction = useCallback(async(selectedPost:Post, user:UserFullData, reactionValue:string) => {
         const {userId, posts:userPosts} = user;
         const userRef = doc(db, "users", userId);
-        const currentReaction = checkMyReaction(selectedPost)
+        const currentReaction = checkMyPostReaction(selectedPost)
 
         if (currentReaction === reactionValue) return;
 
@@ -56,26 +52,27 @@ export const usePostsReactions = () => {
                 }
                 return item
             })
-            updateDoc(myRef, {
+            await updateDoc(myRef, {
                 posts: updatedPostsArray,
             })
-            return
-        } 
-        const updatedPostsArray = userPosts?.map((item:Post) => {
-            if (item.postId === updatedPost.postId) {
-                return updatedPost
-            }
-            return item
-        })
-        updateDoc(userRef, {
-            posts: updatedPostsArray,
-        })
+        } else {
+            const updatedPostsArray = userPosts?.map((item:Post) => {
+                if (item.postId === updatedPost.postId) {
+                    return updatedPost
+                }
+                return item
+            })
+            await updateDoc(userRef, {
+                posts: updatedPostsArray,
+            })
+        }
+        myId && dispatch(fetchUserFullData(myId))
+        userId &&  dispatch(fetchSelectedUserData(userId))
 
-    },[userData])
+    },[myPosts])
 
     
     return {
-        checkMyReaction,
         addReaction
     }
 }

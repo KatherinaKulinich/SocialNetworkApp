@@ -18,6 +18,7 @@ interface UserSearchFieldProps {
 
 export const UserSearchField:React.FC<UserSearchFieldProps> = (
     {searchOptions, handleChange, label, value, inputValue, handleInputChange}) => {
+  
 
     return (
         <Field>

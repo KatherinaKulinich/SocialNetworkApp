@@ -1,11 +1,13 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "hooks/hooks";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { theme } from "@styles/Theme";
 import { PersonalInfo, Name, ActionsContainer, Card, Text } from './UserCard.styled'
 import { UserFullData } from "types/UserFullDataType";
 import { Avatar } from "@components/Avatar/Avatar";
-import { fetchFriends, fetchSelectedUser } from "rdx/slices/friendsSlice";
+import { fetchFriends} from "rdx/slices/friendsSlice";
+// import { useUserData } from "hooks/useUserData";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 
 
 interface UserCardProps {
@@ -17,15 +19,22 @@ interface UserCardProps {
 
 export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
     const { userLocation, userAvatar, userFullname, userBirthday, userId } = user;
+    const userData = useAppSelector(state => state.userData.user)
+    const{userId:myId} = userData
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     const onSaveUserData = useCallback(() => {
-        dispatch(fetchSelectedUser(userId))
+        dispatch(fetchSelectedUserData(userId))
         dispatch(fetchFriends(user))
-        navigate(`/users/${userFullname}/profile`)
-    }, [dispatch, userId])
+
+        if (userId !== myId) {
+            navigate(`/users/${userFullname}/profile`)
+            return
+        }
+        navigate(`/myProfile`)
+    }, [dispatch, userId, user])
 
     
     return (

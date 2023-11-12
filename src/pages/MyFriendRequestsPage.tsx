@@ -18,15 +18,15 @@ import { RequestCard } from "@components/cards/userCards/RequestCard";
 export const MyFriendRequestsPage: React.FC = () => {
     
     //TEST (friends page example})
-    const dispatch = useAppDispatch()
-    const {userData} = useUserData()
+    // const dispatch = useAppDispatch()
+    // const {userData} = useUserData()
     
-    useEffect(() => {
-        dispatch(fetchFriends(userData))
-    }, [dispatch, userData])
+    // useEffect(() => {
+    //     dispatch(fetchFriends(userData))
+    // }, [dispatch, userData])
 
-    const friendsData = useAppSelector(state => state.friends.friendsData)
-    const errorMessage = useAppSelector(state => state.friends.errorMessage)
+    // const friendsData = useAppSelector(state => state.friends.friendsData)
+    // const errorMessage = useAppSelector(state => state.friends.errorMessage)
 
 
     return (
@@ -37,7 +37,7 @@ export const MyFriendRequestsPage: React.FC = () => {
                 titleSecond="requests"
             />
             <SubTitle text='These users would like to be your friend'/>
-
+{/* 
             {friendsData.length > 0 ? (
                 <CardsContainer>
                     {friendsData.map(friend => (
@@ -58,7 +58,7 @@ export const MyFriendRequestsPage: React.FC = () => {
                     image={imgError} 
                     text="Something went wrong...Please, try later"
                 />
-            )}
+            )} */}
         </PageContainer>
     )
 }

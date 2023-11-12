@@ -44,7 +44,16 @@ export const SearchPage:React.FC = () => {
     }, [inputValue])
 
 
-    const {loading, randomUsers, showEmptyUsersImg, showRandomUsers, filteredUsers, namesOptions, interestsOptions, locationsOptions, errorMessage  } = useUsersSearch(filterValue, inputValue, searchValue);
+    const {
+        loading, 
+        randomUsers, 
+        showEmptyUsersImg, 
+        showRandomUsers, 
+        filteredUsers, 
+        namesOptions, 
+        interestsOptions, 
+        locationsOptions, 
+        errorMessage  } = useUsersSearch(filterValue, inputValue, searchValue);
 
   
     const getSearchOptions = useCallback(() => {

@@ -22,7 +22,7 @@ const userDataSlice = createSlice({
     name: "userData",
     initialState,
     reducers: {
-        getUserData(state, action: PayloadAction<any>) {
+        getUserInfo(state, action: PayloadAction<UserFullData>) {
             state.user = action.payload;
         },
         getErrorMessage(state, action: PayloadAction<string>) {
@@ -35,14 +35,17 @@ const userDataSlice = createSlice({
 
 
 export const fetchUserFullData = (userId: string) => {
-    
-    return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
+    return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>, getState:() => RootState) => {
 
         try {
             const docRef = doc(db, "users", userId);
-            onSnapshot(docRef, (doc) => {
-                dispatch(getUserData(doc.data()))            
-            })
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                dispatch(getUserInfo(docSnap.data() as UserFullData))            
+            }
+            // onSnapshot(docRef, (doc) => {           
+            // })
         } catch (error:any) {
             dispatch(getErrorMessage(error.message))
             return
@@ -50,6 +53,9 @@ export const fetchUserFullData = (userId: string) => {
     }
 }
 
-export const { getUserData, getErrorMessage } = userDataSlice.actions;
+export const { 
+    getUserInfo, 
+    getErrorMessage 
+} = userDataSlice.actions;
 
 export default userDataSlice.reducer;

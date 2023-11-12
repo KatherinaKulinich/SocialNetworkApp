@@ -6,7 +6,8 @@ import { Avatar } from "@components/Avatar/Avatar";
 import { useAppDispatch } from "hooks/hooks";
 import { useCallback } from "react";
 import { UserFullData } from "types/UserFullDataType";
-import { fetchFriends, fetchSelectedUser } from "rdx/slices/friendsSlice";
+import { fetchFriends } from "rdx/slices/friendsSlice";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 
 
 
@@ -20,9 +21,9 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const dispatch = useAppDispatch();
     
     const getUserProfile = useCallback(() => {
-        dispatch(fetchSelectedUser(userId))
-        dispatch(fetchFriends(user))
-    }, [dispatch, user, userId])
+        dispatch(fetchSelectedUserData(userId))
+        // dispatch(fetchFriends(user))
+    }, [dispatch, userId])
 
     
     return (

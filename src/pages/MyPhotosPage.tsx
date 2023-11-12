@@ -2,13 +2,25 @@ import img from '@images/photosPage.svg'
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
 import { PhotosContainer } from '@components/containers/PhotosContainer/PhotosContainer';
-import { useUserData } from 'hooks/useUserData';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useAuth } from 'hooks/useAuth';
+import { fetchUserFullData } from 'rdx/slices/userDataSlice';
+import { useEffect } from 'react';
 
 
 
 
 export const MyPhotosPage:React.FC = () => {
-    const { userData } = useUserData()
+    const dispatch = useAppDispatch()
+    const { userId } = useAuth()
+    const userData = useAppSelector(state => state.userData.user)
+
+    useEffect(() => {
+        if (userId) {
+                dispatch(fetchUserFullData(userId))
+            }
+    }, [dispatch, userId])
+    
 
 
     return (
@@ -20,7 +32,8 @@ export const MyPhotosPage:React.FC = () => {
             />
             <PhotosContainer
                 owner='me'
-                user={userData}
+                userOwner={userData}
+                myUserData={userData}
             />
         </PageContainer>
     )

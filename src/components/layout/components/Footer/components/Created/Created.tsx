@@ -1,7 +1,8 @@
 import { AiFillGithub, AiFillLinkedin } from "react-icons/Ai"
 import { SiGmail } from "react-icons/Si"
 import { Icon } from '@components/icons/Icon'
-import ideaImage from '@images/ideaImg.png'
+import ideaImage from '@images/lamp5.svg'
+// import ideaImage from '@images/ideaImg.png'
 import { FooterText } from "../../Footer.styled"
 import { Container, Image, IconsBox, IconLink, Content } from "./Created.styled";
 

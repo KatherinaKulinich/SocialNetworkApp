@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { CardsContainer } from "../CardsContainer/CardsContainer";
 import { UserFullData } from "types/UserFullDataType";
 import { fetchFriends } from "rdx/slices/friendsSlice";
+import { LoaderComment } from "@components/loaders/LoaderComment";
+// import { useFriendsData } from "hooks/useFriendsData";
 
 
 
@@ -18,47 +20,58 @@ import { fetchFriends } from "rdx/slices/friendsSlice";
 interface FriendsContainerProps {
     role: 'myFriends' | 'userFriends';
     user: UserFullData;
+    // friends: UserFullData
 }
 
 export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) => {
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
     
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
     const friendsData = useAppSelector(state => state.friends.friendsData)
+    const isLoading = useAppSelector(state => state.friends.loading)
+
+    
+    // const friendsData = useFriendsData(user)
+    // const friendsData = useAppSelector(state => state.friends.friendsData)
 
     const navigate = useNavigate()
     const onGoToSearch = useCallback(() => {
         navigate('/search')
     },[])
 
-    const [friends, setFriends] = useState<UserFullData[]>([])
 
-    useEffect(() => {
-        dispatch(fetchFriends(user))
-    }, [dispatch, user])
+    // const [friends, setFriends] = useState<UserFullData[]>([])
 
+    // useEffect(() => {
+    //     dispatch(fetchFriends(user))
+    // }, [dispatch])
 
-    useEffect(() => {
-        if (friendsData !== undefined) {
-            setFriends(friendsData)
-        }
-    }, [friendsData, friends])
+    // console.log('friendsData', friendsData);
+
+    // useEffect(() => {
+        
+    //     if (friendsData) {
+    //         setFriends(friendsData)
+    //     }
+    // }, [user])
 
 
 
 
     return (
         <Container>
-            {friends?.length > 0 ? (
+            {friendsData?.length > 0 && !isLoading && (
                 <CardsContainer>
-                    {friends.map(friend => (
+                    {friendsData.map((friend:UserFullData) => (
                         <FriendCard 
                             key={friend.userId}
                             user={friend}
                         />
                     ))}
                 </CardsContainer>
-            ) : (
+            )}  
+
+            {!isLoading && friendsData?.length === 0 && (
                 <ImageContainer>
                     <ImageErrorMessage
                         image={imgNoUsers} 
@@ -81,6 +94,12 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
                     image={imgError} 
                     text="Something went wrong...Please, try later"
                 />
+            )}
+
+            {isLoading && (
+                <ImageContainer>
+                    <LoaderComment/>
+                </ImageContainer>
             )}
         </Container>
     )

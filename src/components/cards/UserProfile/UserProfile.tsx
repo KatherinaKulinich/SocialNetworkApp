@@ -15,10 +15,11 @@ import { getRandomAvatar } from "utils/profileOptions";
 interface UserProfileProps {
     role: 'myProfile' | 'userProfile';
     user:UserFullData;
+    friendsData: UserFullData[]
 }
 
 
-export const UserProfile:React.FC<UserProfileProps> = ({user, role}) => {
+export const UserProfile:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
     const { userName, userFullname, userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation, friends } = user;
 
     const userAge = userBirthday.age;
@@ -113,6 +114,7 @@ export const UserProfile:React.FC<UserProfileProps> = ({user, role}) => {
                     link={linkToFriendsPage}
                     role={role}
                     user={user}
+                    friendsData={friendsData}
                 />
             </InfoContainer>
             <PostPreview

@@ -1,25 +1,28 @@
 import { message } from "antd"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { reactionsArray } from "utils/profileOptions"
 import {v4 as uuidv4} from 'uuid'
-import { useUserData } from "./useUserData"
+// import { useUserData } from "./useUserData"
 import { db, storage } from "firebase"
 import { doc, updateDoc } from "firebase/firestore"
 import { Post, Reaction } from "types/Post"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
-import { useAppDispatch } from "./hooks"
+import { useAppDispatch, useAppSelector } from "./hooks"
 import { CommentItem, Photo } from "types/Photo"
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage"
+import { UserFullData } from "types/UserFullDataType"
 
 
 
 
 
 export const useManageMyContent = () => {
-    const { userData } = useUserData()
+    // const { userData } = useUserData()
+    const userData = useAppSelector(state => state.userData.user)
     const { userId, userName, userAvatar, posts, photos} = userData;
     const userRef = doc(db, "users", userId);
     const dispatch = useAppDispatch()
+    
 
 
 
@@ -44,7 +47,7 @@ export const useManageMyContent = () => {
                     photoId,
                     photoFileRef: imgStorageUrl,
                     photoUrl: downloadURL,
-                    photoDescription: photoDescription,
+                    photoDescription: photoDescription || '',
                     photoDate: Date.now(),
                     photoLikes: [],
                     photoComments: [] as CommentItem[],
@@ -52,16 +55,15 @@ export const useManageMyContent = () => {
 
                 if (photos !== undefined) {
                     const newUserPhotos:Photo[] = [...photos, photoObj]
-
                     await updateDoc(userRef, {
                         photos: newUserPhotos,
                     });
-                    await dispatch(fetchUserFullData(userId))
+                    dispatch(fetchUserFullData(userId))
                     await message.success('Added!')
                 }
             })
         }
-    }, [photos, dispatch])
+    }, [photos, userData, userId])
 
 
 
@@ -81,16 +83,17 @@ export const useManageMyContent = () => {
             postComments: [] as CommentItem[],
         }
 
+        
         if (posts !== undefined) {
             const updatedUserPosts:Post[] = [...posts, newPost];
 
             await updateDoc(userRef, {
                 posts: updatedUserPosts,
             });
-            await dispatch(fetchUserFullData(userId))
+            dispatch(fetchUserFullData(userId))
             await message.success('Added!')
         }
-    }, [posts, dispatch])
+    }, [posts, userData, userId])
 
 
 
@@ -118,9 +121,10 @@ export const useManageMyContent = () => {
             await updateDoc(userRef, {
                 photos: newPhotosArray,
             })
+            dispatch(fetchUserFullData(userId))
         }
         await message.success('Updated!')
-    }, [posts, photos, userData])
+    }, [photos, posts])
     
 
 
@@ -146,9 +150,11 @@ export const useManageMyContent = () => {
                 return photo.photoId !== photoId
             })
 
-            updateDoc(userRef, {
+            await updateDoc(userRef, {
                 photos: newPhotos,
             })
+            dispatch(fetchUserFullData(userId))
+            
             deleteObject(photoRef)
             .then(() => {
                 message.success('Photo has been deleted')
@@ -157,7 +163,7 @@ export const useManageMyContent = () => {
                 message.error('something went wrong! Try again!')
             })
         }
-    }, [posts, photos, userData])
+    }, [photos, posts])
 
 
     return {

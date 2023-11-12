@@ -3,11 +3,13 @@ import { FilterField, Label } from "./Filter.styled";
 
 
 interface FilterProps {
-    handleChange: (value: string) => void;
+    handleChange: (event:any, value: string) => void;
     filterOptions: any[];
 }
 
 export const Filter:React.FC<FilterProps> = ({handleChange, filterOptions}) => {
+
+    
     return (
         <FilterField>
             <Label>

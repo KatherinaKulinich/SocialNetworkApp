@@ -10,10 +10,10 @@ import { RadioChangeEvent, Popconfirm } from "antd"
 import { reactionsArray } from "utils/profileOptions"
 import { DeleteOutlined } from "@ant-design/icons"
 import { useManageMyContent } from "hooks/useManageMyContent"
-import { useUserData } from "hooks/useUserData"
 import { getSelectedUserPost } from "rdx/slices/userContentSlice"
-import { useAppDispatch } from "hooks/hooks"
+import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { usePostsReactions } from "hooks/usePostsReactions"
+import { useCheckMyContentReaction } from "hooks/useCheckMyContentReaction"
 
 
 
@@ -28,12 +28,13 @@ interface UserPostCardProps {
 export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner}) => {
     const {postOwnerName, postOwnerAvatar, postDate, postReactions, postComments, postText} = post;
 
-    const { posts } = postOwner;
+    const date = new Date(postDate);
+    const dispatch = useAppDispatch()
+    const userData = useAppSelector(state => state.userData.user)
 
     const { deleteMyContent } = useManageMyContent()
-    const { userData } = useUserData()
-    const dispatch = useAppDispatch()
-    const { addReaction, checkMyReaction } = usePostsReactions()
+    const { addReaction } = usePostsReactions()
+    const { checkMyPostReaction } = useCheckMyContentReaction(userData)
 
     const [reactionValue, setReactionValue] = useState('')
     const [initialValue, setInitialValue] = useState<string | false>(false)
@@ -44,7 +45,6 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
         addReaction(post, postOwner, value)
     },[post, postOwner])
 
-    const date = new Date(postDate);
 
     const removePost = useCallback(() => {
         deleteMyContent(post)
@@ -62,7 +62,7 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
 
 
     useEffect(() => {
-        setInitialValue(checkMyReaction(post))
+        setInitialValue(checkMyPostReaction(post))
     }, [post])
 
     useEffect(() => {

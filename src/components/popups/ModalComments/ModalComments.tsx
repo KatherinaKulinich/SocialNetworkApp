@@ -23,8 +23,8 @@ interface ModalCommentsProps {
 
 export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onCloseModal, selectedContent, contentOwner}) => {
 
-    const { photos } = contentOwner;
-    const { saveContentComment } = useContentComments()
+    const { photos, posts } = contentOwner;
+    const { saveContentComment } = useContentComments(contentOwner)
     const [commentValue, setCommentValue] = useState('')
 
 
@@ -34,12 +34,12 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
 
 
     const onSaveNewComment = useCallback( async () => {
-        await message.loading('adding comment...', 4)
-        saveContentComment(commentValue, selectedContent, contentOwner)
+        await message.loading('adding comment...')
+        saveContentComment(commentValue, selectedContent)
         setCommentValue('')
         getCurrentComments()
         await message.success('done')
-    }, [selectedContent, contentOwner, commentValue, photos])
+    }, [commentValue, selectedContent, photos, posts])
 
 
     const [currentComments, setCurrentComments] = useState<CommentItem[]>([])
@@ -47,8 +47,12 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
     const getCurrentComments = useCallback(() => {
         if ('photoId' in selectedContent) {
             if (contentOwner.photos) {
+                // console.log('%cSELECTED PHOTO', 'color:yellow', selectedContent);
+                
                 contentOwner.photos.map((photo) => {
                     if (photo.photoId === selectedContent.photoId) {
+                        console.log(photo.photoId === selectedContent.photoId);
+                        
                         setCurrentComments(photo.photoComments)
                         return
                     }
@@ -66,11 +70,11 @@ export const ModalComments:React.FC<ModalCommentsProps> = ({isModalOpen, onClose
                 })
             }
         }
-    }, [contentOwner, selectedContent])
+    }, [photos, selectedContent, posts, contentOwner])
 
     useEffect(() => {
         getCurrentComments()
-    }, [contentOwner, selectedContent])
+    }, [selectedContent, posts, photos, contentOwner])
 
 
     return (

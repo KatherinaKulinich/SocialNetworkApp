@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DefaultImage, FriendCard, FriendsBox, Name } from "./FriendsPreview.styled";
 import { Avatar } from "@components/Avatar/Avatar";
@@ -12,27 +12,22 @@ import { DataItem } from "../DataItem/DataItem";
 import { Paragraph } from "@components/text/Paragraph";
 
 
-
 interface FriendsPreviewProps {
     link: string;
     user: UserFullData;
     role: 'myProfile' | 'userProfile';
+    friendsData: UserFullData[]
 }
 
 
 
-export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role}) => {
-    const { userName, friends } = user;
 
-    const friendsData:UserFullData[] = useAppSelector(state => state.friends.friendsData)
+
+export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) => {
+    const { userName, friends } = user;
     const [defaultAvatars, setDefaultAvatars] = useState<JSX.Element[]>([])
 
-    const navigate = useNavigate();
-    const onGoToPage = useCallback(() => {
-        navigate(`${link}`)
-    },[])
-
-    const createDefaultAvatars = useCallback((friendsProfiles:UserFullData[]):JSX.Element[] => {
+    const createDefaultAvatars = useCallback((friendsProfiles:string[]):JSX.Element[] => {
         let defaultAvatarsList = [];
         for (let i = 0; i < 9 - friendsProfiles?.length; i++) {
             defaultAvatarsList.push(
@@ -41,19 +36,34 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role})
                         photo={defaultAvatar} 
                         border={theme.colors.white}
                         size="50px"
-                    />
+                        />
                 </DefaultImage>
             )
         }
         return defaultAvatarsList
-    }, [])
-
-
-    useEffect(() => {
-        setDefaultAvatars(createDefaultAvatars(friendsData))
-    }, [])
-
+    }, [friends])
     
+    
+    useEffect(() => {
+        setDefaultAvatars(createDefaultAvatars(friends))
+    }, [friends])
+    
+    
+    const navigate = useNavigate();
+    const onGoToPage = useCallback(() => {
+        navigate(`${link}`)
+    },[])
+
+    const [friendsAvatarsForPreview, setFriendsAvatarsForPreview] = useState<UserFullData[]>([])
+
+
+    //??? friends box change every post reaction
+    useEffect(() => {
+        if (friendsData)  {
+            setFriendsAvatarsForPreview(friendsData)
+        }
+    }, [friendsData])
+
 
     return (
         <PreviewContainer>
@@ -74,8 +84,8 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role})
             )}
 
             <FriendsBox onClick={onGoToPage}>
-                {friendsData?.length > 0 && (
-                    friendsData.map((friend, index) => (
+                {friendsAvatarsForPreview?.length > 0 && (
+                    friendsAvatarsForPreview.map((friend, index) => (
                         <FriendCard key={index}>
                             <Avatar 
                                 photo={friend.userAvatar} 

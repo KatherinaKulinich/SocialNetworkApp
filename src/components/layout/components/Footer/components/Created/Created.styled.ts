@@ -23,7 +23,7 @@ export const Image = styled.img`
     
     @media ${device.sm} {
         display: block;
-        ${Size({w: '35px', h: '55px'})};
+        ${Size({w: '70px', h: '60px'})};
     }
 `
 

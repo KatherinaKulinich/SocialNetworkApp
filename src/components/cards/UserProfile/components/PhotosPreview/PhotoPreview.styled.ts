@@ -8,7 +8,7 @@ export const PhotosBox = styled.div`
     height: 220px;
     display:flex;
     flex-wrap:wrap;
-    gap: 3px;
+    gap: 5px;
     align-items:center;
     ${BoxShadow};
     background-color: ${theme.colors.lightGray};

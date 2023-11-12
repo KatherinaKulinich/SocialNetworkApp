@@ -9,6 +9,7 @@ import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessa
 import image from '@images/birthBalloons.svg'
 import { useUserData } from "hooks/useUserData";
 import { UserFullData } from "types/UserFullDataType";
+import { useAppSelector } from "hooks/hooks";
 
 
 
@@ -23,7 +24,9 @@ export const BirthdaysContainer:React.FC = () => {
     const [usersThisMonth, setUsersThisMonth] = useState<UserFullData[]>([])
     const [usersNextMonth, setUsersNextMonth] = useState<UserFullData[]>([])
 
-    const { myFriendsData } = useUserData()
+    const friendsData = useAppSelector(state => state.friends.friendsData)
+
+   
 
 
     const getUsersBirthdays = useCallback((usersArray:UserFullData[]) => {
@@ -48,7 +51,7 @@ export const BirthdaysContainer:React.FC = () => {
 
 
     useEffect(() => {
-        getUsersBirthdays(myFriendsData)
+        getUsersBirthdays(friendsData)
     }, [])
 
     // console.warn('this',usersThisMonth);
@@ -74,12 +77,6 @@ export const BirthdaysContainer:React.FC = () => {
                                 user={user}
                                 key={user.userId}
                             />
-                            // <BirthdayAlertCard 
-                            //     userAvatar={user.userAvatar} 
-                            //     userBirthDate={user.userBirthday.fullDate} 
-                            //     userName={user.fullname}
-                            //     futureAge={user.userBirthday.age + 1}
-                            // />
                         ))}
                     </ListContainer>
                 ) : (
@@ -101,12 +98,6 @@ export const BirthdaysContainer:React.FC = () => {
                                 user={user} 
                                 key={user.userId}
                             />
-                            // <BirthdayAlertCard 
-                            //     userAvatar={user.userAvatar} 
-                            //     userBirthDate={user.userBirthday.fullDate} 
-                            //     userName={user.fullname}
-                            //     futureAge={user.userBirthday.age + 1}
-                            // />
                         ))}
                     </ListContainer>
                 ) : (

@@ -20,15 +20,15 @@ import { SubTitle } from "@components/text/Subtitle"
 export const MyFollowingListPage: React.FC = () => {
 
     //TEST (friends page example})
-    const dispatch = useAppDispatch()
-    const {userData} = useUserData()
+    // const dispatch = useAppDispatch()
+    // const {userData} = useUserData()
     
-    useEffect(() => {
-        dispatch(fetchFriends(userData))
-    }, [dispatch, userData])
+    // useEffect(() => {
+    //     dispatch(fetchFriends(userData))
+    // }, [dispatch, userData])
 
-    const friendsData = useAppSelector(state => state.friends.friendsData)
-    const errorMessage = useAppSelector(state => state.friends.errorMessage)
+    // const friendsData = useAppSelector(state => state.friends.friendsData)
+    // const errorMessage = useAppSelector(state => state.friends.errorMessage)
 
     return (
         <PageContainer>
@@ -39,7 +39,7 @@ export const MyFollowingListPage: React.FC = () => {
             />
             <SubTitle text='You have sent friend requests to these users'/>
 
-            {friendsData.length > 0 ? (
+            {/* {friendsData.length > 0 ? (
                 <CardsContainer>
                     {friendsData.map(friend => (
                         <FollowingCard 
@@ -59,7 +59,7 @@ export const MyFollowingListPage: React.FC = () => {
                     image={imgError} 
                     text="Something went wrong...Please, try later"
                 />
-            )}
+            )} */}
         </PageContainer>
     )
 }

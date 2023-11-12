@@ -11,14 +11,14 @@ import { useAuth } from "hooks/useAuth"
 
 
 export const ProfileCreatingPage:React.FC = () => {
-    const dispatch = useAppDispatch()
-    const { userId } = useAuth()
+    // const dispatch = useAppDispatch()
+    // const { userId } = useAuth()
 
-    useEffect(() => {
-        if (userId !== null && userId !== undefined ) {
-            dispatch(fetchUserFullData(userId))
-        }
-    }, [dispatch, userId])
+    // useEffect(() => {
+    //     if (userId !== null && userId !== undefined ) {
+    //         dispatch(fetchUserFullData(userId))
+    //     }
+    // }, [dispatch, userId])
 
 
     return (

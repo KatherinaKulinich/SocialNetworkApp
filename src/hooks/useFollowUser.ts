@@ -3,7 +3,7 @@ import { useAuth } from "./useAuth"
 import { DocumentData, DocumentReference, doc, updateDoc } from "firebase/firestore"
 import { db } from "firebase"
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { useUserData } from "./useUserData"
+// import { useUserData } from "./useUserData"
 import { message } from "antd"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
@@ -13,9 +13,10 @@ import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 
 export const useFollowUser = () => {
 
-    const { userId, friends: userFriends} = useAppSelector(state => state.friends.selectedUser)
+    const { userId, friends: userFriends} = useAppSelector(state => state.users.selectedUser)
     // const { userId, friends: userFriends} = useAppSelector(state => state.users.selectedUser)
-    const { userData } = useUserData()
+    // const { userData } = useUserData()
+    const userData = useAppSelector(state => state.userData.user)
     const { friends: myFriends } = userData;
 
     const dispatch = useAppDispatch()
@@ -69,15 +70,16 @@ export const useFollowUser = () => {
         async (ref:DocumentReference<DocumentData, DocumentData>, id:string, friendsArray:string[]) => {
 
         const newFriendsArray:string[] = [...friendsArray, id]
+        const checkedFriendsArray =[ ...new Set(newFriendsArray)]
 
         await updateDoc(ref, {
-            friends: newFriendsArray
+            friends: checkedFriendsArray
         })
     },[])
 
 
     const addFriendToMe = useCallback(() => {
-        if (myRef !== undefined && myFriends !== undefined) {
+        if (myRef && myFriends) {
             addFriend(myRef, userId, myFriends)
         }
     }, [myRef, userId, myFriends])
@@ -92,10 +94,11 @@ export const useFollowUser = () => {
 
     const becomeFriendsWithUser = useCallback(async () => {
  
-        if (userRef && myRef) {
+        if (userRef && myRef && myId) {
             await message.loading('Adding to friends...')
             addFriendToMe()
             addMeToFriend() 
+            // dispatch(fetchUserFullData(myId))
             await message.success('Added!')
         }
         
@@ -132,10 +135,12 @@ export const useFollowUser = () => {
 
 
     const stopBeingFriendsWithUser = useCallback(async() => {
-        if (userRef && myRef) {
+        if (userRef && myRef && myId && userId) {
             await message.loading('Removing from friends...')
             removeFriendFromMe()
             removeMeFromFriend()
+            // dispatch(fetchUserFullData(myId))
+            // dispatch(fetchSelectedUserData(userId))
             await message.success('Removed!')
         }
     }, [myRef, userRef])
@@ -155,8 +160,10 @@ export const useFollowUser = () => {
 
 
     useEffect(() => {
+        console.log(userId);
+        
         checkUser(userId)
-    }, [])
+    }, [userId])
 
 
 
@@ -167,15 +174,18 @@ export const useFollowUser = () => {
 
     const onFriends = useCallback(async () => {
 
-        if (myRef && userRef) {
+        if (myRef && userRef && myId && userId) {
+
             if (isFriend === true) {
                 await stopBeingFriendsWithUser()
                 setIsFriend(false)
-
-                return
+            } else if (isFriend === false) {
+                await becomeFriendsWithUser()
+                setIsFriend(true)
             }
-            await becomeFriendsWithUser()
-            setIsFriend(true)
+
+            dispatch(fetchUserFullData(myId))
+            dispatch(fetchSelectedUserData(userId))
         }
 
     }, [isFriend, myRef, userRef])
@@ -186,6 +196,7 @@ export const useFollowUser = () => {
 
     return {
         isFriend,
-        onFriends
+        onFriends,
+        checkUser
     }
 }

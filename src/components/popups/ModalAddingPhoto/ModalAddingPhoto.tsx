@@ -7,6 +7,8 @@ import { Form, UploadFile } from "antd";
 import { useCallback, useState } from "react";
 // import { useMyPhotos } from "hooks/useMyPhotos";
 import { useManageMyContent } from "hooks/useManageMyContent";
+import { useAppSelector } from "hooks/hooks";
+// import { useUserData } from "hooks/useUserData";
 
 interface ModalAddingPhotoProps {
     isModalOpen: boolean;
@@ -16,6 +18,8 @@ interface ModalAddingPhotoProps {
 export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, onCloseModal}) => {
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
     const [form] = Form.useForm();
+    const userData = useAppSelector(state => state.userData.user)
+    // const { userData } = useUserData()
     const { addNewPhoto } = useManageMyContent()
 
     const onChangeImg = ({fileList: newFileList}:any) => {

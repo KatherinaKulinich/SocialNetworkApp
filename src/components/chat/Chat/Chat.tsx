@@ -9,7 +9,8 @@ import emptyChat from '@images/emptyChat.svg'
 import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text } from "./Chat.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { backgrounds } from "utils/backgrounds"
-import { useUserData } from "hooks/useUserData"
+import { useAppSelector } from "hooks/hooks"
+// import { useUserData } from "hooks/useUserData"
 
 
 
@@ -22,7 +23,8 @@ export const Chat:React.FC = () => {
     const [messages, setMessages] = useState(['1'])
 
     const [bgUrl, setBgUrl] = useState('')
-    const { chatBackground } = useUserData();
+    const userData = useAppSelector(state => state.userData.user)
+    const { chatBackground } = userData
 
     const getUserBgImage = useCallback(() => {
         backgrounds.map((img) => {

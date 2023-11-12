@@ -4,15 +4,28 @@ import { PostPreview } from "@components/cards/UserProfile/components/PostsPrevi
 import { AddingNewPostCard } from "@components/cards/postsCards/AddingNewPostCard/AddingNewPostCard"
 import { ListContainer } from "@components/containers/ListContainer/ListContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import { useUserData } from "hooks/useUserData"
+import { useAppDispatch, useAppSelector } from 'hooks/hooks'
+import { useAuth } from 'hooks/useAuth'
+import { fetchUserFullData } from 'rdx/slices/userDataSlice'
+import { useEffect } from 'react'
+// import { useUserData } from "hooks/useUserData"
 
 
 
 
 
 export const MyPostsPage: React.FC = () => {
-    const { userData } = useUserData()
-
+    
+    const dispatch = useAppDispatch()
+    const { userId } = useAuth()
+    
+    useEffect(() => {
+        if (userId) {
+            dispatch(fetchUserFullData(userId))
+        }
+    }, [dispatch, userId])
+    
+    const userData = useAppSelector(state => state.userData.user)
   
 
     return (

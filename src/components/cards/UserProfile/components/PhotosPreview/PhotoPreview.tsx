@@ -34,10 +34,10 @@ export const PhotoPreview:React.FC<PhotoPreviewProps> = ({link, role, user}) => 
 
     const convertUserPhotos = useCallback((items: Photo[]):string[] => {
         const previewPhotos = items.map(photo => photo.photoUrl);
-
+    
         if (previewPhotos.length < 9 || previewPhotos.length === 0) {
             const difference = 9 - items.length;
-
+        
             for (let i = 0; i < difference; i++) {
                 previewPhotos.push(emptyPhoto)
             }
@@ -51,7 +51,8 @@ export const PhotoPreview:React.FC<PhotoPreviewProps> = ({link, role, user}) => 
     useEffect(() => {
         setPhotosForPreview(convertUserPhotos(photos))
     }, [photos])
-
+    
+    
 
 
 

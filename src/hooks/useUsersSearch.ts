@@ -2,7 +2,7 @@ import { fetchFilteredUsers, fetchRandomUsers, fetchUsersOptions } from "rdx/sli
 import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { UserFullData } from "types/UserFullDataType";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { useUserData } from "./useUserData";
+
 
 
 
@@ -19,12 +19,12 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
     const locationsOptions = useAppSelector(state => state.users.optionsLocations)
     const interestsOptions = useAppSelector(state => state.users.optionsInterests)
  
-    const { userData } = useUserData()
-    const { userCity, userCountry, userId, fullname } = userData;
+    const userData = useAppSelector(state => state.userData.user)
+    const { userCity, userCountry, userId, userFullname } = userData;
 
 
     useEffect(() => {
-        dispatch(fetchUsersOptions(fullname))
+        dispatch(fetchUsersOptions(userFullname))
     }, [dispatch, filterValue])
 
 
@@ -52,10 +52,12 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
 
     const getFilteredUsers = useCallback(() => {
         setFilteredUsers([])
+        console.log('filterVal', filterValue);
+        
 
         if (inputValue === searchValue) {
             if (filterValue === 'name') {
-                dispatch(fetchFilteredUsers('fullname', searchValue, userId))
+                dispatch(fetchFilteredUsers('userFullname', searchValue, userId))
                 return
             }
             if (filterValue === 'location') {
@@ -74,6 +76,8 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
 
     const checkSearchState = useCallback(() => {
         setFilteredUsers([])
+        // console.log('%cCHECK VALUES', 'color:yellow', `inputVal:${inputValue}/searchVal:${searchValue}/filterVal:${filterValue}`);
+        
 
         if (inputValue && searchValue) {
             if (inputValue.length > searchValue.length) {

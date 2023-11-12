@@ -1,17 +1,20 @@
+import img from '@images/friendprofile.svg';
 import { styled } from "styled-components";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { UserProfile } from "@components/cards/UserProfile/UserProfile"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton";
-import img from '@images/friendprofile.svg';
 import { theme } from "@styles/Theme";
 import { useNavigate } from "react-router-dom";
 import { BsFillChatSquareHeartFill } from 'react-icons/Bs'
 import { FaUserPlus, FaUserMinus  } from 'react-icons/Fa'
-import { useCallback } from "react";
-import { useAppSelector } from "hooks/hooks";
+import { useCallback, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { UserFullData } from "types/UserFullDataType";
 import { useFollowUser } from "hooks/useFollowUser";
+import { fetchFriends } from "rdx/slices/friendsSlice";
+
+
 
 
 
@@ -19,19 +22,30 @@ import { useFollowUser } from "hooks/useFollowUser";
 
 export const UserProfilePage:React.FC = () => {
     const navigate = useNavigate();
-    const user:UserFullData = useAppSelector(state => state.friends.selectedUser);
-    const { userFullname, userName } = user;
+    const dispatch = useAppDispatch()
+    const { isFriend, onFriends, checkUser } = useFollowUser()
+
+    const user:UserFullData = useAppSelector(state => state.users.selectedUser);
+    const { userFullname, userName, userId, friends } = user;
 
 
+    
+    useEffect(() => {
+        checkUser(userId)
+    }, [userId])
+    
     const onGoToChat = useCallback(() => {
         navigate(`/myChats/${userFullname}/chat`)
     },[])
-
-
-    const { isFriend, onFriends } = useFollowUser()
-
-
-   
+    
+    
+    useEffect(() => {
+        if (user) {
+            dispatch(fetchFriends(user))
+        }
+    }, [dispatch, user])
+    
+    const friendsData = useAppSelector(state => state.friends.friendsData)
 
     return (
         <PageContainer>
@@ -65,7 +79,8 @@ export const UserProfilePage:React.FC = () => {
             {Object.keys(user).length !== 0 && (
                 <UserProfile
                     role='userProfile'
-                    user={user} 
+                    user={user}
+                    friendsData={friendsData} 
                 />
             )}
         </PageContainer>

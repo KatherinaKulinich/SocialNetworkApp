@@ -1,6 +1,6 @@
 import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit"
 import { db } from "firebase";
-import { collection, getDocs, query, onSnapshot, where, limit, WhereFilterOp, doc } from "firebase/firestore";
+import { collection, getDocs, query, onSnapshot, where, limit, WhereFilterOp, doc, getDoc } from "firebase/firestore";
 import { RootState } from "rdx/store";
 import { UserFullData } from "types/UserFullDataType";
 
@@ -45,10 +45,8 @@ const usersSlice = createSlice({
         getFilteredUsers(state, action: PayloadAction<UserFullData[]>) {
             state.filteredUsers = action.payload
         },
-
         getSelectedUserData(state, action: PayloadAction<UserFullData>) {
             state.selectedUser = action.payload
-            console.warn(state.selectedUser);
         },
         getErrorMessage(state, action: PayloadAction<any>) {
             state.error = action.payload;
@@ -73,8 +71,8 @@ export const fetchUsersOptions = (myFullName: string) => {
                     locations.push(doc.data().userLocation)
                     interests.push(doc.data().userInterests)
                     
-                    if (doc.data().fullname !== myFullName) {
-                        names.push(doc.data().fullname)
+                    if (doc.data().userFullname !== myFullName) {
+                        names.push(doc.data().userFullname)
                     }
                 });
 
@@ -161,7 +159,7 @@ export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
             dispatch(getErrorMessage(''))
             let sign:WhereFilterOp;
 
-            if (key === 'fullname' || key === 'userLocation') {
+            if (key === 'userFullname' || key === 'userLocation') {
                 sign = '=='
             } else {
                 sign = 'array-contains'
@@ -201,9 +199,16 @@ export const fetchSelectedUserData = (userId:string) => {
         try {
             dispatch(getErrorMessage(''))
 
-            onSnapshot(doc(db, "users", userId), (doc) => {
-                dispatch(getSelectedUserData(doc.data() as UserFullData))
-            });
+            const docRef = doc(db, "users", userId);
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                dispatch(getSelectedUserData(docSnap.data() as UserFullData))            
+            }
+
+            // onSnapshot(doc(db, "users", userId), (doc) => {
+            //     dispatch(getSelectedUserData(doc.data() as UserFullData))
+            // });
 
         } catch(error:any) {
             dispatch(getErrorMessage(error.message))
