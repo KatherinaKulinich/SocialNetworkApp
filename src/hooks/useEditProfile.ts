@@ -44,9 +44,9 @@ export const useEditProfile = () => {
                 userInterests,
                 userAbout,
                 chatBackground: 'default',
-                friends: [],
-                photos: [],
-                posts: [],
+                // friends: [],
+                // photos: [],
+                // posts: [],
             })
             .then(async () => {
                 if (userAvatar?.fileList?.length || userAvatar !== undefined) {
@@ -58,18 +58,17 @@ export const useEditProfile = () => {
     
                     await uploadBytesResumable(imgRef, avatar.originFileObj as Blob, metadata)
                         .then(async()=> {
-    
                             const downloadURL = await getDownloadURL(imgRef);
                             await updateDoc(userRef, {
                                 userAvatar: downloadURL,
                             });
                             await message.success('Created!')
-                            await navigate('/myProfile')
+                            // await navigate('/myProfile')
                         })
                     return
                 }
                 await message.success('Created!')
-                navigate('/myProfile')
+                // navigate('/myProfile')
             })
         }
     }, [userData])

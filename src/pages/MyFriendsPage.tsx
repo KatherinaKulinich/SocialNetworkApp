@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { useAuth } from 'hooks/useAuth';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useUsersBirthdays } from 'hooks/useUsersBirthdays';
 import { notification } from 'antd';
 import { GiGlassCelebration } from "react-icons/gi"

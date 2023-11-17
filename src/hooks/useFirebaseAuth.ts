@@ -44,6 +44,9 @@ export const useFirebaseAuth = () => {
                     userFullname: `${name} ${surname}`,
                     registerDate: Date.now(),
                     userAvatar: getRandomAvatar(),
+                    posts: [],
+                    photos: [], 
+                    friends: [],
                 }, { merge: true })
 
                 navigate('/profileCreating')
@@ -115,6 +118,9 @@ export const useFirebaseAuth = () => {
                 userFullname: user.displayName,
                 registerDate: Date.now(),
                 userAvatar: user.photoURL ? changePhotoSize(user.photoURL) : getRandomAvatar(),
+                posts: [],
+                photos: [], 
+                friends: [],
             }, { merge: true })
             navigate('/profileCreating')
 
