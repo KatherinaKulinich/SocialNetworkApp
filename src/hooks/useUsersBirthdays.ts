@@ -8,7 +8,7 @@ export const useUsersBirthdays = (usersProfileData:UserFullData[]) => {
 
     const [usersThisMonth, setUsersThisMonth] = useState<UserFullData[]>([])
     const [usersNextMonth, setUsersNextMonth] = useState<UserFullData[]>([])
-    const [usersBirthdayToday, setUsersBirthdayToday] = useState<UserFullData[]>([])
+    const [usersBirthdayToday, setUsersBirthdayToday] = useState<string[]>([])
 
     const currentMonth = new Date().getMonth()
     const currentDay = new Date().getDate()
@@ -44,7 +44,7 @@ export const useUsersBirthdays = (usersProfileData:UserFullData[]) => {
             const { userBirthday } = user;
 
             if (userBirthday.day === currentDay) {
-                setUsersBirthdayToday(prev => [...prev, user])
+                setUsersBirthdayToday(prev => [...prev, user.userFullname])
                 return
             }
             return user
