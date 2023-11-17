@@ -1,19 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { TabPanel } from "@components/tabs/TabPanel";
 import { TabsBox } from "@components/tabs/TabsBox";
 import { Container } from "./BirthdaysContainer.styled"
-import user from '@images/userTest.jpg';
 import { BirthdayAlertCard } from "@components/cards/BirthdayAlertCard/BirthdayAlertCard";
 import { ListContainer } from "../ListContainer/ListContainer";
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
 import image from '@images/birthBalloons.svg'
-import { useUserData } from "hooks/useUserData";
 import { UserFullData } from "types/UserFullDataType";
-import { useAppSelector } from "hooks/hooks";
+import { useUsersBirthdays } from "hooks/useUsersBirthdays";
+
+
+interface BirthdaysContainerProps {
+    friendsData: UserFullData[]
+}
 
 
 
-export const BirthdaysContainer:React.FC = () => {
+export const BirthdaysContainer:React.FC<BirthdaysContainerProps> = ({friendsData}) => {
+
     const [value, setValue] = useState(0);
     const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
         event.preventDefault()
@@ -21,41 +25,8 @@ export const BirthdaysContainer:React.FC = () => {
     };
 
 
-    const [usersThisMonth, setUsersThisMonth] = useState<UserFullData[]>([])
-    const [usersNextMonth, setUsersNextMonth] = useState<UserFullData[]>([])
-
-    const friendsData = useAppSelector(state => state.friends.friendsData)
-
-   
-
-
-    const getUsersBirthdays = useCallback((usersArray:UserFullData[]) => {
-        setUsersThisMonth([])
-        setUsersNextMonth([])
-
-        const currentMonth = new Date().getMonth()
-        const currentDay = new Date().getDate()
-
-
-        usersArray.map(user => {
-            const { userBirthday } = user;
-
-            if (userBirthday.month === currentMonth && userBirthday.day > currentDay) {
-                setUsersThisMonth(prev => [...prev, user])
-            } else if (userBirthday.month === currentMonth + 1) {
-                setUsersNextMonth(prev => [...prev, user])
-                return
-            }
-        })
-    }, [])
-
-
-    useEffect(() => {
-        getUsersBirthdays(friendsData)
-    }, [])
-
-    // console.warn('this',usersThisMonth);
-    // console.warn('next',usersNextMonth);
+    const { usersThisMonth, usersNextMonth } = useUsersBirthdays(friendsData)
+  
     
 
     return (
