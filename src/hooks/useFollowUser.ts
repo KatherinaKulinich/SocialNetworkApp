@@ -7,55 +7,34 @@ import { useAppDispatch, useAppSelector } from "./hooks"
 import { message } from "antd"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
+import { useCheckUserStatus } from "./useCheckUserStatus"
 
 
 
 
 export const useFollowUser = () => {
 
-    const { userId, friends: userFriends} = useAppSelector(state => state.users.selectedUser)
-    // const { userId, friends: userFriends} = useAppSelector(state => state.users.selectedUser)
-    // const { userData } = useUserData()
-    const userData = useAppSelector(state => state.userData.user)
-    const { friends: myFriends } = userData;
-
     const dispatch = useAppDispatch()
-    const { userId: myId } = useAuth()
-    
-    // useEffect(() => {
-    //     dispatch(fetchSelectedUserData(userId))
-    // }, [userId])
+    // const { userId: myId } = useAuth()
 
-    // console.log('user', userId);
-    
+    const user = useAppSelector(state => state.users.selectedUser)
+    const {friends: userFriends, followingList: userFollowingList, friendRequests: userFriendRequests, userId} = user;
 
-    // useEffect(() => {
-    //     if (myId !== null && myId !== undefined ) {
-    //         dispatch(fetchUserFullData(myId))
-    //     }
-    // }, [])
+    const myData = useAppSelector(state => state.userData.user)
+    const {friends: myFriends, followingList:myFollowingList, friendRequests: myFriendRequests, userId: myId} = myData;
 
-    const [isFriend, setIsFriend] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const { isFriend } = useCheckUserStatus()
 
     const [myRef, setMyRef] = useState<DocumentReference<DocumentData, DocumentData>>()
     const [userRef, setUserRef] = useState<DocumentReference<DocumentData, DocumentData>>()
 
 
-    const getRef = useCallback(async () => {
-        if (myId) {
-            const ref = doc(db, 'users', myId)
-
-            if (ref !== undefined) {
-                await setMyRef(ref)
-            }
-        }
-        if (userId) {
-            const ref = doc(db, 'users', userId)
-
-            if (ref !== undefined) {
-                await setUserRef(ref)
-            }
+    const getRef = useCallback(() => {
+        if (myId && userId) {
+            const myRef = doc(db, 'users', myId)
+            const userRef = doc(db, 'users', userId)
+            setMyRef(myRef)
+            setUserRef(userRef)
         }
     }, [userId, myId])
 
@@ -65,105 +44,115 @@ export const useFollowUser = () => {
 
 
 
-    //adding
-    const addFriend = useCallback(
-        async (ref:DocumentReference<DocumentData, DocumentData>, id:string, friendsArray:string[]) => {
+    const sendFriendRequest = useCallback(async () => {
+        await message.loading('Wait, the request is being processed...')
 
-        const newFriendsArray:string[] = [...friendsArray, id]
-        const checkedFriendsArray =[ ...new Set(newFriendsArray)]
+        const userNewFriendRequestsArray = [...new Set([...userFriendRequests, myId])]
+        const myNewFollowingListArray = [...new Set([...myFollowingList, userId])]
 
-        await updateDoc(ref, {
-            friends: checkedFriendsArray
+        if (userRef && myRef) {
+            await updateDoc(userRef, {
+                friendRequests: userNewFriendRequestsArray
+            })
+            await updateDoc(myRef, {
+                followingList: myNewFollowingListArray
+            })
+        }
+        dispatch(fetchUserFullData(myId))
+        dispatch(fetchSelectedUserData(userId))
+        await message.success('The request was sent successfully!')
+    }, [user, myData])
+
+
+
+
+    const removeUserFromFriends = useCallback(async () => {
+        await message.loading('Removing user from your friends...')
+
+        const myNewFriendsArray = myFriends.filter((friendId) => {
+            return friendId !== userId
         })
-    },[])
+        const userNewFriendsArray = userFriends.filter((friendId) => {
+            return friendId !== myId
+        })
 
-
-    const addFriendToMe = useCallback(() => {
-        if (myRef && myFriends) {
-            addFriend(myRef, userId, myFriends)
+        if (userRef && myRef) {
+            await updateDoc(userRef, {
+                friends: userNewFriendsArray
+            })
+            await updateDoc(myRef, {
+                friends: myNewFriendsArray
+            })
         }
-    }, [myRef, userId, myFriends])
+
+        dispatch(fetchUserFullData(myId))
+        dispatch(fetchSelectedUserData(userId))
+        await message.success('User has been deleted!')
+    }, [user, myData])
 
 
-    const addMeToFriend = useCallback(() => {
-        if (userRef !== undefined && userFriends !== undefined && myId !== null) {
-            addFriend(userRef, myId, userFriends)
-        }
-    },[userRef, myId, userFriends])
 
-
-    const becomeFriendsWithUser = useCallback(async () => {
- 
-        if (userRef && myRef && myId) {
-            await message.loading('Adding to friends...')
-            addFriendToMe()
-            addMeToFriend() 
-            // dispatch(fetchUserFullData(myId))
-            await message.success('Added!')
-        }
-        
-    }, [myRef, userRef])
 
 
     //removing
-    const removeFriend = useCallback(
-        async (ref:DocumentReference<DocumentData, DocumentData>, id:string, friendsArray:string[]) => {
+    // const removeFriend = useCallback(
+    //     async (ref:DocumentReference<DocumentData, DocumentData>, id:string, friendsArray:string[]) => {
 
-        const newFriendsArray = friendsArray.filter((friendId) => {
-            return friendId !== id
-        })
+    //     const newFriendsArray = friendsArray.filter((friendId) => {
+    //         return friendId !== id
+    //     })
 
-        await updateDoc(ref, {
-            friends: newFriendsArray
-        })
-    }, [])
+    //     await updateDoc(ref, {
+    //         friends: newFriendsArray
+    //     })
+    // }, [])
 
 
-    const removeFriendFromMe = useCallback(() => {
-        if (myRef !== undefined && myFriends !== undefined) {
+    // const removeFriendFromMe = useCallback(() => {
+    //     if (myRef !== undefined && myFriends !== undefined) {
             
-            removeFriend(myRef, userId, myFriends)
-        }
-    }, [myRef, userId, myFriends])
+    //         removeFriend(myRef, userId, myFriends)
+    //     }
+    // }, [myRef, userId, myFriends])
 
 
-    const removeMeFromFriend = useCallback(() => {
-        if (userRef !== undefined && userFriends !== undefined && myId !== null) {
-            removeFriend(userRef, myId, userFriends)
-        }
-    }, [userRef, myId, userFriends])
+    // const removeMeFromFriend = useCallback(() => {
+    //     if (userRef !== undefined && userFriends !== undefined && myId !== null) {
+    //         removeFriend(userRef, myId, userFriends)
+    //     }
+    // }, [userRef, myId, userFriends])
 
 
-    const stopBeingFriendsWithUser = useCallback(async() => {
-        if (userRef && myRef && myId && userId) {
-            await message.loading('Removing from friends...')
-            removeFriendFromMe()
-            removeMeFromFriend()
-            // dispatch(fetchUserFullData(myId))
-            // dispatch(fetchSelectedUserData(userId))
-            await message.success('Removed!')
-        }
-    }, [myRef, userRef])
+    // const stopBeingFriendsWithUser = useCallback(async() => {
+    //     if (userRef && myRef && myId && userId) {
+    //         await message.loading('Removing from friends...')
+    //         removeFriendFromMe()
+    //         removeMeFromFriend()
+    //         // dispatch(fetchUserFullData(myId))
+    //         // dispatch(fetchSelectedUserData(userId))
+    //         await message.success('Removed!')
+    //     }
+    // }, [myRef, userRef])
 
 
     //checking user for friendship
 
-    const checkUser = useCallback((friendId: string) => {
-        if (myId) {
-            if (myFriends?.includes(friendId) && userFriends?.includes(myId)) {
-                setIsFriend(true)
-                return
-            }
-            setIsFriend(false)
-        }
-    }, [myFriends, isFriend, userFriends, myId])
+    // const checkUser = useCallback((friendId: string) => {
+    //     if (myId) {
+    //         if (myFriends?.includes(friendId) && userFriends?.includes(myId)) {
+    //             setIsFriend(true)
+    //             return
+    //         }
+    //         setIsFriend(false)
+    //     }
+    // }, [myFriends, isFriend, userFriends, myId])
 
 
-    useEffect(() => {
-        console.log(userId);
+    // useEffect(() => {
+    //     console.log(userId);
         
-        checkUser(userId)
-    }, [userId])
+    //     checkUser(userId)
+    // }, [userId])
 
 
 
@@ -172,31 +161,33 @@ export const useFollowUser = () => {
 
     //main 
 
-    const onFriends = useCallback(async () => {
+    // const onFriends = useCallback(async () => {
 
-        if (myRef && userRef && myId && userId) {
+    //     if (myRef && userRef && myId && userId) {
 
-            if (isFriend === true) {
-                await stopBeingFriendsWithUser()
-                setIsFriend(false)
-            } else if (isFriend === false) {
-                await becomeFriendsWithUser()
-                setIsFriend(true)
-            }
+    //         if (isFriend === true) {
+    //             await stopBeingFriendsWithUser()
+    //             // setIsFriend(false)
+    //         } else if (isFriend === false) {
+    //             // await becomeFriendsWithUser()
+    //             // setIsFriend(true)
+    //         }
 
-            dispatch(fetchUserFullData(myId))
-            dispatch(fetchSelectedUserData(userId))
-        }
+    //         dispatch(fetchUserFullData(myId))
+    //         dispatch(fetchSelectedUserData(userId))
+    //     }
 
-    }, [isFriend, myRef, userRef])
+    // }, [isFriend, myRef, userRef])
 
 
 
 
 
     return {
-        isFriend,
-        onFriends,
-        checkUser
+        // isFriend,
+        // onFriends,
+        sendFriendRequest,
+        removeUserFromFriends
+        // checkUser
     }
 }

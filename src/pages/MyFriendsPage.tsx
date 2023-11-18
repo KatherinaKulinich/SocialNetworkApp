@@ -34,10 +34,10 @@ export const MyFriendsPage:React.FC = () => {
             description:
                 `${usersBirthdayToday.toString()} celebrate(s) birthday today!`,
             icon: <Icon 
-                icon={<GiGlassCelebration />} 
-                iconSize={'30px'} 
-                iconColor={theme.colors.regular}
-            />,
+                    icon={<GiGlassCelebration />} 
+                    iconSize={'30px'} 
+                    iconColor={theme.colors.regular}
+                />,
             duration: 8,
         });
     };

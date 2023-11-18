@@ -23,7 +23,9 @@ export interface UserFullData {
     friends: string[];
     photos: Photo[],
     chats: Chat[],
-    posts: Post[]
+    posts: Post[],
+    friendRequests: string[],
+    followingList: string[],
 }
 
 

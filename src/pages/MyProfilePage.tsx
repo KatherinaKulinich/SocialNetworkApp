@@ -14,8 +14,8 @@ import { useAuth } from 'hooks/useAuth'
 
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
-    const { userId } = useAuth()
     const userData = useAppSelector(state => state.userData.user)
+    const { userId } = useAuth()
     
     
     useEffect(() => {

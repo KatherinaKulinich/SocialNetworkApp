@@ -1,16 +1,8 @@
+import img from '@images/myRequests.svg'
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import img from '@images/myRequests.svg'
-import imgError from '@images/error2.svg';
-import imgNoUsers from '@images/nofriends.svg'
-import { CardsContainer } from "@components/containers/CardsContainer/CardsContainer";
-import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
 import { SubTitle } from "@components/text/Subtitle";
-import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useUserData } from "hooks/useUserData";
-import { fetchFriends } from "rdx/slices/friendsSlice";
-import { useEffect } from "react";
-import { RequestCard } from "@components/cards/userCards/RequestCard";
+
 
 
 

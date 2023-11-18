@@ -20,41 +20,18 @@ import { LoaderComment } from "@components/loaders/LoaderComment";
 interface FriendsContainerProps {
     role: 'myFriends' | 'userFriends';
     user: UserFullData;
-    // friends: UserFullData
 }
 
 export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) => {
-    // const dispatch = useAppDispatch()
     
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
     const friendsData = useAppSelector(state => state.friends.friendsData)
     const isLoading = useAppSelector(state => state.friends.loading)
 
-    
-    // const friendsData = useFriendsData(user)
-    // const friendsData = useAppSelector(state => state.friends.friendsData)
-
     const navigate = useNavigate()
     const onGoToSearch = useCallback(() => {
         navigate('/search')
     },[])
-
-
-    // const [friends, setFriends] = useState<UserFullData[]>([])
-
-    // useEffect(() => {
-    //     dispatch(fetchFriends(user))
-    // }, [dispatch])
-
-    // console.log('friendsData', friendsData);
-
-    // useEffect(() => {
-        
-    //     if (friendsData) {
-    //         setFriends(friendsData)
-    //     }
-    // }, [user])
-
 
 
 

@@ -3,7 +3,6 @@ import { FollowingCard } from "@components/cards/userCards/FollowingCard"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import img from '@images/myFollowings.svg'
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
-import { useUserData } from "hooks/useUserData"
 import { fetchFriends } from "rdx/slices/friendsSlice"
 import { useEffect } from "react"
 import imgError from '@images/error2.svg';

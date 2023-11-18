@@ -43,7 +43,7 @@ export const useEditProfile = () => {
                 userLocation: `${userCountry}, ${userCity}`,
                 userInterests,
                 userAbout,
-                chatBackground: 'default',
+                // chatBackground: 'default',
                 // friends: [],
                 // photos: [],
                 // posts: [],
@@ -81,7 +81,7 @@ export const useEditProfile = () => {
             await updateDoc(userRef, {
                 chatBackground: bg,
             })
-            await message.success('Created!')
+            await message.success('Background for chats has been changed!')
         }
     }, [userData])
 

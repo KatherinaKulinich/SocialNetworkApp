@@ -47,6 +47,9 @@ export const useFirebaseAuth = () => {
                     posts: [],
                     photos: [], 
                     friends: [],
+                    friendRequests: [],
+                    followingList:[],
+                    chatBackground: 'default',
                 }, { merge: true })
 
                 navigate('/profileCreating')
@@ -121,6 +124,9 @@ export const useFirebaseAuth = () => {
                 posts: [],
                 photos: [], 
                 friends: [],
+                friendRequests: [],
+                followingList:[],
+                chatBackground: 'default',
             }, { merge: true })
             navigate('/profileCreating')
 
