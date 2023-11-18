@@ -9,6 +9,8 @@ import { UserFullData } from "types/UserFullDataType"
 
 interface FriendsState {
     friendsData: UserFullData[],
+    followingListData: UserFullData[],
+    friendRequestsData: UserFullData[],
     errorMessage: string,
     selectedUser: UserFullData,
     loading: boolean;
@@ -17,6 +19,8 @@ interface FriendsState {
 
 const initialState: FriendsState = {
     friendsData: [] as UserFullData[],
+    followingListData: [] as UserFullData[],
+    friendRequestsData: [] as UserFullData[],
     errorMessage: '',
     selectedUser: {} as UserFullData,
     loading: false,
@@ -34,6 +38,12 @@ const friendsSlice = createSlice({
         getFriendsData(state, action: PayloadAction<UserFullData[]>) {
             state.friendsData = action.payload
         },
+        getFollowingListData(state, action: PayloadAction<UserFullData[]>) {
+            state.followingListData = action.payload
+        },
+        getFriendRequestData(state, action: PayloadAction<UserFullData[]>) {
+            state.friendRequestsData = action.payload
+        },
         getErrorMessage(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
         },
@@ -44,28 +54,42 @@ const friendsSlice = createSlice({
 })
 
 
-export const fetchFriends =  (user:UserFullData) => {
+export const fetchFriends =  (usersIds:string[], key:string) => {
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
-        const { friends : friendsIdsArray} = user;
+
         let friends: UserFullData[] = [];
+        let followingList: UserFullData[] = [];
+        let friendRequests: UserFullData[] = [];
 
         try {
             dispatch(getErrorMessage(''))
-            dispatch(getFriendsData([])) 
+            // dispatch(getFriendsData([])) 
+            // dispatch(getFriendsData([])) 
+            // dispatch(getFriendsData([])) 
             dispatch(getLoading(true))
             
-            if (friendsIdsArray) {
-
-                friendsIdsArray.forEach(async (id )=> {
+            if (usersIds) {
+                usersIds.forEach(async (id) => {
                     const ref = doc(db, 'users', id)
                     const docSnap = await getDoc(ref)
-
                     const user = docSnap.data() as UserFullData
-                    friends.push(user)
-                    dispatch(getFriendsData(friends)) 
-                    dispatch(getLoading(false))
+
+                    if (key === 'friends') {
+                        friends.push(user)
+                        dispatch(getFriendsData(friends)) 
+                    } else if (key === 'followingList') {
+                        followingList.push(user)
+                        dispatch(getFollowingListData(followingList)) 
+                    } else if (key === 'friendRequests') {
+                        friendRequests.push(user)
+                        dispatch(getFriendRequestData(friendRequests)) 
+                    } else {
+                        dispatch(getErrorMessage('something went wrong! Try later!'))
+                    }
+
                 })
             }
+            dispatch(getLoading(false))
         } catch (error:any) {
             dispatch(getLoading(false))
             dispatch(getErrorMessage(error.message))
@@ -75,6 +99,12 @@ export const fetchFriends =  (user:UserFullData) => {
 
 
 
-export const { getFriendsData, getErrorMessage, getLoading } = friendsSlice.actions;
+export const { 
+    getFriendsData, 
+    getErrorMessage, 
+    getLoading, 
+    getFollowingListData, 
+    getFriendRequestData 
+} = friendsSlice.actions;
 
 export default friendsSlice.reducer;

@@ -33,6 +33,9 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
         navigate('/search')
     },[])
 
+    
+    
+
 
 
     return (

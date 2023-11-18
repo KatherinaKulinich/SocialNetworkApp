@@ -26,14 +26,14 @@ import React from 'react';
 export const UserProfilePage:React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
-    const { sendFriendRequest } = useFollowUser()
-    const { isFriend, buttonText, isFollower, isRequest, buttonIcon, isButtonDisabled } = useCheckUserStatus()
+    const { interactWithUser } = useFollowUser()
+    const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
 
     const user:UserFullData = useAppSelector(state => state.users.selectedUser);
     const { userFullname, userName, userId, friends } = user;
 
-    const { userId:id } = useAuth()
     
+    const { userId:id } = useAuth()
     useEffect(() => {
         if (id) {
             dispatch(fetchUserFullData(id))
@@ -48,7 +48,7 @@ export const UserProfilePage:React.FC = () => {
     
     useEffect(() => {
         if (user) {
-            dispatch(fetchFriends(user))
+            dispatch(fetchFriends(user.friends, 'friends'))
         }
     }, [dispatch, user])
     
@@ -71,7 +71,7 @@ export const UserProfilePage:React.FC = () => {
                     iconSize={"24px"} 
                     buttonType={"button"}
                     fontWeight={600}
-                    onClickHandler={sendFriendRequest}
+                    onClickHandler={interactWithUser}
                     isDisabled={isButtonDisabled}
                 />
                 <TextIconButton 

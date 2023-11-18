@@ -26,13 +26,17 @@ export const useCheckUserStatus = () => {
 
     const checkUser = useCallback(() => {
         setButtonText('')
+        setIsFollower(false)
+        setIsFriend(false)
+        setIsRequest(false)
+        setIsButtonDisabled(false)
 
         
         if (userFriends && myFriends) {
             if (userFriends.includes(myId) && myFriends.includes(userId)) {
                 setButtonText('remove from friends')
                 setButtonIcon(RiUserUnfollowFill)
-                setIsFriend(false)
+                setIsFriend(true)
             } else if (myFollowingList.includes(userId)) {
                 setIsButtonDisabled(true)
 
@@ -60,10 +64,10 @@ export const useCheckUserStatus = () => {
             } else {
                 setButtonText("add to friends")
                 setButtonIcon(RiUserAddFill)
-                setIsFriend(true)
+                setIsFriend(false)
             }
         }
-    }, [user, myData])
+    }, [user, myData, isFriend, isFollower, isRequest])
 
 
     useEffect(() => {

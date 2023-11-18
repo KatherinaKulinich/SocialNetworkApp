@@ -47,11 +47,17 @@ export const MyFriendsPage:React.FC = () => {
         const getMyProfileData = () => {
             if (userId && userData) {
                 dispatch(fetchUserFullData(userId))
-                dispatch(fetchFriends(userData))
+                // dispatch(fetchFriends(userData.friends, 'friends'))
             }
         }
         getMyProfileData()
     }, [])
+
+    useEffect(() => {
+        if (userData) {
+            dispatch(fetchFriends(userData.friends, 'friends'))
+        }
+    }, [userData.friends])
 
     useEffect(() => {
         if (usersBirthdayToday.length > 0) {

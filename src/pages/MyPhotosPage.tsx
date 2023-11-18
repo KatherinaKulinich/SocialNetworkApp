@@ -17,8 +17,8 @@ export const MyPhotosPage:React.FC = () => {
 
     useEffect(() => {
         if (userId) {
-                dispatch(fetchUserFullData(userId))
-            }
+            dispatch(fetchUserFullData(userId))
+        }
     }, [dispatch, userId])
     
 

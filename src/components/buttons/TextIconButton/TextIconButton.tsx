@@ -19,6 +19,8 @@ interface TextIconButtonProps {
 export const TextIconButton:React.FC<TextIconButtonProps> = (
     {text, icon, color, textSize, iconSize, buttonType, onClickHandler, fontWeight, isDisabled}) => {
 
+    const iconColor = isDisabled ? theme.colors.mediumGray : color
+
     return (
         <Button 
             textSize={textSize} 
@@ -30,7 +32,7 @@ export const TextIconButton:React.FC<TextIconButtonProps> = (
         >
             <Icon 
                 icon={icon} 
-                iconColor={isDisabled ? theme.colors.mediumGray : color} 
+                iconColor={iconColor} 
                 iconSize={iconSize}
             />
             {text}

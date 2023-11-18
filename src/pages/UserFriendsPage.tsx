@@ -30,7 +30,7 @@ export const UserFriendsPage:React.FC = () => {
     useEffect(() => {
         const getUserProfileData = () => {
             if (user) {
-                dispatch(fetchFriends(user))
+                dispatch(fetchFriends(user.friends, 'friends'))
             }
         }
         getUserProfileData()

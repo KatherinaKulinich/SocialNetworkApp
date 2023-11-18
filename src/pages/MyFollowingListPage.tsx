@@ -10,6 +10,8 @@ import imgNoUsers from '@images/nofriends.svg'
 import { CardsContainer } from "@components/containers/CardsContainer/CardsContainer"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
 import { SubTitle } from "@components/text/Subtitle"
+import { useAuth } from "hooks/useAuth"
+import { fetchUserFullData } from "rdx/slices/userDataSlice"
 
 
 
@@ -18,16 +20,29 @@ import { SubTitle } from "@components/text/Subtitle"
 
 export const MyFollowingListPage: React.FC = () => {
 
-    //TEST (friends page example})
-    // const dispatch = useAppDispatch()
-    // const {userData} = useUserData()
-    
-    // useEffect(() => {
-    //     dispatch(fetchFriends(userData))
-    // }, [dispatch, userData])
+    const dispatch = useAppDispatch()
+    const myData = useAppSelector(state => state.userData.user)
+    const { userId } = useAuth()
 
-    // const friendsData = useAppSelector(state => state.friends.friendsData)
-    // const errorMessage = useAppSelector(state => state.friends.errorMessage)
+    useEffect(() => {
+        const getMyProfileData = () => {
+            if (userId) {
+                dispatch(fetchUserFullData(userId))
+            }
+        }
+        getMyProfileData()
+    }, [])
+
+    useEffect(() => {
+        if (myData) {
+            dispatch(fetchFriends(myData.followingList, 'followingList'))
+        }
+    }, [])
+
+    const followingListUsersData = useAppSelector(state => state.friends.followingListData)
+    const errorMessage = useAppSelector(state => state.friends.errorMessage)
+ 
+
 
     return (
         <PageContainer>
@@ -38,12 +53,12 @@ export const MyFollowingListPage: React.FC = () => {
             />
             <SubTitle text='You have sent friend requests to these users'/>
 
-            {/* {friendsData.length > 0 ? (
+            {followingListUsersData.length > 0 ? (
                 <CardsContainer>
-                    {friendsData.map(friend => (
+                    {followingListUsersData.map(user => (
                         <FollowingCard 
-                            key={friend.userId}
-                            user={friend}
+                            key={user.userId}
+                            user={user}
                         />
                     ))}
                 </CardsContainer>
@@ -58,7 +73,7 @@ export const MyFollowingListPage: React.FC = () => {
                     image={imgError} 
                     text="Something went wrong...Please, try later"
                 />
-            )} */}
+            )} 
         </PageContainer>
     )
 }
