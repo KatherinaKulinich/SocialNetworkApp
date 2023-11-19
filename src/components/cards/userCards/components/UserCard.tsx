@@ -27,7 +27,7 @@ export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
 
     const onSaveUserData = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
-        dispatch(fetchFriends(user))
+        dispatch(fetchFriends(user.friends, 'friends'))
 
         if (userId !== myId) {
             navigate(`/users/${userFullname}/profile`)

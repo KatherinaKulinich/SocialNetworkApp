@@ -15,7 +15,8 @@ export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
     const navigate = useNavigate()
 
 
-    const onChatToUser = useCallback(() => {
+    const chatToUser = useCallback((event:  React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation()
         navigate(`/myChats/${userFullname}/chat`)
     }, [])
 
@@ -31,7 +32,7 @@ export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
                 iconSize={"15px"} 
                 buttonType={"button"} 
                 fontWeight={600}
-                onClickHandler={onChatToUser}
+                onClickHandler={(e) => chatToUser(e)}
             />
         </UserCard>
     )

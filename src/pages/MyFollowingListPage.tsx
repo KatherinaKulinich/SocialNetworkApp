@@ -34,12 +34,16 @@ export const MyFollowingListPage: React.FC = () => {
     }, [])
 
     useEffect(() => {
+        // console.log('myData', myData);
+        
         if (myData) {
             dispatch(fetchFriends(myData.followingList, 'followingList'))
         }
-    }, [])
+    }, [myData])
 
     const followingListUsersData = useAppSelector(state => state.friends.followingListData)
+    console.log(followingListUsersData);
+    
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
  
 

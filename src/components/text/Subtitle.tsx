@@ -17,7 +17,6 @@ export const SubTitle:React.FC<SubTitleProps> = ({text}) => {
 }
 
 
-
 const SubTitleText = styled.h1`
     text-transform: uppercase;
     font-size: 13px;

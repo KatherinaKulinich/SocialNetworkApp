@@ -63,9 +63,10 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
 
         try {
             dispatch(getErrorMessage(''))
-            // dispatch(getFriendsData([])) 
-            // dispatch(getFriendsData([])) 
-            // dispatch(getFriendsData([])) 
+            dispatch(getFriendsData([])) 
+            dispatch(getFollowingListData([]))
+            dispatch(getFriendRequestData([]))
+
             dispatch(getLoading(true))
             
             if (usersIds) {

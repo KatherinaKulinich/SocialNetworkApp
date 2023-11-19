@@ -26,21 +26,19 @@ import React from 'react';
 export const UserProfilePage:React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
-    const { interactWithUser } = useFollowUser()
-    const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
-
+    const { userId:id } = useAuth()
     const user:UserFullData = useAppSelector(state => state.users.selectedUser);
     const { userFullname, userName, userId, friends } = user;
+    const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
 
     
-    const { userId:id } = useAuth()
     useEffect(() => {
         if (id) {
             dispatch(fetchUserFullData(id))
         }
     }, [dispatch, id])
-
-
+    
+    
     const onGoToChat = useCallback(() => {
         navigate(`/myChats/${userFullname}/chat`)
     },[])
@@ -53,6 +51,7 @@ export const UserProfilePage:React.FC = () => {
     }, [dispatch, user])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
+    const { interactWithUser } = useFollowUser(user)
 
 
     return (

@@ -15,7 +15,7 @@ export const BirthDaysAlertsPage:React.FC = () => {
     
     useEffect(() => {
         if (userData) {
-            dispatch(fetchFriends(userData))
+            dispatch(fetchFriends(userData.friends, 'friends'))
         }
     }, [dispatch, userData])
     

@@ -8,6 +8,8 @@ import { useAppSelector } from "./hooks"
 import { useNavigate } from "react-router-dom"
 import { UserFullData } from "types/UserFullDataType"
 
+
+
 export const useEditProfile = () => {
     const userData:UserFullData  = useAppSelector(state => state.userData.user);
     const navigate = useNavigate();
@@ -43,10 +45,6 @@ export const useEditProfile = () => {
                 userLocation: `${userCountry}, ${userCity}`,
                 userInterests,
                 userAbout,
-                // chatBackground: 'default',
-                // friends: [],
-                // photos: [],
-                // posts: [],
             })
             .then(async () => {
                 if (userAvatar?.fileList?.length || userAvatar !== undefined) {

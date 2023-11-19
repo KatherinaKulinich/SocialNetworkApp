@@ -32,6 +32,9 @@ export const MyProfilePage:React.FC = () => {
     }, [dispatch, userData])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
+    const selectedUser = useAppSelector(state => state.users.selectedUser)
+    console.warn(selectedUser);
+    
     
     return (
         <PageContainer>

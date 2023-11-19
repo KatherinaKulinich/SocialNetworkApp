@@ -11,29 +11,24 @@ import { useAppDispatch } from "hooks/hooks";
 
 
 interface BirthdayAlertCardProps {
-    // userAvatar: string;
-    // userName: string;
-    // userBirthDate: string;
-    // futureAge: number
     user: UserFullData,
 }
 
 
 export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
-
-    const {fullname, userAvatar, userBirthday } = user;
+    const {userFullname, userAvatar, userBirthday } = user;
     
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
-    const onGoToUserPage = useCallback(() => {
-        navigate(`/myFriends/${fullname}/profile`)
+    const goToUserPage = useCallback(() => {
+        navigate(`/users/${userFullname}/profile`)
         dispatch(getSelectedUserData(user))
     }, [dispatch])
 
 
     return (
-        <Card onClick={onGoToUserPage}>
+        <Card onClick={goToUserPage}>
             <DateField>
                 <Icon 
                     icon={<HiCake/>} 
@@ -53,7 +48,7 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
             </DateField>
             <UserInfo>
                 <Text>
-                    {fullname}
+                    {userFullname}
                 </Text>
                 <Avatar 
                     photo={userAvatar} 

@@ -3,6 +3,9 @@ import { UserCard } from "./components/UserCard"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from "@styles/Theme"
 import { FaUserTimes, FaUserCheck } from "react-icons/Fa"
+import { useFollowUser } from "hooks/useFollowUser"
+import { useAppDispatch } from "hooks/hooks"
+import { useCallback } from "react"
 
 
 interface RequestCardProps {
@@ -10,6 +13,12 @@ interface RequestCardProps {
 }
 
 export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
+    const { acceptFriendRequest, deleteFriendRequest } = useFollowUser(user)
+    const dispatch = useAppDispatch()
+
+    
+
+
     return (
         <UserCard user={user}>
             <>
@@ -21,7 +30,7 @@ export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
                     iconSize={"13px"} 
                     buttonType={"button"} 
                     fontWeight={600}
-                    // onClickHandler={onChatToUser}
+                    onClickHandler={(e) => deleteFriendRequest(e)}
                 />
                 <TextIconButton 
                     text='Accept' 
@@ -31,7 +40,7 @@ export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
                     iconSize={"13px"} 
                     buttonType={"button"} 
                     fontWeight={600}
-                    // onClickHandler={onChatToUser}
+                    onClickHandler={(e) => acceptFriendRequest(e)}
                 />
             </>
         </UserCard>

@@ -11,7 +11,7 @@ interface TextIconButtonProps {
     textSize: string;
     iconSize: string;
     buttonType: 'button' |'submit';
-    onClickHandler?: () => void;
+    onClickHandler?:  React.MouseEventHandler<HTMLButtonElement>;
     fontWeight: number;
     isDisabled?: boolean;
 }

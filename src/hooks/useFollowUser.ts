@@ -8,15 +8,18 @@ import { message } from "antd"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCheckUserStatus } from "./useCheckUserStatus"
+import { UserFullData } from "types/UserFullDataType"
 
 
 
 
-export const useFollowUser = () => {
+export const useFollowUser = (user:UserFullData) => {
+
+    
     const dispatch = useAppDispatch()
     const { isFriend, isFollower, isRequest } = useCheckUserStatus()
 
-    const user = useAppSelector(state => state.users.selectedUser)
+    // const user = useAppSelector(state => state.users.selectedUser)
     const {friends: userFriends, followingList: userFollowingList, friendRequests: userFriendRequests, userId} = user;
     
     const myData = useAppSelector(state => state.userData.user)
@@ -24,29 +27,46 @@ export const useFollowUser = () => {
     
     
     
-    const [myRef, setMyRef] = useState<DocumentReference<DocumentData, DocumentData>>()
-    const [userRef, setUserRef] = useState<DocumentReference<DocumentData, DocumentData>>()
+    // const [myRef, setMyRef] = useState<DocumentReference<DocumentData, DocumentData>>()
+    // const [userRef, setUserRef] = useState<DocumentReference<DocumentData, DocumentData>>()
 
-    const getRef = useCallback(() => {
-        if (myId && userId) {
-            const myRef = doc(db, 'users', myId)
-            const userRef = doc(db, 'users', userId)
-            setMyRef(myRef)
-            setUserRef(userRef)
-        }
-    }, [userId, myId])
+    // const getRef = useCallback(() => {
+    //     if (myId && userId) {
+    //         const ref = doc(db, 'users', myId)
+    //         const refUser = doc(db, 'users', userId)
+    //         setMyRef(ref)
+    //         setUserRef(refUser)
+    //     }
+    // }, [userId, myId, myRef, userRef])
 
-    useEffect(() => {
-        getRef()
-    }, [])
+    const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
+    const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
+
+
+    // useEffect(() => {
+    //     getRef()
+    // }, [userId, myId])
+
+
+    const refreshUsersData = useCallback(() => {
+        dispatch(fetchUserFullData(myId))
+        dispatch(fetchSelectedUserData(userId))
+    }, [user, myData])
 
 
 
     const sendFriendRequest = useCallback(async () => {
+    // getRef()
         await message.loading('Wait, the request is being processed...')
 
         const userNewFriendRequestsArray = [...new Set([...userFriendRequests, myId])]
         const myNewFollowingListArray = [...new Set([...myFollowingList, userId])]
+        console.log(user, myData);
+        
+        console.log(userNewFriendRequestsArray , myNewFollowingListArray );
+        console.log(myRef, userRef);
+        
+        
 
         if (userRef && myRef) {
             await updateDoc(userRef, {
@@ -56,8 +76,9 @@ export const useFollowUser = () => {
                 followingList: myNewFollowingListArray
             })
         }
-        dispatch(fetchUserFullData(myId))
-        dispatch(fetchSelectedUserData(userId))
+        refreshUsersData()
+        // dispatch(fetchUserFullData(myId))
+        // dispatch(fetchSelectedUserData(userId))
         await message.success('The request was sent successfully!')
     }, [user, myData])
 
@@ -65,15 +86,10 @@ export const useFollowUser = () => {
 
 
     const removeUserFromFriends = useCallback(async () => {
+        // getRef()
         await message.loading('Removing user from your friends...')
-
-        const myNewFriendsArray = myFriends.filter((friendId) => {
-            return friendId !== userId
-        })
-        const userNewFriendsArray = userFriends.filter((friendId) => {
-            return friendId !== myId
-        })
-
+        const myNewFriendsArray = myFriends.filter(id => id !== userId)
+        const userNewFriendsArray = userFriends.filter(id => id !== myId)
 
         if (userRef && myRef) {
             await updateDoc(userRef, {
@@ -83,41 +99,117 @@ export const useFollowUser = () => {
                 friends: myNewFriendsArray
             })
         }
-
-        dispatch(fetchUserFullData(myId))
-        dispatch(fetchSelectedUserData(userId))
+        refreshUsersData()
+        // dispatch(fetchUserFullData(myId))
+        // dispatch(fetchSelectedUserData(userId))
         await message.success('User has been deleted!')
     }, [user, myData])
 
 
+
     const interactWithUser = useCallback(() => {
-        // console.log('%cIsFRIEND', 'color:red', isFriend);
-        // console.log('%cIsFollower', 'color:red', isFollower);
-        // console.log('%cIsRequest', 'color:red', isRequest);
         if (isFriend && !isFollower && !isRequest) {
             removeUserFromFriends()
         } else if (!isFriend && !isFollower && !isRequest) {
             sendFriendRequest()
         }
-        // dispatch(fetchUserFullData(myId))
-        // dispatch(fetchSelectedUserData(userId))
     }, [myId, userId, isFriend, isRequest, isFollower])
 
 
-    // useEffect(() => {
-    //     console.log('%cIsFRIEND', 'color:yellow', isFriend);
-    //     console.log('%cIsFollower', 'color:yellow', isFollower);
-    //     console.log('%cIsRequest', 'color:yellow', isRequest);
+
+  
+    const unfollowFromUser = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation()
+        // getRef()
+        await message.loading('Unfollowing from user...')
+
+        const myNewFollowingListArray = myFollowingList.filter(id => id !== userId)
+
+        if (myRef) {
+            await updateDoc(myRef, {
+                followingList: myNewFollowingListArray
+            })
+        }
+
+        if (userFriendRequests.includes(myId)) {
+            console.log(userFriendRequests.includes(myId));
+            
+            const userNewFriendRequestsArray = userFriendRequests.filter(id => id !== myId)
+            console.log(userNewFriendRequestsArray );
+
+            if (userRef) {
+                await updateDoc(userRef, {
+                    friendRequests: userNewFriendRequestsArray
+                })
+            }
+        }
+
+        // dispatch(fetchUserFullData(myId))
+        // dispatch(fetchSelectedUserData(userId))
+        refreshUsersData()
+        await message.success(`You've unfollowed from ${user.userFullname}'s updates!`)
+    }, [user, myData])
+
+
+
+    
+    
+    
+    const deleteFriendRequest = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation()
+        await message.loading('Deleting the request...')
+        // getRef()
+        console.log(myFriendRequests, userId);
+        const myNewFriendRequestsArray = myFriendRequests.filter(id => id !== userId)
+        console.log(myNewFriendRequestsArray);
         
-    // }, [isFriend, isRequest, isFollower, user, userId])
+        
+        if (myRef) {
+            console.log('!!!');
+            
+            await updateDoc(myRef, {
+                friendRequests: myNewFriendRequestsArray
+            })
+        }
+        refreshUsersData()
+        await message.success(`The request has been deleted! Now ${user.userFullname} is your follower`)
+        // dispatch(fetchUserFullData(myId))
+        // dispatch(fetchSelectedUserData(userId))
+    }, [user, myData])
+    
+    
+    const acceptFriendRequest = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation()
+        // getRef()
+        await message.loading('Accepting the request...')
 
 
+        const userNewFollowingListArray = userFollowingList.filter(id => id !== myId)
+        const myNewFriendsArray = [...new Set([...myFriends, userId])]
+        const userNewFriendsArray = [...new Set([...userFriends, myId])]
+        const myNewFriendRequestsArray = myFriendRequests.filter(id => id !== userId)
 
+        if (myRef && userRef) {
+            await updateDoc(myRef, {
+                friends: myNewFriendsArray,
+                friendRequests: myNewFriendRequestsArray
+            })
+            await updateDoc(userRef, {
+                followingList: userNewFollowingListArray,
+                friends: userNewFriendsArray
+            })
+        }
+        refreshUsersData()
+        await message.success('Congrats! You and Anna are friends now!')
+    }, [user, myData])
 
 
     return {
-        sendFriendRequest,
-        removeUserFromFriends,
-        interactWithUser
+        // sendFriendRequest,
+        // removeUserFromFriends,
+        interactWithUser,
+        unfollowFromUser,
+        acceptFriendRequest,
+        deleteFriendRequest
     }
 }

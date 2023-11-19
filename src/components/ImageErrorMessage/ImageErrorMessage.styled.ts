@@ -14,10 +14,10 @@ export const Image = styled.img`
     ${Size({w: '100px'})};
 
     @media ${device.sm} {
-        ${Size({w: '150px'})};
+        ${Size({w: '140px'})};
     };
 
     @media ${device.xl} {
-        ${Size({w: '200px'})};
+        ${Size({w: '180px'})};
     };
 `
