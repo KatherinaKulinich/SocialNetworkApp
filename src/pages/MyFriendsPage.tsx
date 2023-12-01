@@ -72,8 +72,8 @@ export const MyFriendsPage:React.FC = () => {
         <PageContainer>
             <PageImgTitle 
                 image={img} 
-                titleFirst='My'
-                titleSecond='friends'
+                titleFirst='My friends'
+                titleSecond='and followers'
             />
             <FriendsContainer
                 role='myFriends' 

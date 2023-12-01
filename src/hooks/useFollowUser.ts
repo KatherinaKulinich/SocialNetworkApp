@@ -27,25 +27,25 @@ export const useFollowUser = (user:UserFullData) => {
     
     
     
-    // const [myRef, setMyRef] = useState<DocumentReference<DocumentData, DocumentData>>()
-    // const [userRef, setUserRef] = useState<DocumentReference<DocumentData, DocumentData>>()
+    const [myRef, setMyRef] = useState<DocumentReference<DocumentData, DocumentData>>()
+    const [userRef, setUserRef] = useState<DocumentReference<DocumentData, DocumentData>>()
 
-    // const getRef = useCallback(() => {
-    //     if (myId && userId) {
-    //         const ref = doc(db, 'users', myId)
-    //         const refUser = doc(db, 'users', userId)
-    //         setMyRef(ref)
-    //         setUserRef(refUser)
-    //     }
-    // }, [userId, myId, myRef, userRef])
+    const getRef = useCallback(() => {
+        if (myId && userId) {
+            const ref = doc(db, 'users', myId)
+            const refUser = doc(db, 'users', userId)
+            setMyRef(ref)
+            setUserRef(refUser)
+        }
+    }, [userId, myId, myRef, userRef])
 
-    const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
-    const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
+    // const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
+    // const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
 
 
-    // useEffect(() => {
-    //     getRef()
-    // }, [userId, myId])
+    useEffect(() => {
+        getRef()
+    }, [userId, myId])
 
 
     const refreshUsersData = useCallback(() => {
@@ -56,7 +56,7 @@ export const useFollowUser = (user:UserFullData) => {
 
 
     const sendFriendRequest = useCallback(async () => {
-    // getRef()
+        // getRef()
         await message.loading('Wait, the request is being processed...')
 
         const userNewFriendRequestsArray = [...new Set([...userFriendRequests, myId])]
@@ -80,7 +80,7 @@ export const useFollowUser = (user:UserFullData) => {
         // dispatch(fetchUserFullData(myId))
         // dispatch(fetchSelectedUserData(userId))
         await message.success('The request was sent successfully!')
-    }, [user, myData])
+    }, [user, myData, getRef])
 
 
 
@@ -92,6 +92,8 @@ export const useFollowUser = (user:UserFullData) => {
         const userNewFriendsArray = userFriends.filter(id => id !== myId)
 
         if (userRef && myRef) {
+            // console.log(userRef, myRef);
+            
             await updateDoc(userRef, {
                 friends: userNewFriendsArray
             })
@@ -103,7 +105,7 @@ export const useFollowUser = (user:UserFullData) => {
         // dispatch(fetchUserFullData(myId))
         // dispatch(fetchSelectedUserData(userId))
         await message.success('User has been deleted!')
-    }, [user, myData])
+    }, [user, myData, getRef])
 
 
 
@@ -125,12 +127,13 @@ export const useFollowUser = (user:UserFullData) => {
 
         const myNewFollowingListArray = myFollowingList.filter(id => id !== userId)
 
+        console.log(myRef);
         if (myRef) {
             await updateDoc(myRef, {
                 followingList: myNewFollowingListArray
             })
         }
-
+        
         if (userFriendRequests.includes(myId)) {
             console.log(userFriendRequests.includes(myId));
             
@@ -148,7 +151,7 @@ export const useFollowUser = (user:UserFullData) => {
         // dispatch(fetchSelectedUserData(userId))
         refreshUsersData()
         await message.success(`You've unfollowed from ${user.userFullname}'s updates!`)
-    }, [user, myData])
+    }, [user, myData, getRef])
 
 
 
@@ -175,7 +178,7 @@ export const useFollowUser = (user:UserFullData) => {
         await message.success(`The request has been deleted! Now ${user.userFullname} is your follower`)
         // dispatch(fetchUserFullData(myId))
         // dispatch(fetchSelectedUserData(userId))
-    }, [user, myData])
+    }, [user, myData, getRef])
     
     
     const acceptFriendRequest = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
@@ -201,7 +204,7 @@ export const useFollowUser = (user:UserFullData) => {
         }
         refreshUsersData()
         await message.success('Congrats! You and Anna are friends now!')
-    }, [user, myData])
+    }, [user, myData, getRef])
 
 
     return {

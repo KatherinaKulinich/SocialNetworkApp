@@ -29,7 +29,7 @@ export const UserProfilePage:React.FC = () => {
     const { userId:id } = useAuth()
     const user:UserFullData = useAppSelector(state => state.users.selectedUser);
     const { userFullname, userName, userId, friends } = user;
-    const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
+    const { buttonText, buttonIcon: ButtonIcon, isButtonDisabled } = useCheckUserStatus()
 
     
     useEffect(() => {
@@ -63,7 +63,7 @@ export const UserProfilePage:React.FC = () => {
             />
             <Actions>
                 <TextIconButton 
-                    icon={buttonIcon} 
+                    icon={ButtonIcon} 
                     text={buttonText} 
                     color={theme.colors.regularDark} 
                     textSize={'12px'} 

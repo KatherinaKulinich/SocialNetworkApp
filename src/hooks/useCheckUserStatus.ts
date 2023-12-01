@@ -14,7 +14,8 @@ export const useCheckUserStatus = () => {
 
 
     const [buttonText, setButtonText] = useState<string>('')
-    const [buttonIcon, setButtonIcon] = useState<React.ReactNode>()
+    // const [buttonIcon, setButtonIcon] = useState<IconType>()
+    const [buttonIcon, setButtonIcon] = useState<any>()
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
     const [isFollower, setIsFollower] = useState(false)

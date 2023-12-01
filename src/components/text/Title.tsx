@@ -5,12 +5,13 @@ import { device } from '@styles/Breakpoints';
 
 
 interface TitleProps {
-    text:string
+    text:string;
+    color?: string;
 }
 
-export const Title:React.FC<TitleProps> = ({text}) => {
+export const Title:React.FC<TitleProps> = ({text, color}) => {
     return (
-        <TitleText>
+        <TitleText $color={color}>
             {text}
         </TitleText>
     )
@@ -18,11 +19,11 @@ export const Title:React.FC<TitleProps> = ({text}) => {
 
 
 
-const TitleText = styled.h1`
+const TitleText = styled.h1<{$color?: string}>`
     text-transform: uppercase;
     font-size: 20px;
     line-height: 25px;
-    color: ${theme.colors.regular};
+    color: ${props => props.$color ?  props.$color : theme.colors.regular};
     letter-spacing: 1px;
 
     @media ${device.sm} {

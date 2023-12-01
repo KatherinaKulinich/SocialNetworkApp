@@ -5,24 +5,25 @@ import { device } from '@styles/Breakpoints';
 
 
 interface SubTitleProps {
-    text:string
+    text:string;
+    color?: string
 }
 
-export const SubTitle:React.FC<SubTitleProps> = ({text}) => {
+export const SubTitle:React.FC<SubTitleProps> = ({text, color}) => {
     return (
-        <SubTitleText>
+        <SubTitleText $color={color}>
             {text}
         </SubTitleText>
     )
 }
 
 
-const SubTitleText = styled.h1`
+const SubTitleText = styled.h1<{$color?: string}>`
     text-transform: uppercase;
     font-size: 13px;
     line-height: 17px;
     font-weight: 400;
-    color: ${theme.colors.regular};
+    color: ${props => props.$color ?  props.$color : theme.colors.regular};
     letter-spacing: 1px;
 
     @media ${device.sm} {
