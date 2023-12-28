@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { device } from '@styles/Breakpoints';
 import { Column, Size } from "@styles/mixins";
+import { theme } from "@styles/Theme";
 
 
 export const Container = styled.div`
@@ -19,5 +20,24 @@ export const Image = styled.img`
 
     @media ${device.xl} {
         ${Size({w: '180px'})};
+    };
+`
+
+export const Text = styled.p`
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: 400;
+    color: ${theme.colors.mediumGray};
+    letter-spacing: 1px;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 18px;
+    };
+    
+    @media ${device.xl} {
+        font-size: 17px;
+        line-height: 22px;
     };
 `

@@ -1,6 +1,4 @@
-import { theme } from "@styles/Theme";
-import { Container, Image } from "./ImageErrorMessage.styled"
-import { SubTitle } from "@components/text/Subtitle";
+import { Container, Image, Text } from "./ImageErrorMessage.styled"
 
 
 interface ImageErrorMessageProps {
@@ -8,14 +6,14 @@ interface ImageErrorMessageProps {
     text: string;
 }
 
+
+
+
 export const ImageErrorMessage:React.FC<ImageErrorMessageProps> = ({image, text}) => {
     return (
         <Container>
             <Image src={image}/>
-            <SubTitle 
-                text={text} 
-                color={theme.colors.mediumGray}
-            />
+            <Text>{text}</Text>
         </Container>
     )
 }

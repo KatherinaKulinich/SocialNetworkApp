@@ -8,7 +8,7 @@ import { SettingsPage } from "./pages/SettingsPage"
 import { MyProfilePage } from "./pages/MyProfilePage"
 import { SearchPage } from "./pages/SearchPage"
 import { MyChatsPage } from "./pages/MyChatsPage"
-import { MyFriendsPage } from "./pages/MyFriendsPage"
+import { MyFriendsPage } from "./pages/MyFriendsAndFollowersPage"
 import { MyPhotosPage } from "./pages/MyPhotosPage"
 import { BirthDaysAlertsPage } from "./pages/BirthdaysAlertsPage"
 import { ProfileCreatingPage } from "./pages/ProfileCreatingPage"
@@ -20,7 +20,7 @@ import { RequireAuth } from "hoc/RequireAuth"
 import { MyFeedPage } from "pages/MyFeedPage"
 import { MyPostsPage } from "pages/MyPostsPage"
 import { MyFollowingListPage } from "pages/MyFollowingListPage"
-import { MyFriendRequestsPage } from "pages/MyFriendRequestsPage"
+import { MyFriendRequestsPage } from "pages/MyRequestsAndFollowingPage"
 
 
 

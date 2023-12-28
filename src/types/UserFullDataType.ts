@@ -26,6 +26,7 @@ export interface UserFullData {
     posts: Post[],
     friendRequests: string[],
     followingList: string[],
+    followers:string[],
 }
 
 

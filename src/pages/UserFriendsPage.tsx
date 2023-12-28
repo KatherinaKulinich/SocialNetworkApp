@@ -2,7 +2,7 @@ import img from '@images/friendFriends.svg';
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import { FriendsContainer } from "@components/containers/FriendsContainer/FriendsContainer";
+import { FriendsContainer } from "@components/containers/usersContainers/FriendsContainer";
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
 import { TextIconButton } from '@components/buttons/TextIconButton/TextIconButton';

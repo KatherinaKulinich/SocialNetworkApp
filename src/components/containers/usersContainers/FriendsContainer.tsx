@@ -1,4 +1,4 @@
-import { Container, ImageContainer } from "./FriendsContainer.styled"
+import { Container } from "./usersContainer.styled"
 import imgNoUsers from '@images/nofriends.svg'
 import imgError from '@images/error2.svg';
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
@@ -52,7 +52,7 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
             )}  
 
             {!isLoading && friendsData?.length === 0 && (
-                <ImageContainer>
+                <Container>
                     <ImageErrorMessage
                         image={imgNoUsers} 
                         text={role === 'myFriends' ? "You haven't added any friends yet" : `${user.userName} hasn't added any friends yet`}
@@ -66,7 +66,7 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
                             onClickHandler={onGoToSearch}
                         />
                     )}    
-                </ImageContainer>
+                </Container>
             )}
 
             {errorMessage !== '' && (
@@ -77,9 +77,9 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
             )}
 
             {isLoading && (
-                <ImageContainer>
+                <Container>
                     <LoaderComment/>
-                </ImageContainer>
+                </Container>
             )}
         </Container>
     )

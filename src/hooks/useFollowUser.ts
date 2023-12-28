@@ -17,13 +17,13 @@ export const useFollowUser = (user:UserFullData) => {
 
     
     const dispatch = useAppDispatch()
-    const { isFriend, isFollower, isRequest } = useCheckUserStatus()
+    const { isFriend, isFollower, isRequest} = useCheckUserStatus()
 
     // const user = useAppSelector(state => state.users.selectedUser)
-    const {friends: userFriends, followingList: userFollowingList, friendRequests: userFriendRequests, userId} = user;
+    const {friends: userFriends, followingList: userFollowingList, friendRequests: userFriendRequests, followers: userFollowers, userId} = user;
     
     const myData = useAppSelector(state => state.userData.user)
-    const {friends: myFriends, followingList:myFollowingList, friendRequests: myFriendRequests, userId: myId} = myData;
+    const {friends: myFriends, followingList:myFollowingList, friendRequests: myFriendRequests, followers: myFollowers, userId: myId} = myData;
     
     
     
@@ -127,7 +127,7 @@ export const useFollowUser = (user:UserFullData) => {
 
         const myNewFollowingListArray = myFollowingList.filter(id => id !== userId)
 
-        console.log(myRef);
+        // console.log(myRef);
         if (myRef) {
             await updateDoc(myRef, {
                 followingList: myNewFollowingListArray
@@ -135,10 +135,10 @@ export const useFollowUser = (user:UserFullData) => {
         }
         
         if (userFriendRequests.includes(myId)) {
-            console.log(userFriendRequests.includes(myId));
+            // console.log(userFriendRequests.includes(myId));
             
             const userNewFriendRequestsArray = userFriendRequests.filter(id => id !== myId)
-            console.log(userNewFriendRequestsArray );
+            // console.log(userNewFriendRequestsArray );
 
             if (userRef) {
                 await updateDoc(userRef, {
@@ -162,16 +162,14 @@ export const useFollowUser = (user:UserFullData) => {
         event.stopPropagation()
         await message.loading('Deleting the request...')
         // getRef()
-        console.log(myFriendRequests, userId);
         const myNewFriendRequestsArray = myFriendRequests.filter(id => id !== userId)
-        console.log(myNewFriendRequestsArray);
-        
+        const myNewFollowersArray = [...new Set([...myFollowers, userId])]
+
         
         if (myRef) {
-            console.log('!!!');
-            
             await updateDoc(myRef, {
-                friendRequests: myNewFriendRequestsArray
+                friendRequests: myNewFriendRequestsArray,
+                followers: myNewFollowersArray,
             })
         }
         refreshUsersData()
@@ -207,12 +205,33 @@ export const useFollowUser = (user:UserFullData) => {
     }, [user, myData, getRef])
 
 
+    // const deleteFollower = useCallback(async(event: React.MouseEvent<HTMLElement>) => {
+    //     event.stopPropagation()
+    //     await message.loading('Deleting user from followers...')
+
+    //     const myNewFollowersArray = myFollowers.filter(id => id !== userId)
+    //     const userNewFollowingListArray = userFollowingList.filter(id => id !== myId)
+
+    //     if (myRef && userRef) {
+    //         await updateDoc(myRef, {
+    //             followers: myNewFollowersArray,
+    //         })
+    //         await updateDoc(userRef, {
+    //             followingList: userNewFollowingListArray,
+    //         })
+    //     }
+    //     refreshUsersData()
+    //     await message.success("You've deleted the user! Now this user won't see your profile updates.")
+    // }, [user, myData, getRef])
+
+
     return {
         // sendFriendRequest,
         // removeUserFromFriends,
         interactWithUser,
         unfollowFromUser,
         acceptFriendRequest,
-        deleteFriendRequest
+        deleteFriendRequest,
+        // deleteFollower
     }
 }

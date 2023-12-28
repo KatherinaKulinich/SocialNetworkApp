@@ -1,23 +1,20 @@
-import img from '@images/myRequests.svg'
+import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
+import { RequestCard } from "@components/cards/userCards/RequestCard"
+import { useAppDispatch, useAppSelector } from "hooks/hooks"
+import { useAuth } from "hooks/useAuth"
+import { fetchFriends } from "rdx/slices/friendsSlice"
+import { fetchUserFullData } from "rdx/slices/userDataSlice"
+import { useEffect } from "react"
+import { CardsContainer } from "../CardsContainer/CardsContainer"
+import { Container } from "./usersContainer.styled"
 import imgError from '@images/error2.svg';
 import imgNoUsers from '@images/nousers.svg'
-import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
-import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import { SubTitle } from "@components/text/Subtitle";
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { useAuth } from 'hooks/useAuth';
-import { fetchFriends } from 'rdx/slices/friendsSlice';
-import { fetchUserFullData } from 'rdx/slices/userDataSlice';
-import { useEffect } from 'react';
-import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage';
-import { RequestCard } from '@components/cards/userCards/RequestCard';
-import { CardsContainer } from '@components/containers/CardsContainer/CardsContainer';
+import { SubTitle } from "@components/text/Subtitle"
 
 
 
 
-
-export const MyFriendRequestsPage: React.FC = () => {
+export const FriendRequestsContainer:React.FC = () => {
     
     const dispatch = useAppDispatch()
     const myData = useAppSelector(state => state.userData.user)
@@ -43,14 +40,9 @@ export const MyFriendRequestsPage: React.FC = () => {
 
 
     return (
-        <PageContainer>
-            <PageImgTitle 
-                image={img} 
-                titleFirst='My friend'
-                titleSecond="requests"
-            />
+        <Container>
             <SubTitle text='These users would like to be your friend'/>
-
+            
             {friendRequestsUsersData.length > 0 ? (
                 <CardsContainer>
                     {friendRequestsUsersData.map(friend => (
@@ -72,6 +64,6 @@ export const MyFriendRequestsPage: React.FC = () => {
                     text="Something went wrong...Please, try later"
                 />
             )} 
-        </PageContainer>
+        </Container>
     )
 }

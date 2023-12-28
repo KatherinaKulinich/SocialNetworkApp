@@ -1,8 +1,8 @@
+import image from '@images/birthBalloons.svg'
 import { Container } from "./BirthdaysContainer.styled"
 import { BirthdayAlertCard } from "@components/cards/BirthdayAlertCard/BirthdayAlertCard";
 import { ListContainer } from "../ListContainer/ListContainer";
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
-import image from '@images/birthBalloons.svg'
 import { UserFullData } from "types/UserFullDataType";
 import { useUsersBirthdays } from "hooks/useUsersBirthdays";
 import { TwoTabsContainer } from "@components/tabs/TwoTabsContainer";
@@ -19,14 +19,16 @@ export const BirthdaysContainer:React.FC<BirthdaysContainerProps> = ({friendsDat
     const { usersThisMonth, usersNextMonth } = useUsersBirthdays(friendsData)
 
     const getBirthdayCards = useCallback((users:UserFullData[]):JSX.Element => {
-        return <ListContainer>
-                    {users.map(user => (
-                        <BirthdayAlertCard 
-                            user={user}
-                            key={user.userId}
-                        />
-                    ))}
-                </ListContainer>
+        return (
+                    <ListContainer>
+                        {users.map(user => (
+                            <BirthdayAlertCard 
+                                user={user}
+                                key={user.userId}
+                            />
+                        ))}
+                    </ListContainer>
+                )
     }, [])
   
 

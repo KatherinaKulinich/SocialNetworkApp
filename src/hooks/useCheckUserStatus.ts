@@ -7,14 +7,13 @@ import { RiUserUnfollowFill, RiUserAddFill, RiUserStarFill } from "react-icons/R
 
 export const useCheckUserStatus = () => {
     const user = useAppSelector(state => state.users.selectedUser)
-    const {friends: userFriends, followingList: userFollowingList, friendRequests: userFriendRequests, userId} = user;
+    const {friends: userFriends, followingList: userFollowingList, friendRequests: userFriendRequests, followers:userFollowers, userId} = user;
 
     const myData = useAppSelector(state => state.userData.user)
-    const {friends: myFriends, followingList:myFollowingList, friendRequests: myFriendRequests, userId: myId} = myData;
+    const {friends: myFriends, followingList:myFollowingList, friendRequests: myFriendRequests, followers: myFollowers, userId: myId} = myData;
 
 
     const [buttonText, setButtonText] = useState<string>('')
-    // const [buttonIcon, setButtonIcon] = useState<IconType>()
     const [buttonIcon, setButtonIcon] = useState<any>()
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 

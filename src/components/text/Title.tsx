@@ -21,18 +21,18 @@ export const Title:React.FC<TitleProps> = ({text, color}) => {
 
 const TitleText = styled.h1<{$color?: string}>`
     text-transform: uppercase;
-    font-size: 20px;
-    line-height: 25px;
+    font-size: 16px;
+    line-height: 20px;
     color: ${props => props.$color ?  props.$color : theme.colors.regular};
     letter-spacing: 1px;
 
     @media ${device.sm} {
-        font-size: 25px;
-        line-height: 30px;
+        font-size: 20px;
+        line-height: 36px;
     };
 
     @media ${device.xl} {
-        font-size: 35px;
-        line-height: 40px;
+        font-size: 26px;
+        line-height: 36px;
     };
 `

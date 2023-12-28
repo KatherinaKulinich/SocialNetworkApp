@@ -7,6 +7,7 @@ export const useValidateLogForm = () => {
 
     const validateEmail = useCallback((value: string) => {
         const validEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+
         if (!value) {
             return 'Required field'
         }
@@ -15,6 +16,7 @@ export const useValidateLogForm = () => {
         }
 
     },[])
+
 
     const validatePassword = useCallback((value: string) => {
         if (!value) {
@@ -26,8 +28,10 @@ export const useValidateLogForm = () => {
 
     }, [])
 
+
     const validateName = useCallback((value:string) => {
         const validName = /^[a-zA-Zа-яёїА-Я]+$/
+        
         if (!value) {
             return 'Required field'
         }

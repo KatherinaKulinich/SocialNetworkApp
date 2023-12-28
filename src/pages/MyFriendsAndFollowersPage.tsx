@@ -1,7 +1,7 @@
 import img from '@images/friends2.svg'
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
-import { FriendsContainer } from '@components/containers/FriendsContainer/FriendsContainer';
+import { FriendsContainer } from '@components/containers/usersContainers/FriendsContainer';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { useAuth } from 'hooks/useAuth';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
@@ -12,6 +12,8 @@ import { notification } from 'antd';
 import { GiGlassCelebration } from "react-icons/gi"
 import { Icon } from '@components/icons/Icon';
 import { theme } from '@styles/Theme';
+import { TwoTabsContainer } from '@components/tabs/TwoTabsContainer';
+import { FollowersContainer } from '@components/containers/usersContainers/FollowersContainer';
 
 
 
@@ -75,9 +77,18 @@ export const MyFriendsPage:React.FC = () => {
                 titleFirst='My friends'
                 titleSecond='and followers'
             />
-            <FriendsContainer
-                role='myFriends' 
-                user={userData}           
+            <TwoTabsContainer 
+                firstTabName={'My friends'} 
+                secondTabName={'My followers'} 
+                firstTabContent={
+                    <FriendsContainer
+                        role='myFriends' 
+                        user={userData}           
+                    />
+                } 
+                secondTabContent={
+                    <FollowersContainer/>
+                }
             />
             {contextHolder}
         </PageContainer>

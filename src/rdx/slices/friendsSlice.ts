@@ -11,6 +11,7 @@ interface FriendsState {
     friendsData: UserFullData[],
     followingListData: UserFullData[],
     friendRequestsData: UserFullData[],
+    followersData: UserFullData[],
     errorMessage: string,
     selectedUser: UserFullData,
     loading: boolean;
@@ -21,6 +22,7 @@ const initialState: FriendsState = {
     friendsData: [] as UserFullData[],
     followingListData: [] as UserFullData[],
     friendRequestsData: [] as UserFullData[],
+    followersData: [] as UserFullData[],
     errorMessage: '',
     selectedUser: {} as UserFullData,
     loading: false,
@@ -44,6 +46,9 @@ const friendsSlice = createSlice({
         getFriendRequestData(state, action: PayloadAction<UserFullData[]>) {
             state.friendRequestsData = action.payload
         },
+        getFollowersData(state, action: PayloadAction<UserFullData[]>) {
+            state.followersData = action.payload
+        },
         getErrorMessage(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
         },
@@ -60,12 +65,14 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
         let friends: UserFullData[] = [];
         let followingList: UserFullData[] = [];
         let friendRequests: UserFullData[] = [];
+        let followers: UserFullData[] = [];
 
         try {
             dispatch(getErrorMessage(''))
             dispatch(getFriendsData([])) 
             dispatch(getFollowingListData([]))
             dispatch(getFriendRequestData([]))
+            dispatch(getFollowersData([]))
 
             dispatch(getLoading(true))
             
@@ -84,6 +91,9 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
                     } else if (key === 'friendRequests') {
                         friendRequests.push(user)
                         dispatch(getFriendRequestData(friendRequests)) 
+                    } else if (key === 'followers') {
+                        followers.push(user)
+                        dispatch(getFriendRequestData(followers)) 
                     } else {
                         dispatch(getErrorMessage('something went wrong! Try later!'))
                     }
@@ -105,7 +115,8 @@ export const {
     getErrorMessage, 
     getLoading, 
     getFollowingListData, 
-    getFriendRequestData 
+    getFriendRequestData,
+    getFollowersData 
 } = friendsSlice.actions;
 
 export default friendsSlice.reducer;
