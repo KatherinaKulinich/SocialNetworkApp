@@ -1,23 +1,14 @@
-import { StorageReference } from "firebase/storage";
+import { CommentItem } from "./Comment";
 
 
 
 export interface Photo {
     photoId: string,
-    photoFileRef: string;
-    photoUrl: string;
-    photoDescription: string;
-    photoDate: number;
-    photoLikes: string[],
-    photoComments: CommentItem[],
+    photoFileRef: string,
+    photoUrl: string,
+    photoDescription: string,
+    photoDate: number,
+    photoLikes: Array<string>,
+    photoComments: Array<CommentItem>,
 }
 
-
-
-export interface CommentItem {
-    userId: string;
-    userName: string;
-    userAvatar: string;
-    text: string;
-    date: number;
-}

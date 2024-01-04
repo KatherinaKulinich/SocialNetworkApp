@@ -21,17 +21,17 @@ export const navItems = [
         icon: FaUserCircle,  
     },
     {
-        label: 'my Friends',
+        label: 'Friends and followers',
         value: 'myFriends',
         icon: FaUsers,  
     },
+    // {
+    //     label: 'following and requests',
+    //     value: 'myFollowingList',
+    //     icon: FaEye,  
+    // },
     {
-        label: 'my Following List',
-        value: 'myFollowingList',
-        icon: FaEye,  
-    },
-    {
-        label: 'my Friend Requests',
+        label: 'following and requests',
         value: 'myFriendRequests',
         icon: FaUserClock ,  
     },
