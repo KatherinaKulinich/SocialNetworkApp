@@ -1,6 +1,6 @@
 import { Icon } from "@components/icons/Icon"
 import { Link, NavContainer } from "./NavDesktop.styled"
-import { navItems } from "utils/navigationItems";
+import { navItems } from "utils/data/navigationItems";
 
 
 

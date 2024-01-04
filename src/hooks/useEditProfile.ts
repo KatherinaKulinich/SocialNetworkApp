@@ -3,7 +3,6 @@ import { db, storage } from "firebase"
 import { doc, updateDoc } from "firebase/firestore"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { useCallback } from "react"
-import { getUserAge } from "utils/profileOptions"
 import { useAppSelector } from "./hooks"
 import { useNavigate } from "react-router-dom"
 import { UserFullData } from "types/UserFullDataType"
@@ -17,7 +16,7 @@ export const useEditProfile = () => {
 
 
 
-    const createUserProfile = useCallback(async (
+    const updateUserProfile = useCallback(async (
         {userName, userSurname, userGender, userBirthday, userFamStatus, userCity, userCountry, userAbout, userInterests, userAvatar}:any) => {
 
         await message.loading('Updating profile...')
@@ -34,7 +33,7 @@ export const useEditProfile = () => {
                 userGender,
                 userBirthday:  {
                     fullDate: `${day}/${month}/${userBirthday.$y}`,
-                    age: getUserAge(userBirthday.$y, userBirthday.$M, userBirthday.$D),
+                    // age: getUserAge(userBirthday.$y, userBirthday.$M, userBirthday.$D),
                     year: userBirthday.$y,
                     month: userBirthday.$M,
                     day: userBirthday.$D,
@@ -86,7 +85,7 @@ export const useEditProfile = () => {
 
     
     return {
-        createUserProfile,
+        updateUserProfile,
         updateChatBackground
     }
 }

@@ -4,10 +4,11 @@ import {  useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
 import { useAppSelector } from "hooks/hooks";
-import { listOfHobbies, genderOptions, getFormFields, famStatusOptions } from "utils/profileOptions";
+import { listOfHobbies, genderOptions, famStatusOptions } from "utils/data/profileOptions";
 import { SelectTag } from "./SelectTag";
 import { useEditProfile } from "hooks/useEditProfile";
 import { UserFullData } from "types/UserFullDataType";
+import { getFormFields } from "utils/getFormFields";
 
 
 interface EditingFormProps {
@@ -18,7 +19,7 @@ interface EditingFormProps {
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
     const [form] = Form.useForm();
     const userData:UserFullData  = useAppSelector(state => state.userData.user)
-    const { createUserProfile } = useEditProfile()
+    const { updateUserProfile } = useEditProfile()
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
 
     const onChangeImg = ({fileList: newFileList}:any) => {
@@ -55,7 +56,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
             autoComplete="off"
             fields={getFormFields(userData)}
             onFinish={(values) => {
-                createUserProfile(values)
+                updateUserProfile(values)
             }}
         >
             <Space 

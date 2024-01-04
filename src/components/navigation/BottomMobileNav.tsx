@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { theme } from '@styles/Theme';
 import styled from 'styled-components';
-import { navItems } from "utils/navigationItems";
+import { navItems } from "utils/data/navigationItems";
 
 
 

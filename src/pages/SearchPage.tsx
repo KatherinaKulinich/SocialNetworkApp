@@ -12,7 +12,7 @@ import { SubTitle } from '@components/text/Subtitle';
 import { LoaderGlass } from '@components/loaders/LoaderGlass';
 import { Paragraph } from '@components/text/Paragraph';
 import { theme } from '@styles/Theme';
-import { selectOptions } from 'utils/profileOptions';
+import { selectOptions } from 'utils/data/profileOptions';
 import { useUsersSearch } from 'hooks/useUsersSearch';
 import { useCallback, useEffect, useState } from 'react';
 import { UserFullData } from 'types/UserFullDataType';

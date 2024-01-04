@@ -2,7 +2,7 @@ import { Form } from "antd";
 import { Group, Background, Container, RadioItem, BackgroundForm } from "./ChatBackground.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
 import { SubTitle } from "@components/text/Subtitle";
-import { backgrounds } from "utils/backgrounds";
+import { backgrounds } from "utils/data/backgrounds";
 import { useAppSelector } from "hooks/hooks";
 import { useEditProfile } from "hooks/useEditProfile";
 

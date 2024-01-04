@@ -1,60 +1,16 @@
-import avatar1 from '@images/avatars/1.png';
-import avatar2 from '@images/avatars/2.png';
-import avatar3 from '@images/avatars/3.png';
-import avatar4 from '@images/avatars/4.png';
-import avatar5 from '@images/avatars/5.png';
-import avatar6 from '@images/avatars/6.png';
-import avatar7 from '@images/avatars/7.png';
-import avatar8 from '@images/avatars/8.png';
-import dayjs from "dayjs";
-
-
-const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8]
-const dateFormat = 'DD/MM/YYYY';
-
-
-export const getRandomAvatar = () => {
-    let randomNumber = Math.floor(Math.random() * 7) + 1;
-    return avatars[randomNumber]
-}
-
-export const reactionsArray = [
-    {
-        label: '🥰',
-        value: 'lovely'
-    },
-    {
-        label: '😂',
-        value: 'funny'
-    },
-    {
-        label: '😎',
-        value: 'cool'
-    },
-    {
-        label: '😞',
-        value: 'sad'
-    },
-    {
-        label: '😳',
-        value: 'surprised'
-    },
-    {
-        label: '🥳',
-        value: 'congrats'
-    },
-]
-
 export  const selectOptions = [
     {label: 'Name', value: 'name'},
     {label: 'Interests', value: 'interests'},
     {label: 'Location', value: 'location'},
 ]
 
+
+
 export const genderOptions = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' },
 ];
+
 
 
 export const famStatusOptions = [
@@ -65,60 +21,6 @@ export const famStatusOptions = [
     { label: 'Divorced', value: 'Divorced' },
 ]
 
-
-export const getUserAge = (year:number, month:number, day:number) => {
-    let today = new Date();
-
-    let years = today.getFullYear() - year;
-    let partOfYear = (today.getMonth() < month) || (today.getMonth() === month && today.getDate() < day) ? 1 : 0;
-    let age = years - partOfYear;
-
-    return age;
-}
-
-
-
-export const getFormFields = (user:any) => {
-    const fields = [
-        {
-            name: ["userName"],
-            value: user.userName ? user.userName : '',
-        },
-        {
-            name: ["userSurname"],
-            value: user.userSurname ? user.userSurname : '',
-        },
-        {
-            name: ["userGender"],
-            value: user.userGender ? user.userGender : '',
-        },
-        {
-            name: ["userBirthday"],
-            value: user.userBirthday && dayjs(`${user.userBirthday.fullDate}`, dateFormat),
-        },
-        {
-            name: ["userFamStatus"],
-            value: user.userFamStatus ? user.userFamStatus : '',
-        },
-        {
-            name: ["userCity"],
-            value: user.userCity ? user.userCity : '',
-        },
-        {
-            name: ["userCountry"],
-            value: user.userCountry ? user.userCountry : '',
-        },
-        {
-            name: ["userInterests"],
-            value: user.userInterests ? user.userInterests : ['Coding'],
-        },
-        {
-            name: ["userAbout"],
-            value: user.userAbout ? user.userAbout : '',
-        },
-    ]
-    return fields
-}
 
 
 export const listOfHobbies = [

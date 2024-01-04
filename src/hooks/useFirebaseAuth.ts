@@ -4,9 +4,11 @@ import { useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import { removeUser, setUser } from "../rdx/slices/userAuthSlice";
 import { useAppDispatch } from "./hooks";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import { db, firebaseApp } from "firebase";
-import { getRandomAvatar } from "utils/profileOptions";
+import { getRandomAvatar } from "utils/getRandomAvatar";
+import { createUserProfile } from "utils/createUserProfile";
+
 
 
 
@@ -26,40 +28,31 @@ export const useFirebaseAuth = () => {
 
     const onRegisterHandler = (email:string, password:string, name: string, surname: string) => {
         const auth = getAuth();
+        
         createUserWithEmailAndPassword(auth, email, password)
-            .then(async ({user}) => {
-
-                message.loading('Loading...')
-
-                dispatch(setUser({
-                    userEmail: user.email,
-                    userId: user.uid,
-                    userPassword: user.refreshToken,
-                }));
-
-                await setDoc(doc(db, 'users', user.uid), {
-                    userId: user.uid,
-                    userName: name,
-                    userSurname: surname,
-                    userFullname: `${name} ${surname}`,
-                    registerDate: Date.now(),
-                    userAvatar: getRandomAvatar(),
-                    posts: [],
-                    photos: [], 
-                    friends: [],
-                    friendRequests: [],
-                    followingList:[],
-                    followers: [],
-                    chatBackground: 'default',
-                }, { merge: true })
-
-                navigate('/profileCreating')
+        .then(async ({user}) => {
+            message.loading('Loading...')
+            const userRef = doc(db, 'users', user.uid)
+            
+            dispatch(setUser({
+                userEmail: user.email,
+                userId: user.uid,
+                userPassword: user.refreshToken,
+            }));
+            
+            await createUserProfile(user.uid)
+            await updateDoc(userRef, {
+                "personalData.userName": name,
+                "personalData.userSurname": surname,
+                "personalData.userFullname": `${name} ${surname}`,
+                "profileData.userAvatar": getRandomAvatar(),
             })
-
-            .catch((error) => {
-                message.info(error.message, 3)
-                message.error(error.code, 3)
-            })
+            // navigate('/profileCreating')
+        })
+        .catch((error) => {
+            message.info(error.message, 3)
+            message.error(error.code, 3)
+        })
     }
 
 
@@ -69,8 +62,8 @@ export const useFirebaseAuth = () => {
         (email:string, password:string) => {
 
         signInWithEmailAndPassword(auth, email, password)
-        .then(async({user}) => {
-            await dispatch(setUser({
+        .then(({user}) => {
+            dispatch(setUser({
                 userEmail: user.email,
                 userId: user.uid,
                 userPassword: user.refreshToken,
@@ -81,7 +74,6 @@ export const useFirebaseAuth = () => {
             message.info(error.message, 5)
             message.error(error.code, 5)
         });
-
     }, [])
 
 
@@ -90,15 +82,15 @@ export const useFirebaseAuth = () => {
     
 
     const onLoginByGoogle = useCallback(() => {
-
         signInWithPopup(auth, provider)
         .then(async (result) => {
+            message.loading('Loading...')
+
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential?.accessToken;
             const user = result.user;
-
-            message.loading('Loading...')
-
+            const userRef = doc(db, 'users', user.uid)
+            const docSnap = await getDoc(userRef);
 
             dispatch(setUser({
                 userEmail: user.email,
@@ -106,32 +98,18 @@ export const useFirebaseAuth = () => {
                 userPassword: token,
             }))
 
-            const userRef = doc(db, 'users', user.uid)
-
-            const docSnap = await getDoc(userRef);
-
             if (docSnap.exists()) {
                 navigate('/myProfile')
                 return
             }
-
-            await setDoc((userRef), {
-                userId: user.uid,
-                userName: user.displayName?.split(" ")[0],
-                userSurname: user.displayName?.split(" ")[1],
-                userFullname: user.displayName,
-                registerDate: Date.now(),
-                userAvatar: user.photoURL ? changePhotoSize(user.photoURL) : getRandomAvatar(),
-                posts: [],
-                photos: [], 
-                friends: [],
-                friendRequests: [],
-                followingList:[],
-                followers:[],
-                chatBackground: 'default',
-            }, { merge: true })
+            await createUserProfile(user.uid)
+            await updateDoc(userRef, {
+                "personalData.userName": user.displayName?.split(" ")[0],
+                "personalData.userSurname": user.displayName?.split(" ")[1],
+                "personalData.userFullname": user.displayName,
+                "profileData.userAvatar": user.photoURL ? changePhotoSize(user.photoURL) : getRandomAvatar(),
+            })
             navigate('/profileCreating')
-
         })
         .catch((error) => {
             message.info(error.message, 5)
@@ -145,12 +123,12 @@ export const useFirebaseAuth = () => {
         const auth = getAuth();
 
         signOut(auth)
-            .then(() => {
-                dispatch(removeUser());
-            })
-            .catch((error) => {
-                message.error(error.message, 3)
-            });
+        .then(() => {
+            dispatch(removeUser());
+        })
+        .catch((error) => {
+            message.error(error.message, 3)
+        });
 
     }, [dispatch])
 

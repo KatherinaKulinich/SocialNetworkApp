@@ -8,7 +8,7 @@ import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessa
 import emptyChat from '@images/emptyChat.svg'
 import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text } from "./Chat.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
-import { backgrounds } from "utils/backgrounds"
+import { backgrounds } from "utils/data/backgrounds"
 import { useAppSelector } from "hooks/hooks"
 // import { useUserData } from "hooks/useUserData"
 

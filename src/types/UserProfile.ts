@@ -55,7 +55,7 @@ interface AdditionalData {
     chatBackground: string,
 }
 
-interface Friend {
+export interface Friend {
     id: string,
     date: number,
 }

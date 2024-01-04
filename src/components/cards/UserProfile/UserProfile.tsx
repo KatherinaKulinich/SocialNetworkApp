@@ -9,7 +9,7 @@ import { FriendsPreview } from "./components/FriendsPreview/FriendsPreview";
 import { PostPreview } from "./components/PostsPreview/PostPreview";
 import { UserFullData } from "types/UserFullDataType";
 import { useAppSelector } from "hooks/hooks";
-import { getRandomAvatar } from "utils/profileOptions";
+import { getRandomAvatar } from "utils/getRandomAvatar";
 
 
 interface UserProfileProps {

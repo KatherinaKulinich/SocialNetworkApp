@@ -7,7 +7,7 @@ import { Created } from "@components/layout/components/Footer/components/Created
 import { Copyright } from "@components/layout/components/Footer/components/Copyright/Copyright";
 import { DrawerContainer, SubContainer, LoginContainer, DrawerFooter, Image, Links } from "./MainDrawer.styled";
 import drawerImage from '@images/drawer.svg';
-import { navItems } from "utils/navigationItems";
+import { navItems } from "utils/data/navigationItems";
 import { LogOutButton } from "@components/buttons/LogOutButton";
 
 interface MainDrawerProps {

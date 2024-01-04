@@ -1,6 +1,5 @@
 import { message } from "antd"
 import { useCallback, useEffect } from "react"
-import { reactionsArray } from "utils/profileOptions"
 import {v4 as uuidv4} from 'uuid'
 // import { useUserData } from "./useUserData"
 import { db, storage } from "firebase"
@@ -8,9 +7,11 @@ import { doc, updateDoc } from "firebase/firestore"
 import { Post, Reaction } from "types/Post"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { CommentItem, Photo } from "types/Photo"
+import { Photo } from "types/Photo"
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage"
 import { UserFullData } from "types/UserFullDataType"
+import { CommentItem } from "types/Comment"
+import { reactionsArray } from "utils/data/postReactions"
 
 
 
