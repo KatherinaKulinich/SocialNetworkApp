@@ -6,9 +6,9 @@ import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
 import { useAppSelector } from "hooks/hooks";
 import { listOfHobbies, genderOptions, famStatusOptions } from "utils/data/profileOptions";
 import { SelectTag } from "./SelectTag";
-import { useEditProfile } from "hooks/useEditProfile";
-import { UserFullData } from "types/UserFullDataType";
+import { useEditProfile } from "hooks/settings/useEditProfile";
 import { getFormFields } from "utils/getFormFields";
+import { UserProfile } from "types/UserProfile";
 
 
 interface EditingFormProps {
@@ -18,7 +18,12 @@ interface EditingFormProps {
 
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
     const [form] = Form.useForm();
-    const userData:UserFullData  = useAppSelector(state => state.userData.user)
+
+    const userData:UserProfile  = useAppSelector(state => state.userData.user)
+    const { userName} = userData.personalData;
+    const { userAvatar} = userData.profileData;
+    const { registerDate } = userData.additionalData;
+
     const { updateUserProfile } = useEditProfile()
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
 
@@ -27,9 +32,9 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
     }
 
     const defaultUserAvatar:UploadFile<any>[] = [{
-        thumbUrl: userData.userAvatar,
-        name: `avatar${userData.userName}`,
-        uid: `${userData.registerDate}`,
+        thumbUrl: userAvatar,
+        name: `avatar${userName}`,
+        uid: `${registerDate}`,
         crossOrigin: '',
         type: 'image/jpeg',
         status: 'done',

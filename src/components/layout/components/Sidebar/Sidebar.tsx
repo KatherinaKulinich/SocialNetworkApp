@@ -1,7 +1,7 @@
 import { UserLogData } from '@components/UserLogData/UserLogData';
 import { NavDesktop } from '@components/navigation/NavDesktop/NavDesktop';
 import { SidebarSection, Container } from './Sidebar.styled';
-import { useFirebaseAuth } from 'hooks/useFirebaseAuth';
+import { useFirebaseAuth } from 'hooks/authorization/useFirebaseAuth';
 import { LogOutButton } from '@components/buttons/LogOutButton';
 
 

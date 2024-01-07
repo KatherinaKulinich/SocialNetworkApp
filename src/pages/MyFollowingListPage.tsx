@@ -10,7 +10,7 @@ import imgNoUsers from '@images/nofriends.svg'
 import { CardsContainer } from "@components/containers/CardsContainer/CardsContainer"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
 import { SubTitle } from "@components/text/Subtitle"
-import { useAuth } from "hooks/useAuth"
+import { useAuth } from "hooks/authorization/useAuth"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 
 

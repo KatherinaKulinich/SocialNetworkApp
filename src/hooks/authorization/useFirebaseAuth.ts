@@ -2,12 +2,13 @@ import { message} from "antd";
 import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { useCallback} from "react";
 import { useNavigate } from "react-router-dom";
-import { removeUser, setUser } from "../rdx/slices/userAuthSlice";
-import { useAppDispatch } from "./hooks";
+import { removeUser, setUser } from "../../rdx/slices/userAuthSlice";
+import { useAppDispatch } from "../hooks";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import { db, firebaseApp } from "firebase";
 import { getRandomAvatar } from "utils/getRandomAvatar";
 import { createUserProfile } from "utils/createUserProfile";
+import { changePhotoSize } from "utils/changePhotoSize";
 
 
 
@@ -18,12 +19,6 @@ export const useFirebaseAuth = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const changePhotoSize = (url:string) => {
-        if (url.includes('s96-c')) {
-            let newUrl = url.replace('s96-c', 's400-c')
-            return newUrl
-        }
-    }
 
 
     const onRegisterHandler = (email:string, password:string, name: string, surname: string) => {
@@ -47,7 +42,7 @@ export const useFirebaseAuth = () => {
                 "personalData.userFullname": `${name} ${surname}`,
                 "profileData.userAvatar": getRandomAvatar(),
             })
-            // navigate('/profileCreating')
+            navigate('/profileCreating')
         })
         .catch((error) => {
             message.info(error.message, 3)
@@ -58,9 +53,7 @@ export const useFirebaseAuth = () => {
 
 
 
-    const onLoginHandler = useCallback(
-        (email:string, password:string) => {
-
+    const onLoginHandler = useCallback((email:string, password:string) => {
         signInWithEmailAndPassword(auth, email, password)
         .then(({user}) => {
             dispatch(setUser({

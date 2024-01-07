@@ -6,7 +6,7 @@ import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryBu
 import { Form, UploadFile } from "antd";
 import { useCallback, useState } from "react";
 // import { useMyPhotos } from "hooks/useMyPhotos";
-import { useManageMyContent } from "hooks/useManageMyContent";
+import { useManageMyContent } from "hooks/content/useManageMyContent";
 import { useAppSelector } from "hooks/hooks";
 // import { useUserData } from "hooks/useUserData";
 

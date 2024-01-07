@@ -8,7 +8,7 @@ import { UserFullData } from "types/UserFullDataType"
 import { ModalComments } from "@components/popups/ModalComments/ModalComments"
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing"
 import { useAppSelector } from "hooks/hooks"
-import { useManageMyContent } from "hooks/useManageMyContent"
+import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { useState, useCallback } from "react"
 
 

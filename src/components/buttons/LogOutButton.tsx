@@ -1,6 +1,6 @@
 import { message } from "antd";
-import { useAuth } from "hooks/useAuth";
-import { useFirebaseAuth } from "hooks/useFirebaseAuth";
+import { useAuth } from "hooks/authorization/useAuth";
+import { useFirebaseAuth } from "hooks/authorization/useFirebaseAuth";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SecondaryButton } from "./SecondaryButton/SecondaryButton";

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { useEffect } from 'react';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice'
-import { useAuth } from 'hooks/useAuth'
+import { useAuth } from 'hooks/authorization/useAuth'
 
 
 

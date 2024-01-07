@@ -10,10 +10,10 @@ import { BsFillChatSquareHeartFill } from 'react-icons/Bs'
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { UserFullData } from "types/UserFullDataType";
-import { useFollowUser } from "hooks/useFollowUser";
+import { useFollowUser } from "hooks/contacts/useFollowUser";
 import { fetchFriends } from "rdx/slices/friendsSlice";
-import { useCheckUserStatus } from 'hooks/useCheckUserStatus';
-import { useAuth } from 'hooks/useAuth';
+import { useCheckUserStatus } from 'hooks/contacts/useCheckUserStatus';
+import { useAuth } from 'hooks/authorization/useAuth';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 import React from 'react';
 

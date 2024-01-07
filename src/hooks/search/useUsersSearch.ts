@@ -1,7 +1,7 @@
 import { fetchFilteredUsers, fetchRandomUsers, fetchUsersOptions } from "rdx/slices/usersSlice";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
-import { UserFullData } from "types/UserFullDataType";
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useCallback, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { UserProfile } from "types/UserProfile";
 
 
 
@@ -9,32 +9,33 @@ import { useAppDispatch, useAppSelector } from "./hooks";
 
 export const useUsersSearch = (filterValue:string, inputValue:string, searchValue:string) => {
     const dispatch = useAppDispatch();
-    const [filteredUsers, setFilteredUsers] = useState<UserFullData[]>([])
-    const [showEmptyUsersImg, setShowEmptyUsersImg] = useState(false)
-    
-    const [loading, setLoading] = useState(false)
-    const [showRandomUsers, setShowRandomUsers] = useState(false)
-
-    const namesOptions = useAppSelector(state => state.users.optionsNames)
-    const locationsOptions = useAppSelector(state => state.users.optionsLocations)
-    const interestsOptions = useAppSelector(state => state.users.optionsInterests)
- 
     const userData = useAppSelector(state => state.userData.user)
-    const { userCity, userCountry, userId, userFullname } = userData;
-
+    const { userId, userFullname } = userData.personalData;
+    const { userCity, userCountry } = userData.profileData;
 
     useEffect(() => {
         dispatch(fetchUsersOptions(userFullname))
     }, [dispatch, filterValue])
-
 
     useEffect(() => {
         dispatch(fetchRandomUsers(userCountry, userCity, userId))
     }, [dispatch, userCountry, userCity])
 
 
-    const randomUsers:UserFullData[]  = useAppSelector(state => state.users.randomUsers)
-    const foundUsers:UserFullData[] = useAppSelector(state => state.users.filteredUsers)
+    const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([])
+    const [showEmptyUsersImg, setShowEmptyUsersImg] = useState(false)
+    
+    const [loading, setLoading] = useState(false)
+    const [showRandomUsers, setShowRandomUsers] = useState(false)
+
+
+    
+    const namesOptions = useAppSelector(state => state.users.optionsNames)
+    const locationsOptions = useAppSelector(state => state.users.optionsLocations)
+    const interestsOptions = useAppSelector(state => state.users.optionsInterests)
+ 
+    const randomUsers:UserProfile[]  = useAppSelector(state => state.users.randomUsers)
+    const foundUsers:UserProfile[] = useAppSelector(state => state.users.filteredUsers)
     const errorMessage:string = useAppSelector(state => state.users.error)
 
 
@@ -52,8 +53,6 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
 
     const getFilteredUsers = useCallback(() => {
         setFilteredUsers([])
-        console.log('filterVal', filterValue);
-        
 
         if (inputValue === searchValue) {
             if (filterValue === 'name') {

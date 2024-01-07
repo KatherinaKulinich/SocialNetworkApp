@@ -1,13 +1,13 @@
 import { useCallback } from "react"
 // import { useUserData } from "./useUserData";
 import { Post, Reaction } from "types/Post";
-import { UserFullData } from "types/UserFullDataType";
 import { db } from "firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { UserProfile } from "types/UserProfile";
 
 
 
@@ -16,23 +16,30 @@ import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 
 export const usePostsReactions = () => {
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(state => state.userData.user)
-    const { userId:myId, posts:myPosts } = userData;
-    const myRef = doc(db, "users", myId);
 
+    const userData = useAppSelector(state => state.userData.user)
+    const { personalData, content } = userData;
+    const { userId:myId } = personalData;
+    const { posts:myPosts } = content;
+
+    const myRef = doc(db, "users", myId);
     const { checkMyPostReaction } = useCheckMyContentReaction(userData)
     
 
 
 
-    const addReaction = useCallback(async(selectedPost:Post, user:UserFullData, reactionValue:string) => {
-        const {userId, posts:userPosts} = user;
+    const addReaction = useCallback(async(selectedPost:Post, user:UserProfile, reactionValue:string) => {
+        const { personalData, content } = user;
+        const { userId } = personalData;
+        const { posts:userPosts } = content;
+
         const userRef = doc(db, "users", userId);
         const currentReaction = checkMyPostReaction(selectedPost)
 
         if (currentReaction === reactionValue) return;
 
         const currentReactionsArray:Reaction[] = selectedPost?.postReactions;
+
         const newPostReactionsArray:Reaction[] = currentReactionsArray.map((item:Reaction) => {
             if (item.value === reactionValue) {
                 const newReactions = [...item.usersReactions, myId]
@@ -53,7 +60,7 @@ export const usePostsReactions = () => {
                 return item
             })
             await updateDoc(myRef, {
-                posts: updatedPostsArray,
+                "content.posts": updatedPostsArray,
             })
         } else {
             const updatedPostsArray = userPosts?.map((item:Post) => {
@@ -63,7 +70,7 @@ export const usePostsReactions = () => {
                 return item
             })
             await updateDoc(userRef, {
-                posts: updatedPostsArray,
+                "content.posts": updatedPostsArray,
             })
         }
         myId && dispatch(fetchUserFullData(myId))

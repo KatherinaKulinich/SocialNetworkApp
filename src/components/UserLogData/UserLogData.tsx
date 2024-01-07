@@ -5,7 +5,7 @@ import { Avatar } from '@components/Avatar/Avatar';
 import { theme } from '@styles/Theme';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { useEffect } from 'react';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/authorization/useAuth';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 

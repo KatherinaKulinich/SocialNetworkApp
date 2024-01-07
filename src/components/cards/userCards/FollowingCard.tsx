@@ -3,7 +3,7 @@ import { UserCard } from "./components/UserCard"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from '@styles/Theme'
 import { FaUserSlash } from "react-icons/Fa"
-import { useFollowUser } from "hooks/useFollowUser"
+import { useFollowUser } from "hooks/contacts/useFollowUser"
 
 interface FollowingCardProps {
     user: UserFullData,

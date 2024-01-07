@@ -7,11 +7,11 @@ import { PhotoCard } from "@components/cards/PhotoCard/PhotoCard";
 import { ModalAddingPhoto } from "@components/popups/ModalAddingPhoto/ModalAddingPhoto";
 import { ModalComments } from "@components/popups/ModalComments/ModalComments";
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing";
-import { useManageMyContent } from "hooks/useManageMyContent";
-import { usePhotosLikes } from "hooks/usePhotosLikes";
+import { useManageMyContent } from "hooks/content/useManageMyContent";
+import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { UserFullData } from "types/UserFullDataType";
 import { useAppSelector } from "hooks/hooks";
-import { useCheckMyContentReaction } from "hooks/useCheckMyContentReaction";
+import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction";
 
 interface PhotosContainerProps {
     owner: 'me' | 'friend';

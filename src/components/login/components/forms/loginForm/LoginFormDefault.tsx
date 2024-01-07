@@ -3,7 +3,7 @@ import { Icon } from '@components/icons/Icon';
 import { LogForm, Input, Title, Text, LoginContent, FieldContainer, ErrorMessage } from '../Form.styled';
 import { theme } from '@styles/Theme';
 import { SecondaryButton } from '@components/buttons/SecondaryButton/SecondaryButton';
-import { useFirebaseAuth } from 'hooks/useFirebaseAuth';
+import { useFirebaseAuth } from 'hooks/authorization/useFirebaseAuth';
 import { Formik } from 'formik';
 import { useValidateLogForm } from 'hooks/useValidateLogForm';
 

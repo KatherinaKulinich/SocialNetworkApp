@@ -3,7 +3,7 @@ import { theme } from '@styles/Theme';
 import { SecondaryButton } from '@components/buttons/SecondaryButton/SecondaryButton';
 import { Formik } from 'formik';
 import { useValidateLogForm } from "hooks/useValidateLogForm";
-import { useFirebaseAuth } from "hooks/useFirebaseAuth";
+import { useFirebaseAuth } from "hooks/authorization/useFirebaseAuth";
 
 
 

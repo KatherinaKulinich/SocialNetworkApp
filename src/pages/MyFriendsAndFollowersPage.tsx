@@ -3,11 +3,11 @@ import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
 import { FriendsContainer } from '@components/containers/usersContainers/FriendsContainer';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/authorization/useAuth';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 import { useEffect } from 'react';
-import { useUsersBirthdays } from 'hooks/useUsersBirthdays';
+import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
 import { notification } from 'antd';
 import { GiGlassCelebration } from "react-icons/gi"
 import { Icon } from '@components/icons/Icon';

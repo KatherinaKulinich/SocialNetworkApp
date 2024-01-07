@@ -4,7 +4,7 @@ import { BirthdayAlertCard } from "@components/cards/BirthdayAlertCard/BirthdayA
 import { ListContainer } from "../ListContainer/ListContainer";
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
 import { UserFullData } from "types/UserFullDataType";
-import { useUsersBirthdays } from "hooks/useUsersBirthdays";
+import { useUsersBirthdays } from "hooks/birthdays/useUsersBirthdays";
 import { TwoTabsContainer } from "@components/tabs/TwoTabsContainer";
 import { useCallback } from "react";
 

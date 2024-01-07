@@ -1,19 +1,19 @@
 import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit";
 import { db } from "firebase";
-import { getDocs, collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { RootState } from "rdx/store";
-import { UserFullData } from "types/UserFullDataType";
+import { UserProfile } from "types/UserProfile";
 
 
 interface UserDataState {
-    user: UserFullData;
+    user: UserProfile;
     error: string | null;
 }
 
 
 
 const initialState: UserDataState = {
-    user: {} as UserFullData,
+    user: {} as UserProfile,
     error: null,
 };
 
@@ -22,7 +22,7 @@ const userDataSlice = createSlice({
     name: "userData",
     initialState,
     reducers: {
-        getUserInfo(state, action: PayloadAction<UserFullData>) {
+        getUserInfo(state, action: PayloadAction<UserProfile>) {
             state.user = action.payload;
         },
         getErrorMessage(state, action: PayloadAction<string>) {
@@ -42,16 +42,18 @@ export const fetchUserFullData = (userId: string) => {
             const docSnap = await getDoc(docRef);
             
             if (docSnap.exists()) {
-                dispatch(getUserInfo(docSnap.data() as UserFullData))            
+                dispatch(getUserInfo(docSnap.data() as UserProfile))            
             }
-            // onSnapshot(docRef, (doc) => {           
-            // })
-        } catch (error:any) {
-            dispatch(getErrorMessage(error.message))
-            return
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
         }
     }
 }
+
 
 export const { 
     getUserInfo, 

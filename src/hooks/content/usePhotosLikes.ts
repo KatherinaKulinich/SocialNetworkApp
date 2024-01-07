@@ -7,23 +7,25 @@ import {
     updateDoc 
 } from "firebase/firestore"
 import { Photo } from "types/Photo"
-import { UserFullData } from "types/UserFullDataType"
-import {useAppDispatch } from "./hooks"
+import {useAppDispatch } from "../hooks"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction"
+import { UserProfile } from "types/UserProfile"
 
 
 
 
 
 
-export const usePhotosLikes = (photoOwnerUser: UserFullData, userIsMe:UserFullData) => {
+export const usePhotosLikes = (photoOwnerUser: UserProfile, userIsMe:UserProfile) => {
     const { checkMyPhotoLike } = useCheckMyContentReaction(userIsMe)
     const dispatch = useAppDispatch()
 
-    const { userId:myId } = userIsMe;
-    const { userId, photos:userPhotos } = photoOwnerUser;
+    const { userId:myId } = userIsMe.personalData;
+
+    const { userId } = photoOwnerUser.personalData;
+    const { photos:userPhotos } = photoOwnerUser.content;
     const userRef = doc(db, "users", userId);
 
 
@@ -36,12 +38,11 @@ export const usePhotosLikes = (photoOwnerUser: UserFullData, userIsMe:UserFullDa
             return photo
         })
         await updateDoc(ref, {
-            photos: updatedPhotoArray,
+            "content.photos": updatedPhotoArray,
         })
         myId && dispatch(fetchUserFullData(myId))
         userId &&  dispatch(fetchSelectedUserData(userId))
     }, [])
-
 
 
 
@@ -51,6 +52,7 @@ export const usePhotosLikes = (photoOwnerUser: UserFullData, userIsMe:UserFullDa
  
         updatePhotos(userPhotos as Photo[], updatedPhoto, userRef)
     }, [userPhotos])
+
 
 
     const removeLikeFromPhoto = useCallback((selectedPhoto:Photo) => {

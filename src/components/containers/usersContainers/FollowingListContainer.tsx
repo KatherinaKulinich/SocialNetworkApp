@@ -4,7 +4,7 @@ import { Container } from "./usersContainer.styled"
 import imgError from '@images/error2.svg';
 import imgNoUsers from '@images/nofriends.svg'
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useAuth } from "hooks/useAuth";
+import { useAuth } from "hooks/authorization/useAuth";
 import { fetchFriends } from "rdx/slices/friendsSlice";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { useEffect } from "react";

@@ -2,27 +2,27 @@ import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/t
 import { db } from "firebase";
 import { collection, getDocs, query, onSnapshot, where, limit, WhereFilterOp, doc, getDoc } from "firebase/firestore";
 import { RootState } from "rdx/store";
-import { UserFullData } from "types/UserFullDataType";
+import { UserProfile } from "types/UserProfile";
 
 
 interface UsersState {
     error: string;
-    selectedUser: UserFullData
+    selectedUser: UserProfile
     optionsNames: string[];
     optionsLocations: string[];
     optionsInterests: string[];
-    randomUsers: UserFullData[];
-    filteredUsers: UserFullData[];
+    randomUsers: UserProfile[];
+    filteredUsers: UserProfile[];
 }
 
 const initialState: UsersState = {
-    selectedUser: {} as UserFullData,
+    selectedUser: {} as UserProfile,
     error: '',
     optionsNames: [],
     optionsLocations: [],
     optionsInterests: [],
-    randomUsers: [] as UserFullData[],
-    filteredUsers: [] as UserFullData[],
+    randomUsers: [] as UserProfile[],
+    filteredUsers: [] as UserProfile[],
 }
 
 
@@ -39,13 +39,13 @@ const usersSlice = createSlice({
         getUsersInterests(state, action: PayloadAction<string[]>) {
             state.optionsInterests = action.payload
         },
-        getRandomUsers(state, action: PayloadAction<UserFullData[]>) {
+        getRandomUsers(state, action: PayloadAction<UserProfile[]>) {
             state.randomUsers = action.payload
         },
-        getFilteredUsers(state, action: PayloadAction<UserFullData[]>) {
+        getFilteredUsers(state, action: PayloadAction<UserProfile[]>) {
             state.filteredUsers = action.payload
         },
-        getSelectedUserData(state, action: PayloadAction<UserFullData>) {
+        getSelectedUserData(state, action: PayloadAction<UserProfile>) {
             state.selectedUser = action.payload
         },
         getErrorMessage(state, action: PayloadAction<any>) {
@@ -65,14 +65,14 @@ export const fetchUsersOptions = (myFullName: string) => {
             onSnapshot(ref, (querySnapshot) => {
                 let names:string[] = [];
                 let locations:string[] = [];
-                let interests:any[] = [];
+                let interests:string[] = [];
 
                 querySnapshot.forEach((doc) => {
-                    locations.push(doc.data().userLocation)
-                    interests.push(doc.data().userInterests)
+                    locations.push(doc.data().profileData.userLocation)
+                    interests.push(doc.data().profileData.userInterests)
                     
                     if (doc.data().userFullname !== myFullName) {
-                        names.push(doc.data().userFullname)
+                        names.push(doc.data().personalData.userFullname)
                     }
                 });
 
@@ -81,8 +81,12 @@ export const fetchUsersOptions = (myFullName: string) => {
                 dispatch(getUsersNames([...new Set(names)]))
             })
             
-        } catch (error:any) {
-            dispatch(getErrorMessage(error.message))
+        } catch (error:unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
         }
     }
 }
@@ -106,19 +110,18 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
     }
 
 
-
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
 
         try {
             dispatch(getErrorMessage(''))
-            let users: any[] = [];
-            const refCity = query(collection(db, "users"), where("userCity", "==", `${myCity}`), limit(6));
-            const refCountry = query(collection(db, "users"), where("userCountry", "==", `${myCountry}`), limit(6));
+            let users: UserProfile[] = [];
+            const refCity = query(collection(db, "users"), where("profileData.userCity", "==", `${myCity}`), limit(6));
+            const refCountry = query(collection(db, "users"), where("profileData.userCountry", "==", `${myCountry}`), limit(6));
             const refGeneral = query(collection(db, "users"), limit(6));
 
             onSnapshot(refCity, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    users.push(doc.data())
+                    users.push(doc.data() as UserProfile)
                 });
 
                 if (users.length > 4) {
@@ -129,7 +132,7 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
             
             onSnapshot(refCountry, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    users.push(doc.data())
+                    users.push(doc.data() as UserProfile)
                 });
 
                 if (users.length > 6) {
@@ -140,13 +143,17 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 
             onSnapshot(refGeneral, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    users.push(doc.data())
+                    users.push(doc.data() as UserProfile)
                 });
                 dispatch(getRandomUsers(filterUsers(users)))
             })
 
-        } catch (error:any) {
-            dispatch(getErrorMessage(error.message))
+        } catch (error:unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
         }
     }
 }
@@ -159,7 +166,7 @@ export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
             dispatch(getErrorMessage(''))
             let sign:WhereFilterOp;
 
-            if (key === 'userFullname' || key === 'userLocation') {
+            if (key === 'personalData.userFullname' || key === 'profileData.userLocation') {
                 sign = '=='
             } else {
                 sign = 'array-contains'
@@ -169,24 +176,25 @@ export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
 
             onSnapshot(ref, 
                 (querySnapshot) => {
-                    let users: any[] = [];
+                    let users: UserProfile[] = [];
 
                     querySnapshot.forEach((doc) => {
                         if (doc.data().userId !== myId) {
-                            users.push(doc.data())
+                            users.push(doc.data() as UserProfile)
                         }
                     });
-
                     dispatch(getFilteredUsers(users))
-
                 },
                 (error) => {
                     console.log('error', error);
                 }
             )
-
-        } catch(error:any) {
-            dispatch(getErrorMessage(error.message))
+        } catch(error:unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
         }
     }
 }
@@ -203,21 +211,28 @@ export const fetchSelectedUserData = (userId:string) => {
             const docSnap = await getDoc(docRef);
             
             if (docSnap.exists()) {
-                dispatch(getSelectedUserData(docSnap.data() as UserFullData))            
+                dispatch(getSelectedUserData(docSnap.data() as UserProfile))            
             }
-
-            // onSnapshot(doc(db, "users", userId), (doc) => {
-            //     dispatch(getSelectedUserData(doc.data() as UserFullData))
-            // });
-
-        } catch(error:any) {
-            dispatch(getErrorMessage(error.message))
+        } catch(error:unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
         }
     }
 }
 
 
 
-export const { getSelectedUserData, getErrorMessage, getUsersNames, getUsersLocations, getUsersInterests, getRandomUsers, getFilteredUsers  } = usersSlice.actions;
+export const { 
+    getSelectedUserData, 
+    getErrorMessage, 
+    getUsersNames, 
+    getUsersLocations, 
+    getUsersInterests, 
+    getRandomUsers, 
+    getFilteredUsers  
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

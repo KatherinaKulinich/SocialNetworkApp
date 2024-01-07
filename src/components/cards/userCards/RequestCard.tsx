@@ -3,7 +3,7 @@ import { UserCard } from "./components/UserCard"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from "@styles/Theme"
 import { FaUserTimes, FaUserCheck } from "react-icons/Fa"
-import { useFollowUser } from "hooks/useFollowUser"
+import { useFollowUser } from "hooks/contacts/useFollowUser"
 import { useAppDispatch } from "hooks/hooks"
 import { useCallback } from "react"
 

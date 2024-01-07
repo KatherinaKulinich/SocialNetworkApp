@@ -6,7 +6,7 @@ import { Wrapper } from "@components/layout/components/Wrapper/Wrapper"
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
-import { useAuth } from "hooks/useAuth"
+import { useAuth } from "hooks/authorization/useAuth"
 
 
 

@@ -1,30 +1,30 @@
 import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit"
 import { db } from "firebase"
-import { onSnapshot, doc, collection, query, where, getDoc } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
 import { RootState } from "rdx/store"
-import { UserFullData } from "types/UserFullDataType"
+import { UserProfile } from "types/UserProfile"
 
 
 
 
 interface FriendsState {
-    friendsData: UserFullData[],
-    followingListData: UserFullData[],
-    friendRequestsData: UserFullData[],
-    followersData: UserFullData[],
+    friendsData: UserProfile[],
+    followingListData: UserProfile[],
+    friendRequestsData: UserProfile[],
+    followersData: UserProfile[],
+    selectedUser: UserProfile,
     errorMessage: string,
-    selectedUser: UserFullData,
     loading: boolean;
 }
 
 
 const initialState: FriendsState = {
-    friendsData: [] as UserFullData[],
-    followingListData: [] as UserFullData[],
-    friendRequestsData: [] as UserFullData[],
-    followersData: [] as UserFullData[],
+    friendsData: [] as UserProfile[],
+    followingListData: [] as UserProfile[],
+    friendRequestsData: [] as UserProfile[],
+    followersData: [] as UserProfile[],
+    selectedUser: {} as UserProfile,
     errorMessage: '',
-    selectedUser: {} as UserFullData,
     loading: false,
 }
 
@@ -37,16 +37,16 @@ const friendsSlice = createSlice({
     name: 'friends',
     initialState,
     reducers: {
-        getFriendsData(state, action: PayloadAction<UserFullData[]>) {
+        getFriendsData(state, action: PayloadAction<UserProfile[]>) {
             state.friendsData = action.payload
         },
-        getFollowingListData(state, action: PayloadAction<UserFullData[]>) {
+        getFollowingListData(state, action: PayloadAction<UserProfile[]>) {
             state.followingListData = action.payload
         },
-        getFriendRequestData(state, action: PayloadAction<UserFullData[]>) {
+        getFriendRequestData(state, action: PayloadAction<UserProfile[]>) {
             state.friendRequestsData = action.payload
         },
-        getFollowersData(state, action: PayloadAction<UserFullData[]>) {
+        getFollowersData(state, action: PayloadAction<UserProfile[]>) {
             state.followersData = action.payload
         },
         getErrorMessage(state, action: PayloadAction<string>) {
@@ -62,10 +62,10 @@ const friendsSlice = createSlice({
 export const fetchFriends =  (usersIds:string[], key:string) => {
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
 
-        let friends: UserFullData[] = [];
-        let followingList: UserFullData[] = [];
-        let friendRequests: UserFullData[] = [];
-        let followers: UserFullData[] = [];
+        let friends: UserProfile[] = [];
+        let followingList: UserProfile[] = [];
+        let friendRequests: UserProfile[] = [];
+        let followers: UserProfile[] = [];
 
         try {
             dispatch(getErrorMessage(''))
@@ -80,7 +80,7 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
                 usersIds.forEach(async (id) => {
                     const ref = doc(db, 'users', id)
                     const docSnap = await getDoc(ref)
-                    const user = docSnap.data() as UserFullData
+                    const user = docSnap.data() as UserProfile
 
                     if (key === 'friends') {
                         friends.push(user)
@@ -97,13 +97,16 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
                     } else {
                         dispatch(getErrorMessage('something went wrong! Try later!'))
                     }
-
                 })
             }
             dispatch(getLoading(false))
-        } catch (error:any) {
+        } catch (error:unknown) {
             dispatch(getLoading(false))
-            dispatch(getErrorMessage(error.message))
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
         } 
     }
 }

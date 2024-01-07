@@ -13,9 +13,11 @@ import { LoaderGlass } from '@components/loaders/LoaderGlass';
 import { Paragraph } from '@components/text/Paragraph';
 import { theme } from '@styles/Theme';
 import { selectOptions } from 'utils/data/profileOptions';
-import { useUsersSearch } from 'hooks/useUsersSearch';
 import { useCallback, useEffect, useState } from 'react';
 import { UserFullData } from 'types/UserFullDataType';
+import { useSearchValues } from 'hooks/search/useSearchValues';
+import { useUsersSearch } from 'hooks/search/useUsersSearch';
+import { UserProfile } from 'types/UserProfile';
 
 
 
@@ -24,25 +26,34 @@ import { UserFullData } from 'types/UserFullDataType';
 
 export const SearchPage:React.FC = () => {
 
-    const [filterValue, setFilterValue] = useState('name')
-    const [searchValue, setSearchValue] = useState('')
-    const [inputValue, setInputValue] = useState('')
     const [filterOptions, setFilterOptions] = useState<any[]>([])
-
-    const onChangeFilterValue = useCallback((value: string) => {
-        setFilterValue(value)
-        setSearchValue('')
-    }, [filterValue])
-
-    const onChangeSearchValue = useCallback((event:any, value:string) => {
-        setSearchValue(value)
-    }, [searchValue])
+    // const [filterValue, setFilterValue] = useState('name')
+    // const [searchValue, setSearchValue] = useState('')
+    // const [inputValue, setInputValue] = useState('')
 
 
-    const onChangeInputValue = useCallback((event:any, value:string) => {
-        setInputValue(value)
-    }, [inputValue])
+    // const onChangeFilterValue = useCallback((value: string) => {
+    //     setFilterValue(value)
+    //     setSearchValue('')
+    // }, [filterValue])
 
+    // const onChangeSearchValue = useCallback((event:any, value:string) => {
+    //     setSearchValue(value)
+    // }, [searchValue])
+
+
+    // const onChangeInputValue = useCallback((event:any, value:string) => {
+    //     setInputValue(value)
+    // }, [inputValue])
+
+    const { 
+        filterValue, 
+        searchValue, 
+        inputValue, 
+        onChangeFilterValue,
+        onChangeInputValue, 
+        onChangeSearchValue 
+    } = useSearchValues()
 
     const {
         loading, 
@@ -53,9 +64,11 @@ export const SearchPage:React.FC = () => {
         namesOptions, 
         interestsOptions, 
         locationsOptions, 
-        errorMessage  } = useUsersSearch(filterValue, inputValue, searchValue);
+        errorMessage  
+    } = useUsersSearch(filterValue, inputValue, searchValue);
 
   
+    
     const getSearchOptions = useCallback(() => {
         setFilterOptions([])
         
@@ -115,10 +128,10 @@ export const SearchPage:React.FC = () => {
             {loading && <LoaderGlass/>}
             <ListContainer>
                 {showRandomUsers && randomUsers?.length > 0 && (
-                    randomUsers.map((user:UserFullData) => {
+                    randomUsers.map((user:UserProfile) => {
                         if (user !== undefined) 
                             return  <SearchUserCard 
-                                        key={user.userId}
+                                        key={user.personalData.userId}
                                         user={user}
                                     />
                     })
@@ -127,7 +140,7 @@ export const SearchPage:React.FC = () => {
                 {!showRandomUsers && filteredUsers.length > 0 && (
                     filteredUsers.map(user => (
                         <SearchUserCard 
-                            key={user.userId}
+                            key={user.personalData.userId}
                             user={user}
                         />
                     ))

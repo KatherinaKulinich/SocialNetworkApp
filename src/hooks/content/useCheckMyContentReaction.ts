@@ -1,14 +1,15 @@
 import { useCallback } from "react";
 import { Photo } from "types/Photo";
 import { Post } from "types/Post";
-import { UserFullData } from "types/UserFullDataType"
+import { UserProfile } from "types/UserProfile";
 
 
 
 
+export const useCheckMyContentReaction = (myUserData:UserProfile) => {
+    const { personalData } = myUserData;
+    const { userId:myId } = personalData;
 
-export const useCheckMyContentReaction = (myUserData:UserFullData) => {
-    const { userId:myId } = myUserData;
 
 
     const checkMyPhotoLike = useCallback((photo:Photo) => {
@@ -19,6 +20,7 @@ export const useCheckMyContentReaction = (myUserData:UserFullData) => {
     }, [myId])
 
 
+    
     const checkMyPostReaction = useCallback((post:Post):string | false => {
         const reactions = post?.postReactions;
 

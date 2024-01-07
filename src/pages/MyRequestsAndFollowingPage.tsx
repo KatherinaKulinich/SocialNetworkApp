@@ -5,7 +5,7 @@ import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { SubTitle } from "@components/text/Subtitle";
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/authorization/useAuth';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 import { useEffect } from 'react';

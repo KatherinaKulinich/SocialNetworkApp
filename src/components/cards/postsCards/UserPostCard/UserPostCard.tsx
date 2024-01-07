@@ -1,4 +1,4 @@
-import { UserFullData } from "types/UserFullDataType"
+
 import { PostCard } from "../components/PostCard"
 import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent } from "./UserPostCard.styled"
 import { Avatar } from "@components/Avatar/Avatar"
@@ -9,11 +9,12 @@ import { Reaction } from "types/Post"
 import { RadioChangeEvent, Popconfirm } from "antd"
 import { reactionsArray } from "utils/data/postReactions"
 import { DeleteOutlined } from "@ant-design/icons"
-import { useManageMyContent } from "hooks/useManageMyContent"
+import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { getSelectedUserPost } from "rdx/slices/userContentSlice"
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
-import { usePostsReactions } from "hooks/usePostsReactions"
-import { useCheckMyContentReaction } from "hooks/useCheckMyContentReaction"
+import { usePostsReactions } from "hooks/content/usePostsReactions"
+import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction"
+import { UserProfile } from "types/UserProfile"
 
 
 
@@ -22,7 +23,7 @@ interface UserPostCardProps {
     owner: 'myProfile' | 'userProfile';
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
-    postOwner: UserFullData;
+    postOwner: UserProfile;
 }
 
 export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner}) => {

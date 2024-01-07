@@ -6,7 +6,7 @@ import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButto
 import { theme } from "@styles/Theme"
 import { GiCheckMark } from "react-icons/gi"
 import { useCallback, useState } from "react"
-import { useManageMyContent } from "hooks/useManageMyContent"
+import { useManageMyContent } from "hooks/content/useManageMyContent"
 
 
 

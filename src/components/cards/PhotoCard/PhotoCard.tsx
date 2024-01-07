@@ -10,10 +10,10 @@ import { Popconfirm } from "antd";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 // import { useUserData } from "hooks/useUserData";
-import { useManageMyContent } from "hooks/useManageMyContent";
-import { usePhotosLikes } from "hooks/usePhotosLikes";
+import { useManageMyContent } from "hooks/content/useManageMyContent";
+import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { UserFullData } from "types/UserFullDataType";
-import { useCheckMyContentReaction } from "hooks/useCheckMyContentReaction";
+import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction";
 
 interface PhotoCardProps {
     photo: Photo;

@@ -5,7 +5,7 @@ import { MessageInput } from "@components/chat/components/MessageInput/MessageIn
 import { useCallback, useEffect, useState } from "react";
 import { CommentItem, Photo } from "types/Photo";
 import { message } from "antd";
-import { useContentComments } from "hooks/useContentComments";
+import { useContentComments } from "hooks/content/useContentComments";
 import { Post } from "types/Post";
 import { UserFullData } from "types/UserFullDataType";
 
