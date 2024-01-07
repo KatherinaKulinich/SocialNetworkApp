@@ -1,27 +1,29 @@
-import { AddingPhotoCard } from "@components/cards/AddingPhotoCard/AddingPhotoCard";
+import { AddingPhotoCard } from "@components/cards/photosCards/AddingPhotoCard/AddingPhotoCard";
 import { Photos } from "./PhotosContainer.styled"
 import { Image } from 'antd';
 import { useState, useCallback, useEffect } from "react";
 import { Photo } from "types/Photo";
-import { PhotoCard } from "@components/cards/PhotoCard/PhotoCard";
+import { PhotoCard } from "@components/cards/photosCards/PhotoCard/PhotoCard";
 import { ModalAddingPhoto } from "@components/popups/ModalAddingPhoto/ModalAddingPhoto";
 import { ModalComments } from "@components/popups/ModalComments/ModalComments";
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
 import { usePhotosLikes } from "hooks/content/usePhotosLikes";
-import { UserFullData } from "types/UserFullDataType";
 import { useAppSelector } from "hooks/hooks";
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction";
+import { UserProfile } from "types/UserProfile";
 
 interface PhotosContainerProps {
     owner: 'me' | 'friend';
-    userOwner: UserFullData;
-    myUserData: UserFullData
+    userOwner: UserProfile;
+    myUserData: UserProfile
 }
 
 
+
+
 export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner, myUserData}) => {
-    const { photos } = userOwner;
+    const { photos } = userOwner.content;
     const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
 
     const { editMyContent } = useManageMyContent()

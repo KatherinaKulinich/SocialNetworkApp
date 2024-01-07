@@ -5,21 +5,24 @@ import { theme } from "@styles/Theme";
 import { Avatar } from "@components/Avatar/Avatar";
 import { useAppDispatch } from "hooks/hooks";
 import { useCallback } from "react";
-import { UserFullData } from "types/UserFullDataType";
-import { fetchFriends } from "rdx/slices/friendsSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { UserProfile } from "types/UserProfile";
+import { getUserAge } from "utils/getUserAge";
 
 
 
 interface SearchUserCardProps {
-    user: UserFullData,
+    user: UserProfile,
 }
 
-export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
-    const { userAvatar, userFullname, userBirthday, userLocation, userInterests, userId } = user;
 
+
+export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const dispatch = useAppDispatch();
-    
+
+    const { userFullname, userId } = user.personalData;
+    const { userAvatar, userBirthday, userLocation, userInterests } = user.profileData;
+
     const getUserProfile = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
         // dispatch(fetchFriends(user))
@@ -48,7 +51,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                             iconColor={theme.colors.mediumGray}
                         /> 
                         <Text>
-                            {userBirthday.age} y.o.
+                            {`${getUserAge(userBirthday.year, userBirthday.month, userBirthday.day)} y.o.`}
                         </Text>
                     </Flex>
                     <Flex>

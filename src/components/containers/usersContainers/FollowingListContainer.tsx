@@ -15,6 +15,7 @@ import { SubTitle } from "@components/text/Subtitle";
 
 export const FollowingListContainer:React.FC = () => {
     const dispatch = useAppDispatch()
+
     const myData = useAppSelector(state => state.userData.user)
     const { userId } = useAuth()
 
@@ -29,14 +30,13 @@ export const FollowingListContainer:React.FC = () => {
 
     useEffect(() => {
         if (myData) {
-            dispatch(fetchFriends(myData.followingList, 'followingList'))
+            dispatch(fetchFriends(myData.contacts.followingList, 'followingList'))
         }
     }, [myData])
 
     const followingListUsersData = useAppSelector(state => state.friends.followingListData)
-    console.log(followingListUsersData);
-    
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
+
 
     return (
         <Container>
@@ -46,7 +46,7 @@ export const FollowingListContainer:React.FC = () => {
                 <CardsContainer>
                     {followingListUsersData.map(user => (
                         <FollowingCard 
-                            key={user.userId}
+                            key={user.personalData.userId}
                             user={user}
                         />
                     ))}

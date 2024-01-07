@@ -1,3 +1,5 @@
+import imgError from '@images/error2.svg';
+import imgNoUsers from '@images/nousers.svg'
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
 import { RequestCard } from "@components/cards/userCards/RequestCard"
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
@@ -7,16 +9,14 @@ import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { useEffect } from "react"
 import { CardsContainer } from "../CardsContainer/CardsContainer"
 import { Container } from "./usersContainer.styled"
-import imgError from '@images/error2.svg';
-import imgNoUsers from '@images/nousers.svg'
 import { SubTitle } from "@components/text/Subtitle"
 
 
 
 
 export const FriendRequestsContainer:React.FC = () => {
-    
     const dispatch = useAppDispatch()
+
     const myData = useAppSelector(state => state.userData.user)
     const { userId } = useAuth()
 
@@ -31,7 +31,7 @@ export const FriendRequestsContainer:React.FC = () => {
 
     useEffect(() => {
         if (myData) {
-            dispatch(fetchFriends(myData.friendRequests, 'friendRequests'))
+            dispatch(fetchFriends(myData.contacts.friendRequests, 'friendRequests'))
         }
     }, [myData])
 
@@ -47,7 +47,7 @@ export const FriendRequestsContainer:React.FC = () => {
                 <CardsContainer>
                     {friendRequestsUsersData.map(friend => (
                         <RequestCard 
-                            key={friend.userId}
+                            key={friend.personalData.userId}
                             user={friend}
                         />
                     ))}

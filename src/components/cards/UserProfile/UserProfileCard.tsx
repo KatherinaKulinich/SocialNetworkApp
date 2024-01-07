@@ -1,4 +1,4 @@
-import { Container, MainInfo, Name, Personal, Subtitle, Field, RegularText, FullInfo,  PersonalMainInfo, InfoContainer, Box, PreviewContainer, PageLink, HobbyItem, HobbiesList } from "./UserProfile.styled"
+import { Container, MainInfo, Name, Personal, Subtitle, Field, RegularText, FullInfo,  PersonalMainInfo, InfoContainer, Box, PreviewContainer, PageLink, HobbyItem, HobbiesList } from "./UserProfileCard.styled"
 import { FaUsers,  FaHeart, FaBasketballBall, FaBirthdayCake} from 'react-icons/Fa'
 import { ImLocation } from 'react-icons/Im'
 import { BsFillInfoCircleFill } from 'react-icons/Bs'
@@ -7,23 +7,26 @@ import { DataItem } from "./components/DataItem/DataItem";
 import { PhotoPreview } from "./components/PhotosPreview/PhotoPreview";
 import { FriendsPreview } from "./components/FriendsPreview/FriendsPreview";
 import { PostPreview } from "./components/PostsPreview/PostPreview";
-import { UserFullData } from "types/UserFullDataType";
-import { useAppSelector } from "hooks/hooks";
 import { getRandomAvatar } from "utils/getRandomAvatar";
+import { UserProfile } from "types/UserProfile";
+import { getUserAge } from "utils/getUserAge";
 
 
 interface UserProfileProps {
     role: 'myProfile' | 'userProfile';
-    user:UserFullData;
-    friendsData: UserFullData[]
+    user: UserProfile;
+    friendsData: UserProfile[]
 }
 
 
-export const UserProfile:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
-    const { userName, userFullname, userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation, friends } = user;
 
-    const userAge = userBirthday.age;
-    const userBirthDate = userBirthday.fullDate
+export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
+    const { userName, userFullname } = user.personalData;
+    const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user.profileData;
+    const { friends } = user.contacts;
+
+    // const { year, month, day, fullDate } = userBirthday
+    // const userAge = getUserAge(year, month, day);
 
     const linkToFriendsPage = role === 'myProfile' ? '/myFriends' : `/users/${userFullname}/friends`
     const linkToPhotosPage = role === 'myProfile' ? '/myPhotos' : `/users/${userFullname}/photos`
@@ -33,14 +36,14 @@ export const UserProfile:React.FC<UserProfileProps> = ({user, role, friendsData}
     return (
         <Container>
             <MainInfo>
-                <ProfileAvatar userAvatarImg={userAvatar ? userAvatar : getRandomAvatar()}/>
+                <ProfileAvatar userAvatarImg={userAvatar || getRandomAvatar()}/>
                 <PersonalMainInfo>
                     <Name>
                         {userFullname}
                     </Name>
                     <Field>
                         <Subtitle> age: </Subtitle>
-                        <RegularText> {userAge} y.o. </RegularText>
+                        {/* <RegularText> {userAge} y.o. </RegularText> */}
                     </Field>
                     <Field>
                         <Subtitle> gender: </Subtitle>
@@ -68,12 +71,12 @@ export const UserProfile:React.FC<UserProfileProps> = ({user, role, friendsData}
                         itemValue={userFamStatus || 'no data'}
                         direction='row'
                     />
-                    <DataItem 
+                    {/* <DataItem 
                         icon={<FaBirthdayCake/>} 
                         itemName={'Birthday'} 
-                        itemValue={userBirthDate}
+                        itemValue={fullDate}
                         direction='row'
-                    />
+                    /> */}
                 </Box>
                 <Box>
                     <DataItem 

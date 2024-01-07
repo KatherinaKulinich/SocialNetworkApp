@@ -1,12 +1,13 @@
 import TitleImg from '@images/profileTitle3.svg'
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
-import { UserProfile } from "@components/cards/UserProfile/UserProfile"
+import { UserProfileCard } from "@components/cards/UserProfile/UserProfileCard"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { useEffect } from 'react';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice'
 import { useAuth } from 'hooks/authorization/useAuth'
+import { useMyFullData } from 'hooks/useMyFullData';
 
 
 
@@ -14,27 +15,30 @@ import { useAuth } from 'hooks/authorization/useAuth'
 
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(state => state.userData.user)
-    const { userId } = useAuth()
+    const userData = useMyFullData()
+    // const { userId } = useAuth()
     
     
-    useEffect(() => {
-        if (userId) {
-            dispatch(fetchUserFullData(userId))
-        }
-    }, [dispatch, userId])
+    // useEffect(() => {
+    //     if (userId) {
+    //         dispatch(fetchUserFullData(userId))
+    //     }
+    // }, [dispatch, userId])
+    
+    // const userData = useAppSelector(state => state.userData.user)
+    // console.warn('prof', userData, userId);
+    
+    // const { friends } = userData.contacts
+    // const friendsIdsArray = friends.map(user => user.id)
 
-
-    useEffect(() => {
-        if (userData) {
-            dispatch(fetchFriends(userData.friends, 'friends'))
-        }
-    }, [dispatch, userData])
+    // useEffect(() => {
+    //     if (userData) {
+    //         dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    //     }
+    // }, [dispatch, userData])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
-    const selectedUser = useAppSelector(state => state.users.selectedUser)
-    console.warn(selectedUser);
-    
+ 
     
     return (
         <PageContainer>
@@ -43,8 +47,8 @@ export const MyProfilePage:React.FC = () => {
                 titleFirst="My"
                 titleSecond="profile"
             />
-            {Object.keys(userData).length > 6 && (
-                <UserProfile
+            {Object.keys(userData).length === 6 && (
+                <UserProfileCard
                     role='myProfile'
                     user={userData} 
                     friendsData={friendsData}

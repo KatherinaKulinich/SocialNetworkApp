@@ -10,6 +10,7 @@ export const SelectTag = (props: CustomTagProps) => {
         event.preventDefault();
         event.stopPropagation();
     };
+    
     return (
         <Tag
             color={theme.colors.regular}

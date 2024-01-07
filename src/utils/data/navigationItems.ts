@@ -1,8 +1,9 @@
-
 import { BsFillChatDotsFill } from 'react-icons/Bs';
 import { FaGift, FaUsers,  FaUserClock, FaEye, FaUserPlus, FaUserCircle, FaListUl } from 'react-icons/Fa';
 import { IoMdImages, IoMdSettings } from 'react-icons/Io';
 import { PiBookOpenTextFill } from 'react-icons/Pi';
+
+
 
 export const navItems = [
     {
@@ -61,3 +62,7 @@ export const navItems = [
         icon: IoMdSettings,  
     },
 ]
+
+
+export const navMobItems = ['myFeed', 'myProfile', 'myChats', 'myPhotos', 'myPosts'];
+

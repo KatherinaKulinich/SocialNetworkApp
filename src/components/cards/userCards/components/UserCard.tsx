@@ -3,31 +3,38 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { theme } from "@styles/Theme";
 import { PersonalInfo, Name, ActionsContainer, Card, Text } from './UserCard.styled'
-import { UserFullData } from "types/UserFullDataType";
 import { Avatar } from "@components/Avatar/Avatar";
 import { fetchFriends} from "rdx/slices/friendsSlice";
-// import { useUserData } from "hooks/useUserData";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { UserProfile } from "types/UserProfile";
+import { getUserAge } from "utils/getUserAge";
 
 
 interface UserCardProps {
     children: React.ReactNode,
-    user: UserFullData,
+    user: UserProfile,
 }
 
 
 
 export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
-    const { userLocation, userAvatar, userFullname, userBirthday, userId } = user;
-    const userData = useAppSelector(state => state.userData.user)
-    const{userId:myId} = userData
-
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const userData = useAppSelector(state => state.userData.user)
+    const{ userId:myId } = userData.personalData
+
+    const { userFullname, userId } = user.personalData;
+    const { userLocation, userAvatar, userBirthday } = user.profileData;
+    const { year, month, day } = userBirthday
+
+    const { friends } = user.contacts
+    const friendsIdsArray = friends.map(user => user.id)
+
+
 
     const onSaveUserData = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
-        dispatch(fetchFriends(user.friends, 'friends'))
+        dispatch(fetchFriends(friendsIdsArray, 'friends'))
 
         if (userId !== myId) {
             navigate(`/users/${userFullname}/profile`)
@@ -49,7 +56,7 @@ export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
                     {userFullname}
                 </Name>
                 <Text>
-                    {`${userBirthday.age} y.o`}
+                    {`${getUserAge(year, month, day)} y.o`}
                 </Text>
                 <Text>
                     {userLocation}

@@ -9,6 +9,7 @@ import { SelectTag } from "./SelectTag";
 import { useEditProfile } from "hooks/settings/useEditProfile";
 import { getFormFields } from "utils/getFormFields";
 import { UserProfile } from "types/UserProfile";
+import { useMyFullData } from "hooks/useMyFullData";
 
 
 interface EditingFormProps {
@@ -19,10 +20,13 @@ interface EditingFormProps {
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
     const [form] = Form.useForm();
 
-    const userData:UserProfile  = useAppSelector(state => state.userData.user)
-    const { userName} = userData.personalData;
-    const { userAvatar} = userData.profileData;
-    const { registerDate } = userData.additionalData;
+    // const userData  = useAppSelector(state => state.userData.user)
+    // console.log(userData);
+    const userData = useMyFullData()
+    
+    const { userName} = userData?.personalData;
+    const { userAvatar} = userData?.profileData;
+    const { registerDate } = userData?.additionalData;
 
     const { updateUserProfile } = useEditProfile()
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])

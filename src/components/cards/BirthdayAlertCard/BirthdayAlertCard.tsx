@@ -1,30 +1,35 @@
 import { Avatar } from "@components/Avatar/Avatar";
-import { Icon } from "../../icons/Icon";
+import { Icon } from "@components/icons/Icon";
 import { Age, BirthdayField, Card, DateField, Text, UserInfo, DateText } from "./BirthdayAlertCard.styled";
 import { HiCake } from 'react-icons/Hi'
 import { theme } from "@styles/Theme";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserFullData } from "types/UserFullDataType";
 import { getSelectedUserData } from "rdx/slices/usersSlice";
 import { useAppDispatch } from "hooks/hooks";
+import { UserProfile } from "types/UserProfile";
+import { getUserAge } from "utils/getUserAge";
 
 
 interface BirthdayAlertCardProps {
-    user: UserFullData,
+    user: UserProfile,
 }
 
 
 export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
-    const {userFullname, userAvatar, userBirthday } = user;
+    const { userFullname } = user.personalData;
+    const { userAvatar, userBirthday } = user.profileData;
     
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
-
+    
     const goToUserPage = useCallback(() => {
         navigate(`/users/${userFullname}/profile`)
         dispatch(getSelectedUserData(user))
     }, [dispatch])
+    
+    const { year, month, day, fullDate } = userBirthday
+    const userAge = getUserAge(year, month, day) + 1
 
 
     return (
@@ -37,11 +42,13 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
                 />
                 <BirthdayField>
                     <DateText>
-                        {userBirthday.fullDate}
+                        {fullDate}
                     </DateText>
                     <Text>
                         will celebrate 
-                        <Age>{userBirthday.age + 1}</Age>
+                        <Age>
+                            {userAge}
+                        </Age>
                         y.o
                     </Text>
                 </BirthdayField>

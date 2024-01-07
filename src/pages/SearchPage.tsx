@@ -14,7 +14,6 @@ import { Paragraph } from '@components/text/Paragraph';
 import { theme } from '@styles/Theme';
 import { selectOptions } from 'utils/data/profileOptions';
 import { useCallback, useEffect, useState } from 'react';
-import { UserFullData } from 'types/UserFullDataType';
 import { useSearchValues } from 'hooks/search/useSearchValues';
 import { useUsersSearch } from 'hooks/search/useUsersSearch';
 import { UserProfile } from 'types/UserProfile';
@@ -25,7 +24,6 @@ import { UserProfile } from 'types/UserProfile';
 
 
 export const SearchPage:React.FC = () => {
-
     const [filterOptions, setFilterOptions] = useState<any[]>([])
     // const [filterValue, setFilterValue] = useState('name')
     // const [searchValue, setSearchValue] = useState('')

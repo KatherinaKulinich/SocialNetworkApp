@@ -4,33 +4,32 @@ import { PostsContainer, PreviewContainer } from "./PostPreview.styled"
 import { Post } from "types/Post"
 import { UserPostCard } from "@components/cards/postsCards/UserPostCard/UserPostCard"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
-import { UserFullData } from "types/UserFullDataType"
 import { ModalComments } from "@components/popups/ModalComments/ModalComments"
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing"
 import { useAppSelector } from "hooks/hooks"
 import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { useState, useCallback } from "react"
+import { UserProfile } from 'types/UserProfile'
 
 
 
 interface PostPreviewProps {
     postOwner: 'myProfile'| 'userProfile';
-    ownerData: UserFullData;
+    ownerData: UserProfile;
 }
 
 
 
 export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) => {
-    const { posts } = ownerData;
+    const { posts } = ownerData.content;
 
     const { editMyContent } = useManageMyContent()
     const selectedPost = useAppSelector(state => state.content.selectedPost)
 
 
-
-
-
     const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
+    const [isModalComments, setIsModalComments] = useState(false)
+
     const onOpenModalEdition = useCallback(() => {
         setIsModalEditionOpen(true)
     }, [isModalEditionOpen])
@@ -38,8 +37,6 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) 
         setIsModalEditionOpen(false)
     }, [isModalEditionOpen])
 
-    
-    const [isModalComments, setIsModalComments] = useState(false)
     const onOpenModalComments = useCallback(() => {
         setIsModalComments(true)
     }, [isModalComments])

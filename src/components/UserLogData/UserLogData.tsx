@@ -7,36 +7,39 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { useEffect } from 'react';
 import { useAuth } from 'hooks/authorization/useAuth';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
-import { fetchFriends } from 'rdx/slices/friendsSlice';
+import { useMyFullData } from 'hooks/useMyFullData';
+
 
 
 
 
 export const UserLogData:React.FC = () => {
-    const userData = useAppSelector(state => state.userData.user)
-
-    const dispatch = useAppDispatch()
-    const { userId } = useAuth()
-
-
+    const userData = useMyFullData()
+    // const dispatch = useAppDispatch()
+    // const { userId } = useAuth()
     
-    useEffect(() => {
-        const getMyProfileData = () => {
-            if (userId && userData) {
-            dispatch(fetchUserFullData(userId))
-            dispatch(fetchFriends(userData))
-        }
-    }
-    getMyProfileData()
-    }, [])
     
+    
+    
+    // useEffect(() => {
+    //     const getMyProfileData = () => {
+    //         if (userId) {
+    //             dispatch(fetchUserFullData(userId))
+    //         }
+    //     }
+    //     getMyProfileData()
+    // }, [dispatch, userId])
+    
+    // const userData = useAppSelector(state => state.userData.user)
+    // const { userName, userSurname } = userData.personalData
+    // const { userAvatar } = userData.profileData
 
 
     return (
         <Container>
-            {userData?.userAvatar ? (
+            {/* {userAvatar ? (
                 <Avatar 
-                    photo={userData?.userAvatar}
+                    photo={userAvatar}
                     border={`${theme.colors.lightGray}`}
                     size={'50px'}
                 />  
@@ -49,12 +52,12 @@ export const UserLogData:React.FC = () => {
             )}
             <NameContainer>
                 <Text>
-                    {userData?.userName}
+                    {userName}
                 </Text>
                 <Text>
-                    {userData?.userSurname}
+                    {userSurname}
                 </Text>
-            </NameContainer>        
+            </NameContainer>         */}
         </Container>
     )
 }

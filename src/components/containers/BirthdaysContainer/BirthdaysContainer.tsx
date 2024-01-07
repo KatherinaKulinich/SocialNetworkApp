@@ -3,14 +3,14 @@ import { Container } from "./BirthdaysContainer.styled"
 import { BirthdayAlertCard } from "@components/cards/BirthdayAlertCard/BirthdayAlertCard";
 import { ListContainer } from "../ListContainer/ListContainer";
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
-import { UserFullData } from "types/UserFullDataType";
 import { useUsersBirthdays } from "hooks/birthdays/useUsersBirthdays";
 import { TwoTabsContainer } from "@components/tabs/TwoTabsContainer";
 import { useCallback } from "react";
+import { UserProfile } from 'types/UserProfile';
 
 
 interface BirthdaysContainerProps {
-    friendsData: UserFullData[]
+    friendsData: UserProfile[]
 }
 
 
@@ -18,13 +18,14 @@ interface BirthdaysContainerProps {
 export const BirthdaysContainer:React.FC<BirthdaysContainerProps> = ({friendsData}) => {
     const { usersThisMonth, usersNextMonth } = useUsersBirthdays(friendsData)
 
-    const getBirthdayCards = useCallback((users:UserFullData[]):JSX.Element => {
+
+    const getBirthdayCards = useCallback((users:UserProfile[]):JSX.Element => {
         return (
                     <ListContainer>
                         {users.map(user => (
                             <BirthdayAlertCard 
                                 user={user}
-                                key={user.userId}
+                                key={user.personalData.userId}
                             />
                         ))}
                     </ListContainer>
@@ -32,6 +33,7 @@ export const BirthdaysContainer:React.FC<BirthdaysContainerProps> = ({friendsDat
     }, [])
   
 
+    
     return (
         <Container>
             <TwoTabsContainer

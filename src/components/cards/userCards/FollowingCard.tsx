@@ -1,16 +1,19 @@
-import { UserFullData } from "types/UserFullDataType"
 import { UserCard } from "./components/UserCard"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from '@styles/Theme'
 import { FaUserSlash } from "react-icons/Fa"
-import { useFollowUser } from "hooks/contacts/useFollowUser"
+import { UserProfile } from "types/UserProfile"
+import { useUserSubscription } from "hooks/contacts/useUserSubscription"
 
 interface FollowingCardProps {
-    user: UserFullData,
+    user: UserProfile,
 }
 
+
+
+
 export const FollowingCard:React.FC<FollowingCardProps> = ({user}) => {
-    const { unfollowFromUser } = useFollowUser(user)
+    const { unfollowFromUser } = useUserSubscription(user)
 
     return (
         <UserCard user={user}  >
@@ -22,7 +25,7 @@ export const FollowingCard:React.FC<FollowingCardProps> = ({user}) => {
                 iconSize={"13px"} 
                 buttonType={"button"} 
                 fontWeight={600}
-                onClickHandler={(e) => unfollowFromUser(e)}
+                onClickHandler={(event) => unfollowFromUser(event)}
             />
         </UserCard>
     )

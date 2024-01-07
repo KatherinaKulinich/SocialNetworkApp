@@ -6,42 +6,46 @@ const dateFormat = 'DD/MM/YYYY';
 
 
 export const getFormFields = (user:any) => {
+    const { userName, userSurname } = user.personalData
+    const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout } = user.profileData
+
+
     const fields = [
         {
             name: ["userName"],
-            value: user.userName ? user.userName : '',
+            value: userName ? userName : '',
         },
         {
             name: ["userSurname"],
-            value: user.userSurname ? user.userSurname : '',
+            value: userSurname ? userSurname : '',
         },
         {
             name: ["userGender"],
-            value: user.userGender ? user.userGender : '',
+            value: userGender ? userGender : '',
         },
         {
             name: ["userBirthday"],
-            value: user.userBirthday && dayjs(`${user.userBirthday.fullDate}`, dateFormat),
+            value: userBirthday && dayjs(`${userBirthday.fullDate}`, dateFormat),
         },
         {
             name: ["userFamStatus"],
-            value: user.userFamStatus ? user.userFamStatus : '',
+            value: userFamStatus ? userFamStatus : '',
         },
         {
             name: ["userCity"],
-            value: user.userCity ? user.userCity : '',
+            value: userCity ? userCity : '',
         },
         {
             name: ["userCountry"],
-            value: user.userCountry ? user.userCountry : '',
+            value: userCountry ? userCountry : '',
         },
         {
             name: ["userInterests"],
-            value: user.userInterests ? user.userInterests : ['Coding'],
+            value: userInterests ? userInterests : ['Coding'],
         },
         {
             name: ["userAbout"],
-            value: user.userAbout ? user.userAbout : '',
+            value: userAbout ? userAbout : '',
         },
     ]
     return fields

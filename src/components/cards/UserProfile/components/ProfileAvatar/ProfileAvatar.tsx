@@ -1,7 +1,7 @@
-import blob1 from '../../../../../assets/images/blob1.svg';
-import blob2 from '../../../../../assets/images/blob2.svg';
-import blob3 from '../../../../../assets/images/blob3.svg';
-import blob4 from '../../../../../assets/images/blob4.svg';
+import blob1 from '@images/blob1.svg';
+import blob2 from '@images/blob2.svg';
+import blob3 from '@images/blob3.svg';
+import blob4 from '@images/blob4.svg';
 import { Image } from 'antd';
 import { AvatarBox, Avatar, Blob } from './ProfileAvatar.styled';
 

@@ -1,35 +1,35 @@
-import { Container } from "./usersContainer.styled"
 import imgNoUsers from '@images/nofriends.svg'
 import imgError from '@images/error2.svg';
+import { Container } from "./usersContainer.styled"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
 import { FriendCard } from "@components/cards/userCards/FriendCard";
 import { theme } from "@styles/Theme";
-import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useCallback, useEffect, useState } from "react";
+import { useAppSelector } from "hooks/hooks";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { CardsContainer } from "../CardsContainer/CardsContainer";
-import { UserFullData } from "types/UserFullDataType";
-import { fetchFriends } from "rdx/slices/friendsSlice";
 import { LoaderComment } from "@components/loaders/LoaderComment";
-// import { useFriendsData } from "hooks/useFriendsData";
-
+import { UserProfile } from "types/UserProfile";
 
 
 
 interface FriendsContainerProps {
     role: 'myFriends' | 'userFriends';
-    user: UserFullData;
+    user: UserProfile;
 }
 
+
+
 export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) => {
+    const { userName } = user.personalData
     
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
     const friendsData = useAppSelector(state => state.friends.friendsData)
     const isLoading = useAppSelector(state => state.friends.loading)
 
     const navigate = useNavigate()
-    const onGoToSearch = useCallback(() => {
+    const goToSearchPage = useCallback(() => {
         navigate('/search')
     },[])
 
@@ -42,9 +42,9 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
         <Container>
             {friendsData?.length > 0 && !isLoading && (
                 <CardsContainer>
-                    {friendsData.map((friend:UserFullData) => (
+                    {friendsData.map((friend:UserProfile) => (
                         <FriendCard 
-                            key={friend.userId}
+                            key={friend.personalData.userId}
                             user={friend}
                         />
                     ))}
@@ -55,7 +55,7 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
                 <Container>
                     <ImageErrorMessage
                         image={imgNoUsers} 
-                        text={role === 'myFriends' ? "You haven't added any friends yet" : `${user.userName} hasn't added any friends yet`}
+                        text={role === 'myFriends' ? "You haven't added any friends yet" : `${userName} hasn't added any friends yet`}
                     />
                     
                     {role === 'myFriends' && (
@@ -63,7 +63,7 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
                             buttonText={'Go to search'} 
                             buttonColor={theme.colors.regular} 
                             type={'button'}
-                            onClickHandler={onGoToSearch}
+                            onClickHandler={goToSearchPage}
                         />
                     )}    
                 </Container>

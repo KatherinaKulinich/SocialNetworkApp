@@ -8,7 +8,10 @@ interface MessageInputProps {
     inputValue: string;
     onChangeInputValue:React.ChangeEventHandler<HTMLInputElement>
     onSubmitText: (value:any) => void;
- }
+}
+
+
+
 
 export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onChangeInputValue, onSubmitText}) => {
     return (

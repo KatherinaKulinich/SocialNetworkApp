@@ -1,6 +1,5 @@
-
 import { SubTitle } from "@components/text/Subtitle";
-import { Container, FormTitle } from "./ProfileEditing.styled";
+import { Container } from "./ProfileEditing.styled";
 import { EditingForm } from "./components/EditingForm"
 
 

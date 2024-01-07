@@ -1,12 +1,10 @@
+import image from '@images/creating.svg'
 import { ProfileEditing } from "@components/ProfileEditing/ProfileEditing"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import image from '@images/creating.svg'
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { Wrapper } from "@components/layout/components/Wrapper/Wrapper"
-import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "hooks/hooks"
-import { fetchUserFullData } from "rdx/slices/userDataSlice"
-import { useAuth } from "hooks/authorization/useAuth"
+import { useMyFullData } from 'hooks/useMyFullData'
+
 
 
 
@@ -19,6 +17,7 @@ export const ProfileCreatingPage:React.FC = () => {
     //         dispatch(fetchUserFullData(userId))
     //     }
     // }, [dispatch, userId])
+    const userData = useMyFullData()
 
 
     return (

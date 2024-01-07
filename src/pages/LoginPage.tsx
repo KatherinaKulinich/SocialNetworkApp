@@ -9,8 +9,7 @@ import { Wrapper } from "@components/layout/components/Wrapper/Wrapper"
 
 
 export const LoginPage:React.FC = () => {
-    
-    const {width} = useWindowSize();
+    const { width } = useWindowSize();
     const [isLogin, setIsLogin] = useState(true)
 
     const onToggleLoginForm = useCallback(() => {
@@ -20,7 +19,7 @@ export const LoginPage:React.FC = () => {
         setIsLogin(false)
     }, [])
 
-    const onToogleCard = useCallback(() => {
+    const onToggleCard = useCallback(() => {
         if (isLogin) {
             onToggleSignupForm()
             return
@@ -38,7 +37,7 @@ export const LoginPage:React.FC = () => {
                 ) : (
                     <LogContainerMobile 
                         login={isLogin} 
-                        onToggleCards={onToogleCard}
+                        onToggleCards={onToggleCard}
                     />
                 )}     
             </PageContainer>

@@ -20,36 +20,37 @@ import { FollowersContainer } from '@components/containers/usersContainers/Follo
 
 
 
-export const MyFriendsPage:React.FC = () => {
+export const MyFriendsAndFollowersPage:React.FC = () => {
     const dispatch = useAppDispatch()
     const userData = useAppSelector(state => state.userData.user)
     const { userId } = useAuth()
     const friendsData = useAppSelector(state => state.friends.friendsData)
     const { usersBirthdayToday } = useUsersBirthdays(friendsData)
-
+    
     const [api, contextHolder] = notification.useNotification();
-
-
+    
+    
     const openNotification = () => {
         api.open({
             message: 'Birthday',
             description:
-                `${usersBirthdayToday.toString()} celebrate(s) birthday today!`,
+            `${usersBirthdayToday.toString()} celebrate(s) birthday today!`,
             icon: <Icon 
-                    icon={<GiGlassCelebration />} 
-                    iconSize={'30px'} 
-                    iconColor={theme.colors.regular}
-                />,
+            icon={<GiGlassCelebration />} 
+            iconSize={'30px'} 
+            iconColor={theme.colors.regular}
+            />,
             duration: 8,
         });
     };
-
+    
+    const { friends } = userData.contacts
+    const friendsIdsArray = friends.map(user => user.id)
     
     useEffect(() => {
         const getMyProfileData = () => {
             if (userId && userData) {
                 dispatch(fetchUserFullData(userId))
-                // dispatch(fetchFriends(userData.friends, 'friends'))
             }
         }
         getMyProfileData()
@@ -57,9 +58,9 @@ export const MyFriendsPage:React.FC = () => {
 
     useEffect(() => {
         if (userData) {
-            dispatch(fetchFriends(userData.friends, 'friends'))
+            dispatch(fetchFriends(friendsIdsArray, 'friends'))
         }
-    }, [userData.friends])
+    }, [friendsIdsArray])
 
     useEffect(() => {
         if (usersBirthdayToday.length > 0) {

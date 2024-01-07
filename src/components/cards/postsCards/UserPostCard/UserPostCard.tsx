@@ -1,4 +1,3 @@
-
 import { PostCard } from "../components/PostCard"
 import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent } from "./UserPostCard.styled"
 import { Avatar } from "@components/Avatar/Avatar"
@@ -25,6 +24,10 @@ interface UserPostCardProps {
     onOpenModalWithComments: () => void;
     postOwner: UserProfile;
 }
+
+
+
+
 
 export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner}) => {
     const {postOwnerName, postOwnerAvatar, postDate, postReactions, postComments, postText} = post;

@@ -10,6 +10,8 @@ interface ModalProps {
     onCloseModal: () => void;
 }
 
+
+
 export const ModalDefault:React.FC<ModalProps> = ({children, title, isModalOpen, onCloseModal}) => {
     return (
         <ModalContainer 
@@ -19,7 +21,9 @@ export const ModalDefault:React.FC<ModalProps> = ({children, title, isModalOpen,
             <ModalTitle>
                 {title}
             </ModalTitle>
+
             {children}
+            
             <CloseButton onClick={onCloseModal}>
                 <Icon 
                     icon={<MdClose/>} 

@@ -20,7 +20,7 @@ import { FriendRequestsContainer } from '@components/containers/usersContainers/
 
 
 
-export const MyFriendRequestsPage: React.FC = () => {
+export const MyRequestsAndFollowingPage: React.FC = () => {
     
     const dispatch = useAppDispatch()
     const myData = useAppSelector(state => state.userData.user)
@@ -37,12 +37,9 @@ export const MyFriendRequestsPage: React.FC = () => {
 
     useEffect(() => {
         if (myData) {
-            dispatch(fetchFriends(myData.friendRequests, 'friendRequests'))
+            dispatch(fetchFriends(myData.contacts.friendRequests, 'friendRequests'))
         }
     }, [myData])
-
-    const friendRequestsUsersData = useAppSelector(state => state.friends.friendRequestsData)
-    const errorMessage = useAppSelector(state => state.friends.errorMessage)
 
 
     return (
@@ -63,28 +60,6 @@ export const MyFriendRequestsPage: React.FC = () => {
                     <FollowingListContainer/>
                 }
             />
-
-            {/* {friendRequestsUsersData.length > 0 ? (
-                <CardsContainer>
-                    {friendRequestsUsersData.map(friend => (
-                        <RequestCard 
-                            key={friend.userId}
-                            user={friend}
-                        />
-                    ))}
-                </CardsContainer>
-            ) : (
-                <ImageErrorMessage
-                    image={imgNoUsers} 
-                    text="No one has sent you a friend request"
-                />
-            )}
-            {errorMessage !== '' && (
-                <ImageErrorMessage
-                    image={imgError} 
-                    text="Something went wrong...Please, try later"
-                />
-            )}  */}
         </PageContainer>
     )
 }

@@ -24,6 +24,8 @@ const userDataSlice = createSlice({
     reducers: {
         getUserInfo(state, action: PayloadAction<UserProfile>) {
             state.user = action.payload;
+            console.log(state.user);
+            
         },
         getErrorMessage(state, action: PayloadAction<string>) {
             state.error = action.payload
@@ -35,13 +37,19 @@ const userDataSlice = createSlice({
 
 
 export const fetchUserFullData = (userId: string) => {
+    console.log('!!!!!!!!');
+    
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>, getState:() => RootState) => {
 
         try {
             const docRef = doc(db, "users", userId);
+            console.log(docRef);
+            
             const docSnap = await getDoc(docRef);
+            console.log(docSnap.data());
             
             if (docSnap.exists()) {
+                
                 dispatch(getUserInfo(docSnap.data() as UserProfile))            
             }
         } catch (error: unknown) {

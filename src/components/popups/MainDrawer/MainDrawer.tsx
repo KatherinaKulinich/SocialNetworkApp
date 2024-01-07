@@ -1,4 +1,4 @@
-
+import drawerImage from '@images/drawer.svg';
 import { UserLogData } from "@components/UserLogData/UserLogData";
 import { Drawer } from "../Drawer"
 import { Link } from "@components/navigation/NavDesktop/NavDesktop.styled";
@@ -6,8 +6,7 @@ import { Icon } from "@components/icons/Icon";
 import { Created } from "@components/layout/components/Footer/components/Created/Created";
 import { Copyright } from "@components/layout/components/Footer/components/Copyright/Copyright";
 import { DrawerContainer, SubContainer, LoginContainer, DrawerFooter, Image, Links } from "./MainDrawer.styled";
-import drawerImage from '@images/drawer.svg';
-import { navItems } from "utils/data/navigationItems";
+import { navItems, navMobItems } from "utils/data/navigationItems";
 import { LogOutButton } from "@components/buttons/LogOutButton";
 
 interface MainDrawerProps {
@@ -16,11 +15,11 @@ interface MainDrawerProps {
     onClose: () => void;
 }
 
+
+
 export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose}) => {
 
-    const navMobItems = ['myFeed', 'myProfile', 'myChats', 'myPhotos', 'myPosts'];
     const links = navItems.filter((item:any) => !navMobItems.includes(item.value))
-
     
 
     return (

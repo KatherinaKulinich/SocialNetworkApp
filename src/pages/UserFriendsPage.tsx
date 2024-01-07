@@ -1,4 +1,5 @@
 import img from '@images/friendFriends.svg';
+import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
@@ -8,7 +9,6 @@ import { useCallback, useEffect } from 'react';
 import { TextIconButton } from '@components/buttons/TextIconButton/TextIconButton';
 import { theme } from '@styles/Theme';
 import { MdDoubleArrow } from 'react-icons/Md';
-import styled from 'styled-components';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 
 
@@ -20,9 +20,11 @@ export const UserFriendsPage:React.FC = () => {
     const dispatch = useAppDispatch()
 
     const user = useAppSelector(state => state.users.selectedUser)
-    const { userFullname, userName } = user;
+    const { userFullname, userName } = user.personalData;
+    const { friends } = user.contacts
+    const friendsIdsArray = friends.map(user => user.id)
 
-    const onGoToProfile = useCallback(() => {
+    const goToUserProfilePage = useCallback(() => {
         navigate(`/users/${userFullname}/profile`)
     },[])
 
@@ -30,7 +32,7 @@ export const UserFriendsPage:React.FC = () => {
     useEffect(() => {
         const getUserProfileData = () => {
             if (user) {
-                dispatch(fetchFriends(user.friends, 'friends'))
+                dispatch(fetchFriends(friendsIdsArray, 'friends'))
             }
         }
         getUserProfileData()
@@ -53,7 +55,7 @@ export const UserFriendsPage:React.FC = () => {
                     iconSize={"30px"} 
                     buttonType={"button"}
                     fontWeight={600}
-                    onClickHandler={onGoToProfile}
+                    onClickHandler={goToUserProfilePage}
                 />
             </ButtonBox>
             <FriendsContainer

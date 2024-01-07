@@ -1,19 +1,16 @@
 import { theme } from "@styles/Theme";
-import { Icon } from "../../icons/Icon";
+import { Icon } from "@components/icons/Icon";
 import { Card, Comments, Content, CardImage, PhotoDescription,  Actions, Action, Text } from "./PhotoCard.styled"
 import { BsSuitHeart, BsSuitHeartFill } from 'react-icons/Bs'
 import { FaRegEdit} from 'react-icons/Fa'
 import { RiDeleteBinLine } from 'react-icons/Ri'
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Photo } from "types/Photo";
 import { Popconfirm } from "antd";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-// import { useUserData } from "hooks/useUserData";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
-import { usePhotosLikes } from "hooks/content/usePhotosLikes";
-import { UserFullData } from "types/UserFullDataType";
-import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction";
+
 
 interface PhotoCardProps {
     photo: Photo;
@@ -31,12 +28,10 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
     const { photoUrl, photoDescription, photoLikes, photoComments } = photo;
 
     const userData = useAppSelector(state => state.userData.user)
-    const {photos} = userData
+    const { photos } = userData.content
     
     const dispatch = useAppDispatch()
     const { deleteMyContent } = useManageMyContent()
-
-
 
 
     const onOpenModalEditing = useCallback(() => {
@@ -59,7 +54,6 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
     return (
         <Card>
             <CardImage src={photoUrl}/>
-
             <Content>
                 { owner === 'me' && (
                     <Actions>

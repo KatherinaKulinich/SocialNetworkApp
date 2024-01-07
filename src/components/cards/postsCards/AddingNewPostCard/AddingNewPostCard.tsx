@@ -1,17 +1,17 @@
+import image from '@images/newPost.svg'
 import { SubTitle } from "@components/text/Subtitle"
 import { PostCard } from "../components/PostCard"
 import { CreatingPostField, TextField, CardImage, Wrap } from "./AddingNewPostCard.styled"
-import image from '@images/newPost.svg'
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from "@styles/Theme"
 import { GiCheckMark } from "react-icons/gi"
 import { useCallback, useState } from "react"
-import { useManageMyContent } from "hooks/content/useManageMyContent"
+import { useCreateNewContent } from 'hooks/content/useCreateNewContent'
 
 
 
 export const AddingNewPostCard:React.FC = () => {
-    const { addNewPost } = useManageMyContent()
+    const { addNewPost } = useCreateNewContent()
     const [postText, setPostText] = useState('')
 
     const onChangePostText:React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((event) => {

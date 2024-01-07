@@ -1,19 +1,15 @@
+import user1 from '@images/userTest.jpg'
+import user2 from '@images/user2.jpg'
+import emptyChat from '@images/emptyChat.svg'
 import { ChatHeader } from "../components/ChatHeader/ChatHeader"
 import { MessageInput } from "../components/MessageInput/MessageInput"
 import { Message } from "../components/Message/Message"
-import user1 from '@images/userTest.jpg'
-import user2 from '@images/user2.jpg'
 import { useCallback, useEffect, useState } from "react"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
-import emptyChat from '@images/emptyChat.svg'
 import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text } from "./Chat.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { backgrounds } from "utils/data/backgrounds"
 import { useAppSelector } from "hooks/hooks"
-// import { useUserData } from "hooks/useUserData"
-
-
-
 
 
 
@@ -21,10 +17,10 @@ import { useAppSelector } from "hooks/hooks"
 
 export const Chat:React.FC = () => {
     const [messages, setMessages] = useState(['1'])
-
     const [bgUrl, setBgUrl] = useState('')
+
     const userData = useAppSelector(state => state.userData.user)
-    const { chatBackground } = userData
+    const { chatBackground } = userData.additionalData
 
     const getUserBgImage = useCallback(() => {
         backgrounds.map((img) => {
@@ -34,13 +30,21 @@ export const Chat:React.FC = () => {
         })
     }, [backgrounds, chatBackground, bgUrl])
 
+
     useEffect(() => {
         getUserBgImage()
     }, [backgrounds, chatBackground, bgUrl])
+
+    const [messageValue, setMessageValue] = useState('')
+    const onChangeMessageValue:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+        setMessageValue(event.target.value)
+    }, [])
+
+    const sendNewMessage = useCallback(() => {}, [])
+
     
  
     
-
     return (
         <Container>
             <ChatHeader/>
@@ -97,7 +101,12 @@ export const Chat:React.FC = () => {
                     </EmptyChatMessage>
                 )}
             </ContainerBackground>
-            <MessageInput role="message"/>
+            <MessageInput 
+                role="message" 
+                inputValue={messageValue} 
+                onChangeInputValue={onChangeMessageValue} 
+                onSubmitText={sendNewMessage}
+            />
         </Container>
     )
 }

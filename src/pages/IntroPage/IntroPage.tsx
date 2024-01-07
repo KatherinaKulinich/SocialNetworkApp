@@ -20,7 +20,7 @@ import { Wrapper } from '@components/layout/components/Wrapper/Wrapper';
 export const IntroPage:React.FC = () => {
     const navigate = useNavigate();
 
-    const onGoToLogin = useCallback(() => {
+    const goToLoginPage = useCallback(() => {
         navigate('/login')
     }, [])
 
@@ -55,7 +55,7 @@ export const IntroPage:React.FC = () => {
                     <RegularButton 
                         buttonText='Log in | Sign up' 
                         buttonType='button'
-                        onClickHandler={onGoToLogin}
+                        onClickHandler={goToLoginPage}
                     />
                     <Image src={startImg}/>
                 </PageContainer>

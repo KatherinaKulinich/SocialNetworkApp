@@ -9,6 +9,7 @@ import { db, firebaseApp } from "firebase";
 import { getRandomAvatar } from "utils/getRandomAvatar";
 import { createUserProfile } from "utils/createUserProfile";
 import { changePhotoSize } from "utils/changePhotoSize";
+import { fetchUserFullData } from "rdx/slices/userDataSlice";
 
 
 
@@ -55,19 +56,20 @@ export const useFirebaseAuth = () => {
 
     const onLoginHandler = useCallback((email:string, password:string) => {
         signInWithEmailAndPassword(auth, email, password)
-        .then(({user}) => {
+        .then(async ({user}) => {
             dispatch(setUser({
                 userEmail: user.email,
                 userId: user.uid,
                 userPassword: user.refreshToken,
             }));
+            dispatch(fetchUserFullData(user.uid))
             navigate('/myProfile')
         })
         .catch((error) => {
             message.info(error.message, 5)
             message.error(error.code, 5)
         });
-    }, [])
+    }, [dispatch])
 
 
 

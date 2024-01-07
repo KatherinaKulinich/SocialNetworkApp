@@ -6,6 +6,8 @@ import { IconButton } from "@components/buttons/IconButton/IconButton";
 import { Link } from "react-router-dom";
 import { Avatar } from "@components/Avatar/Avatar";
 
+
+
 export const ChatHeader:React.FC = () => {
     return (
         <Container>

@@ -4,17 +4,20 @@ import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
 import { SubTitle } from "@components/text/Subtitle";
 import { backgrounds } from "utils/data/backgrounds";
 import { useAppSelector } from "hooks/hooks";
-import { useEditProfile } from "hooks/settings/useEditProfile";
+import { useChatSettings } from "hooks/settings/useChatSettings";
+
+
 
 
 
 export const ChatBackground:React.FC = () => {
     const [form] = Form.useForm();
-    const { chatBackground } = useAppSelector(state => state.userData.user)
-    const { updateChatBackground } = useEditProfile();
+    const { updateChatBackground } = useChatSettings();
+
+    const userData = useAppSelector(state => state.userData.user)
+    const { chatBackground } = userData.additionalData
+
     
-
-
     return (
         <Container>
             <SubTitle text='Choose a background for chats'/>

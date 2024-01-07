@@ -1,21 +1,20 @@
 import img from '@images/friendprofile.svg';
+import { useEffect, useCallback } from 'react';
 import { styled } from "styled-components";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
-import { UserProfile } from "@components/cards/UserProfile/UserProfile"
+import { UserProfileCard } from "@components/cards/UserProfile/UserProfileCard"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton";
 import { theme } from "@styles/Theme";
 import { useNavigate } from "react-router-dom";
 import { BsFillChatSquareHeartFill } from 'react-icons/Bs'
-import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { UserFullData } from "types/UserFullDataType";
-import { useFollowUser } from "hooks/contacts/useFollowUser";
 import { fetchFriends } from "rdx/slices/friendsSlice";
 import { useCheckUserStatus } from 'hooks/contacts/useCheckUserStatus';
 import { useAuth } from 'hooks/authorization/useAuth';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
-import React from 'react';
+import { useFriendshipWithUser } from 'hooks/contacts/useFriendshipWithUser';
+import { UserProfile } from 'types/UserProfile';
 
 
 
@@ -27,10 +26,14 @@ export const UserProfilePage:React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const { userId:id } = useAuth()
-    const user:UserFullData = useAppSelector(state => state.users.selectedUser);
-    const { userFullname, userName, userId, friends } = user;
     const { buttonText, buttonIcon: ButtonIcon, isButtonDisabled } = useCheckUserStatus()
 
+    const user:UserProfile = useAppSelector(state => state.users.selectedUser);
+    const { userFullname, userName, userId } = user.personalData;
+
+    const { friends } = user.contacts
+    const friendsIdsArray = friends.map(user => user.id)
+    
     
     useEffect(() => {
         if (id) {
@@ -39,19 +42,19 @@ export const UserProfilePage:React.FC = () => {
     }, [dispatch, id])
     
     
-    const onGoToChat = useCallback(() => {
+    const goToChatWithUser = useCallback(() => {
         navigate(`/myChats/${userFullname}/chat`)
     },[])
     
     
     useEffect(() => {
         if (user) {
-            dispatch(fetchFriends(user.friends, 'friends'))
+            dispatch(fetchFriends(friendsIdsArray, 'friends'))
         }
     }, [dispatch, user])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
-    const { interactWithUser } = useFollowUser(user)
+    const { interactWithUser } = useFriendshipWithUser(user)
 
 
     return (
@@ -81,11 +84,11 @@ export const UserProfilePage:React.FC = () => {
                     iconSize={"24px"} 
                     buttonType={"button"}
                     fontWeight={600}
-                    onClickHandler={onGoToChat}
+                    onClickHandler={goToChatWithUser}
                 />
             </Actions>
             {Object.keys(user).length !== 0 && (
-                <UserProfile
+                <UserProfileCard
                     role='userProfile'
                     user={user}
                     friendsData={friendsData} 

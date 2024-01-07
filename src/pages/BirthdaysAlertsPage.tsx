@@ -9,13 +9,16 @@ import { useEffect } from "react";
 
 
 export const BirthDaysAlertsPage:React.FC = () => {
-    const userData = useAppSelector(state => state.userData.user)
     const dispatch = useAppDispatch()
+
+    const userData = useAppSelector(state => state.userData.user)
+    const { friends } = userData.contacts
+    const friendsIdsArray = friends.map(user => user.id)
     
     
     useEffect(() => {
         if (userData) {
-            dispatch(fetchFriends(userData.friends, 'friends'))
+            dispatch(fetchFriends(friendsIdsArray, 'friends'))
         }
     }, [dispatch, userData])
     

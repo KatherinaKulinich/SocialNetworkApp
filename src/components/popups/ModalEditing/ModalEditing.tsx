@@ -3,11 +3,10 @@ import { ModalDefault } from "../ModalDefault/ModalDefault"
 import { Container, TextField } from "./ModalEditing.styled";
 import { theme } from "@styles/Theme";
 import { useCallback, useEffect, useState } from "react";
-import { useAppSelector } from "hooks/hooks";
 import { Photo } from "types/Photo";
 import { Post } from "types/Post";
 
-type EditableObject = Post | Photo
+
 
 interface ModalEditingProps {
     isModalOpen: boolean;
@@ -16,6 +15,7 @@ interface ModalEditingProps {
     selectedObject: Post | Photo;
     currentValue: string;
 }
+
 
 
 export const ModalEditing:React.FC<ModalEditingProps> = ({isModalOpen, onCloseModal, onEditContent, selectedObject, currentValue}) => {

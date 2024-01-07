@@ -15,6 +15,7 @@ interface TwoTabsContainerProps {
 export const TwoTabsContainer:React.FC<TwoTabsContainerProps> = ({firstTabName, secondTabName, firstTabContent, secondTabContent}) => {
 
     const [value, setValue] = useState(0);
+    
     const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
         event.preventDefault()
         setValue(newValue);

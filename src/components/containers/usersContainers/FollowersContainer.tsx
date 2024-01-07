@@ -1,11 +1,11 @@
+import imgError from '@images/error2.svg';
+import imgNoUsers from '@images/nofriends.svg'
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { useAuth } from "hooks/authorization/useAuth"
 import { fetchFriends } from "rdx/slices/friendsSlice"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { useEffect } from "react"
 import { Container } from "./usersContainer.styled"
-import imgError from '@images/error2.svg';
-import imgNoUsers from '@images/nofriends.svg'
 import { FriendCard } from "@components/cards/userCards/FriendCard"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
 import { CardsContainer } from "../CardsContainer/CardsContainer"
@@ -30,7 +30,7 @@ export const FollowersContainer:React.FC = () => {
 
     useEffect(() => {
         if (myData) {
-            dispatch(fetchFriends(myData.followers, 'followers'))
+            dispatch(fetchFriends(myData.contacts.followers, 'followers'))
         }
     }, [myData])
 
@@ -45,7 +45,7 @@ export const FollowersContainer:React.FC = () => {
                 <CardsContainer>
                     {followersData.map(user => (
                         <FriendCard 
-                            key={user.userId}
+                            key={user.personalData.userId}
                             user={user}
                         />
                     ))}

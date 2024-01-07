@@ -5,26 +5,27 @@ import { theme } from "@styles/Theme";
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
 import { Form, UploadFile } from "antd";
 import { useCallback, useState } from "react";
-// import { useMyPhotos } from "hooks/useMyPhotos";
-import { useManageMyContent } from "hooks/content/useManageMyContent";
 import { useAppSelector } from "hooks/hooks";
-// import { useUserData } from "hooks/useUserData";
+import { useCreateNewContent } from "hooks/content/useCreateNewContent";
+
 
 interface ModalAddingPhotoProps {
     isModalOpen: boolean;
     onCloseModal: () => void;
 }
 
+
+
 export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, onCloseModal}) => {
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
     const [form] = Form.useForm();
-    const userData = useAppSelector(state => state.userData.user)
-    // const { userData } = useUserData()
-    const { addNewPhoto } = useManageMyContent()
+    const { addNewPhoto } = useCreateNewContent()
+
 
     const onChangeImg = ({fileList: newFileList}:any) => {
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
     }
+
 
     const saveNewPhoto = useCallback(async (values:any) => {
         onCloseModal()

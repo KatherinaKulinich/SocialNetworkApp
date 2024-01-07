@@ -1,22 +1,20 @@
-import { UserFullData } from "types/UserFullDataType"
 import { UserCard } from "./components/UserCard"
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton"
 import { theme } from "@styles/Theme"
 import { FaUserTimes, FaUserCheck } from "react-icons/Fa"
-import { useFollowUser } from "hooks/contacts/useFollowUser"
-import { useAppDispatch } from "hooks/hooks"
-import { useCallback } from "react"
+import { UserProfile } from "types/UserProfile"
+import { useUserSubscription } from "hooks/contacts/useUserSubscription"
 
 
 interface RequestCardProps {
-    user: UserFullData,
+    user: UserProfile,
 }
 
-export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
-    const { acceptFriendRequest, deleteFriendRequest } = useFollowUser(user)
-    const dispatch = useAppDispatch()
 
-    
+
+
+export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
+    const { acceptFriendRequest, deleteFriendRequest } = useUserSubscription(user)
 
 
     return (

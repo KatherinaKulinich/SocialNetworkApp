@@ -9,8 +9,8 @@ import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components"
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { UserFullData } from "types/UserFullDataType";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { UserProfile } from 'types/UserProfile';
 
 
 
@@ -20,10 +20,11 @@ export const UserPhotosPage:React.FC = () => {
     // const dispatch = useAppDispatch()
     const userData = useAppSelector(state => state.userData.user)
 
-    const user:UserFullData = useAppSelector(state => state.users.selectedUser);
-    const { userFullname, userName, photos, userId } = user;
+    const user:UserProfile = useAppSelector(state => state.users.selectedUser);
+    const { userFullname, userName, userId } = user.personalData;
+    const { photos } = user.content
     
-    const onGoToProfile = useCallback(() => {
+    const goToUserProfilePage = useCallback(() => {
         navigate(`/users/${userFullname}/profile`)
     },[])
     
@@ -55,7 +56,7 @@ export const UserPhotosPage:React.FC = () => {
                     iconSize={"30px"} 
                     buttonType={"button"}
                     fontWeight={600}
-                    onClickHandler={onGoToProfile}
+                    onClickHandler={goToUserProfilePage}
                 />
             </ButtonBox>
             <PhotosContainer

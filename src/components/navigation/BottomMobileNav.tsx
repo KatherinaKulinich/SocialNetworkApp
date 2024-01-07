@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { theme } from '@styles/Theme';
 import styled from 'styled-components';
-import { navItems } from "utils/data/navigationItems";
+import { navItems, navMobItems } from "utils/data/navigationItems";
 
 
 
@@ -20,7 +20,6 @@ const Link = styled(NavLink)`
 
 
 export const BottomMobileNav:React.FC = () => {
-    const navMobItems = ['myFeed', 'myProfile', 'myChats', 'myPhotos', 'myPosts'];
     const links = navItems.filter((item:any) => navMobItems.includes(item.value))
 
     const [value, setValue] = React.useState(0);
