@@ -17,7 +17,7 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     const { isFriend, isFollower, isRequest} = useCheckUserStatus()
 
     // const { userId } = user?.personalData ?? ''
-    const userId = user.personalData.userId    
+    const userId = user.personalData.userId     
     const { 
         friends: userFriends, 
         friendRequests: userFriendRequests, 

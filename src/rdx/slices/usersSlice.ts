@@ -180,7 +180,7 @@ export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
                     let users: UserProfile[] = [];
 
                     querySnapshot.forEach((doc) => {
-                        if (doc.data().userId !== myId) {
+                        if (doc.data().personalData.userId !== myId) {
                             users.push(doc.data() as UserProfile)
                         }
                     });

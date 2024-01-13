@@ -53,6 +53,11 @@ export const SearchPage:React.FC = () => {
         onChangeSearchValue 
     } = useSearchValues()
 
+    console.log(filterValue, searchValue, inputValue);
+    console.log(filterOptions);
+    
+    
+
     const {
         loading, 
         randomUsers, 

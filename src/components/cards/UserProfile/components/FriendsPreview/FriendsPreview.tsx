@@ -58,15 +58,9 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
 
     const [friendsAvatarsForPreview, setFriendsAvatarsForPreview] = useState<UserProfile[]>([])
 
-
-    //??? friends box changes every post reaction
     useEffect(() => {
-        // if (friendsData)  {
-            
-            // }
-        console.log('friendsDATA',friendsData);
         setFriendsAvatarsForPreview(friendsData)
-    }, [friends, friendsAvatarsForPreview, friendsData])
+    }, [])
  
 
     return (

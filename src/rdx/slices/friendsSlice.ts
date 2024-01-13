@@ -38,17 +38,7 @@ const friendsSlice = createSlice({
     initialState,
     reducers: {
         getFriendsData(state, action: PayloadAction<UserProfile[]>) {
-            // state.loading = true
-            // console.log(state.loading);
-            state.friendsData = action.payload 
-            console.log('state',state.friendsData);
-            // console.log('2',state.friendsData);
-            // if (state.friendsData.length > 0) {
-
-            //     state.loading = false
-            // }
-            // console.log(state.loading);
-            
+            state.friendsData = action.payload   
         },
         getFollowingListData(state, action: PayloadAction<UserProfile[]>) {
             state.followingListData = action.payload
@@ -63,17 +53,8 @@ const friendsSlice = createSlice({
             state.errorMessage = action.payload
             state.loading = false
         },
-        // getLoading(state) {
-        //     // state.loading = action.payload
-        //     state.loading = state.friendsData.length > 0 ? false : true
-        //     // console.log(state.loading);
-            
-        // }
         getLoading(state, action: PayloadAction<boolean>) {
             state.loading = action.payload
-            // state.loading = state.friendsData.length > 0 ? false : true
-            // console.log(state.loading = state.friendsData.length > 0 ? false : true);
-            
         }
     }
 })
@@ -95,34 +76,24 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
 
         dispatch(getLoading(true))
         try {
-            // dispatch(getLoading())
-
-            if (usersIds.length === 0) return
-            
             if (usersIds.length > 0) {
-                console.log('222', usersIds);
-                
+
                 usersIds.forEach(async (id) => {
-                    console.log('33id', id);
                     const ref = doc(db, 'users', id)
                     
                     const docSnap = await getDoc(ref)
                     const user = docSnap.data() as UserProfile
 
                     if (key === 'friends') {
-                        // friends.push(user)
                         friends = [...friends, user]
                         dispatch(getFriendsData(friends)) 
                     } else if (key === 'followingList') {
                         followingList = [...followingList, user]
-                        // followingList.push(user)
                         dispatch(getFollowingListData(followingList)) 
                     } else if (key === 'friendRequests') {
-                        // friendRequests.push(user)
                         friendRequests = [...friendRequests, user]
                         dispatch(getFriendRequestData(friendRequests)) 
                     } else if (key === 'followers') {
-                        // followers.push(user)
                         followers = [...followers, user]
                         dispatch(getFriendRequestData(followers)) 
                     } else {

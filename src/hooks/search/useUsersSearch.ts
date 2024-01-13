@@ -10,8 +10,8 @@ import { UserProfile } from "types/UserProfile";
 export const useUsersSearch = (filterValue:string, inputValue:string, searchValue:string) => {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.userData.user)
-    const { userId, userFullname } = userData?.personalData;
-    const { userCity, userCountry } = userData?.profileData;
+    const { userId, userFullname } = userData?.personalData ?? {}
+    const { userCity, userCountry } = userData?.profileData ?? {}
 
     useEffect(() => {
         dispatch(fetchUsersOptions(userFullname))
@@ -55,16 +55,17 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
         setFilteredUsers([])
 
         if (inputValue === searchValue) {
+
             if (filterValue === 'name') {
-                dispatch(fetchFilteredUsers('userFullname', searchValue, userId))
+                dispatch(fetchFilteredUsers('personalData.userFullname', searchValue, userId))
                 return
             }
             if (filterValue === 'location') {
-                dispatch(fetchFilteredUsers('userLocation', searchValue, userId))
+                dispatch(fetchFilteredUsers('profileData.userLocation', searchValue, userId))
                 return
             }
             if (filterValue === 'interests') {
-                dispatch(fetchFilteredUsers('userInterests', searchValue, userId))
+                dispatch(fetchFilteredUsers('profileData.userInterests', searchValue, userId))
                 return
             }
         }
