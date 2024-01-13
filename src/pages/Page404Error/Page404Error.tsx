@@ -11,7 +11,7 @@ import { Container, Image } from './Page404Error.styled';
 export const Page404Error:React.FC = () => {
     const navigate = useNavigate();
 
-    const onGoToHomepage = useCallback(() => {
+    const goToHomepage = useCallback(() => {
         navigate('myProfile')
     }, [])
 
@@ -24,7 +24,7 @@ export const Page404Error:React.FC = () => {
             <RegularButton 
                 buttonText='Go to profile'
                 buttonType='button' 
-                onClickHandler={onGoToHomepage}
+                onClickHandler={goToHomepage}
             />
         </PageContainer>
     )

@@ -54,7 +54,7 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) 
             />
             <PostsContainer>
                 {posts?.length > 0 ? (
-                    posts.map((postItem:Post) => (
+                    posts?.map((postItem:Post) => (
                         <UserPostCard 
                             owner={postOwner}
                             post={postItem}

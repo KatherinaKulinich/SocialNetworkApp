@@ -21,14 +21,14 @@ interface UserProfileProps {
 
 
 export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
-    const { userName, userFullname } = user.personalData;
-    const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user.profileData;
-    const { friends } = user.contacts;
+    const { userName, userFullname } = user?.personalData;
+    const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user?.profileData ?? {}
+    const { friends } = user?.contacts ?? {}
 
-    // const { year, month, day, fullDate } = userBirthday
-    // const userAge = getUserAge(year, month, day);
+    const { year, month, day, fullDate } = userBirthday ?? {}
+    const userAge = getUserAge(year, month, day);
 
-    const linkToFriendsPage = role === 'myProfile' ? '/myFriends' : `/users/${userFullname}/friends`
+    const linkToFriendsPage = role === 'myProfile' ? '/myFriendsAndFollowers' : `/users/${userFullname}/friends`
     const linkToPhotosPage = role === 'myProfile' ? '/myPhotos' : `/users/${userFullname}/photos`
         
 
@@ -43,7 +43,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                     </Name>
                     <Field>
                         <Subtitle> age: </Subtitle>
-                        {/* <RegularText> {userAge} y.o. </RegularText> */}
+                        <RegularText> {userAge} y.o. </RegularText>
                     </Field>
                     <Field>
                         <Subtitle> gender: </Subtitle>
@@ -71,12 +71,12 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                         itemValue={userFamStatus || 'no data'}
                         direction='row'
                     />
-                    {/* <DataItem 
+                    <DataItem 
                         icon={<FaBirthdayCake/>} 
                         itemName={'Birthday'} 
                         itemValue={fullDate}
                         direction='row'
-                    /> */}
+                    />
                 </Box>
                 <Box>
                     <DataItem 

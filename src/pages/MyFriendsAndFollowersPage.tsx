@@ -14,6 +14,9 @@ import { Icon } from '@components/icons/Icon';
 import { theme } from '@styles/Theme';
 import { TwoTabsContainer } from '@components/tabs/TwoTabsContainer';
 import { FollowersContainer } from '@components/containers/usersContainers/FollowersContainer';
+import { Friend } from 'types/UserProfile';
+import { BirthdayNotification } from '@components/popups/BirthdayNotification';
+import { useMyFullData } from 'hooks/useMyFullData';
 
 
 
@@ -22,51 +25,35 @@ import { FollowersContainer } from '@components/containers/usersContainers/Follo
 
 export const MyFriendsAndFollowersPage:React.FC = () => {
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(state => state.userData.user)
     const { userId } = useAuth()
+
+    // const userData = useAppSelector(state => state.userData.user)
     const friendsData = useAppSelector(state => state.friends.friendsData)
+
     const { usersBirthdayToday } = useUsersBirthdays(friendsData)
-    
-    const [api, contextHolder] = notification.useNotification();
-    
-    
-    const openNotification = () => {
-        api.open({
-            message: 'Birthday',
-            description:
-            `${usersBirthdayToday.toString()} celebrate(s) birthday today!`,
-            icon: <Icon 
-            icon={<GiGlassCelebration />} 
-            iconSize={'30px'} 
-            iconColor={theme.colors.regular}
-            />,
-            duration: 8,
-        });
-    };
-    
-    const { friends } = userData.contacts
-    const friendsIdsArray = friends.map(user => user.id)
-    
-    useEffect(() => {
-        const getMyProfileData = () => {
-            if (userId && userData) {
-                dispatch(fetchUserFullData(userId))
-            }
-        }
-        getMyProfileData()
-    }, [])
+    const userData = useMyFullData()
 
-    useEffect(() => {
-        if (userData) {
-            dispatch(fetchFriends(friendsIdsArray, 'friends'))
-        }
-    }, [friendsIdsArray])
+    
+    // const { friends } = userData.contacts
+    // const friendsIdsArray = friends.map((user:Friend) => user.id)
+    
+    // useEffect(() => {
+    //     const getMyProfileData = () => {
+    //         if (userId && userData) {
+    //             dispatch(fetchUserFullData(userId))
+    //         }
+    //     }
+    //     getMyProfileData()
+    // }, [])
 
-    useEffect(() => {
-        if (usersBirthdayToday.length > 0) {
-            openNotification()
-        }
-    }, [usersBirthdayToday])
+    // useEffect(() => {
+    //     if (userData) {
+    //         dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    //     }
+    // }, [])
+
+
+    const birthdaysNotificationText = `${usersBirthdayToday.toString()} celebrate(s) birthday today!`
 
     
 
@@ -91,7 +78,9 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
                     <FollowersContainer/>
                 }
             />
-            {contextHolder}
+            {usersBirthdayToday.length > 0 && (
+                <BirthdayNotification text={birthdaysNotificationText}/>
+            )}
         </PageContainer>
     )
 }

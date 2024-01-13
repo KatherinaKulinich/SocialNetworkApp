@@ -20,8 +20,8 @@ interface SearchUserCardProps {
 export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const dispatch = useAppDispatch();
 
-    const { userFullname, userId } = user.personalData;
-    const { userAvatar, userBirthday, userLocation, userInterests } = user.profileData;
+    const { userFullname, userId } = user?.personalData;
+    const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData;
 
     const getUserProfile = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
@@ -51,7 +51,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                             iconColor={theme.colors.mediumGray}
                         /> 
                         <Text>
-                            {`${getUserAge(userBirthday.year, userBirthday.month, userBirthday.day)} y.o.`}
+                            {`${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.`}
                         </Text>
                     </Flex>
                     <Flex>

@@ -1,27 +1,31 @@
 import dayjs from "dayjs";
 
-const dateFormat = 'DD/MM/YYYY';
+
+export const dateFormat = 'DD/MM/YYYY';
 
 
 
 
 export const getFormFields = (user:any) => {
-    const { userName, userSurname } = user.personalData
-    const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout } = user.profileData
+    const { userName, userSurname } = user?.personalData ?? {}
+    const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout } = user?.profileData ?? {}
 
+    
+
+    
 
     const fields = [
         {
             name: ["userName"],
-            value: userName ? userName : '',
+            value: userName || '',
         },
         {
             name: ["userSurname"],
-            value: userSurname ? userSurname : '',
+            value: userSurname || '',
         },
         {
             name: ["userGender"],
-            value: userGender ? userGender : '',
+            value: userGender || '',
         },
         {
             name: ["userBirthday"],
@@ -29,23 +33,23 @@ export const getFormFields = (user:any) => {
         },
         {
             name: ["userFamStatus"],
-            value: userFamStatus ? userFamStatus : '',
+            value: userFamStatus || '',
         },
         {
             name: ["userCity"],
-            value: userCity ? userCity : '',
+            value: userCity || '',
         },
         {
             name: ["userCountry"],
-            value: userCountry ? userCountry : '',
+            value: userCountry || '',
         },
         {
             name: ["userInterests"],
-            value: userInterests ? userInterests : ['Coding'],
+            value: userInterests.length > 0 ? userInterests : ['Coding'],
         },
         {
             name: ["userAbout"],
-            value: userAbout ? userAbout : '',
+            value: userAbout || '',
         },
     ]
     return fields

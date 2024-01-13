@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useState } from "react"
 import { UserProfile } from "types/UserProfile"
 import { useAppSelector } from "../hooks";
+import { useMyFullData } from "hooks/useMyFullData";
 
 
 
 
 
 export const useUsersBirthdays = (usersProfileData:UserProfile[]) => {
-    const myData:UserProfile  = useAppSelector(state => state.userData.user);
-    const { month, day} = myData.profileData.userBirthday
+    // const myData:UserProfile  = useAppSelector(state => state.userData.user);
+    const myData = useMyFullData()
+    const month= myData?.profileData?.userBirthday?.month
+    const day = myData?.profileData?.userBirthday?.day
 
     const [usersThisMonth, setUsersThisMonth] = useState<UserProfile[]>([])
     const [usersNextMonth, setUsersNextMonth] = useState<UserProfile[]>([])
@@ -25,7 +28,7 @@ export const useUsersBirthdays = (usersProfileData:UserProfile[]) => {
         setUsersNextMonth([])
 
         usersArray.map(user => {
-            const { userBirthday } = user.profileData;
+            const { userBirthday } = user?.profileData;
 
             if (userBirthday.month === currentMonth && userBirthday.day >= currentDay) {
                 setUsersThisMonth(prev => [...prev, user])
@@ -47,8 +50,8 @@ export const useUsersBirthdays = (usersProfileData:UserProfile[]) => {
         setUsersBirthdayToday([])
 
         users.map(user => {
-            const { userBirthday } = user.profileData;
-            const { userFullname } = user.personalData
+            const { userBirthday } = user?.profileData;
+            const { userFullname } = user?.personalData
 
             if (userBirthday.day === currentDay) {
                 setUsersBirthdayToday(prev => [...prev, userFullname])

@@ -94,11 +94,23 @@ export const useUserSubscription = (user:UserProfile) => {
     const acceptFriendRequest = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation()
         await message.loading('Accepting the request...')
+        const time = Date.now()
 
         const userNewFollowingListArray = userFollowingList.filter(id => id !== myId)
-        const myNewFriendsArray = [...new Set([...myFriends, userId])]
-        const userNewFriendsArray = [...new Set([...userFriends, myId])]
         const myNewFriendRequestsArray = myFriendRequests.filter(id => id !== userId)
+        
+        const myNewFriend = {
+            id: userId,
+            time,
+        }
+
+        const userNewFriend = {
+            id: myId,
+            time,
+        }
+        const myNewFriendsArray = [...myFriends, myNewFriend]
+        const userNewFriendsArray = [...userFriends, userNewFriend]
+
 
         if (myRef && userRef) {
             await updateDoc(myRef, {

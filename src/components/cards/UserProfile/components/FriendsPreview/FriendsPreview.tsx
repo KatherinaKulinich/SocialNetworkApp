@@ -24,8 +24,8 @@ interface FriendsPreviewProps {
 export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) => {
     const [defaultAvatars, setDefaultAvatars] = useState<JSX.Element[]>([])
 
-    const { userName } = user.personalData;
-    const { friends } = user.contacts;
+    const { userName } = user.personalData ?? {}
+    const { friends } = user.contacts ?? {}
     const friendsIdsArray = friends.map(user => user.id)
     
 
@@ -52,7 +52,7 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
     
     
     const navigate = useNavigate();
-    const onGoToPage = useCallback(() => {
+    const goToFriendsPage = useCallback(() => {
         navigate(`${link}`)
     },[])
 
@@ -85,7 +85,7 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
                 />
             )}
 
-            <FriendsBox onClick={onGoToPage}>
+            <FriendsBox onClick={goToFriendsPage}>
                 {friendsAvatarsForPreview?.length > 0 && (
                     friendsAvatarsForPreview.map((friend, index) => (
                         <FriendCard key={index}>

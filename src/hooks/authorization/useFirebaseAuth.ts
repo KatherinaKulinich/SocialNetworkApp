@@ -62,8 +62,9 @@ export const useFirebaseAuth = () => {
                 userId: user.uid,
                 userPassword: user.refreshToken,
             }));
-            dispatch(fetchUserFullData(user.uid))
+            // dispatch(fetchUserFullData(user.uid))
             navigate('/myProfile')
+            message.success(`Welcome to the app!`)
         })
         .catch((error) => {
             message.info(error.message, 5)
@@ -87,6 +88,9 @@ export const useFirebaseAuth = () => {
             const userRef = doc(db, 'users', user.uid)
             const docSnap = await getDoc(userRef);
 
+            const name = user.displayName?.split(" ")[0];
+            const surname = user.displayName?.split(" ")[1];
+
             dispatch(setUser({
                 userEmail: user.email,
                 userId: user.uid,
@@ -95,12 +99,13 @@ export const useFirebaseAuth = () => {
 
             if (docSnap.exists()) {
                 navigate('/myProfile')
+                message.success(`Welcome to the app, ${name}`)
                 return
             }
             await createUserProfile(user.uid)
             await updateDoc(userRef, {
-                "personalData.userName": user.displayName?.split(" ")[0],
-                "personalData.userSurname": user.displayName?.split(" ")[1],
+                "personalData.userName": name,
+                "personalData.userSurname": surname,
                 "personalData.userFullname": user.displayName,
                 "profileData.userAvatar": user.photoURL ? changePhotoSize(user.photoURL) : getRandomAvatar(),
             })

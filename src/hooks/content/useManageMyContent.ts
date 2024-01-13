@@ -37,6 +37,7 @@ export const useManageMyContent = () => {
             await updateDoc(userRef, {
                 "content.posts": newPostsArray,
             })
+            dispatch(fetchUserFullData(userId))
         } else if ('photoId' in item) {
             const newPhotosArray = photos?.map((photo:Photo) => {
                 if (photo.photoId === item.photoId) {

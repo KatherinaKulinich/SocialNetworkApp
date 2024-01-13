@@ -8,14 +8,18 @@ import { EditingForm } from "./components/EditingForm"
 interface ProfileEditingProps {
     buttonText: string;
     title: string;
+    navigation?: string;
 }
 
-export const ProfileEditing:React.FC<ProfileEditingProps> = ({buttonText, title}) => {
+export const ProfileEditing:React.FC<ProfileEditingProps> = ({buttonText, title, navigation}) => {
     
     return (
         <Container>
             <SubTitle text={title}/> 
-            <EditingForm buttonText={buttonText}/>
+            <EditingForm 
+                buttonText={buttonText} 
+                navigation={navigation}
+            />
         </Container>
     )
 }

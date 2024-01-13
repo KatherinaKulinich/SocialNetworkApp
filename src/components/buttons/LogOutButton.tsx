@@ -14,20 +14,16 @@ export const LogOutButton:React.FC = () => {
     const { onLogOut } = useFirebaseAuth()
     const { isAuth } = useAuth()
     const userData = useMyFullData()
-
-    // const userData = useAppSelector(state => state.userData.user)
-    console.warn(userData);
-    
-    // const { userName } = userData.personalData
+    const userName = userData?.personalData?.userName
     
     
     
     const onProfileLogOut = useCallback(() => {
-        // if (isAuth && userName) {
-        //     onLogOut()
-        //     message.info(`See you next time, ${userName}! Have a good rest of the day!`, 5)
-        //     navigate('/login')
-        // }
+        if (isAuth && userName) {
+            onLogOut()
+            message.info(`See you next time, ${userName}! Have a good rest of the day!`, 5)
+            navigate('/login')
+        }
     }, [isAuth, userData])
 
 

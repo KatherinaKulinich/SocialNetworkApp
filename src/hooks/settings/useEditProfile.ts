@@ -10,7 +10,7 @@ import { UserProfile } from "types/UserProfile"
 
 export const useEditProfile = () => {
     const userData:UserProfile  = useAppSelector(state => state.userData.user);
-    const { userId } = userData.personalData
+    const { userId } = userData.personalData ?? {}
     const userRef = doc(db, "users", userId);
 
 
@@ -62,7 +62,6 @@ export const useEditProfile = () => {
                             });
                         })
                 } 
-                await message.success('Created!')
             })
         }
     }, [userData])

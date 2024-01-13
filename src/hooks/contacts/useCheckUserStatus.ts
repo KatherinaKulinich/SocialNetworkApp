@@ -18,14 +18,15 @@ export const useCheckUserStatus = () => {
 
 
     const user = useAppSelector(state => state.users.selectedUser)
-    const { contacts: userContacts } = user;
-    const { userId } = user.personalData;
+    const { contacts: userContacts } = user ?? {}
+    const { userId } = user?.personalData ?? {}
+    
     const { 
         friends: userFriends, 
         followingList: userFollowingList, 
         friendRequests: userFriendRequests, 
         followers:userFollowers 
-    } = userContacts;
+    } = userContacts ?? {};
 
     const myData = useAppSelector(state => state.userData.user)
     const { contacts: myContacts } = myData;
@@ -35,7 +36,7 @@ export const useCheckUserStatus = () => {
         followingList:myFollowingList, 
         friendRequests: myFriendRequests, 
         followers: myFollowers 
-    } = myContacts;
+    } = myContacts ?? {};
 
 
 

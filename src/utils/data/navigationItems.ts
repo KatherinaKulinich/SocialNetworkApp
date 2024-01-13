@@ -23,7 +23,7 @@ export const navItems = [
     },
     {
         label: 'Friends and followers',
-        value: 'myFriends',
+        value: 'myFriendsAndFollowers',
         icon: FaUsers,  
     },
     // {
@@ -33,7 +33,7 @@ export const navItems = [
     // },
     {
         label: 'following and requests',
-        value: 'myFriendRequests',
+        value: 'myFollowingAndRequests',
         icon: FaUserClock ,  
     },
     {

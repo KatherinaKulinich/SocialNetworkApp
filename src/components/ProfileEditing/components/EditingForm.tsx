@@ -1,32 +1,31 @@
-import { Row, Col, Input, Form, Radio, DatePicker, Space, Select, UploadFile } from "antd"
+import { Row, Col, Input, Form, Radio, DatePicker, Space, Select, UploadFile, message } from "antd"
 import { PhotoUpload } from "./PhotoUpload";
-import {  useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
-import { useAppSelector } from "hooks/hooks";
 import { listOfHobbies, genderOptions, famStatusOptions } from "utils/data/profileOptions";
 import { SelectTag } from "./SelectTag";
 import { useEditProfile } from "hooks/settings/useEditProfile";
-import { getFormFields } from "utils/getFormFields";
+import { dateFormat, getFormFields } from "utils/getFormFields";
 import { UserProfile } from "types/UserProfile";
 import { useMyFullData } from "hooks/useMyFullData";
-
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 interface EditingFormProps {
     buttonText: string;
+    navigation?: string;
 }
 
 
-export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
+export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation}) => {
     const [form] = Form.useForm();
-
-    // const userData  = useAppSelector(state => state.userData.user)
-    // console.log(userData);
+    const navigate = useNavigate()
     const userData = useMyFullData()
     
-    const { userName} = userData?.personalData;
-    const { userAvatar} = userData?.profileData;
-    const { registerDate } = userData?.additionalData;
+    const { userName, userSurname } = userData?.personalData ?? {};
+    const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout, userAvatar } = userData?.profileData ?? {};
+    const { registerDate } = userData?.additionalData ?? {};
 
     const { updateUserProfile } = useEditProfile()
     const [fileList, setFileList] = useState<UploadFile<any>[]>([])
@@ -35,7 +34,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
     }
 
-    const defaultUserAvatar:UploadFile<any>[] = [{
+    const defaultUserAvatar: UploadFile<any>[] = [{
         thumbUrl: userAvatar,
         name: `avatar${userName}`,
         uid: `${registerDate}`,
@@ -49,9 +48,30 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
         setFileList(defaultUserAvatar)
     }, [userData])
     
-    const dateFormat = 'DD/MM/YYYY';
+
     const maxDate = new Date().getFullYear() - 90;
     const minDate = new Date().getFullYear() - 16;
+
+    const saveUserData = useCallback(async(values:any) => {
+        await updateUserProfile(values)
+        await message.success('The profile has been updated!')
+        navigation && navigate(navigation)
+        navigation && await message.success(`Welcome to the app, ${userName}`)
+    }, [])
+
+    useEffect(() => {
+        form.setFieldsValue({
+            userName: userName || '',
+            userSurname: userSurname || '',
+            userGender: userGender || '',
+            userBirthday: userBirthday && dayjs(`${userBirthday.fullDate}`, dateFormat),
+            userFamStatus:  userFamStatus || '',
+            userCity: userCity || '',
+            userCountry: userCountry || '',
+            userInterests: userInterests.length > 0 ? userInterests : ['Coding'],
+            userAbout: userAbout || '',
+        })
+    }, [])
 
 
     return (
@@ -63,9 +83,9 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText}) => {
             labelCol={{ span: 16 }}
             wrapperCol={{ span: 16 }}
             autoComplete="off"
-            fields={getFormFields(userData)}
+            // fields={getFormFields(userData)}
             onFinish={(values) => {
-                updateUserProfile(values)
+                saveUserData(values)
             }}
         >
             <Space 

@@ -62,6 +62,7 @@ export const fetchUsersOptions = (myFullName: string) => {
             dispatch(getErrorMessage(''))
 
             const ref = query(collection(db, "users"));
+
             onSnapshot(ref, (querySnapshot) => {
                 let names:string[] = [];
                 let locations:string[] = [];
@@ -71,7 +72,7 @@ export const fetchUsersOptions = (myFullName: string) => {
                     locations.push(doc.data().profileData.userLocation)
                     interests.push(doc.data().profileData.userInterests)
                     
-                    if (doc.data().userFullname !== myFullName) {
+                    if (doc.data().personalData.userFullname !== myFullName) {
                         names.push(doc.data().personalData.userFullname)
                     }
                 });
@@ -98,9 +99,9 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 
     const filterUsers = (usersArray: any[]) => {
         let uniqueUsers = usersArray.filter((obj, index) =>
-            usersArray.findIndex((item) => item.userId === obj.userId) === index
+            usersArray.findIndex((item) => item.personalData.userId === obj.personalData.userId) === index
         ).filter(user => {
-            return user.userId !== myId
+            return user?.personalData?.userId !== myId
         })
 
         if (uniqueUsers.length > 6) {

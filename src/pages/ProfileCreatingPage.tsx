@@ -8,15 +8,8 @@ import { useMyFullData } from 'hooks/useMyFullData'
 
 
 
-export const ProfileCreatingPage:React.FC = () => {
-    // const dispatch = useAppDispatch()
-    // const { userId } = useAuth()
 
-    // useEffect(() => {
-    //     if (userId !== null && userId !== undefined ) {
-    //         dispatch(fetchUserFullData(userId))
-    //     }
-    // }, [dispatch, userId])
+export const ProfileCreatingPage:React.FC = () => {
     const userData = useMyFullData()
 
 
@@ -28,10 +21,13 @@ export const ProfileCreatingPage:React.FC = () => {
                     titleFirst="Profile"
                     titleSecond='Creating'
                 />
-                <ProfileEditing 
-                    title="Please share some information for your profile" 
-                    buttonText="Save and go to the app"
-                />
+                {Object.keys(userData).length === 6 && (
+                    <ProfileEditing 
+                        title="Please share some information for your profile" 
+                        buttonText="Save and go to the app"
+                        navigation='/myProfile'
+                    />
+                )}
             </PageContainer>
         </Wrapper>
     )

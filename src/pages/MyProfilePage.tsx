@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice'
 import { useAuth } from 'hooks/authorization/useAuth'
 import { useMyFullData } from 'hooks/useMyFullData';
+import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
+import { BirthdayNotification } from '@components/popups/BirthdayNotification';
 
 
 
@@ -16,28 +18,43 @@ import { useMyFullData } from 'hooks/useMyFullData';
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
     const userData = useMyFullData()
-    // const { userId } = useAuth()
-    
-    
-    // useEffect(() => {
-    //     if (userId) {
-    //         dispatch(fetchUserFullData(userId))
-    //     }
-    // }, [dispatch, userId])
-    
-    // const userData = useAppSelector(state => state.userData.user)
-    // console.warn('prof', userData, userId);
-    
-    // const { friends } = userData.contacts
+    console.log(userData);
+    // const { friends } = userData.contacts ?? {}
+
     // const friendsIdsArray = friends.map(user => user.id)
+    // console.warn('ids', friendsIdsArray);
 
     // useEffect(() => {
-    //     if (userData) {
+    //     if (userData.contacts) {
     //         dispatch(fetchFriends(friendsIdsArray, 'friends'))
     //     }
     // }, [dispatch, userData])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
+    
+    // const { userId } = useAuth()
+    
+    
+    // useEffect(() => {
+        //     if (userId) {
+            //         dispatch(fetchUserFullData(userId))
+            //     }
+            // }, [dispatch, userId])
+            
+            // const userData = useAppSelector(state => state.userData.user)
+            // console.warn('prof', userData, userId);
+            
+            // const { friends } = userData.contacts
+            // const friendsIdsArray = friends.map(user => user.id)
+            
+            // useEffect(() => {
+                //     if (userData) {
+                    //         dispatch(fetchFriends(friendsIdsArray, 'friends'))
+                    //     }
+                    // }, [dispatch, userData])
+                    
+
+    const { isMyBirthdayToday } = useUsersBirthdays(friendsData)
  
     
     return (
@@ -53,6 +70,9 @@ export const MyProfilePage:React.FC = () => {
                     user={userData} 
                     friendsData={friendsData}
                 />
+            )}
+            {isMyBirthdayToday && (
+                <BirthdayNotification text={`Happy Birthday, ${userData?.personalData?.userName}!`}/>
             )}
         </PageContainer>
     )

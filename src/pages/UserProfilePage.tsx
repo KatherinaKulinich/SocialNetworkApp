@@ -29,10 +29,12 @@ export const UserProfilePage:React.FC = () => {
     const { buttonText, buttonIcon: ButtonIcon, isButtonDisabled } = useCheckUserStatus()
 
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
-    const { userFullname, userName, userId } = user.personalData;
+    const { userFullname, userName, userId } = user?.personalData ?? {}
 
-    const { friends } = user.contacts
+    const { friends } = user.contacts ?? {}
     const friendsIdsArray = friends.map(user => user.id)
+    // console.warn('ids', friendsIdsArray);
+    
     
     
     useEffect(() => {

@@ -64,6 +64,7 @@ export const useFriendshipWithUser = (user:UserProfile) => {
 
     const removeUserFromFriends = useCallback(async () => {
         await message.loading('Removing user from your friends...')
+        
         const myNewFriendsArray = myFriends.filter(user => user.id !== userId)
         const userNewFriendsArray = userFriends.filter(user => user.id !== myId)
 

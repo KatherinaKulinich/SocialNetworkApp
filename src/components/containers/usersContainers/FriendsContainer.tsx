@@ -5,12 +5,13 @@ import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessa
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
 import { FriendCard } from "@components/cards/userCards/FriendCard";
 import { theme } from "@styles/Theme";
-import { useAppSelector } from "hooks/hooks";
-import { useCallback } from "react";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CardsContainer } from "../CardsContainer/CardsContainer";
 import { LoaderComment } from "@components/loaders/LoaderComment";
 import { UserProfile } from "types/UserProfile";
+import { fetchFriends, getLoading } from 'rdx/slices/friendsSlice';
 
 
 
@@ -22,13 +23,27 @@ interface FriendsContainerProps {
 
 
 export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) => {
-    const { userName } = user.personalData
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const isLoading = useAppSelector(state => state.friends.loading)
+
+    const { userName, userId } = user.personalData ?? {}
+    const { friends } = user.contacts ?? {}
+    
+    const friendsIdsArray = friends.map(user => user.id)
+    
+    useEffect(() => {
+        dispatch(fetchFriends(friendsIdsArray, 'friends'))
+        // dispatch(getLoading())
+    }, [dispatch])
+    
     
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
     const friendsData = useAppSelector(state => state.friends.friendsData)
-    const isLoading = useAppSelector(state => state.friends.loading)
+    // console.warn(friendsData);
+    // console.log(isLoading);
+    
 
-    const navigate = useNavigate()
     const goToSearchPage = useCallback(() => {
         navigate('/search')
     },[])
@@ -42,7 +57,7 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
         <Container>
             {friendsData?.length > 0 && !isLoading && (
                 <CardsContainer>
-                    {friendsData.map((friend:UserProfile) => (
+                    {friendsData?.map((friend:UserProfile) => (
                         <FriendCard 
                             key={friend.personalData.userId}
                             user={friend}
@@ -51,7 +66,12 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
                 </CardsContainer>
             )}  
 
-            {!isLoading && friendsData?.length === 0 && (
+            {isLoading && (
+                <Container>
+                    <LoaderComment/>
+                </Container>
+            )}
+            {!isLoading && friendsData?.length === 0 && errorMessage === '' && (
                 <Container>
                     <ImageErrorMessage
                         image={imgNoUsers} 
@@ -76,11 +96,6 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
                 />
             )}
 
-            {isLoading && (
-                <Container>
-                    <LoaderComment/>
-                </Container>
-            )}
         </Container>
     )
 }

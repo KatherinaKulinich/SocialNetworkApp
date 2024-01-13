@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { useAuth } from "../hooks/authorization/useAuth";
 
 
@@ -9,7 +9,8 @@ interface RequireAuthChildrenProps {
 
 
 export const RequireAuth = ({children}:RequireAuthChildrenProps) => {
-    const {isAuth} = useAuth();
+    const { isAuth } = useAuth();
+
     
     if (!isAuth) {
         return <Navigate to={'/login'} replace/>

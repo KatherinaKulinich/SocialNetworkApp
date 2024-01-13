@@ -25,7 +25,7 @@ const initialState: FriendsState = {
     followersData: [] as UserProfile[],
     selectedUser: {} as UserProfile,
     errorMessage: '',
-    loading: false,
+    loading: true,
 }
 
 
@@ -38,7 +38,17 @@ const friendsSlice = createSlice({
     initialState,
     reducers: {
         getFriendsData(state, action: PayloadAction<UserProfile[]>) {
-            state.friendsData = action.payload
+            // state.loading = true
+            // console.log(state.loading);
+            // console.log('1',state.friendsData);
+            state.friendsData = action.payload 
+            // console.log('2',state.friendsData);
+            // if (state.friendsData.length > 0) {
+
+            //     state.loading = false
+            // }
+            // console.log(state.loading);
+            
         },
         getFollowingListData(state, action: PayloadAction<UserProfile[]>) {
             state.followingListData = action.payload
@@ -51,9 +61,19 @@ const friendsSlice = createSlice({
         },
         getErrorMessage(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
+            state.loading = false
         },
+        // getLoading(state) {
+        //     // state.loading = action.payload
+        //     state.loading = state.friendsData.length > 0 ? false : true
+        //     // console.log(state.loading);
+            
+        // }
         getLoading(state, action: PayloadAction<boolean>) {
             state.loading = action.payload
+            // state.loading = state.friendsData.length > 0 ? false : true
+            // console.log(state.loading = state.friendsData.length > 0 ? false : true);
+            
         }
     }
 })
@@ -74,11 +94,13 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
             dispatch(getFriendRequestData([]))
             dispatch(getFollowersData([]))
 
-            dispatch(getLoading(true))
+            // dispatch(getLoading(true))
+            // dispatch(getLoading())
             
             if (usersIds) {
                 usersIds.forEach(async (id) => {
                     const ref = doc(db, 'users', id)
+                    
                     const docSnap = await getDoc(ref)
                     const user = docSnap.data() as UserProfile
 
@@ -101,13 +123,14 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
             }
             dispatch(getLoading(false))
         } catch (error:unknown) {
-            dispatch(getLoading(false))
+            // dispatch(getLoading(false))
             if (error instanceof Error) {
                 dispatch(getErrorMessage(error.message))
                 return
             }
             dispatch(getErrorMessage(String(error)))
-        } 
+        } finally {
+        }
     }
 }
 
