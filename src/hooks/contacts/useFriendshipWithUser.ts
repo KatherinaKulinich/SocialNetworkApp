@@ -16,18 +16,20 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     const dispatch = useAppDispatch()
     const { isFriend, isFollower, isRequest} = useCheckUserStatus()
 
-    const { userId } = user.personalData
+    // const { userId } = user?.personalData ?? ''
+    const userId = user.personalData.userId    
     const { 
         friends: userFriends, 
         friendRequests: userFriendRequests, 
-    } = user.contacts;
+    } = user?.contacts ?? {};
     
     const myData = useAppSelector(state => state.userData.user)
-    const { userId:myId } = myData.personalData
+    // const { userId:myId } = myData?.personalData ?? ''
+    const myId = myData.personalData.userId
     const { 
         friends: myFriends, 
         followingList: myFollowingList, 
-    } = myData.contacts;
+    } = myData?.contacts ?? {};
 
     const refreshUsersData = useCallback(() => {
         dispatch(fetchUserFullData(myId))
@@ -35,8 +37,8 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     }, [user, myData])
 
 
-    const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
-    const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
+    const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
+    const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
 
 
 

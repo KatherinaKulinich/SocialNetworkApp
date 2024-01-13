@@ -18,17 +18,17 @@ import { BirthdayNotification } from '@components/popups/BirthdayNotification';
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
     const userData = useMyFullData()
-    console.log(userData);
-    // const { friends } = userData.contacts ?? {}
+    // console.log(userData);
+    const { friends } = userData.contacts ?? {}
 
-    // const friendsIdsArray = friends.map(user => user.id)
-    // console.warn('ids', friendsIdsArray);
+    const friendsIdsArray = friends?.map(user => user.id) || []
 
-    // useEffect(() => {
-    //     if (userData.contacts) {
-    //         dispatch(fetchFriends(friendsIdsArray, 'friends'))
-    //     }
-    // }, [dispatch, userData])
+
+    useEffect(() => {
+        if (userData) {
+            dispatch(fetchFriends(friendsIdsArray, 'friends'))
+        }
+    }, [dispatch, userData])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
     

@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
+import { fetchFriends, getFriendsData } from "rdx/slices/friendsSlice";
 
 
 
@@ -20,13 +21,18 @@ interface SearchUserCardProps {
 export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const dispatch = useAppDispatch();
 
-    const { userFullname, userId } = user?.personalData;
-    const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData;
+    const { userFullname, userId } = user?.personalData || {}
+    const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData ?? {}
+    const { friends } = user.contacts ?? {}
+    const friendsIdsArray = friends?.map(user => user.id) || []
 
-    const getUserProfile = useCallback(() => {
-        dispatch(fetchSelectedUserData(userId))
-        // dispatch(fetchFriends(user))
-    }, [dispatch, userId])
+    const getUserProfile = useCallback(async () => {
+        if (userId && friends) {
+            await dispatch(fetchSelectedUserData(userId))
+            await dispatch(fetchFriends(friendsIdsArray, 'friends'))
+            // dispatch(getFriendsData([]))
+        }
+    }, [dispatch, userId, friends])
 
     
     return (

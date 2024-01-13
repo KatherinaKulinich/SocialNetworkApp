@@ -24,9 +24,9 @@ interface FriendsPreviewProps {
 export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) => {
     const [defaultAvatars, setDefaultAvatars] = useState<JSX.Element[]>([])
 
-    const { userName } = user.personalData ?? {}
-    const { friends } = user.contacts ?? {}
-    const friendsIdsArray = friends.map(user => user.id)
+    const { userName } = user?.personalData ?? {}
+    const { friends } = user?.contacts ?? {}
+    const friendsIdsArray = friends.map(user => user.id) || []
     
 
     const createDefaultAvatars = useCallback((friendsProfiles:string[]):JSX.Element[] => {
@@ -61,11 +61,13 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
 
     //??? friends box changes every post reaction
     useEffect(() => {
-        if (friendsData)  {
-            setFriendsAvatarsForPreview(friendsData)
-        }
-    }, [friendsData])
-
+        // if (friendsData)  {
+            
+            // }
+        console.log('friendsDATA',friendsData);
+        setFriendsAvatarsForPreview(friendsData)
+    }, [friends, friendsAvatarsForPreview, friendsData])
+ 
 
     return (
         <PreviewContainer>

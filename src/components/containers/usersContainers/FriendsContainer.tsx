@@ -26,21 +26,24 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const isLoading = useAppSelector(state => state.friends.loading)
-
-    const { userName, userId } = user.personalData ?? {}
-    const { friends } = user.contacts ?? {}
+    console.warn(user);
     
-    const friendsIdsArray = friends.map(user => user.id)
+
+    const { userName, userId } = user?.personalData ?? {}
+    const { friends } = user?.contacts ?? {}
+    
+    const friendsIdsArray = friends?.map(user => user.id)
+
     
     useEffect(() => {
         dispatch(fetchFriends(friendsIdsArray, 'friends'))
         // dispatch(getLoading())
-    }, [dispatch])
+    }, [dispatch, friends, user])
     
     
     const errorMessage = useAppSelector(state => state.friends.errorMessage)
     const friendsData = useAppSelector(state => state.friends.friendsData)
-    // console.warn(friendsData);
+    console.warn(friendsData);
     // console.log(isLoading);
     
 

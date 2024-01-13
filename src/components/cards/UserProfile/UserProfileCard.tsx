@@ -21,7 +21,7 @@ interface UserProfileProps {
 
 
 export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
-    const { userName, userFullname } = user?.personalData;
+    const { userName, userFullname } = user?.personalData ?? {}
     const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user?.profileData ?? {}
     const { friends } = user?.contacts ?? {}
 

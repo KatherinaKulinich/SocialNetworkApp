@@ -32,16 +32,27 @@ export const UserProfilePage:React.FC = () => {
     const { userFullname, userName, userId } = user?.personalData ?? {}
 
     const { friends } = user.contacts ?? {}
-    const friendsIdsArray = friends.map(user => user.id)
+    const friendsIdsArray = friends?.map(user => user.id) || []
     // console.warn('ids', friendsIdsArray);
     
     
     
-    useEffect(() => {
-        if (id) {
-            dispatch(fetchUserFullData(id))
-        }
-    }, [dispatch, id])
+    
+    // useEffect(() => {
+    //     const getUserData = async () => {
+    //         if (id) {
+    //             await dispatch(fetchUserFullData(id))
+    //             await dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    //         }
+    //     }
+    //     getUserData()
+    // }, [user])
+    // useEffect(() => {
+    //     if (id) {
+    //         dispatch(fetchUserFullData(id))
+    //         // dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    //     }
+    // }, [dispatch, id])
     
     
     const goToChatWithUser = useCallback(() => {
@@ -49,13 +60,17 @@ export const UserProfilePage:React.FC = () => {
     },[])
     
     
-    useEffect(() => {
-        if (user) {
-            dispatch(fetchFriends(friendsIdsArray, 'friends'))
-        }
-    }, [dispatch, user])
-    
+    // useEffect(() => {
+    //     if (user) {
+    //         dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    //     }
+    // }, [dispatch, user])
+
+
     const friendsData = useAppSelector(state => state.friends.friendsData)
+    
+    // console.log(friendsData);
+    
     const { interactWithUser } = useFriendshipWithUser(user)
 
 

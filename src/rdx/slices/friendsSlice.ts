@@ -40,8 +40,8 @@ const friendsSlice = createSlice({
         getFriendsData(state, action: PayloadAction<UserProfile[]>) {
             // state.loading = true
             // console.log(state.loading);
-            // console.log('1',state.friendsData);
             state.friendsData = action.payload 
+            console.log('state',state.friendsData);
             // console.log('2',state.friendsData);
             // if (state.friendsData.length > 0) {
 
@@ -87,40 +87,49 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
         let friendRequests: UserProfile[] = [];
         let followers: UserProfile[] = [];
 
-        try {
-            dispatch(getErrorMessage(''))
-            dispatch(getFriendsData([])) 
-            dispatch(getFollowingListData([]))
-            dispatch(getFriendRequestData([]))
-            dispatch(getFollowersData([]))
+        dispatch(getErrorMessage(''))
+        dispatch(getFriendsData([])) 
+        dispatch(getFollowingListData([]))
+        dispatch(getFriendRequestData([]))
+        dispatch(getFollowersData([]))
 
-            // dispatch(getLoading(true))
+        dispatch(getLoading(true))
+        try {
             // dispatch(getLoading())
+
+            if (usersIds.length === 0) return
             
-            if (usersIds) {
+            if (usersIds.length > 0) {
+                console.log('222', usersIds);
+                
                 usersIds.forEach(async (id) => {
+                    console.log('33id', id);
                     const ref = doc(db, 'users', id)
                     
                     const docSnap = await getDoc(ref)
                     const user = docSnap.data() as UserProfile
 
                     if (key === 'friends') {
-                        friends.push(user)
+                        // friends.push(user)
+                        friends = [...friends, user]
                         dispatch(getFriendsData(friends)) 
                     } else if (key === 'followingList') {
-                        followingList.push(user)
+                        followingList = [...followingList, user]
+                        // followingList.push(user)
                         dispatch(getFollowingListData(followingList)) 
                     } else if (key === 'friendRequests') {
-                        friendRequests.push(user)
+                        // friendRequests.push(user)
+                        friendRequests = [...friendRequests, user]
                         dispatch(getFriendRequestData(friendRequests)) 
                     } else if (key === 'followers') {
-                        followers.push(user)
+                        // followers.push(user)
+                        followers = [...followers, user]
                         dispatch(getFriendRequestData(followers)) 
                     } else {
                         dispatch(getErrorMessage('something went wrong! Try later!'))
                     }
                 })
-            }
+            } 
             dispatch(getLoading(false))
         } catch (error:unknown) {
             // dispatch(getLoading(false))

@@ -32,6 +32,8 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
 
     const { usersBirthdayToday } = useUsersBirthdays(friendsData)
     const userData = useMyFullData()
+    console.log('page', userData);
+    
 
     
     // const { friends } = userData.contacts
