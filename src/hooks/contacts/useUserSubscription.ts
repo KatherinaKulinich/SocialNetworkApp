@@ -13,25 +13,25 @@ import { UserProfile } from "types/UserProfile"
 export const useUserSubscription = (user:UserProfile) => {
     const dispatch = useAppDispatch()
 
-    const { userId, userFullname } = user.personalData
+    const { userId, userFullname } = user?.personalData
     const { 
         friends: userFriends, 
         followingList: userFollowingList, 
         friendRequests: userFriendRequests, 
         followers: userFollowers 
-    } = user.contacts;
+    } = user?.contacts ?? {}
     
     const myData = useAppSelector(state => state.userData.user)
-    const { userId:myId } = myData.personalData
+    const { userId:myId } = myData?.personalData
     const { 
         friends: myFriends, 
         followingList: myFollowingList, 
         friendRequests: myFriendRequests, 
         followers: myFollowers 
-    } = myData.contacts;
+    } = myData.contacts ?? {}
 
-    const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
-    const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
+    // const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
+    // const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
 
 
     const refreshUsersData = useCallback(() => {
@@ -46,7 +46,9 @@ export const useUserSubscription = (user:UserProfile) => {
         await message.loading('Unfollowing from user...')
         const myNewFollowingListArray = myFollowingList.filter(id => id !== userId)
 
-        if (myRef) {
+        if (myId) {
+            const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
+            
             await updateDoc(myRef, {
                 "contacts.followingList": myNewFollowingListArray
             })
@@ -55,7 +57,8 @@ export const useUserSubscription = (user:UserProfile) => {
         if (userFriendRequests.includes(myId)) {
             const userNewFriendRequestsArray = userFriendRequests.filter(id => id !== myId)
 
-            if (userRef) {
+            if (userId) {
+                const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
                 await updateDoc(userRef, {
                    " contacts.friendRequests": userNewFriendRequestsArray
                 })
@@ -77,7 +80,9 @@ export const useUserSubscription = (user:UserProfile) => {
         const myNewFriendRequestsArray = myFriendRequests.filter(id => id !== userId)
         const myNewFollowersArray = [...new Set([...myFollowers, userId])]
         
-        if (myRef) {
+        if (myId) {
+            const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
+
             await updateDoc(myRef, {
                 "contacts.friendRequests": myNewFriendRequestsArray,
                 "contacts.followers": myNewFollowersArray,
@@ -112,7 +117,10 @@ export const useUserSubscription = (user:UserProfile) => {
         const userNewFriendsArray = [...userFriends, userNewFriend]
 
 
-        if (myRef && userRef) {
+        if (myId && userId) {
+            const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
+            const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
+            
             await updateDoc(myRef, {
                 "contacts.friends": myNewFriendsArray,
                 "contacts.friendRequests": myNewFriendRequestsArray

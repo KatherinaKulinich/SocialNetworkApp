@@ -17,7 +17,7 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     const { isFriend, isFollower, isRequest} = useCheckUserStatus()
 
     // const { userId } = user?.personalData ?? ''
-    const userId = user.personalData.userId     
+    const userId = user?.personalData?.userId     
     const { 
         friends: userFriends, 
         friendRequests: userFriendRequests, 
@@ -25,7 +25,7 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     
     const myData = useAppSelector(state => state.userData.user)
     // const { userId:myId } = myData?.personalData ?? ''
-    const myId = myData.personalData.userId
+    const myId = myData?.personalData?.userId
     const { 
         friends: myFriends, 
         followingList: myFollowingList, 
@@ -37,8 +37,8 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     }, [user, myData])
 
 
-    const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
-    const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
+    // const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
+    // const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
 
 
 
@@ -49,7 +49,10 @@ export const useFriendshipWithUser = (user:UserProfile) => {
         const userNewFriendRequestsArray = [...new Set([...userFriendRequests, myId])]
         const myNewFollowingListArray = [...new Set([...myFollowingList, userId])]
 
-        if (userRef && myRef) {
+        if (myId && userId) {
+            const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
+            const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
+
             await updateDoc(userRef, {
                 "contacts.friendRequests": userNewFriendRequestsArray
             })
@@ -70,7 +73,10 @@ export const useFriendshipWithUser = (user:UserProfile) => {
         const myNewFriendsArray = myFriends.filter(user => user.id !== userId)
         const userNewFriendsArray = userFriends.filter(user => user.id !== myId)
 
-        if (userRef && myRef) {
+        if (myId && userId) {
+            const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
+            const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
+
             await updateDoc(userRef, {
                 "contacts.friends": userNewFriendsArray
             })

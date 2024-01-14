@@ -82,7 +82,7 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
                     const ref = doc(db, 'users', id)
                     
                     const docSnap = await getDoc(ref)
-                    const user = docSnap.data() as UserProfile
+                    const user = docSnap.data() as UserProfile                  
 
                     if (key === 'friends') {
                         friends = [...friends, user]
