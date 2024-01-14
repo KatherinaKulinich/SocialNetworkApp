@@ -1,5 +1,4 @@
 import { useCallback } from "react"
-// import { useUserData } from "./useUserData";
 import { Post, Reaction } from "types/Post";
 import { db } from "firebase";
 import { doc, updateDoc } from "firebase/firestore";

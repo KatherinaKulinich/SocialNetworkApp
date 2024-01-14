@@ -30,9 +30,6 @@ export const useUserSubscription = (user:UserProfile) => {
         followers: myFollowers 
     } = myData.contacts ?? {}
 
-    // const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string)
-    // const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
-
 
     const refreshUsersData = useCallback(() => {
         dispatch(fetchUserFullData(myId))

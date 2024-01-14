@@ -83,7 +83,6 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
             labelCol={{ span: 16 }}
             wrapperCol={{ span: 16 }}
             autoComplete="off"
-            // fields={getFormFields(userData)}
             onFinish={(values) => {
                 saveUserData(values)
             }}

@@ -25,24 +25,7 @@ import { UserProfile } from 'types/UserProfile';
 
 export const SearchPage:React.FC = () => {
     const [filterOptions, setFilterOptions] = useState<any[]>([])
-    // const [filterValue, setFilterValue] = useState('name')
-    // const [searchValue, setSearchValue] = useState('')
-    // const [inputValue, setInputValue] = useState('')
-
-
-    // const onChangeFilterValue = useCallback((value: string) => {
-    //     setFilterValue(value)
-    //     setSearchValue('')
-    // }, [filterValue])
-
-    // const onChangeSearchValue = useCallback((event:any, value:string) => {
-    //     setSearchValue(value)
-    // }, [searchValue])
-
-
-    // const onChangeInputValue = useCallback((event:any, value:string) => {
-    //     setInputValue(value)
-    // }, [inputValue])
+ 
 
     const { 
         filterValue, 
@@ -52,10 +35,7 @@ export const SearchPage:React.FC = () => {
         onChangeInputValue, 
         onChangeSearchValue 
     } = useSearchValues()
-
-    // console.log(filterValue, searchValue, inputValue);
-    // console.log(filterOptions);
-    
+ 
     
 
     const {

@@ -5,11 +5,11 @@ import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { FriendsContainer } from "@components/containers/usersContainers/FriendsContainer";
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { TextIconButton } from '@components/buttons/TextIconButton/TextIconButton';
 import { theme } from '@styles/Theme';
 import { MdDoubleArrow } from 'react-icons/Md';
-import { fetchFriends } from 'rdx/slices/friendsSlice';
+
 
 
 
@@ -17,26 +17,15 @@ import { fetchFriends } from 'rdx/slices/friendsSlice';
 
 export const UserFriendsPage:React.FC = () => {
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
 
     const user = useAppSelector(state => state.users.selectedUser)
     const { userFullname, userName } = user.personalData;
-    const { friends } = user.contacts
-    const friendsIdsArray = friends.map(user => user.id)
+
 
     const goToUserProfilePage = useCallback(() => {
         navigate(`/users/${userFullname}/profile`)
     },[])
 
-    
-    useEffect(() => {
-        const getUserProfileData = () => {
-            if (user) {
-                dispatch(fetchFriends(friendsIdsArray, 'friends'))
-            }
-        }
-        getUserProfileData()
-    }, [])
 
 
     return (

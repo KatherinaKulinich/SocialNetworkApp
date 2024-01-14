@@ -7,7 +7,7 @@ export const PreviewContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items:center;
-    gap: 60px;
+    gap: 30px;
     margin-right: auto;
     margin-left: auto;
 `

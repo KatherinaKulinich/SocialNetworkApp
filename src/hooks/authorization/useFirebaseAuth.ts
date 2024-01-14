@@ -62,7 +62,6 @@ export const useFirebaseAuth = () => {
                 userId: user.uid,
                 userPassword: user.refreshToken,
             }));
-            // dispatch(fetchUserFullData(user.uid))
             navigate('/myProfile')
             message.success(`Welcome to the app!`)
         })

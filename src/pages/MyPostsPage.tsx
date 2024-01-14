@@ -4,10 +4,6 @@ import { PostPreview } from "@components/cards/UserProfile/components/PostsPrevi
 import { AddingNewPostCard } from "@components/cards/postsCards/AddingNewPostCard/AddingNewPostCard"
 import { ListContainer } from "@components/containers/ListContainer/ListContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import { useAppDispatch, useAppSelector } from 'hooks/hooks'
-import { useAuth } from 'hooks/authorization/useAuth'
-import { fetchUserFullData } from 'rdx/slices/userDataSlice'
-import { useEffect } from 'react'
 import { useMyFullData } from 'hooks/useMyFullData'
 
 

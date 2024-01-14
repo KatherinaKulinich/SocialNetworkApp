@@ -5,11 +5,10 @@ import { PhotosContainer } from "@components/containers/PhotosContainer/PhotosCo
 import { TextIconButton } from "@components/buttons/TextIconButton/TextIconButton";
 import { theme } from "@styles/Theme";
 import { MdDoubleArrow } from 'react-icons/Md';
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components"
-import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { useAppSelector } from "hooks/hooks";
 import { UserProfile } from 'types/UserProfile';
 
 
@@ -17,28 +16,16 @@ import { UserProfile } from 'types/UserProfile';
 
 export const UserPhotosPage:React.FC = () => {
     const navigate = useNavigate();
-    // const dispatch = useAppDispatch()
     const userData = useAppSelector(state => state.userData.user)
 
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
-    const { userFullname, userName, userId } = user.personalData;
-    const { photos } = user.content
+    const { userFullname, userName } = user.personalData;
+
     
     const goToUserProfilePage = useCallback(() => {
         navigate(`/users/${userFullname}/profile`)
     },[])
     
-
-    // useEffect(() => {
-    //     const getUserProfileData = () => {
-    //         if (userId) {
-    //             dispatch(fetchSelectedUserData(userId))
-    //         }
-    //     }
-    //     getUserProfileData()
-    // }, [])
-
-
 
     return (
         <PageContainer>

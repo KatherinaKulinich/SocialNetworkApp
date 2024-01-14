@@ -16,7 +16,6 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     const dispatch = useAppDispatch()
     const { isFriend, isFollower, isRequest} = useCheckUserStatus()
 
-    // const { userId } = user?.personalData ?? ''
     const userId = user?.personalData?.userId     
     const { 
         friends: userFriends, 
@@ -24,7 +23,6 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     } = user?.contacts ?? {};
     
     const myData = useAppSelector(state => state.userData.user)
-    // const { userId:myId } = myData?.personalData ?? ''
     const myId = myData?.personalData?.userId
     const { 
         friends: myFriends, 
@@ -37,11 +35,7 @@ export const useFriendshipWithUser = (user:UserProfile) => {
     }, [user, myData])
 
 
-    // const myRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', myId as string) 
-    // const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string) 
-
-
-
+ 
 
     const sendFriendRequest = useCallback(async () => {
         await message.loading('Wait, the request is being processed...')

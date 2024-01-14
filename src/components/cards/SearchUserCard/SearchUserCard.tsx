@@ -34,7 +34,6 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
             await dispatch(fetchSelectedUserData(userId))
             await dispatch(fetchFriends(friendsIdsArray, 'friends'))
             navigate(`/users/${userFullname}/profile`)
-            // dispatch(getFriendsData([]))
         }
     }, [dispatch, userId, friends, friendsData])
 

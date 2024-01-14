@@ -28,9 +28,7 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
     const { userName } = user?.personalData ?? {}
     const { friends } = user?.contacts ?? {}
     const friendsIdsArray = friends.map(user => user.id) || []
-    // console.log(friendsData);
-    
-    
+
 
     const createDefaultAvatars = useCallback((friendsProfiles:string[]):JSX.Element[] => {
         let defaultAvatarsList = [];
