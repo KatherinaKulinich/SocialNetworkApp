@@ -1,68 +1,40 @@
-import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage";
-import { FollowingCard } from "@components/cards/userCards/FollowingCard";
-import { Container } from "./usersContainer.styled"
-import imgError from '@images/error2.svg';
 import imgNoUsers from '@images/nofriends.svg'
+import { FollowingCard } from "@components/cards/userCards/FollowingCard";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useAuth } from "hooks/authorization/useAuth";
 import { fetchFriends } from "rdx/slices/friendsSlice";
-import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { useEffect } from "react";
-import { CardsContainer } from "../CardsContainer/CardsContainer";
-import { SubTitle } from "@components/text/Subtitle";
+import { UsersContainer } from "./components/usersContainer";
+import { useMyFullData } from "hooks/useMyFullData";
 
 
 
 export const FollowingListContainer:React.FC = () => {
     const dispatch = useAppDispatch()
-
-    const myData = useAppSelector(state => state.userData.user)
-    const { userId } = useAuth()
+    const userData = useMyFullData()
 
     useEffect(() => {
-        const getMyProfileData = () => {
-            if (userId) {
-                dispatch(fetchUserFullData(userId))
-            }
+        if (userData) {
+            dispatch(fetchFriends(userData.contacts.followingList, 'followingList'))
         }
-        getMyProfileData()
-    }, [])
-
-    useEffect(() => {
-        if (myData) {
-            dispatch(fetchFriends(myData.contacts.followingList, 'followingList'))
-        }
-    }, [myData])
+    }, [userData])
 
     const followingListUsersData = useAppSelector(state => state.friends.followingListData)
-    const errorMessage = useAppSelector(state => state.friends.errorMessage)
 
 
     return (
-        <Container>
-            <SubTitle text='You have sent a friend request to these users and you follow them'/>
-
-            {followingListUsersData.length > 0 ? (
-                <CardsContainer>
-                    {followingListUsersData.map(user => (
-                        <FollowingCard 
-                            key={user.personalData.userId}
-                            user={user}
-                        />
-                    ))}
-                </CardsContainer>
-            ) : (
-                <ImageErrorMessage
-                    image={imgNoUsers} 
-                    text="You don't follow any users yet"
-                />
-            )}
-            {errorMessage !== '' && (
-                <ImageErrorMessage
-                    image={imgError} 
-                    text="Something went wrong...Please, try later"
-                />
-            )} 
-        </Container>
+        <UsersContainer 
+            usersData={followingListUsersData } 
+            usersCards={
+               followingListUsersData.map(user => (
+                    <FollowingCard 
+                        key={user.personalData.userId}
+                        user={user}
+                    />
+                ))
+            } 
+            imageNoUsersPath={imgNoUsers} 
+            imageText={"You don't follow any users yet"}
+            subtitleText="You have sent a friend request to these users and you follow them"
+        />
     )
 }

@@ -38,7 +38,7 @@ const friendsSlice = createSlice({
     initialState,
     reducers: {
         getFriendsData(state, action: PayloadAction<UserProfile[]>) {
-            state.friendsData = action.payload   
+            state.friendsData = action.payload 
         },
         getFollowingListData(state, action: PayloadAction<UserProfile[]>) {
             state.followingListData = action.payload
@@ -51,7 +51,6 @@ const friendsSlice = createSlice({
         },
         getErrorMessage(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
-            state.loading = false
         },
         getLoading(state, action: PayloadAction<boolean>) {
             state.loading = action.payload
@@ -68,13 +67,13 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
         let friendRequests: UserProfile[] = [];
         let followers: UserProfile[] = [];
 
+        dispatch(getLoading(true))
         dispatch(getErrorMessage(''))
         dispatch(getFriendsData([])) 
         dispatch(getFollowingListData([]))
         dispatch(getFriendRequestData([]))
         dispatch(getFollowersData([]))
 
-        dispatch(getLoading(true))
         try {
             if (usersIds.length > 0) {
 
@@ -99,18 +98,19 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
                     } else {
                         dispatch(getErrorMessage('something went wrong! Try later!'))
                     }
+                    dispatch(getLoading(false))
                 })
-            } 
-            dispatch(getLoading(false))
+            } else {
+                dispatch(getLoading(false))
+            }
         } catch (error:unknown) {
-            // dispatch(getLoading(false))
+            dispatch(getLoading(false))
             if (error instanceof Error) {
                 dispatch(getErrorMessage(error.message))
                 return
             }
             dispatch(getErrorMessage(String(error)))
-        } finally {
-        }
+        } 
     }
 }
 
@@ -119,10 +119,10 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
 export const { 
     getFriendsData, 
     getErrorMessage, 
-    getLoading, 
     getFollowingListData, 
     getFriendRequestData,
-    getFollowersData 
+    getFollowersData ,
+    getLoading
 } = friendsSlice.actions;
 
 export default friendsSlice.reducer;

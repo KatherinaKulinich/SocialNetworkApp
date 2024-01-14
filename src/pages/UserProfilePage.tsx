@@ -46,7 +46,7 @@ export const UserProfilePage:React.FC = () => {
     //         }
     //     }
     //     getUserData()
-    // }, [user])
+    // }, [user, friends])
     // useEffect(() => {
     //     if (id) {
     //         dispatch(fetchUserFullData(id))

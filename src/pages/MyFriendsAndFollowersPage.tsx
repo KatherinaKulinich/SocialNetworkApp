@@ -32,7 +32,7 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
 
     const { usersBirthdayToday } = useUsersBirthdays(friendsData)
     const userData = useMyFullData()
-    console.log('page', userData);
+    // console.log('page', userData);
     
 
     

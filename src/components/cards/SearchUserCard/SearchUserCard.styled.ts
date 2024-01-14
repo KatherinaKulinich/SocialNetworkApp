@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
 import { BoxShadow,Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 
-export const UserCard = styled(Link)`
+export const UserCard = styled.div`
     padding: 10px 20px;
     display: block;
-    text-decoration: none;
+    /* text-decoration: none; */
     width: 100%;
     max-width: 500px;
     border-radius: 10px;

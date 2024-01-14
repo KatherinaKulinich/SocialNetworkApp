@@ -9,6 +9,7 @@ import { PreviewContainer, PageLink } from "../../UserProfileCard.styled";
 import { DataItem } from "../DataItem/DataItem";
 import { Paragraph } from "@components/text/Paragraph";
 import { UserProfile } from "types/UserProfile";
+import { LoaderGlass } from '@components/loaders/LoaderGlass';
 
 
 interface FriendsPreviewProps {
@@ -21,12 +22,14 @@ interface FriendsPreviewProps {
 
 
 
-export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) => {
+export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) =>  {
     const [defaultAvatars, setDefaultAvatars] = useState<JSX.Element[]>([])
 
     const { userName } = user?.personalData ?? {}
     const { friends } = user?.contacts ?? {}
     const friendsIdsArray = friends.map(user => user.id) || []
+    // console.log(friendsData);
+    
     
 
     const createDefaultAvatars = useCallback((friendsProfiles:string[]):JSX.Element[] => {
@@ -43,12 +46,12 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
             )
         }
         return defaultAvatarsList
-    }, [friends])
+    }, [])
     
     
     useEffect(() => {
         setDefaultAvatars(createDefaultAvatars(friendsIdsArray))
-    }, [friends])
+    }, [friendsData])
     
     
     const navigate = useNavigate();
@@ -56,11 +59,11 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
         navigate(`${link}`)
     },[])
 
-    const [friendsAvatarsForPreview, setFriendsAvatarsForPreview] = useState<UserProfile[]>([])
+    // const [friendsAvatarsForPreview, setFriendsAvatarsForPreview] = useState<UserProfile[]>([])
 
-    useEffect(() => {
-        setFriendsAvatarsForPreview(friendsData)
-    }, [])
+    // useEffect(() => {
+    //     setFriendsAvatarsForPreview(friendsData)
+    // }, [])
  
 
     return (
@@ -70,7 +73,7 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
                 itemName={role === 'userProfile' ? `${userName}'s friends` : 'My friends'} 
                 direction='column'
             />
-            {friends?.length > 0 ? (
+            {friendsData && friends?.length > 0 ? (
                 <PageLink to={link}>
                     See more...
                 </PageLink>
@@ -82,21 +85,25 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
             )}
 
             <FriendsBox onClick={goToFriendsPage}>
-                {friendsAvatarsForPreview?.length > 0 && (
-                    friendsAvatarsForPreview.map((friend, index) => (
-                        <FriendCard key={index}>
-                            <Avatar 
-                                photo={friend.profileData.userAvatar} 
-                                border={theme.colors.lightGray}
-                                size="30px"
-                            />
-                            <Name>
-                                {friend.personalData.userFullname}
-                            </Name>
-                        </FriendCard>     
-                    ))
+               {friendsData && (
+                    <>
+                        {friendsData?.length > 0 && (
+                            friendsData.map((friend, index) => (
+                                <FriendCard key={index}>
+                                    <Avatar 
+                                        photo={friend.profileData.userAvatar} 
+                                        border={theme.colors.lightGray}
+                                        size="30px"
+                                    />
+                                    <Name>
+                                        {friend.personalData.userFullname}
+                                    </Name>
+                                </FriendCard>     
+                            ))
+                        )}
+                        {friendsData?.length < 9 && defaultAvatars}   
+                    </>
                 )}
-                {friendsData?.length < 9 && defaultAvatars}   
             </FriendsBox>
         </PreviewContainer>
     )

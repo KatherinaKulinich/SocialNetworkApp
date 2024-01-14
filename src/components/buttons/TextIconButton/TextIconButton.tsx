@@ -6,7 +6,8 @@ import { theme } from "@styles/Theme";
 
 interface TextIconButtonProps {
     text: string;
-    icon: React.ReactNode;
+    icon: any;
+    // icon: React.ReactNode;
     color: string;
     textSize: string;
     iconSize: string;
