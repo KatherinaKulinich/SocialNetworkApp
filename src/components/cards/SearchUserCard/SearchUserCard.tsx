@@ -8,7 +8,7 @@ import { useCallback } from "react";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
-import { fetchFriends, getFriendsData } from "rdx/slices/friendsSlice";
+import { fetchFriends} from "rdx/slices/friendsSlice";
 import { useNavigate } from "react-router-dom";
 
 

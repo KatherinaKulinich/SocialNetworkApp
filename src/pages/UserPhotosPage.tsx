@@ -39,8 +39,8 @@ export const UserPhotosPage:React.FC = () => {
                     icon={<MdDoubleArrow style={{ transform: 'rotate(180deg)' }} />} 
                     text={`back to ${userName}'s profile`} 
                     color={theme.colors.regularDark} 
-                    textSize={'16px'} 
-                    iconSize={"30px"} 
+                    textSize={'12px'} 
+                    iconSize={"20px"} 
                     buttonType={"button"}
                     fontWeight={600}
                     onClickHandler={goToUserProfilePage}

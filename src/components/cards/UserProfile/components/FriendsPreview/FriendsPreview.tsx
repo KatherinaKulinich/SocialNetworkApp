@@ -9,7 +9,8 @@ import { PreviewContainer, PageLink } from "../../UserProfileCard.styled";
 import { DataItem } from "../DataItem/DataItem";
 import { Paragraph } from "@components/text/Paragraph";
 import { UserProfile } from "types/UserProfile";
-import { LoaderGlass } from '@components/loaders/LoaderGlass';
+import { useAppDispatch } from "hooks/hooks";
+import { fetchFriends} from "rdx/slices/friendsSlice";
 
 
 interface FriendsPreviewProps {
@@ -23,6 +24,7 @@ interface FriendsPreviewProps {
 
 
 export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) =>  {
+    const dispatch = useAppDispatch();
     const [defaultAvatars, setDefaultAvatars] = useState<JSX.Element[]>([])
 
     const { userName } = user?.personalData ?? {}
@@ -56,6 +58,13 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
     const goToFriendsPage = useCallback(() => {
         navigate(`${link}`)
     },[])
+
+    useEffect(() => {
+        // setTimeout(() =>  dispatch(fetchFriends(friendsIdsArray, 'friends')), 2000)
+        dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    }, [dispatch])
+    console.log(user, friends);
+    
 
     // const [friendsAvatarsForPreview, setFriendsAvatarsForPreview] = useState<UserProfile[]>([])
 
