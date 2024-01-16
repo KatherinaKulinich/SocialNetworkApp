@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { fetchFriends, getFriendsData } from "rdx/slices/friendsSlice";
+import { message } from "antd";
 
 
 
@@ -23,18 +24,17 @@ export const Created:React.FC = () => {
     const user = useAppSelector(state => state.users.selectedUser)
     const friends = user?.contacts?.friends
     const ids = friends?.map(user => user.id) || []
-    const friendsData = useAppSelector(state => state.friends.friendsData)
+
     
     
     
     const goToMyProfilePage = useCallback(async () => {
-        // dispatch(fetchFriends([], 'friends'))
         await dispatch(fetchSelectedUserData(MY_ID)) 
         if (ids) {
             await dispatch(fetchFriends(ids, 'friends')) 
-            navigate(`/users/${MY_NAME}/profile`)
+            setTimeout(navigate, 3000, `/users/${MY_NAME}/profile`)
         }
-    }, [dispatch, MY_ID, friends, friendsData, user])
+    }, [dispatch])
 
 
     return (
