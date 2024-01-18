@@ -19,9 +19,10 @@ export const Created:React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const MY_ID = import.meta.env.VITE_MY_ID;
-    const MY_NAME = import.meta.env.VITE_MY_FULLNAME;
+
 
     const user = useAppSelector(state => state.users.selectedUser)
+    const userFullname = user?.personalData?.userFullname
     const friends = user?.contacts?.friends
     const ids = friends?.map(user => user.id) || []
 
@@ -30,9 +31,9 @@ export const Created:React.FC = () => {
     
     const goToMyProfilePage = useCallback(async () => {
         await dispatch(fetchSelectedUserData(MY_ID)) 
-        if (ids) {
+        if (ids && userFullname) {
             await dispatch(fetchFriends(ids, 'friends')) 
-            setTimeout(navigate, 3000, `/users/${MY_NAME}/profile`)
+            setTimeout(navigate, 6000, `/users/${userFullname}/profile`)
         }
     }, [dispatch])
 

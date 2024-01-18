@@ -63,7 +63,7 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
         // setTimeout(() =>  dispatch(fetchFriends(friendsIdsArray, 'friends')), 2000)
         dispatch(fetchFriends(friendsIdsArray, 'friends'))
     }, [dispatch])
-    console.log(user, friends);
+
     
 
     // const [friendsAvatarsForPreview, setFriendsAvatarsForPreview] = useState<UserProfile[]>([])

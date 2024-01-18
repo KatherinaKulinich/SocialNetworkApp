@@ -22,7 +22,7 @@ export const useUserSubscription = (user:UserProfile) => {
     } = user?.contacts ?? {}
     
     const myData = useAppSelector(state => state.userData.user)
-    const { userId:myId } = myData?.personalData
+    const { userId:myId, userFullname:myFullname } = myData?.personalData
     const { 
         friends: myFriends, 
         followingList: myFollowingList, 
@@ -104,11 +104,13 @@ export const useUserSubscription = (user:UserProfile) => {
         const myNewFriend = {
             id: userId,
             time,
+            name: userFullname,
         }
 
         const userNewFriend = {
             id: myId,
             time,
+            name: myFullname,
         }
         const myNewFriendsArray = [...myFriends, myNewFriend]
         const userNewFriendsArray = [...userFriends, userNewFriend]
