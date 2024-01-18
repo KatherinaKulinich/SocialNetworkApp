@@ -7,9 +7,9 @@ export interface Post {
     postText: string,
     postOwnerName: string,
     postOwnerAvatar: string,
-    postDate: any,
     postReactions: Array<Reaction>,
     postComments: Array<CommentItem>,
+    date: any,
 }
 
 

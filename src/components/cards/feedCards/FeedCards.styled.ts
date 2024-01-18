@@ -5,8 +5,8 @@ import { theme } from "@styles/Theme";
 
 export const Card = styled.div`
     width: 100%;
-    /* max-width: 700px; */
-    padding: 15px;
+    max-width: 700px;
+    padding: 35px;
     border-radius: 15px;
     ${BoxShadow};
     ${Column};
@@ -18,11 +18,12 @@ export const CardHeader = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
 `
 
 export const CardUserName = styled.p`
     ${Font({size: '14px', weight: '600', line: '17px', color: theme.colors.regularDark})};
+    cursor: pointer;
 `
 
 export const CardText = styled.p`
@@ -32,10 +33,11 @@ export const CardText = styled.p`
 export const UserDataContainer = styled.div`
     display: flex;
     align-items: center;
-    gap:7px;
+    gap: 8px;
+    cursor: pointer;
 `
 
 export const CardImage = styled.img`
     width: 200px;
-    
+
 `

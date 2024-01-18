@@ -14,6 +14,7 @@ export const CardContainer = styled.div`
     ${Column};
     /* gap: 10px; */
     align-items: center;
+    background-color: #ffffff;
 
     @media ${device.sm} {
         padding: 25px;

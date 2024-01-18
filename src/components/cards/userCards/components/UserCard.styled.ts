@@ -16,6 +16,7 @@ export const Card = styled.div`
     gap: 20px;
     ${BoxShadow};
     height:initial;
+    cursor: pointer;
 `
 
 

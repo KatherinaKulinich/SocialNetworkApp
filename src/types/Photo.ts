@@ -7,8 +7,8 @@ export interface Photo {
     photoFileRef: string,
     photoUrl: string,
     photoDescription: string,
-    photoDate: number,
     photoLikes: Array<string>,
     photoComments: Array<CommentItem>,
+    date: number,
 }
 

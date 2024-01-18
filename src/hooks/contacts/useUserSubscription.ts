@@ -14,6 +14,7 @@ export const useUserSubscription = (user:UserProfile) => {
     const dispatch = useAppDispatch()
 
     const { userId, userFullname } = user?.personalData
+    const { userAvatar }= user?.profileData
     const { 
         friends: userFriends, 
         followingList: userFollowingList, 
@@ -23,6 +24,7 @@ export const useUserSubscription = (user:UserProfile) => {
     
     const myData = useAppSelector(state => state.userData.user)
     const { userId:myId, userFullname:myFullname } = myData?.personalData
+    const { userAvatar:myAvatar }= user?.profileData
     const { 
         friends: myFriends, 
         followingList: myFollowingList, 
@@ -96,21 +98,23 @@ export const useUserSubscription = (user:UserProfile) => {
     const acceptFriendRequest = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation()
         await message.loading('Accepting the request...')
-        const time = Date.now()
+        const date = Date.now()
 
         const userNewFollowingListArray = userFollowingList.filter(id => id !== myId)
         const myNewFriendRequestsArray = myFriendRequests.filter(id => id !== userId)
         
         const myNewFriend = {
             id: userId,
-            time,
+            date,
             name: userFullname,
+            avatar: userAvatar,
         }
 
         const userNewFriend = {
             id: myId,
-            time,
+            date,
             name: myFullname,
+            avatar: myAvatar
         }
         const myNewFriendsArray = [...myFriends, myNewFriend]
         const userNewFriendsArray = [...userFriends, userNewFriend]

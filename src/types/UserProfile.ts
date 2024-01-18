@@ -59,4 +59,5 @@ export interface Friend {
     id: string,
     date: number,
     name: string,
+    avatar: string,
 }

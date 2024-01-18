@@ -30,9 +30,9 @@ interface UserPostCardProps {
 
 
 export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner}) => {
-    const {postOwnerName, postOwnerAvatar, postDate, postReactions, postComments, postText} = post;
+    const {postOwnerName, postOwnerAvatar, date, postReactions, postComments, postText} = post;
 
-    const date = new Date(postDate);
+    const dateFormat = new Date(date);
     const dispatch = useAppDispatch()
     const userData = useAppSelector(state => state.userData.user)
 
@@ -90,10 +90,10 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                         <Text>{postOwnerName}</Text>
                     </UserInfo>
                     <Info>
-                        {postDate && (
+                        {date && (
                             <DateField>
-                                <Text>{`${date.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(postDate)} ` }</Text>
-                                <PostTime>{`${date.getHours()}:${date.getMinutes()}`}</PostTime>
+                                <Text>{`${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} ` }</Text>
+                                <PostTime>{`${dateFormat.getHours()}:${dateFormat.getMinutes()}`}</PostTime>
                             </DateField>
                         )}
                     </Info>

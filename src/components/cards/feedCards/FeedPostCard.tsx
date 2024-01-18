@@ -38,8 +38,8 @@ export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem}) => {
                     <UserDataContainer>
                         <Avatar 
                             photo={user?.profileData?.userAvatar} 
-                            border={`1px solid ${theme.colors.regularDark}`} 
-                            size={"20px"}
+                            border={theme.colors.regularDark} 
+                            size={"40px"}
                         />
                         <CardUserName>
                             {user?.personalData?.userFullname}
