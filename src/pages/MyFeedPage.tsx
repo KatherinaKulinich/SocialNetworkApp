@@ -13,6 +13,7 @@ import { JSX } from 'react/jsx-runtime'
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { useMyFullData } from 'hooks/useMyFullData'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
+import { RegularButton } from '@components/buttons/RegularButton/RegularButton'
 
 
 type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
@@ -37,13 +38,20 @@ export const MyFeedPage: React.FC = () => {
     const followersData = useAppSelector(state => state.friends.followersData)
     const allUsers = friendsData.concat(followersData)
 
+    const [index, setIndex] = useState<number>(1)
+
+
+    const onLoadMoreNews = useCallback(() => {
+        setIndex(prev => prev+1)
+    }, [index])
+
 
     
-    const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(1, allUsers, myId)
+    const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, allUsers, myId)
     // console.log('posts', newPosts);
     // console.log('photos', newPhotos);
     // console.log('friends', newFriendships);
-    // console.log('ALL!!!', allNews);
+    console.log('ALL!!!', allNews);
 
     const [isVisibleNews, setIsVisibleNews] = useState<any>()
     const [feedCards, setFeedCards] = useState<JSX.Element[]>([])
@@ -104,6 +112,11 @@ export const MyFeedPage: React.FC = () => {
             <ListContainer>
                 {isVisibleNews && feedCards}
             </ListContainer>
+            <RegularButton 
+                buttonType={'button'} 
+                buttonText={'Load more news...'}
+                onClickHandler={onLoadMoreNews}
+            />
         </PageContainer>
     )
 }

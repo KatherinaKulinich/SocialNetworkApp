@@ -9,10 +9,13 @@ type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
 
 export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:string) => {
+    // const dayTimeSec = 3600000
     const dayTimeSec = 86400000
     const timeLimit = dayTimeSec*index
     const currentTime = Date.now()
     const timeRange = currentTime - timeLimit
+
+
 
 
 
@@ -36,7 +39,7 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
             return b.post.date - a.post.date
         })
         return sortedPosts
-    }, [usersData])
+    }, [usersData, timeRange])
 
 
 
@@ -59,7 +62,7 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
             return b.photo.date - a.photo.date
         })
         return sortedPhotos
-    }, [usersData])
+    }, [usersData, timeRange])
 
 
     
@@ -91,15 +94,20 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
             return b.friend.date - a.friend.date
         })
         return sortedFriendsUpdates
-    }, [usersData])
+    }, [usersData, timeRange])
 
 
 
     const [newPosts, setNewPosts] = useState<FeedPost[]>(getLatestPosts())
     const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>(getLatestPhotos())
     const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>(getLatestFriendships())
+    const [allNews, setAllNews] = useState<AllFeedNews>([])
 
-
+    useEffect(() => {
+        setNewPhotos(getLatestPhotos())
+        setNewPosts(getLatestPosts())
+        setNewFriendships(getLatestFriendships())
+    }, [index])
 
 
 
@@ -115,7 +123,9 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
         return [] as AllFeedNews
     }, [newPhotos,newPosts,newFriendships])
 
-    const [allNews, setAllNews] = useState<AllFeedNews>([])
+
+    
+
     useEffect(() => {
         setAllNews(getAllLatestUpdates())
     }, [newPhotos,newPosts,newFriendships])
