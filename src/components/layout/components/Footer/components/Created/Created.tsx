@@ -35,7 +35,7 @@ export const Created:React.FC = () => {
             await dispatch(fetchFriends(ids, 'friends')) 
             setTimeout(navigate, 6000, `/users/${userFullname}/profile`)
         }
-    }, [dispatch])
+    }, [dispatch, navigate])
 
 
     return (

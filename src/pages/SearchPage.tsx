@@ -87,6 +87,7 @@ export const SearchPage:React.FC = () => {
             <Filter 
                 filterOptions={selectOptions} 
                 handleChange={onChangeFilterValue}
+                labelName='Search by:'
             />
             <UserSearchField 
                 searchOptions={filterOptions} 

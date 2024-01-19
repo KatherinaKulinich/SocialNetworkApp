@@ -14,6 +14,8 @@ import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { useMyFullData } from 'hooks/useMyFullData'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
 import { RegularButton } from '@components/buttons/RegularButton/RegularButton'
+import { Filter } from '@components/Filter/Filter'
+
 
 
 type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
@@ -39,6 +41,7 @@ export const MyFeedPage: React.FC = () => {
     const allUsers = friendsData.concat(followersData)
 
     const [index, setIndex] = useState<number>(1)
+    const [filterValue, setFilterValue] = useState('all')
 
 
     const onLoadMoreNews = useCallback(() => {
@@ -58,8 +61,25 @@ export const MyFeedPage: React.FC = () => {
    
 
     useEffect(() => {
-        setIsVisibleNews(allNews)
-    }, [allNews])
+        console.log(filterValue);
+        
+        if (filterValue === 'all') {
+            setIsVisibleNews(allNews)
+            return
+        }
+        if (filterValue === 'posts') {
+            setIsVisibleNews(newPosts)
+            return
+        }
+        if (filterValue === 'photos') {
+            setIsVisibleNews(newPhotos)
+            return
+        }
+        if (filterValue === 'friendship') {
+            setIsVisibleNews(newFriendships)
+            return
+        }
+    }, [allNews, filterValue])
 
 
 
@@ -99,6 +119,23 @@ export const MyFeedPage: React.FC = () => {
     useEffect(() => {
         setFeedCards(getFeedCards())
     }, [isVisibleNews])
+
+    const filterOptions = [
+        {label: 'All news', value: 'all'},
+        {label: 'Only posts', value: 'posts'},
+        {label: 'Only photos', value: 'photos'},
+        {label: 'Only new friendship', value: 'friendship'},
+    ]
+
+    
+
+    const onChangeFilterValue = useCallback((value: string) => {
+        setFilterValue(value)
+        setIndex(1)
+    }, [filterValue, index])
+
+
+
     
 
     return (
@@ -109,6 +146,10 @@ export const MyFeedPage: React.FC = () => {
                 titleSecond="feed"
             />
             <SubTitle text="The latest isVisibleNews from your friends and followers:"/>
+            <Filter 
+                filterOptions={filterOptions} 
+                handleChange={onChangeFilterValue}
+            />
             <ListContainer>
                 {isVisibleNews && feedCards}
             </ListContainer>
