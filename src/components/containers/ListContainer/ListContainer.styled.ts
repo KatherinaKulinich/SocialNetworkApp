@@ -6,12 +6,12 @@ import { Column, FullSize } from "@styles/mixins";
 export const List = styled.div`
     ${FullSize};
     ${Column};
-    gap: 15px;
+    gap: 20px;
 
     @media ${device.sm} {
-        gap: 25px;
+        gap: 35px;
     };
     @media ${device.xl} {
-        gap: 35px;
+        gap: 40px;
     };
 `

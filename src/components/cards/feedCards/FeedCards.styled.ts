@@ -38,6 +38,6 @@ export const UserDataContainer = styled.div`
 `
 
 export const CardImage = styled.img`
-    width: 200px;
+    width: 300px;
 
 `

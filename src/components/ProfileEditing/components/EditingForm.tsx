@@ -71,7 +71,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
             userInterests: userInterests.length > 0 ? userInterests : ['Coding'],
             userAbout: userAbout || '',
         })
-    }, [])
+    }, [userData, form])
 
 
     return (

@@ -11,6 +11,7 @@ export const Card = styled.div`
     ${BoxShadow};
     ${Column};
     gap: 20px; 
+    background-color: #ffffff;
 `
 
 export const CardImage = styled(Image)`

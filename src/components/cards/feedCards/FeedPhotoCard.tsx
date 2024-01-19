@@ -10,11 +10,11 @@ import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReacti
 import { usePhotosLikes } from "hooks/content/usePhotosLikes"
 
 interface FeedPhotoCardProps {
-    feedPostItem: FeedPhoto
+    feedPhotoItem: FeedPhoto
 }
 
-export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPostItem}) => {
-    const { user, photo } = feedPostItem
+export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
+    const { user, photo } = feedPhotoItem
 
     const myUserData = useMyFullData()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
@@ -45,8 +45,8 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPostItem}) => {
                     <UserDataContainer>
                         <Avatar 
                             photo={user?.profileData?.userAvatar} 
-                            border={`1px solid ${theme.colors.regularDark}`} 
-                            size={"20px"}
+                            border={theme.colors.regularDark} 
+                            size={"40px"}
                         />
                         <CardUserName>
                             {user?.personalData?.userFullname}

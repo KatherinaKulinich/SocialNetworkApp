@@ -47,9 +47,9 @@ export const useCreateNewContent = () => {
                     photoFileRef: imgStorageUrl,
                     photoUrl: downloadURL,
                     photoDescription: photoDescription || '',
-                    photoDate: Date.now(),
                     photoLikes: [],
                     photoComments: [] as CommentItem[],
+                    date: Date.now(),
                 }
 
                 if (photos !== undefined) {
@@ -79,9 +79,9 @@ export const useCreateNewContent = () => {
             postText: newPostText,
             postOwnerName: userName,
             postOwnerAvatar: userAvatar,
-            postDate: Date.now(),
             postReactions,
             postComments: [] as CommentItem[],
+            date: Date.now(),
         }
         
         if (posts !== undefined) {
