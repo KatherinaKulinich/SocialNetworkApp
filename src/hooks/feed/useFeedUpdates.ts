@@ -8,18 +8,22 @@ import { UserProfile } from "types/UserProfile"
 type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
 
-export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:string) => {
-    // const dayTimeSec = 3600000
-    const dayTimeSec = 86400000
+export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:string, randomUsers:UserProfile[]) => {
+    const dayTimeSec = 2508000000
+    // const dayTimeSec = 86400000
     const timeLimit = dayTimeSec*index
     const currentTime = Date.now()
     const timeRange = currentTime - timeLimit
 
+    
+
+    const [isRandomNews, setIsRandomNews] = useState<boolean>(false)
 
 
 
 
-    const getLatestPosts = useCallback(() => {
+
+    const getLatestPosts = useCallback((usersData: UserProfile[]) => {
         const latestPosts = usersData?.map(user => {
             const { posts } = user?.content ?? {}
             const filteredPosts = posts?.filter(post => post.date >= timeRange)
@@ -38,12 +42,28 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
         const sortedPosts = latestPosts.flat().sort((a:FeedPost, b:FeedPost) => {
             return b.post.date - a.post.date
         })
+        // console.log(sortedPosts);
+        
         return sortedPosts
-    }, [usersData, timeRange])
+    }, [friendsData, timeRange])
+
+
+    const getPosts = useCallback(() => {
+        if (friendsData) {
+            // console.log('friends',friendsData);
+            // console.log('random', randomUsers);
+            return getLatestPosts(friendsData)
+        } 
+        setIsRandomNews(true)
+        return getLatestPosts(randomUsers)
+     
+        
+        
+    }, [friendsData, randomUsers])
 
 
 
-    const getLatestPhotos = useCallback(() => {
+    const getLatestPhotos = useCallback((usersData: UserProfile[]) => {
         const latestPhotos = usersData?.map(user => {
             const { photos } = user?.content ?? {}
             const filteredPhotos = photos?.filter(photo => photo.date >= timeRange)
@@ -62,11 +82,21 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
             return b.photo.date - a.photo.date
         })
         return sortedPhotos
-    }, [usersData, timeRange])
+    }, [friendsData, timeRange])
+
+
+    const getPhotos = useCallback(() => {
+        if (friendsData) {
+            return getLatestPhotos(friendsData)
+        } else {
+            setIsRandomNews(true)
+            return getLatestPhotos(randomUsers)
+        }
+    }, [friendsData, randomUsers])
 
 
     
-    const getLatestFriendships = useCallback(() => {
+    const getLatestFriendships = useCallback((usersData:UserProfile[]) => {
         const latestFriendships = usersData?.map(user => {
             const { friends } = user?.contacts ?? {}
 
@@ -94,19 +124,28 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
             return b.friend.date - a.friend.date
         })
         return sortedFriendsUpdates
-    }, [usersData, timeRange])
+    }, [friendsData, timeRange])
+
+    const getFriendship = useCallback(() => {
+        if (friendsData) {
+            return getLatestFriendships(friendsData)
+        } else {
+            setIsRandomNews(true)
+            return getLatestFriendships(randomUsers)
+        }
+    }, [friendsData, randomUsers])
 
 
 
-    const [newPosts, setNewPosts] = useState<FeedPost[]>(getLatestPosts())
-    const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>(getLatestPhotos())
-    const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>(getLatestFriendships())
+    const [newPosts, setNewPosts] = useState<FeedPost[]>(getPosts())
+    const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>(getPhotos())
+    const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>(getFriendship())
     const [allNews, setAllNews] = useState<AllFeedNews>([])
 
     useEffect(() => {
-        setNewPhotos(getLatestPhotos())
-        setNewPosts(getLatestPosts())
-        setNewFriendships(getLatestFriendships())
+        setNewPhotos(getPhotos())
+        setNewPosts(getPosts())
+        setNewFriendships(getFriendship())
     }, [index])
 
 
@@ -121,10 +160,9 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
             return sortedNews
         }
         return [] as AllFeedNews
-    }, [newPhotos,newPosts,newFriendships])
+    }, [newPhotos, newPosts, newFriendships])
 
 
-    
 
     useEffect(() => {
         setAllNews(getAllLatestUpdates())
@@ -139,6 +177,7 @@ export const useFeedUpdates = (index:number, usersData:UserProfile[], myId:strin
         newPosts,
         newPhotos,
         newFriendships,
-        allNews
+        allNews,
+        isRandomNews
     }
 }

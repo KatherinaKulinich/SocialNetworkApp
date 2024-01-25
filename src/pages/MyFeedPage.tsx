@@ -1,4 +1,5 @@
 import img from '@images/myFeed.svg'
+import imageNoNews from '@images/nofriends.svg'
 import { useState, useEffect, useCallback } from "react"
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { FeedPostCard } from "@components/cards/feedCards/FeedPostCard"
@@ -15,6 +16,11 @@ import { useMyFullData } from 'hooks/useMyFullData'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
 import { RegularButton } from '@components/buttons/RegularButton/RegularButton'
 import { Filter } from '@components/Filter/Filter'
+import { filterOptions } from 'utils/data/feedFilterOptions'
+import { theme } from '@styles/Theme'
+import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage'
+import { LoaderComment } from '@components/loaders/LoaderComment'
+import { fetchRandomUsers } from 'rdx/slices/usersSlice'
 
 
 
@@ -31,6 +37,13 @@ export const MyFeedPage: React.FC = () => {
     const { userId:myId } = myData?.personalData ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
 
+    const { userId, userFullname } = myData?.personalData ?? {}
+    const { userCity, userCountry } = myData?.profileData ?? {}
+
+    useEffect(() => {
+        dispatch(fetchRandomUsers(userCountry, userCity, userId))
+    }, [dispatch, userCountry, userCity])
+
     useEffect(() => {
         dispatch(fetchFriends(friendsIds, 'friends'))
         dispatch(fetchFriends(followers, 'followers'))
@@ -44,24 +57,29 @@ export const MyFeedPage: React.FC = () => {
     const [filterValue, setFilterValue] = useState('all')
 
 
-    const onLoadMoreNews = useCallback(() => {
+    const loadMoreNews = useCallback(() => {
         setIndex(prev => prev+1)
     }, [index])
 
+    const randomUsers = useAppSelector(state => state.users.randomUsers)
+
 
     
-    const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, allUsers, myId)
-    // console.log('posts', newPosts);
-    // console.log('photos', newPhotos);
-    // console.log('friends', newFriendships);
-    console.log('ALL!!!', allNews);
+    const {newPosts, newPhotos, newFriendships, allNews, isRandomNews} = useFeedUpdates(index, allUsers, myId, randomUsers)
+    // console.log(allNews);
+    
 
     const [isVisibleNews, setIsVisibleNews] = useState<any>()
     const [feedCards, setFeedCards] = useState<JSX.Element[]>([])
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isNewsAmount, setIsNewsAmount] = useState<number>(0)
+    const [isNoMoreNews, setIsNoMoreNews] = useState<boolean>(false)
    
 
     useEffect(() => {
-        console.log(filterValue);
+        setIsLoading(true)
+        // console.log(filterValue);
         
         if (filterValue === 'all') {
             setIsVisibleNews(allNews)
@@ -79,14 +97,17 @@ export const MyFeedPage: React.FC = () => {
             setIsVisibleNews(newFriendships)
             return
         }
-    }, [allNews, filterValue])
+    }, [allNews, filterValue, index])
 
 
 
     const getFeedCards = useCallback(():JSX.Element[] => {
         let newsList: JSX.Element[] = [];
-
-        if (isVisibleNews) {
+        console.log(index, isVisibleNews);
+        
+        
+        if (isVisibleNews && isVisibleNews.length > 0) {
+            setIsLoading(false)
             for (let i = 0; i < isVisibleNews.length; i++) {
                 if ('post' in isVisibleNews[i]) {
                     newsList.push(
@@ -112,22 +133,53 @@ export const MyFeedPage: React.FC = () => {
                 }
             }
         }
+        
+        console.log('IS NEWS AMOUNT ON PAGE--111111', isNewsAmount, newsList.length);
+        if (isNewsAmount === newsList.length && isNewsAmount !== 0) {
+            console.log('IS NEWS AMOUNT ON PAGE', isNewsAmount);
+            setIsNoMoreNews(true)
+        } else {
+            setIsNewsAmount(newsList.length)
+            console.warn(newsList.length);
+            console.log('IS NO MORE FRESH NEWS', isNoMoreNews);
+        }
         return newsList
-    }, [isVisibleNews])
+        
+    }, [isVisibleNews, index, isNewsAmount, isNoMoreNews ])
 
 
     useEffect(() => {
-        setFeedCards(getFeedCards())
-    }, [isVisibleNews])
+        setTimeout(() => {
+            if (isVisibleNews?.length === 0 && index < 5) {
+                setIndex(prev => prev+1) 
+            }
+        },1500)
+        
+    }, [isVisibleNews, index])
 
-    const filterOptions = [
-        {label: 'All news', value: 'all'},
-        {label: 'Only posts', value: 'posts'},
-        {label: 'Only photos', value: 'photos'},
-        {label: 'Only new friendship', value: 'friendship'},
-    ]
+    useEffect(() => {
+        console.log('start cards');
+        setTimeout(()=> {
+            setFeedCards(getFeedCards())
+        },1000)
+    }, [index])
 
-    
+    // useEffect(() => {
+    //     const getMoreNewsData = async () => {
+    //         if (isVisibleNews?.length === 0 && index < 5) {
+    //             await setIndex(prev => prev+1) 
+    //             await setFeedCards(getFeedCards())
+    //         }
+    //     }
+    //     getMoreNewsData()
+    // },[isVisibleNews, index])
+
+    useEffect(() => {
+        if (feedCards.length > 0 || isVisibleNews?.length === 0 && index === 5) {
+            setTimeout(() => setIsLoading(false), 2000)
+        }
+    }, [index, feedCards])
+
 
     const onChangeFilterValue = useCallback((value: string) => {
         setFilterValue(value)
@@ -145,19 +197,41 @@ export const MyFeedPage: React.FC = () => {
                 titleFirst='My'
                 titleSecond="feed"
             />
-            <SubTitle text="The latest isVisibleNews from your friends and followers:"/>
+            <SubTitle text={isRandomNews ? "You don't have friends and followers yet." : 'The latest news from your friends and followers:'}/>
+            {isRandomNews && (
+                <SubTitle 
+                    color={theme.colors.mediumGray}
+                    text='These are updates from other users that you may be interested in:'
+                />
+            )}
             <Filter 
                 filterOptions={filterOptions} 
                 handleChange={onChangeFilterValue}
             />
+            {isLoading && (
+                <LoaderComment/>
+            )}
+            {isVisibleNews?.length === 0 && index === 5 && !isLoading && (
+                <ImageErrorMessage 
+                    image={imageNoNews} 
+                    text={'It looks like none of your friends have posted anything in the past 5 days'}
+                />
+            )}
             <ListContainer>
                 {isVisibleNews && feedCards}
             </ListContainer>
-            <RegularButton 
-                buttonType={'button'} 
-                buttonText={'Load more news...'}
-                onClickHandler={onLoadMoreNews}
-            />
+            {feedCards.length > 0 && isNoMoreNews ? (
+                <SubTitle 
+                    color={theme.colors.mediumGray}
+                    text='No more fresh news'
+                />
+            ) : (
+                <RegularButton 
+                    buttonType={'button'} 
+                    buttonText={'Load more news...'}
+                    onClickHandler={loadMoreNews}
+                />
+            )}
         </PageContainer>
     )
 }

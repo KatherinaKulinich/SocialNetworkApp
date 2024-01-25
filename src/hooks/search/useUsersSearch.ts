@@ -14,12 +14,13 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
     const { userCity, userCountry } = userData?.profileData ?? {}
 
     useEffect(() => {
+        dispatch(fetchRandomUsers(userCountry, userCity, userId))
+    }, [dispatch, userCountry, userCity])
+    
+    useEffect(() => {
         dispatch(fetchUsersOptions(userFullname))
     }, [dispatch, filterValue])
 
-    useEffect(() => {
-        dispatch(fetchRandomUsers(userCountry, userCity, userId))
-    }, [dispatch, userCountry, userCity])
 
 
     const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([])
