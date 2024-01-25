@@ -20,6 +20,7 @@ import { MyFeedPage } from "pages/MyFeedPage"
 import { MyPostsPage } from "pages/MyPostsPage"
 import { MyFriendsAndFollowersPage } from "pages/MyFriendsAndFollowersPage"
 import { MyRequestsAndFollowingPage } from "pages/MyRequestsAndFollowingPage"
+import { InterestingPage } from "pages/InterestingPage"
 
 
 
@@ -48,6 +49,11 @@ export const App:React.FC = () => {
                     <Route path="myFeed" element={
                         <RequireAuth>
                             <MyFeedPage/>
+                        </RequireAuth>
+                    }/>
+                    <Route path="interesting" element={
+                        <RequireAuth>
+                            <InterestingPage/>
                         </RequireAuth>
                     }/>
                     <Route path="myProfile" element={

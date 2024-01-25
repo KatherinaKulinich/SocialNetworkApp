@@ -2,6 +2,7 @@ import { BsFillChatDotsFill } from 'react-icons/Bs';
 import { FaGift, FaUsers,  FaUserClock, FaEye, FaUserPlus, FaUserCircle, FaListUl } from 'react-icons/Fa';
 import { IoMdImages, IoMdSettings } from 'react-icons/Io';
 import { PiBookOpenTextFill } from 'react-icons/Pi';
+import { TbHeartSearch } from "react-icons/tb";
 
 
 
@@ -15,6 +16,11 @@ export const navItems = [
         label: 'My feed',
         value: 'myFeed',
         icon: FaListUl,  
+    },
+    {
+        label: 'Interesting',
+        value: 'interesting',
+        icon: TbHeartSearch,  
     },
     {
         label: 'My profile',

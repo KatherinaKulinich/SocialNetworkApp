@@ -6,25 +6,23 @@ import { FeedFriendship, FeedPhoto, FeedPost } from "types/Feed"
 import { UserProfile } from "types/UserProfile"
 
 type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
+type Role = 'feedPage' | 'interestingPage'
 
 
-export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:string, randomUsers:UserProfile[]) => {
+export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:string, role:Role) => {
     const dayTimeSec = 2508000000
     // const dayTimeSec = 86400000
     const timeLimit = dayTimeSec*index
     const currentTime = Date.now()
     const timeRange = currentTime - timeLimit
 
-    
-
-    const [isRandomNews, setIsRandomNews] = useState<boolean>(false)
 
 
 
 
 
-    const getLatestPosts = useCallback((usersData: UserProfile[]) => {
-        const latestPosts = usersData?.map(user => {
+    const getLatestPosts = useCallback(() => {
+        const latestPosts = friendsData?.map(user => {
             const { posts } = user?.content ?? {}
             const filteredPosts = posts?.filter(post => post.date >= timeRange)
 
@@ -48,23 +46,10 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
     }, [friendsData, timeRange])
 
 
-    const getPosts = useCallback(() => {
-        if (friendsData) {
-            // console.log('friends',friendsData);
-            // console.log('random', randomUsers);
-            return getLatestPosts(friendsData)
-        } 
-        setIsRandomNews(true)
-        return getLatestPosts(randomUsers)
-     
-        
-        
-    }, [friendsData, randomUsers])
 
 
-
-    const getLatestPhotos = useCallback((usersData: UserProfile[]) => {
-        const latestPhotos = usersData?.map(user => {
+    const getLatestPhotos = useCallback(() => {
+        const latestPhotos = friendsData?.map(user => {
             const { photos } = user?.content ?? {}
             const filteredPhotos = photos?.filter(photo => photo.date >= timeRange)
 
@@ -85,67 +70,51 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
     }, [friendsData, timeRange])
 
 
-    const getPhotos = useCallback(() => {
-        if (friendsData) {
-            return getLatestPhotos(friendsData)
-        } else {
-            setIsRandomNews(true)
-            return getLatestPhotos(randomUsers)
-        }
-    }, [friendsData, randomUsers])
-
-
     
-    const getLatestFriendships = useCallback((usersData:UserProfile[]) => {
-        const latestFriendships = usersData?.map(user => {
-            const { friends } = user?.contacts ?? {}
-
-            const filteredUserFriendsUpdates = friends
-            .filter(friend => friend.id !== myId)
-            .filter(friend => friend.date >= timeRange)
-
-            const filteredAllFriendsUpdates = filteredUserFriendsUpdates.map(friend => {
-                const {id, avatar, name, date} = friend
-                const feedFriendItem = {
-                    user,
-                    friend: {
-                        id,
-                        name,
-                        avatar,
+    const getLatestFriendships = useCallback(() => {
+        if (role === 'feedPage') {
+            const latestFriendships = friendsData?.map(user => {
+                const { friends } = user?.contacts ?? {}
+    
+                const filteredUserFriendsUpdates = friends
+                .filter(friend => friend.id !== myId)
+                .filter(friend => friend.date >= timeRange)
+    
+                const filteredAllFriendsUpdates = filteredUserFriendsUpdates.map(friend => {
+                    const {id, avatar, name, date} = friend
+                    const feedFriendItem = {
+                        user,
+                        friend: {
+                            id,
+                            name,
+                            avatar,
+                            date,
+                        },
                         date,
-                    },
-                    date,
-                }
-                return feedFriendItem
+                    }
+                    return feedFriendItem
+                })
+                return filteredAllFriendsUpdates
             })
-            return filteredAllFriendsUpdates
-        })
-        const sortedFriendsUpdates = latestFriendships.flat().sort((a:FeedFriendship, b:FeedFriendship) => {
-            return b.friend.date - a.friend.date
-        })
-        return sortedFriendsUpdates
+            const sortedFriendsUpdates = latestFriendships.flat().sort((a:FeedFriendship, b:FeedFriendship) => {
+                return b.friend.date - a.friend.date
+            })
+            return sortedFriendsUpdates
+        }
+        return [] as FeedFriendship[]
     }, [friendsData, timeRange])
 
-    const getFriendship = useCallback(() => {
-        if (friendsData) {
-            return getLatestFriendships(friendsData)
-        } else {
-            setIsRandomNews(true)
-            return getLatestFriendships(randomUsers)
-        }
-    }, [friendsData, randomUsers])
+ 
 
-
-
-    const [newPosts, setNewPosts] = useState<FeedPost[]>(getPosts())
-    const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>(getPhotos())
-    const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>(getFriendship())
+    const [newPosts, setNewPosts] = useState<FeedPost[]>(getLatestPosts())
+    const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>(getLatestPhotos())
+    const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>(getLatestFriendships())
     const [allNews, setAllNews] = useState<AllFeedNews>([])
 
     useEffect(() => {
-        setNewPhotos(getPhotos())
-        setNewPosts(getPosts())
-        setNewFriendships(getFriendship())
+        setNewPhotos(getLatestPhotos())
+        setNewPosts(getLatestPosts())
+        setNewFriendships(getLatestFriendships())
     }, [index])
 
 
@@ -178,6 +147,5 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
         newPhotos,
         newFriendships,
         allNews,
-        isRandomNews
     }
 }
