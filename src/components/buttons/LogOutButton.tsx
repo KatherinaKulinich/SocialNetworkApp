@@ -4,12 +4,14 @@ import { useFirebaseAuth } from "hooks/authorization/useFirebaseAuth";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { SecondaryButton } from "./SecondaryButton/SecondaryButton";
-import { useAppSelector } from "hooks/hooks";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useMyFullData } from "hooks/useMyFullData";
+import { removeUserData } from "rdx/slices/userDataSlice";
 
 
 
 export const LogOutButton:React.FC = () => {
+    const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const { onLogOut } = useFirebaseAuth()
     const { isAuth } = useAuth()
@@ -21,10 +23,11 @@ export const LogOutButton:React.FC = () => {
     const onProfileLogOut = useCallback(() => {
         if (isAuth && userName) {
             onLogOut()
+            
             message.info(`See you next time, ${userName}! Have a good rest of the day!`, 5)
-            navigate('/login')
+            setTimeout(navigate, 2000, `/login`)
         }
-    }, [isAuth, userData])
+    }, [isAuth, userData, navigate])
 
 
     return (

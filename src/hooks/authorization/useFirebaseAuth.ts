@@ -9,7 +9,7 @@ import { db, firebaseApp } from "firebase";
 import { getRandomAvatar } from "utils/getRandomAvatar";
 import { createUserProfile } from "utils/createUserProfile";
 import { changePhotoSize } from "utils/changePhotoSize";
-import { fetchUserFullData } from "rdx/slices/userDataSlice";
+import { fetchUserFullData, removeUserData } from "rdx/slices/userDataSlice";
 
 
 
@@ -124,6 +124,7 @@ export const useFirebaseAuth = () => {
         signOut(auth)
         .then(() => {
             dispatch(removeUser());
+            dispatch(removeUserData())
         })
         .catch((error) => {
             message.error(error.message, 3)

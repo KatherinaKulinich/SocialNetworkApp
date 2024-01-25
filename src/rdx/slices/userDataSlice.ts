@@ -27,6 +27,9 @@ const userDataSlice = createSlice({
         },
         getErrorMessage(state, action: PayloadAction<string>) {
             state.error = action.payload
+        },
+        removeUserData(state) {
+            state.user = {} as UserProfile
         }
     },
 });
@@ -58,7 +61,8 @@ export const fetchUserFullData = (userId: string) => {
 
 export const { 
     getUserInfo, 
-    getErrorMessage 
+    getErrorMessage ,
+    removeUserData
 } = userDataSlice.actions;
 
 export default userDataSlice.reducer;
