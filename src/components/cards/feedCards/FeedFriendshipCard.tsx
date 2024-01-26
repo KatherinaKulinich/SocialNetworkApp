@@ -11,6 +11,8 @@ interface FeedFriendshipCardProps {
 export const FeedFriendshipCard:React.FC<FeedFriendshipCardProps> = ({feedFriendshipItem}) => {
     const { user, friend } = feedFriendshipItem
 
+    
+
     return (
         <Card>
             <CardHeader>

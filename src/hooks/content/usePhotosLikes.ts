@@ -9,9 +9,10 @@ import {
 import { Photo } from "types/Photo"
 import {useAppDispatch } from "../hooks"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
-import { fetchSelectedUserData } from "rdx/slices/usersSlice"
+import { fetchRandomUsers, fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
+import { fetchFriends } from "rdx/slices/friendsSlice"
 
 
 
@@ -22,11 +23,16 @@ export const usePhotosLikes = (photoOwnerUser: UserProfile, userIsMe:UserProfile
     const { checkMyPhotoLike } = useCheckMyContentReaction(userIsMe)
     const dispatch = useAppDispatch()
 
-    const { userId:myId } = userIsMe.personalData;
+    const { userId:myId } = userIsMe?.personalData ?? {};
 
-    const { userId } = photoOwnerUser.personalData;
-    const { photos:userPhotos } = photoOwnerUser.content;
+    const { userId } = photoOwnerUser?.personalData ?? {};
+    const { photos:userPhotos } = photoOwnerUser?.content ?? {};
     const userRef = doc(db, "users", userId);
+
+    //test likes on feed
+    const { friends, followers } = userIsMe?.contacts ?? {}
+    const friendsIds = friends?.map(friend => friend.id) || []
+    const { userCity, userCountry } = userIsMe?.profileData ?? {}
 
 
 
@@ -42,6 +48,11 @@ export const usePhotosLikes = (photoOwnerUser: UserProfile, userIsMe:UserProfile
         })
         myId && dispatch(fetchUserFullData(myId))
         userId &&  dispatch(fetchSelectedUserData(userId))
+
+        //test 
+        dispatch(fetchFriends(friendsIds, 'friends'))
+        dispatch(fetchFriends(followers, 'followers'))
+        dispatch(fetchRandomUsers(userCountry, userCity, myId))
     }, [])
 
 

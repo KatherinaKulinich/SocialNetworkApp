@@ -100,7 +100,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                     newsList.push(
                         <FeedFriendshipCard
                             feedFriendshipItem={isVisibleNews[i]} 
-                            key={isVisibleNews[i].friend.id}
+                            key={`${isVisibleNews[i].friend.id}${isVisibleNews[i].date}`}
                         />
                     )
                 }

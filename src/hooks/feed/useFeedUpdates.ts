@@ -118,7 +118,7 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
         setNewPhotos(getLatestPhotos())
         setNewPosts(getLatestPosts())
         setNewFriendships(getLatestFriendships())
-    }, [index])
+    }, [index, friendsData])
 
 
 

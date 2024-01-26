@@ -18,7 +18,7 @@ export const Filter:React.FC<FilterProps> = ({handleChange, filterOptions, label
             </Label>
             <Select
                 defaultValue={filterOptions[0]?.value}
-                style={{ width: 150 }}
+                style={{ width: 200 }}
                 onChange={handleChange}
                 options={filterOptions}
             />

@@ -5,8 +5,9 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { fetchRandomUsers, fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
+import { fetchFriends } from "rdx/slices/friendsSlice";
 
 
 
@@ -21,6 +22,11 @@ export const usePostsReactions = () => {
     const { userId:myId } = personalData;
     const { posts:myPosts } = content;
 
+    //test reactions on feed
+    const { friends, followers } = userData?.contacts ?? {}
+    const friendsIds = friends?.map(friend => friend.id) || []
+    const { userCity, userCountry } = userData?.profileData ?? {}
+
     const myRef = doc(db, "users", myId);
     const { checkMyPostReaction } = useCheckMyContentReaction(userData)
     
@@ -31,6 +37,8 @@ export const usePostsReactions = () => {
         const { personalData, content } = user;
         const { userId } = personalData;
         const { posts:userPosts } = content;
+
+
 
         const userRef = doc(db, "users", userId);
         const currentReaction = checkMyPostReaction(selectedPost)
@@ -74,6 +82,11 @@ export const usePostsReactions = () => {
         }
         myId && dispatch(fetchUserFullData(myId))
         userId &&  dispatch(fetchSelectedUserData(userId))
+
+        //test
+        dispatch(fetchFriends(friendsIds, 'friends'))
+        dispatch(fetchFriends(followers, 'followers'))
+        dispatch(fetchRandomUsers(userCountry, userCity, myId))
 
     },[myPosts])
 
