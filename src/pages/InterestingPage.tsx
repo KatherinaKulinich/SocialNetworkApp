@@ -12,6 +12,8 @@ export const InterestingPage:React.FC = () => {
     const dispatch = useAppDispatch()
 
     const { userId } = myData?.personalData ?? {}
+    console.log(userId);
+    
     const { userCity, userCountry } = myData?.profileData ?? {}
 
     useEffect(() => {

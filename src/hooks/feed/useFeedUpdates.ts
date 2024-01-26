@@ -10,11 +10,14 @@ type Role = 'feedPage' | 'interestingPage'
 
 
 export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:string, role:Role) => {
-    const dayTimeSec = 2508000000
-    // const dayTimeSec = 86400000
+    // const dayTimeSec = 2508000000
+    const dayTimeSec = 86400000
     const timeLimit = dayTimeSec*index
     const currentTime = Date.now()
     const timeRange = currentTime - timeLimit
+
+    // const [isNoUsersData, setIsNoUsersData] = useState<boolean>(false)
+    // const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
 
@@ -25,6 +28,8 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
         const latestPosts = friendsData?.map(user => {
             const { posts } = user?.content ?? {}
             const filteredPosts = posts?.filter(post => post.date >= timeRange)
+            
+            
 
             const filteredUserPosts = filteredPosts.map(post => {
                 const feedPost = {
@@ -40,8 +45,6 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
         const sortedPosts = latestPosts.flat().sort((a:FeedPost, b:FeedPost) => {
             return b.post.date - a.post.date
         })
-        // console.log(sortedPosts);
-        
         return sortedPosts
     }, [friendsData, timeRange])
 
@@ -147,5 +150,6 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
         newPhotos,
         newFriendships,
         allNews,
+        // isLoading
     }
 }
