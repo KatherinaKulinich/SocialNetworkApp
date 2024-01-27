@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
-import { fetchFriends, getFriendsData } from "rdx/slices/friendsSlice";
+import { fetchFriends } from "rdx/slices/friendsSlice";
 import { message } from "antd";
 
 

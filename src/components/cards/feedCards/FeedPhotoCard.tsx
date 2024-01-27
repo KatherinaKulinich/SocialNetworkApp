@@ -8,13 +8,26 @@ import { Card, CardHeader, UserDataContainer, CardUserName, CardText } from "./F
 import { useMyFullData } from "hooks/useMyFullData"
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction"
 import { usePhotosLikes } from "hooks/content/usePhotosLikes"
+import { useAppDispatch } from "hooks/hooks"
+import { fetchFriends } from "rdx/slices/friendsSlice"
+import { fetchSelectedUserData } from "rdx/slices/usersSlice"
+import { useNavigate } from "react-router-dom"
+import { message } from "antd"
 
 interface FeedPhotoCardProps {
-    feedPhotoItem: FeedPhoto
+    feedPhotoItem: FeedPhoto,
 }
 
+
+
 export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
     const { user, photo } = feedPhotoItem
+    const { userId, userFullname } = user.personalData
+    const { friends } = user.contacts
+    const ids = friends?.map(user => user.id) || []
 
     const myUserData = useMyFullData()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
@@ -33,16 +46,21 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
     const onOpenModalEdition = useCallback(() => {
         setIsModalEditionOpen(true)
     }, [isModalEditionOpen])
-    const onCloseModalEdition = useCallback(() => {
-        setIsModalEditionOpen(false)
-    }, [isModalEditionOpen])
+
+
+    const goToUserPage = useCallback(() => {
+        message.loading('Loading the page...', 1)
+        dispatch(fetchSelectedUserData(userId))
+        dispatch(fetchFriends(ids, 'friends'))
+        setTimeout(navigate, 1000, `/users/${userFullname}/profile`)
+    }, [dispatch, navigate])
 
 
     return (
         <>
             <Card>
                 <CardHeader>
-                    <UserDataContainer>
+                    <UserDataContainer  onClick={goToUserPage}>
                         <Avatar 
                             photo={user?.profileData?.userAvatar} 
                             border={theme.colors.regularDark} 

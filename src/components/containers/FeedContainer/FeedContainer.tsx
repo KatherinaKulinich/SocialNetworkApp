@@ -14,6 +14,8 @@ import { ListContainer } from "../ListContainer/ListContainer"
 import { Filter } from "@components/Filter/Filter"
 import { filterOptions } from "utils/data/feedFilterOptions"
 import { FeedPost, FeedPhoto, FeedFriendship } from "types/Feed"
+import { useAppDispatch } from 'hooks/hooks'
+import { useNavigate } from 'react-router-dom'
 
 
 interface FeedContainerProps {
@@ -24,6 +26,9 @@ interface FeedContainerProps {
 // type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
 export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    
     const [index, setIndex] = useState<number>(1)
     const [filterValue, setFilterValue] = useState('all')
     const [feedCards, setFeedCards] = useState<JSX.Element[]>([])
@@ -77,6 +82,8 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         setIsNoMoreNews(false)
         setFeedCards([])
     }, [filterValue, index, isVisibleNews])
+
+    
 
 
 
