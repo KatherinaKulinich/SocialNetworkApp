@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchFriends } from "rdx/slices/friendsSlice"
 import { useEffect } from "react"
 import { FriendCard } from "@components/cards/userCards/FriendCard"
-import { UsersContainer } from './components/usersContainer';
+import { UsersContainer } from './components/UsersContainer';
 import { useMyFullData } from 'hooks/useMyFullData';
 
 
@@ -17,7 +17,7 @@ export const FollowersContainer:React.FC = () => {
         if (userData) {
             dispatch(fetchFriends(userData.contacts.followers, 'followers'))
         }
-    }, [userData])
+    }, [dispatch, userData])
 
     const followersData = useAppSelector(state => state.friends.followersData)
 

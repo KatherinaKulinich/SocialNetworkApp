@@ -12,6 +12,8 @@ import { useAppSelector } from "hooks/hooks";
 import { useCheckUserStatus } from 'hooks/contacts/useCheckUserStatus';
 import { useFriendshipWithUser } from 'hooks/contacts/useFriendshipWithUser';
 import { UserProfile } from 'types/UserProfile';
+import { FaRegClock  } from 'react-icons/Fa'
+import { RiUserUnfollowFill, RiUserAddFill, RiUserStarFill } from "react-icons/Ri"
 
 
 
@@ -24,7 +26,7 @@ export const UserProfilePage:React.FC = () => {
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
     const { interactWithUser } = useFriendshipWithUser(user)
 
-    const { buttonText, buttonIcon: ButtonIcon, isButtonDisabled } = useCheckUserStatus()
+    const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
     const { userFullname, userName } = user?.personalData ?? {}
 
   
@@ -33,7 +35,9 @@ export const UserProfilePage:React.FC = () => {
     },[])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
-    
+
+    const icon:JSX.Element = buttonIcon === 'request' ? < FaRegClock/> : buttonIcon === 'follower' ? <RiUserStarFill/> : buttonIcon === 'addFriend' ? <RiUserAddFill/> : <RiUserUnfollowFill/>
+
 
 
 
@@ -46,7 +50,7 @@ export const UserProfilePage:React.FC = () => {
             />
             <Actions>
                 <TextIconButton 
-                    icon={ButtonIcon} 
+                    icon={icon} 
                     text={buttonText} 
                     color={theme.colors.regularDark} 
                     textSize={'12px'} 

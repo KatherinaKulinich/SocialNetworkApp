@@ -3,7 +3,7 @@ import { RequestCard } from "@components/cards/userCards/RequestCard"
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchFriends } from "rdx/slices/friendsSlice"
 import { useEffect } from "react"
-import { UsersContainer } from './components/usersContainer';
+import { UsersContainer } from './components/UsersContainer';
 import { useMyFullData } from 'hooks/useMyFullData';
 
 

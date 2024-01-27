@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useState } from "react"
 import { useAppSelector } from "../hooks"
-import { FaRegClock  } from 'react-icons/Fa'
-import { RiUserUnfollowFill, RiUserAddFill, RiUserStarFill } from "react-icons/Ri"
 
-
-
+type ButtonIcon = 'addFriend' | 'removeFriend' | 'request' | 'follower'
 
 
 export const useCheckUserStatus = () => {
     const [buttonText, setButtonText] = useState<string>('')
-    const [buttonIcon, setButtonIcon] = useState<any>()
+    const [buttonIcon, setButtonIcon] = useState<ButtonIcon>('addFriend')
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
     const [isFollower, setIsFollower] = useState(false)
@@ -68,35 +65,35 @@ export const useCheckUserStatus = () => {
         if (userFriends && myFriends) {
             if (isFriendshipWithUser()) {
                 setButtonText('remove from friends')
-                setButtonIcon(RiUserUnfollowFill)
+                setButtonIcon('removeFriend')
                 setIsFriend(true)
             } else if (myFollowingList.includes(userId)) {
                 setIsButtonDisabled(true)
 
                 if (userFriendRequests.includes(myId)) {
                     setButtonText("you've sent a request")
-                    setButtonIcon(FaRegClock )
+                    setButtonIcon('request')
                     setIsRequest(true)
                     return
                 }
                 setButtonText("you follow user")
-                setButtonIcon(RiUserStarFill)
+                setButtonIcon('follower')
                 setIsFollower(true)
             } else if (userFollowingList.includes(myId)) {
                 setIsButtonDisabled(true)
 
                 if (myFriendRequests.includes(userId)) {
                     setButtonText("the user's sent a request")
-                    setButtonIcon(FaRegClock )
+                    setButtonIcon('request')
                     setIsRequest(true)
                     return
                 }
                 setButtonText("the user follows you")
-                setButtonIcon(RiUserStarFill)
+                setButtonIcon('follower')
                 setIsFollower(true)
             } else {
                 setButtonText("add to friends")
-                setButtonIcon(RiUserAddFill)
+                setButtonIcon('addFriend')
                 setIsFriend(false)
             }
         }

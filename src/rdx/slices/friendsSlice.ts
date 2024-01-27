@@ -94,7 +94,7 @@ export const fetchFriends =  (usersIds:string[], key:string) => {
                         dispatch(getFriendRequestData(friendRequests)) 
                     } else if (key === 'followers') {
                         followers = [...followers, user]
-                        dispatch(getFriendRequestData(followers)) 
+                        dispatch(getFollowersData(followers)) 
                     } else {
                         dispatch(getErrorMessage('something went wrong! Try later!'))
                     }

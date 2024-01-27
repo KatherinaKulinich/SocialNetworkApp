@@ -7,7 +7,8 @@ import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserProfile } from "types/UserProfile";
 import { fetchFriends } from 'rdx/slices/friendsSlice';
-import { UsersContainer } from './components/usersContainer';
+import { UsersContainer } from './components/UsersContainer';
+
 
 
 

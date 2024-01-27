@@ -30,6 +30,7 @@ export const Created:React.FC = () => {
     
     
     const goToMyProfilePage = useCallback(async () => {
+        message.loading('Loading the page...', 6)
         await dispatch(fetchSelectedUserData(MY_ID)) 
         if (ids && userFullname) {
             await dispatch(fetchFriends(ids, 'friends')) 

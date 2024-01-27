@@ -12,11 +12,7 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.userData.user)
     const { userId, userFullname } = userData?.personalData ?? {}
-    // const { userCity, userCountry } = userData?.profileData ?? {}
 
-    // useEffect(() => {
-    //     dispatch(fetchRandomUsers(userCountry, userCity, userId))
-    // }, [dispatch, userCountry, userCity])
 
     useEffect(() => {
         dispatch(fetchUsersOptions(userFullname))
