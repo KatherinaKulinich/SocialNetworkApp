@@ -5,9 +5,10 @@ import { Photo } from "types/Photo";
 import { Post } from "types/Post";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { fetchRandomUsers, fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { CommentItem } from "types/Comment";
 import { UserProfile } from "types/UserProfile";
+import { fetchFriends } from "rdx/slices/friendsSlice";
 
 
 
@@ -17,15 +18,20 @@ export const useContentComments = (contentOwner:UserProfile) => {
     const dispatch = useAppDispatch()
 
     const myData = useAppSelector(state => state.userData.user);
-    const { userId:myId, userFullname } = myData.personalData;
-    const { userAvatar } = myData.profileData;
+    const { userId:myId, userFullname } = myData?.personalData ?? {};
+    const { userAvatar } = myData?.profileData ?? {};
     const { photos:myPhotos, posts:myPosts } = myData.content;
 
-    const { posts:userPosts, photos:userPhotos } = contentOwner.content;
-    const { userId } = contentOwner.personalData;
+    const { posts:userPosts, photos:userPhotos } = contentOwner?.content ?? {};
+    const { userId } = contentOwner?.personalData ?? {};
 
     const myRef = doc(db, "users", myId);
     const userRef = doc(db, "users", userId);
+
+    //test  feed
+    const { friends, followers } = myData?.contacts ?? {}
+    const friendsIds = friends?.map(friend => friend.id) || []
+    const { userCity, userCountry } = myData?.profileData ?? {}
 
 
 
@@ -49,6 +55,10 @@ export const useContentComments = (contentOwner:UserProfile) => {
             })
             myId && dispatch(fetchUserFullData(myId))
             userId &&  dispatch(fetchSelectedUserData(userId))
+            //test 
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
         }
     }
 
@@ -74,6 +84,10 @@ export const useContentComments = (contentOwner:UserProfile) => {
             })
             myId && dispatch(fetchUserFullData(myId))
             userId &&  dispatch(fetchSelectedUserData(userId))
+            //test 
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
         }
     }
 
