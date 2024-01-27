@@ -1,7 +1,8 @@
-import { fetchFilteredUsers, fetchRandomUsers, fetchUsersOptions } from "rdx/slices/usersSlice";
+import { fetchFilteredUsers } from "rdx/slices/usersSlice";
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { UserProfile } from "types/UserProfile";
+import { fetchUsersOptions } from "rdx/slices/usersOptionsSlice";
 
 
 
@@ -11,12 +12,12 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.userData.user)
     const { userId, userFullname } = userData?.personalData ?? {}
-    const { userCity, userCountry } = userData?.profileData ?? {}
+    // const { userCity, userCountry } = userData?.profileData ?? {}
 
-    useEffect(() => {
-        dispatch(fetchRandomUsers(userCountry, userCity, userId))
-    }, [dispatch, userCountry, userCity])
-    
+    // useEffect(() => {
+    //     dispatch(fetchRandomUsers(userCountry, userCity, userId))
+    // }, [dispatch, userCountry, userCity])
+
     useEffect(() => {
         dispatch(fetchUsersOptions(userFullname))
     }, [dispatch, filterValue])
@@ -31,11 +32,10 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
 
 
     
-    const namesOptions = useAppSelector(state => state.users.optionsNames)
-    const locationsOptions = useAppSelector(state => state.users.optionsLocations)
-    const interestsOptions = useAppSelector(state => state.users.optionsInterests)
+    const namesOptions = useAppSelector(state => state.usersOptions.optionsNames)
+    const locationsOptions = useAppSelector(state => state.usersOptions.optionsLocations)
+    const interestsOptions = useAppSelector(state => state.usersOptions.optionsInterests)
  
-    const randomUsers:UserProfile[]  = useAppSelector(state => state.users.randomUsers)
     const foundUsers:UserProfile[] = useAppSelector(state => state.users.filteredUsers)
     const errorMessage:string = useAppSelector(state => state.users.error)
 
@@ -140,7 +140,6 @@ export const useUsersSearch = (filterValue:string, inputValue:string, searchValu
         showRandomUsers,
         filteredUsers,
         showEmptyUsersImg,
-        randomUsers,
         namesOptions,
         interestsOptions, 
         locationsOptions,

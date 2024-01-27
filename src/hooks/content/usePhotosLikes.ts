@@ -9,10 +9,11 @@ import {
 import { Photo } from "types/Photo"
 import {useAppDispatch } from "../hooks"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
-import { fetchRandomUsers, fetchSelectedUserData } from "rdx/slices/usersSlice"
+import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
 import { fetchFriends } from "rdx/slices/friendsSlice"
+import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
 
 
 

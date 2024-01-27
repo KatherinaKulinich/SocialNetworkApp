@@ -5,9 +5,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
-import { fetchRandomUsers, fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { fetchFriends } from "rdx/slices/friendsSlice";
+import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
 
 
 

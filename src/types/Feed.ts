@@ -4,12 +4,6 @@ import { UserProfile } from "./UserProfile";
 
 
 
-// export interface UserShortData {
-//     userId: string,
-//     userFullname: string,
-//     userAvatar: string,
-// }
-
 export interface FriendShortData {
     id: string,
     name: string,

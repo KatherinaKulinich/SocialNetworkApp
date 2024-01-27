@@ -5,10 +5,11 @@ import { Photo } from "types/Photo";
 import { Post } from "types/Post";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
-import { fetchRandomUsers, fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { CommentItem } from "types/Comment";
 import { UserProfile } from "types/UserProfile";
 import { fetchFriends } from "rdx/slices/friendsSlice";
+import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
 
 
 

@@ -17,6 +17,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchValues } from 'hooks/search/useSearchValues';
 import { useUsersSearch } from 'hooks/search/useUsersSearch';
 import { UserProfile } from 'types/UserProfile';
+import { useRandomUsersData } from 'hooks/useRandomUsersData';
 
 
 
@@ -36,11 +37,9 @@ export const SearchPage:React.FC = () => {
         onChangeSearchValue 
     } = useSearchValues()
  
-    
 
     const {
         loading, 
-        randomUsers, 
         showEmptyUsersImg, 
         showRandomUsers, 
         filteredUsers, 
@@ -50,7 +49,8 @@ export const SearchPage:React.FC = () => {
         errorMessage  
     } = useUsersSearch(filterValue, inputValue, searchValue);
 
-  
+    const randomUsers = useRandomUsersData()
+
     
     const getSearchOptions = useCallback(() => {
         setFilterOptions([])

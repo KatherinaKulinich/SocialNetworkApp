@@ -1,0 +1,100 @@
+import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit";
+import { db } from "firebase";
+import { query, collection, where, limit, onSnapshot } from "firebase/firestore";
+import { RootState } from "rdx/store";
+import { UserProfile } from "types/UserProfile";
+
+interface RandomUsersState {
+    error: string;
+    randomUsers: UserProfile[];
+}
+
+const initialState: RandomUsersState = {
+    error: '',
+    randomUsers: [] as UserProfile[],
+}
+
+
+
+const randomUsersSlice = createSlice({
+    name: 'randomUsers',
+    initialState,
+    reducers: {
+        getRandomUsers(state, action: PayloadAction<UserProfile[]>) {
+            state.randomUsers = action.payload
+        },
+        getErrorMessage(state, action: PayloadAction<any>) {
+            state.error = action.payload;
+        },
+    }
+})
+
+
+
+export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string) => {
+    const filterUsers = (usersArray: any[]) => {
+        let uniqueUsers = usersArray.filter((obj, index) =>
+            usersArray.findIndex((item) => item.personalData.userId === obj.personalData.userId) === index
+        ).filter(user => {
+            return user?.personalData?.userId !== myId
+        })
+
+        if (uniqueUsers.length > 6) {
+            uniqueUsers.length = 6
+        }
+        return uniqueUsers
+    }
+
+    return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
+        try {
+            dispatch(getErrorMessage(''))
+            let users: UserProfile[] = [];
+            const refCity = query(collection(db, "users"), where("profileData.userCity", "==", `${myCity}`), limit(6));
+            const refCountry = query(collection(db, "users"), where("profileData.userCountry", "==", `${myCountry}`), limit(6));
+            const refGeneral = query(collection(db, "users"), limit(6));
+
+            onSnapshot(refCity, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    users.push(doc.data() as UserProfile)
+                });
+
+                if (users.length > 4) {
+                    dispatch(getRandomUsers(filterUsers(users)))
+                    return
+                }
+            })
+            onSnapshot(refCountry, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    users.push(doc.data() as UserProfile)
+                });
+
+                if (users.length > 6) {
+                    dispatch(getRandomUsers(filterUsers(users)))
+                    return
+                }
+            })
+            onSnapshot(refGeneral, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    users.push(doc.data() as UserProfile)
+                });
+                dispatch(getRandomUsers(filterUsers(users)))
+            })
+        } catch (error:unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
+        }
+    }
+}
+
+
+
+
+export const { 
+    getErrorMessage, 
+    getRandomUsers 
+} = randomUsersSlice.actions;
+
+export default randomUsersSlice.reducer;

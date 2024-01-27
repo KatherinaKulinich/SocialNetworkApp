@@ -3,10 +3,8 @@ import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { FeedContainer } from "@components/containers/FeedContainer/FeedContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { SubTitle } from "@components/text/Subtitle"
-import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { useMyFullData } from "hooks/useMyFullData"
-import { fetchRandomUsers } from "rdx/slices/usersSlice"
-import { useEffect } from "react"
+import { useRandomUsersData } from 'hooks/useRandomUsersData'
 
 
 
@@ -14,17 +12,9 @@ import { useEffect } from "react"
 
 export const InterestingPage:React.FC = () => {
     const myData = useMyFullData()
-    const dispatch = useAppDispatch()
-
     const { userId } = myData?.personalData ?? {}
-    const { userCity, userCountry } = myData?.profileData ?? {}
 
-    useEffect(() => {
-        dispatch(fetchRandomUsers(userCountry, userCity, userId))
-    }, [dispatch, userCountry, userCity])
-
-    const randomUsers = useAppSelector(state => state.users.randomUsers)
-
+    const randomUsers = useRandomUsersData()
 
     return (
         <PageContainer>
