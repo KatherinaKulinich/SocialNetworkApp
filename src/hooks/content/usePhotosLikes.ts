@@ -23,16 +23,25 @@ export const usePhotosLikes = (photoOwnerUser: UserProfile, userIsMe:UserProfile
     const { checkMyPhotoLike } = useCheckMyContentReaction(userIsMe)
     const dispatch = useAppDispatch()
 
-    const { userId:myId } = userIsMe?.personalData ?? {};
-
     const { userId } = photoOwnerUser?.personalData ?? {};
     const { photos:userPhotos } = photoOwnerUser?.content ?? {};
-    const userRef = doc(db, "users", userId);
 
-    //test likes on feed
+    const { userId:myId } = userIsMe?.personalData ?? {};
     const { friends, followers } = userIsMe?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
     const { userCity, userCountry } = userIsMe?.profileData ?? {}
+
+    const userRef = doc(db, "users", userId);
+
+    const refreshUsersData = useCallback(() => {
+        if (myId && userId) {
+            dispatch(fetchUserFullData(myId))
+            dispatch(fetchSelectedUserData(userId))
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+        }
+    }, [])
 
 
 
@@ -46,13 +55,7 @@ export const usePhotosLikes = (photoOwnerUser: UserProfile, userIsMe:UserProfile
         await updateDoc(ref, {
             "content.photos": updatedPhotoArray,
         })
-        myId && dispatch(fetchUserFullData(myId))
-        userId &&  dispatch(fetchSelectedUserData(userId))
-
-        //test 
-        dispatch(fetchFriends(friendsIds, 'friends'))
-        dispatch(fetchFriends(followers, 'followers'))
-        dispatch(fetchRandomUsers(userCountry, userCity, myId))
+        refreshUsersData()
     }, [])
 
 

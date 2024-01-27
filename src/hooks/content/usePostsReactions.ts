@@ -21,14 +21,23 @@ export const usePostsReactions = () => {
     const { personalData, content } = userData;
     const { userId:myId } = personalData;
     const { posts:myPosts } = content;
-
-    //test reactions on feed
     const { friends, followers } = userData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
     const { userCity, userCountry } = userData?.profileData ?? {}
 
-    const myRef = doc(db, "users", myId);
     const { checkMyPostReaction } = useCheckMyContentReaction(userData)
+    const myRef = doc(db, "users", myId);
+
+
+    const refreshUsersData = useCallback((myId:string, userId: string) => {
+        if (myId && userId) {
+            dispatch(fetchUserFullData(myId))
+            dispatch(fetchSelectedUserData(userId))
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+        }
+    }, [])
     
 
 
@@ -37,8 +46,6 @@ export const usePostsReactions = () => {
         const { personalData, content } = user;
         const { userId } = personalData;
         const { posts:userPosts } = content;
-
-
 
         const userRef = doc(db, "users", userId);
         const currentReaction = checkMyPostReaction(selectedPost)
@@ -80,14 +87,7 @@ export const usePostsReactions = () => {
                 "content.posts": updatedPostsArray,
             })
         }
-        myId && dispatch(fetchUserFullData(myId))
-        userId &&  dispatch(fetchSelectedUserData(userId))
-
-        //test
-        dispatch(fetchFriends(friendsIds, 'friends'))
-        dispatch(fetchFriends(followers, 'followers'))
-        dispatch(fetchRandomUsers(userCountry, userCity, myId))
-
+        refreshUsersData(myId, userId)
     },[myPosts])
 
     

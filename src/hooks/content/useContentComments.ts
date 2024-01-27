@@ -16,25 +16,34 @@ import { fetchFriends } from "rdx/slices/friendsSlice";
 
 export const useContentComments = (contentOwner:UserProfile) => {
     const dispatch = useAppDispatch()
-
     const myData = useAppSelector(state => state.userData.user);
+
     const { userId:myId, userFullname } = myData?.personalData ?? {};
     const { userAvatar } = myData?.profileData ?? {};
     const { photos:myPhotos, posts:myPosts } = myData.content;
-
+    const { friends, followers } = myData?.contacts ?? {}
+    const { userCity, userCountry } = myData?.profileData ?? {}
+    const friendsIds = friends?.map(friend => friend.id) || []
+    
     const { posts:userPosts, photos:userPhotos } = contentOwner?.content ?? {};
     const { userId } = contentOwner?.personalData ?? {};
 
     const myRef = doc(db, "users", myId);
     const userRef = doc(db, "users", userId);
 
-    //test  feed
-    const { friends, followers } = myData?.contacts ?? {}
-    const friendsIds = friends?.map(friend => friend.id) || []
-    const { userCity, userCountry } = myData?.profileData ?? {}
+    const refreshUsersData = useCallback(() => {
+        if (myId && userId) {
+            dispatch(fetchUserFullData(myId))
+            dispatch(fetchSelectedUserData(userId))
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+        }
+    }, [])
 
 
 
+    
     
     const createCommentPost = async (currentPost:Post, allPosts:Post[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
         const selectedPost = allPosts?.find(post => post.postId === currentPost.postId)
@@ -53,12 +62,7 @@ export const useContentComments = (contentOwner:UserProfile) => {
             await updateDoc(ref, {
                 "content.posts": updatedContentArray,
             })
-            myId && dispatch(fetchUserFullData(myId))
-            userId &&  dispatch(fetchSelectedUserData(userId))
-            //test 
-            dispatch(fetchFriends(friendsIds, 'friends'))
-            dispatch(fetchFriends(followers, 'followers'))
-            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+            refreshUsersData()
         }
     }
 
@@ -78,16 +82,10 @@ export const useContentComments = (contentOwner:UserProfile) => {
                 }
                 return photo
             })
-
             await updateDoc(ref, {
                 "content.photos": updatedContentArray,
             })
-            myId && dispatch(fetchUserFullData(myId))
-            userId &&  dispatch(fetchSelectedUserData(userId))
-            //test 
-            dispatch(fetchFriends(friendsIds, 'friends'))
-            dispatch(fetchFriends(followers, 'followers'))
-            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+            refreshUsersData()
         }
     }
 
