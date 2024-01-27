@@ -1,6 +1,3 @@
-import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
-import { PageContainer } from "../PageContainer/PageContainer"
-import img from '@images/myFeed.svg'
 import imageNoNews from '@images/nofriends.svg'
 import { theme } from "@styles/Theme"
 import { SubTitle } from "@components/text/Subtitle"
@@ -37,13 +34,15 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
     const [isNewsAmount, setIsNewsAmount] = useState<number>(0)
     const [isNoMoreNews, setIsNoMoreNews] = useState<boolean>(false)
     const [isNoUsersData, setIsNoUsersData] = useState<boolean>(false)
+    const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true)
 
     const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, users, myId, role)
 
-    console.log('ALL NEWS', allNews);
-    
-   
 
+    useEffect(() => {
+        setIsVisibleNews(allNews)
+    }, [index, allNews])
+    
     useEffect(() => {
         if (filterValue === 'all') {
             setIsVisibleNews(allNews)
@@ -63,22 +62,26 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         }
     }, [allNews, filterValue, index, newPosts, newPhotos, newFriendships, isVisibleNews])
 
-    useEffect(() => {
-        setIsVisibleNews(allNews)
-    }, [index, allNews])
     
-
 
     const loadMoreNews = useCallback(() => {
         setIndex(prev => prev+1)
     }, [index])
 
+    const onChangeFilterValue = useCallback((value: string) => {
+        setIsLoading(true)
+        setFilterValue(value)
+        setIndex(1)
+        setIsVisibleNews([])
+        setIsNewsAmount(0)
+        setIsNoMoreNews(false)
+        setFeedCards([])
+    }, [filterValue, index, isVisibleNews])
+
 
 
     const getFeedCards = useCallback(():JSX.Element[] => {
         let newsList: JSX.Element[] = [];
-        console.log(index, isVisibleNews);
-        
  
         if (isVisibleNews && isVisibleNews.length > 0) {
             for (let i = 0; i < isVisibleNews.length; i++) {
@@ -113,13 +116,11 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
             setIsNewsAmount(newsList.length)
         }
         return newsList
-        
-    }, [index, allNews, isVisibleNews])
+    }, [index, isVisibleNews])
 
 
 
-    useEffect(() => {
-        // setIsNoMoreNews(false)
+    const getFeedState = useCallback(() => {
         if (index === 1) {
             if (isVisibleNews === null) return
             setTimeout(() => {
@@ -128,52 +129,31 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                 }
             })
         }
-        
         if (users.length === 0) {
             setIsNoUsersData(true)
-            setIsNoMoreNews(false)
+            setIsButtonVisible(false)
         } else {
+            setIsButtonVisible(true)
             setIsNoUsersData(false)
-            console.log('!!!!');
             if (isVisibleNews?.length === 0) {
                 if (index < 5) {
                     setIndex(prev => prev+1)
-                    // setTimeout(() => setFeedCards(getFeedCards()))
-                    
                 } else {
-                    setIsNoMoreNews(true)
+                    setIsButtonVisible(false)
                 }
             } else {
-              
                 setTimeout(() => setFeedCards(getFeedCards()))
             }
-            // setTimeout(() => {
-            // })
-            // if (index < 5) {
-
-            // }
         }
     }, [isVisibleNews, index, users, isNoUsersData, allNews])
 
-     console.log('INDEX', index);
-    //  console.log('CARDS', feedCards);
-     
-
-    // useEffect(() => {
-    //     if (!isNoUsersData) {
-    //         setFeedCards(getFeedCards())
-    //         // setTimeout(()=> {
-    //         // },1000)
-    //     }
-    // }, [index, isVisibleNews])
-
-    // console.log(isNoUsersData);
-    
 
 
     useEffect(() => {
-        // console.log(feedCards.length > 0, isVisibleNews?.length === 0, index, isNoUsersData);
-        
+        getFeedState()
+    }, [isVisibleNews, index, users, isNoUsersData, allNews])
+
+    useEffect(() => {
         if (feedCards.length > 0 || isVisibleNews?.length === 0 && index === 5 || isNoUsersData) {
             setTimeout(() => setIsLoading(false), 2000)
         } else {
@@ -182,32 +162,11 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
     }, [index, feedCards, isNoUsersData])
 
 
-
-
-    const onChangeFilterValue = useCallback((value: string) => {
-        setIsLoading(true)
-        setFilterValue(value)
-        setIndex(1)
-        setIsVisibleNews([])
-        setIsNewsAmount(0)
-        setIsNoMoreNews(false)
-        setFeedCards([])
-    }, [filterValue, index, isVisibleNews])
-
-
     return (
-        <PageContainer>
-            <PageImgTitle 
-                image={img} 
-                titleFirst='The interesting'
-                titleSecond="news"
-            />
+        <>
             <SubTitle 
-                color={theme.colors.mediumGray}
-                text={role === 'feedPage' 
-                    ? 'The latest news from your friends and followers:' 
-                    : 'These are updates from other users that you may be interested in:'
-                }
+                color={theme.colors.mediumGray} 
+                text={`User news for the last ${index} ${index === 1 ? 'day' : 'days'}`} 
             />
             {role === 'feedPage' && (
                 <Filter 
@@ -235,19 +194,19 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                 {isVisibleNews && feedCards}
             </ListContainer>
 
-            {/* {feedCards.length > 0 && !isLoading && !isNoMoreNews && !isNoUsersData && (
-                )} */}
+            {isButtonVisible && (
                 <RegularButton 
                     buttonType={'button'} 
                     buttonText={'Load more news...'}
                     onClickHandler={loadMoreNews}
                 />
+            )}
             {isNoMoreNews && !isLoading && (
                  <SubTitle 
                     color={theme.colors.mediumGray}
                     text='No more fresh news'
                 />
             )}
-        </PageContainer>
+        </>
     )
 }

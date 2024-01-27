@@ -1,10 +1,12 @@
 import img from '@images/myFeed.svg'
-import imageNoNews from '@images/nofriends.svg'
-import { useEffect, useCallback } from "react"
+import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { useMyFullData } from 'hooks/useMyFullData'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
 import { FeedContainer } from '@components/containers/FeedContainer/FeedContainer'
+import { PageContainer } from '@components/containers/PageContainer/PageContainer'
+import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
+import { SubTitle } from '@components/text/Subtitle'
 
 
 
@@ -30,10 +32,18 @@ export const MyFeedPage: React.FC = () => {
 
 
     return (
-        <FeedContainer 
-            users={allUsers} 
-            role={"feedPage"} 
-            myId={userId}            
-        />
+        <PageContainer>
+            <PageImgTitle 
+                image={img} 
+                titleFirst='My'
+                titleSecond="feed"
+            />
+            <SubTitle text={'The latest news from your friends and followers:'} />
+            <FeedContainer 
+                users={allUsers} 
+                role={"feedPage"} 
+                myId={userId}            
+            />
+        </PageContainer>
     )
 }
