@@ -1,4 +1,5 @@
-import imageNoNews from '@images/nofriends.svg'
+import imageNoNews from '@images/noNews.svg'
+import imageNoFriends from '@images/noFollowers.svg'
 import { theme } from "@styles/Theme"
 import { SubTitle } from "@components/text/Subtitle"
 import { LoaderComment } from "@components/loaders/LoaderComment"
@@ -26,8 +27,6 @@ interface FeedContainerProps {
 // type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
 export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) => {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     
     const [index, setIndex] = useState<number>(1)
     const [filterValue, setFilterValue] = useState('all')
@@ -43,11 +42,19 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
     const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, users, myId, role)
 
+    
+
 
     useEffect(() => {
+        // if (isVisibleNews?.length === allNews.length) {
+        //     setIndex(prev => prev+1)
+        // }
+        console.log(allNews);
+        
         setIsVisibleNews(allNews)
-    }, [index, allNews])
+    }, [allNews])
     
+
     useEffect(() => {
         if (filterValue === 'all') {
             setIsVisibleNews(allNews)
@@ -71,7 +78,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
     const loadMoreNews = useCallback(() => {
         setIndex(prev => prev+1)
-    }, [index])
+    }, [])
 
     const onChangeFilterValue = useCallback((value: string) => {
         setIsLoading(true)
@@ -82,8 +89,6 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         setIsNoMoreNews(false)
         setFeedCards([])
     }, [filterValue, index, isVisibleNews])
-
-    
 
 
 
@@ -116,18 +121,52 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                 }
             }
         }
-        if (isNewsAmount === newsList.length && isNewsAmount !== 0) {
+        
+        
+        // if (isNewsAmount === newsList.length && isNewsAmount !== 0) {
+        //     setIsNoMoreNews(true)
+        // } else {
+        //     setIsNoMoreNews(false)
+        //     setIsNewsAmount(newsList.length)
+        // }
+        return newsList
+
+    }, [index, isVisibleNews, allNews, isNewsAmount])
+
+    const checkNewsAmount = useCallback(() => {
+        console.log(isNewsAmount, allNews.length);
+        if (isNewsAmount === allNews.length && isNewsAmount !== 0) {
             setIsNoMoreNews(true)
         } else {
             setIsNoMoreNews(false)
-            setIsNewsAmount(newsList.length)
+            setIsNewsAmount(allNews.length)
         }
-        return newsList
-    }, [index, isVisibleNews])
+    }, [isNewsAmount, allNews])
+
+    // function timeout(delay: number) {
+    //     return new Promise( res => setTimeout(res, delay) );
+    // }
+
+    
 
 
 
-    const getFeedState = useCallback(() => {
+    const getFeedState = async () => {
+        // await timeout(1000)
+
+        // if (index === 1 && isVisibleNews?.length === 0) {
+        //     await setIndex(2)
+        // }
+
+
+
+
+        // if (index === 1 && isVisibleNews === null) return
+        // setTimeout(() => {
+        //     if (index === 1 && isVisibleNews?.length === 0) {
+        //         setIndex(1)
+        //     }
+        // })
         if (index === 1) {
             if (isVisibleNews === null) return
             setTimeout(() => {
@@ -135,6 +174,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                     setIndex(1) 
                 }
             })
+    
         }
         if (users.length === 0) {
             setIsNoUsersData(true)
@@ -149,16 +189,19 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                     setIsButtonVisible(false)
                 }
             } else {
-                setTimeout(() => setFeedCards(getFeedCards()))
+                setFeedCards(getFeedCards())
+                // checkNewsAmount()
+                // setTimeout(() => setFeedCards(getFeedCards()))
+                // setTimeout(() => checkNewsAmount(), 300)
             }
         }
-    }, [isVisibleNews, index, users, isNoUsersData, allNews])
+    }
 
 
 
     useEffect(() => {
         getFeedState()
-    }, [isVisibleNews, index, users, isNoUsersData, allNews])
+    }, [isVisibleNews, index, users])
 
     useEffect(() => {
         if (feedCards.length > 0 || isVisibleNews?.length === 0 && index === 5 || isNoUsersData) {
@@ -192,7 +235,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
             )}
             {role === 'feedPage' && isNoUsersData && !isLoading && (
                 <ImageErrorMessage 
-                    image={imageNoNews} 
+                    image={imageNoFriends} 
                     text={"You don't have any friends or followers yet. When you have them you will see their news here."}
                 />
             )}

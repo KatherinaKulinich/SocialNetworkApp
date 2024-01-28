@@ -88,7 +88,14 @@ export const usePostsReactions = () => {
                 "content.posts": updatedPostsArray,
             })
         }
-        refreshUsersData(myId, userId)
+        if (myId && userId) {
+            dispatch(fetchUserFullData(myId))
+            dispatch(fetchSelectedUserData(userId))
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+        }
+        // refreshUsersData(myId, userId)
     },[myPosts])
 
     

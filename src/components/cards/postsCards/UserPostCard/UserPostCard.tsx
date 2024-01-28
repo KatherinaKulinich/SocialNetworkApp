@@ -75,6 +75,9 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
         }
     }, [initialValue])
 
+    const postDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `;
+    const postTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
+
 
 
     return (
@@ -92,8 +95,8 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                     <Info>
                         {date && (
                             <DateField>
-                                <Text>{`${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} ` }</Text>
-                                <PostTime>{`${dateFormat.getHours()}:${dateFormat.getMinutes()}`}</PostTime>
+                                <Text>{postDate}</Text>
+                                <PostTime>{postTime}</PostTime>
                             </DateField>
                         )}
                     </Info>

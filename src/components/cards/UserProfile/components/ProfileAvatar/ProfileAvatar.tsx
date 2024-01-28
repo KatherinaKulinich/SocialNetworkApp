@@ -19,7 +19,9 @@ export const ProfileAvatar:React.FC<ProfileAvatarProps> = ({userAvatarImg}) => {
 
             <Avatar>
                 <Image 
+                    style={{objectFit: 'cover'}}
                     width={160} 
+                    height={160}
                     src={userAvatarImg} 
                 />
             </Avatar>      

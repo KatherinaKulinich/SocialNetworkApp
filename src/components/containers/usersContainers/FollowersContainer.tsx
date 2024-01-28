@@ -1,4 +1,4 @@
-import imgNoUsers from '@images/nofriends.svg'
+import imgNoUsers from '@images/noFollowers.svg'
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchFriends } from "rdx/slices/friendsSlice"
 import { useEffect } from "react"

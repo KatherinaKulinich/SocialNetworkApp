@@ -1,10 +1,10 @@
 import { Modal, Upload, message } from "antd"
 import { useState } from "react";
-import type { RcFile } from 'antd/es/upload';
-import type { UploadFile } from 'antd/es/upload/interface';
+import type { RcFile, UploadFile } from 'antd/es/upload';
 import { Icon } from "@components/icons/Icon";
 import { PiUserCirclePlusDuotone } from 'react-icons/Pi';
 import { MdImageSearch } from 'react-icons/Md';
+import ImgCrop from "antd-img-crop";
 
 const getBase64 = (file: RcFile):any => {
     new Promise((resolve, reject) => {
@@ -20,6 +20,7 @@ interface PhotoUploadProps {
     fileList: UploadFile<any>[];
     role: 'avatar' | 'photo'
 }
+
 
 
 
@@ -75,6 +76,8 @@ export const PhotoUpload:React.FC<PhotoUploadProps> = ({onChange, role, fileList
                     </div>
                 </div>
             </Upload>
+            {/* <ImgCrop rotationSlider> */}
+            {/* </ImgCrop> */}
             <Modal 
                 open={previewOpen} 
                 title={previewTitle} 

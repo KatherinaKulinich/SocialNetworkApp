@@ -1,4 +1,4 @@
-import TitleImg from '@images/profileTitle3.svg'
+import TitleImg from '@images/profileTitle.svg'
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { UserProfileCard } from "@components/cards/UserProfile/UserProfileCard"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"

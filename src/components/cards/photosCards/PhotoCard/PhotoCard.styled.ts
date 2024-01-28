@@ -10,7 +10,7 @@ export const Card = styled.div`
     min-height: 450px;
     ${BoxShadow};
     ${Column};
-    gap: 20px; 
+    gap: 8px; 
     background-color: #ffffff;
 `
 
@@ -28,7 +28,7 @@ export const Content = styled.div`
     ${FullSize};
     ${Column};
     justify-content: space-between;
-    gap: 15px;
+    gap: 30px;
     text-align: center;
 `
 
@@ -66,4 +66,15 @@ export const Comments = styled.button`
 export const Text = styled.p`
     ${Font({size: '16px', line: '19px', color: theme.colors.mediumGray})};
     text-transform: uppercase;
+`
+
+export const DateText = styled(Text)`
+    font-size: 10px;
+`
+
+export const Separator = styled.div`
+    width:100%;
+    height: 1px;
+    background-color: #dadddb;
+    /* background-color: ${theme.colors.lightGray}; */
 `

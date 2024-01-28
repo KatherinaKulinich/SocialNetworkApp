@@ -73,7 +73,7 @@ export const PhotoPreview:React.FC<PhotoPreviewProps> = ({link, role, user}) => 
                 />
             )}
             <PhotosBox onClick={goToPhotosPage}>
-                {photosForPreview?.length && (
+                {photosForPreview?.length > 0 && (
                     photosForPreview.map((photo, index) => (
                         <PhotoSrc 
                             src={photo} 

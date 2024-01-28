@@ -56,7 +56,14 @@ export const usePhotosLikes = (photoOwnerUser: UserProfile, userIsMe:UserProfile
         await updateDoc(ref, {
             "content.photos": updatedPhotoArray,
         })
-        refreshUsersData()
+        if (myId && userId) {
+            dispatch(fetchUserFullData(myId))
+            dispatch(fetchSelectedUserData(userId))
+            dispatch(fetchFriends(friendsIds, 'friends'))
+            dispatch(fetchFriends(followers, 'followers'))
+            dispatch(fetchRandomUsers(userCountry, userCity, myId))
+        }
+        // refreshUsersData()
     }, [])
 
 

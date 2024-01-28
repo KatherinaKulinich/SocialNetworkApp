@@ -1,10 +1,11 @@
 import { styled } from "styled-components";
-import { theme } from "../../../../../styles/Theme";
-import { device } from "../../../../../styles/Breakpoints";
+import { theme } from "@styles/Theme";
+import { device } from "@styles/Breakpoints";
 
 export const Avatar = styled.div`
     width: 160px;
     height: 160px;
+    object-fit: cover;
     border-radius: 50%;
     border: 3px solid ${theme.colors.regular};
     z-index: 50;

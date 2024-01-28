@@ -40,7 +40,7 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
                     <Avatar 
                         photo={defaultAvatar} 
                         border={theme.colors.white}
-                        size="50px"
+                        size="45px"
                         />
                 </DefaultImage>
             )

@@ -19,11 +19,10 @@ export const FriendsBox = styled.div`
 export const FriendCard = styled.div`
     width: 70px;
     height: 70px;
-    /* border-radius: 10px; */
     background-color: white;
-    padding: 10px;
+    padding: 7px;
     ${Column};
-    gap: 7px;
+    gap: 5px;
 `
 
 export const Name = styled.p`
@@ -31,10 +30,6 @@ export const Name = styled.p`
     text-transform: uppercase;
 `
 
-// export const Image = styled.img`
-//     width: 30px;
-//     height: 30px;
-// `
 
 export const DefaultImage = styled.div`
     width: 70px;

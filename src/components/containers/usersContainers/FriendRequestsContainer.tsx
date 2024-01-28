@@ -1,4 +1,4 @@
-import imgNoUsers from '@images/nousers.svg'
+import imgNoUsers from '@images/noRequests.svg'
 import { RequestCard } from "@components/cards/userCards/RequestCard"
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchFriends } from "rdx/slices/friendsSlice"

@@ -1,4 +1,4 @@
-import imgNoUsers from '@images/nofriends.svg'
+import imgNoUsers from '@images/noFollowingList.svg'
 import { FollowingCard } from "@components/cards/userCards/FollowingCard";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { fetchFriends } from "rdx/slices/friendsSlice";
