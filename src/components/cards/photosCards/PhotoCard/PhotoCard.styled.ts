@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { BoxShadow, Column, FullSize, Font } from "@styles/mixins";
+import { BoxShadow, Column, FullSize, Font, FlexCenter } from "@styles/mixins";
 import { theme } from "@styles/Theme";
 import { Image } from "antd";
 
@@ -30,6 +30,7 @@ export const Content = styled.div`
     justify-content: space-between;
     gap: 30px;
     text-align: center;
+    position: relative;
 `
 
 export const PhotoDescription = styled.p`
@@ -53,6 +54,7 @@ export const Action = styled.div`
     display:flex;
     align-items: center;
     gap: 8px;
+    
 `
 
 export const Comments = styled.button`
@@ -76,4 +78,12 @@ export const Separator = styled.div`
     width:100%;
     height: 1px;
     background-color: #dadddb;
+`
+
+export const LikeBox = styled.div`
+    ${FlexCenter};
+    width: 40px;
+    height: 40px;
+    position: relative;
+    z-index: 100;
 `

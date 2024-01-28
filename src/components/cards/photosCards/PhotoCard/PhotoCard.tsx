@@ -1,15 +1,16 @@
 import { theme } from "@styles/Theme";
 import { Icon } from "@components/icons/Icon";
-import { Card, Comments, Content, CardImage, PhotoDescription,  Actions, Action, Text, DateText, Separator } from "./PhotoCard.styled"
+import { Card, Comments, Content, CardImage, PhotoDescription,  Actions, Action, Text, DateText, Separator, LikeBox } from "./PhotoCard.styled"
 import { BsSuitHeart, BsSuitHeartFill } from 'react-icons/Bs'
 import { FaRegEdit} from 'react-icons/Fa'
 import { RiDeleteBinLine } from 'react-icons/Ri'
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Photo } from "types/Photo";
 import { Popconfirm } from "antd";
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
+import { ReactionAnimation } from "@components/ReactionAnimation/ReactionAnimation";
 
 
 interface PhotoCardProps {
@@ -53,6 +54,19 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
     const photoDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `;
     const photoTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
 
+    const [isAnimation, setIsAnimation] = useState(false)
+
+    const onLikePhoto = useCallback((ph: Photo) => {
+        onToggleLike(ph)
+        if (!isPhotoLiked) {
+
+            setIsAnimation(true)
+            setTimeout(() => setIsAnimation(false), 4000)
+        }
+
+    }, [isPhotoLiked, isAnimation])
+
+    //() => onToggleLike(photo)
 
         
     return (
@@ -66,6 +80,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                     <DateText>{photoTime}</DateText>
                 </Action>
             </Actions>
+            {/* <ReactionAnimation/> */}
             <Separator/>
             <Content>
                 { owner === 'me' && (
@@ -107,12 +122,16 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                     {photoDescription}
                 </PhotoDescription>
                 <Actions>
-                    <Action onClick={() => onToggleLike(photo)}>
-                        <Icon 
-                            icon={isPhotoLiked ? (<BsSuitHeartFill/>) : (<BsSuitHeart/>)} 
-                            iconColor={theme.colors.regular} 
-                            iconSize='30px'
-                        />
+
+                    <Action onClick={() => onLikePhoto(photo)}>
+                        <LikeBox>
+                            <Icon 
+                                icon={isPhotoLiked ? (<BsSuitHeartFill/>) : (<BsSuitHeart/>)} 
+                                iconColor={theme.colors.regular} 
+                                iconSize='30px'
+                            />
+                            {isAnimation && <ReactionAnimation value="❤️"/>}
+                        </LikeBox>
                         <Text>
                             {photoLikes.length}
                         </Text>
