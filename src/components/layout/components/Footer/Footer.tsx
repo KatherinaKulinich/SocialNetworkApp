@@ -1,7 +1,8 @@
 import { Wrapper } from '../Wrapper/Wrapper';
-import { FooterSection, FooterContainer } from './Footer.styled';
+import { FooterSection, FooterContainer, SubContainer } from './Footer.styled';
 import { Copyright } from './components/Copyright/Copyright';
 import { Created } from './components/Created/Created';
+import { ProfileLink } from './components/ProfileLink/ProfileLink';
 
 
 
@@ -12,7 +13,10 @@ export const Footer:React.FC = () => {
             <Wrapper>
                 <FooterContainer>
                     <Copyright/>
-                    <Created/>
+                    <SubContainer>
+                        <Created/>
+                        <ProfileLink/>
+                    </SubContainer>
                 </FooterContainer>
             </Wrapper>
         </FooterSection>

@@ -1,5 +1,9 @@
 import { styled } from "styled-components";
 import { theme } from "@styles/Theme";
+import { device } from "@styles/Breakpoints";
+import { Font } from "@styles/mixins";
+
+
 
 export const Field = styled.div<{$direction: string}>`
     display: flex;
@@ -11,21 +15,25 @@ export const Field = styled.div<{$direction: string}>`
 
 export const Subtitle = styled.p`
     text-transform: uppercase;
-    font-size: 18px;
-    line-height: 20px;
-    color:  ${theme.colors.textColor};
-    font-weight: 600;
+    ${Font({size: '14px', weight: '600', line: '20px', color: theme.colors.textColor})};
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     white-space: nowrap;
+
+    @media ${device.sm} {
+        gap: 10px;
+        font-size: 16px;
+    };
+    @media ${device.xl} {
+        gap: 12px;
+        font-size: 18px;
+    };
 `
 
 export const RegularText = styled(Subtitle)`
     white-space: wrap;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 16px;
+    ${Font({size: '14px', weight: '300', line: '16px', color: theme.colors.textColor})};
     text-transform: initial;
     max-width: 600px;
 
@@ -33,13 +41,10 @@ export const RegularText = styled(Subtitle)`
 
 export const ItemValue = styled.div`
     white-space: wrap;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 16px;
+    ${Font({size: '14px', weight: '300', line: '17px', color: theme.colors.textColor})};
     max-width: 600px;
     display: flex;
     align-items: center;
     gap: 12px;
-    color:  ${theme.colors.textColor};
 `
 

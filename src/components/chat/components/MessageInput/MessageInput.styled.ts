@@ -1,17 +1,23 @@
 import { FlexCenter, FullSize } from "@styles/mixins";
 import { styled } from "styled-components";
+import { device } from "@styles/Breakpoints";
 
 export const MessageForm = styled.form`
     width: 100%;
     display:flex;
     align-items: stretch;
     justify-content: space-between;
-    border: 2px solid #bebebe;
+    border: 1px solid #bebebe;
+    border-radius: 3px;
     background-color: #FFF;
     position: sticky;
     right:0;
     bottom:0;
     left:0;
+
+    @media ${device.sm} {
+        border: 2px solid #bebebe;
+    };
 `
 
 export const MessageField = styled.div`
@@ -19,13 +25,21 @@ export const MessageField = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 15px;
+    padding: 6px 15px;
+
+    @media ${device.sm} {
+        padding: 10px 15px;
+    };
 `
 
 export const IconButton = styled.button`
-    padding: 10px;
+    padding: 6px;
     background-color: transparent;
     font-size:0;
+
+    @media ${device.sm} {
+        padding: 10px;
+    };
 `
 
 export const MessageText = styled.input`
@@ -35,10 +49,15 @@ export const MessageText = styled.input`
 `
 
 export const SendButton = styled(IconButton)`
-    width: 100px;
+    width: 60px;
     ${FlexCenter};
-    border-left: 2px solid #bebebe;
-    /* border-right: 2px solid #bebebe; */
+    border-left: 1px solid #bebebe;
+
+
+    @media ${device.sm} {
+        border-left: 2px solid #bebebe;
+        width: 100px;
+    };
 
     &:hover {
         background-color: #EEE;

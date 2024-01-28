@@ -1,6 +1,7 @@
 import { BoxShadow, FlexCenter, Font } from "@styles/mixins"
 import { theme } from "@styles/Theme"
 import { styled } from "styled-components"
+import { device } from "@styles/Breakpoints";
 import Radio from "antd/lib/radio";
 
 export const UserInfo = styled.div`
@@ -27,37 +28,76 @@ export const PostTime = styled(Text)`
 export const Reactions = styled(Radio.Group)`
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 4px;
+
+    @media ${device.sm} {
+        gap: 10px;
+    };
+    @media ${device.xl} {
+        gap: 15px;
+    };
 `
 
 
 
 export const ReactionItem = styled(Radio)<{$items: number}>`
-    border-radius: 7px;
-    width: 32px;
-    height: 32px;
+    border-radius: 2px;
+    width: 24px;
+    height: 24px;
     ${FlexCenter};
     background-color: ${theme.colors.lightGray};
     ${BoxShadow};
     position: relative;
-    font-size: 15px;
+    font-size: 8px;
+
+    @media ${device.sm} {
+        width: 28px;
+        height: 28px;
+        font-size: 10px;
+        border-radius: 5px;
+    };
+    @media ${device.xl} {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+        border-radius: 7px;
+    };
 
     &::after {
         position: absolute;
         content: ${(props) => `"${props.$items}"`};
         top: -9px;
         right: -9px;
-        ${Font({size: '8px', weight: '500' ,line: '9px', color: theme.colors.white})};
+        ${Font({size: '7px', weight: '500' ,line: '9px', color: theme.colors.white})};
         background-color: ${theme.colors.regular};
         border-radius: 50%;
         ${FlexCenter};
-        padding: 4px;
-        width: 18px;
-        height: 18px;
+        padding: 3px;
+        width: 12px;
+        height: 12px;
+
+        @media ${device.sm} {
+            padding: 3px;
+            width: 15px;
+            height: 15px;
+            font-size: 8px;
+        };
+        @media ${device.xl} {
+            padding: 4px;
+            width: 18px;
+            height: 18px;
+        };
     }
 
     &:hover p {
-        font-size: 24px;
+        font-size: 14px;
+
+        @media ${device.sm} {
+            font-size: 18px;
+        };
+        @media ${device.xl} {
+            font-size: 24px;
+        };
     }
     
     &.ant-radio-wrapper {
@@ -93,26 +133,44 @@ export const ReactionItem = styled(Radio)<{$items: number}>`
 `
 
 export const CommentsButton = styled.button<{$items: number}>`
-    padding: 12px;
+    padding: 7px;
     border-radius: 5px;
     width: initial;
-    ${Font({size: '14px', weight: '600', line: '16px', color: theme.colors.regularDark})};
+    ${Font({size: '12px', weight: '600', line: '16px', color: theme.colors.regularDark})};
     text-transform: uppercase;
     ${BoxShadow};
     position: relative;
+
+    @media ${device.sm} {
+        padding: 12px;
+        font-size: 14px;
+    };
+
 
     &::after {
         position: absolute;
         content: ${(props) => `"${props.$items}"`};
         top: -9px;
         right: -9px;
-        ${Font({size: '8px', weight: '500' ,line: '9px', color: theme.colors.white})};
+        ${Font({size: '7px', weight: '500' ,line: '9px', color: theme.colors.white})};
         background-color: ${theme.colors.regular};
         border-radius: 50%;
         ${FlexCenter};
-        padding: 4px;
+        padding: 2px;
         min-width: 10px;
         min-height: 10px;
+
+        @media ${device.sm} {
+            padding: 3px;
+            width: 15px;
+            height: 15px;
+            font-size: 8px;
+        };
+        @media ${device.xl} {
+            padding: 4px;
+            width: 18px;
+            height: 18px;
+        };
     }
 `
 

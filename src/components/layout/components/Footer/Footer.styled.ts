@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from '@styles/Theme'
 import { Font } from '@styles/mixins';
+import { device } from "@styles/Breakpoints";
 
 
 
@@ -25,4 +26,14 @@ export const FooterContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media ${device.sm} {
+        font-size: 16px;
+        line-height: 19px;
+    };
+`
+export const SubContainer = styled.div`
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
 `

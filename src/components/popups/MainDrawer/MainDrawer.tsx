@@ -5,9 +5,10 @@ import { Link } from "@components/navigation/NavDesktop/NavDesktop.styled";
 import { Icon } from "@components/icons/Icon";
 import { Created } from "@components/layout/components/Footer/components/Created/Created";
 import { Copyright } from "@components/layout/components/Footer/components/Copyright/Copyright";
-import { DrawerContainer, SubContainer, LoginContainer, DrawerFooter, Image, Links } from "./MainDrawer.styled";
+import { DrawerContainer, SubContainer, LoginContainer, DrawerFooter, Image, Links, GridItem } from "./MainDrawer.styled";
 import { navItems, navMobItems } from "utils/data/navigationItems";
 import { LogOutButton } from "@components/buttons/LogOutButton";
+import { ProfileLink } from '@components/layout/components/Footer/components/ProfileLink/ProfileLink';
 
 interface MainDrawerProps {
     isOpen: boolean;
@@ -52,12 +53,17 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose})
                         ))}
                     </Links> 
                 </SubContainer>
-
                 <Image src={drawerImage}/>
-
                 <DrawerFooter>
-                    <Copyright/>
-                    <Created/>
+                    <GridItem $columnXS='1/3' $rowXS='2/3' $columnSM='1/2' $rowSM='1/2'>
+                        <Copyright/>
+                    </GridItem>
+                    <GridItem $columnXS='2/3' $rowXS='1/2' $columnSM='2/3' $rowSM='1/2'>
+                        <Created/>
+                    </GridItem>
+                    <GridItem $columnXS='1/2' $rowXS='1/2' $columnSM='3/4' $rowSM='1/2'>
+                        <ProfileLink/>
+                    </GridItem>
                 </DrawerFooter>
             </DrawerContainer>
         </Drawer>

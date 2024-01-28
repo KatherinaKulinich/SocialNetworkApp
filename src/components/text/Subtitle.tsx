@@ -20,11 +20,12 @@ export const SubTitle:React.FC<SubTitleProps> = ({text, color}) => {
 
 const SubTitleText = styled.h1<{$color?: string}>`
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 17px;
     font-weight: 400;
     color: ${props => props.$color ?  props.$color : theme.colors.regular};
     letter-spacing: 1px;
+    text-align: center;
 
     @media ${device.sm} {
         font-size: 16px;

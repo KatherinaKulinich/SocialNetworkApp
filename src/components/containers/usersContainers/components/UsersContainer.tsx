@@ -4,7 +4,7 @@ import { UserProfile } from "types/UserProfile"
 import { CardsContainer } from "@components/containers/CardsContainer/CardsContainer"
 import { LoaderComment } from "@components/loaders/LoaderComment"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
-import { Container } from './UsersContainer.styled.ts'
+import { Container } from './UsersContainerDefault.styled.ts'
 import { SubTitle } from '@components/text/Subtitle'
 
 interface UsersContainerProps {

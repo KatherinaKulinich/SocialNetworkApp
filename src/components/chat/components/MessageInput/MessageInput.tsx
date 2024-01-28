@@ -42,7 +42,7 @@ export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onCh
             <SendButton onClick={onSubmitText}>
                 <Icon 
                     icon={<MdSend/>} 
-                    iconSize="40px" 
+                    iconSize="30px" 
                     iconColor='bebebe'
                 /> 
             </SendButton>

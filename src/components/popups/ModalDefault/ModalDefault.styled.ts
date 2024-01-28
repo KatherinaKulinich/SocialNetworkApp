@@ -3,6 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import { theme } from "@styles/Theme";
 import { Column, Font } from "@styles/mixins";
+import { device } from "@styles/Breakpoints";
 
 
 export const ModalContainer = styled(Dialog)`
@@ -11,12 +12,16 @@ export const ModalContainer = styled(Dialog)`
     gap: 25px; */
     
     & .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
-        padding: 30px;
+        padding: 14px;
         position:relative;
         border-radius: 8px;
         width: 100%;
         max-width: 600px;
         text-align: center;
+
+        @media ${device.sm} {
+            padding: 30px;
+        };
     }
 `
 

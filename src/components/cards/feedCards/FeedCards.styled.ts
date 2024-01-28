@@ -1,17 +1,27 @@
 import styled from "styled-components";
 import { BoxShadow, Column, Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
+import { device } from "@styles/Breakpoints";
 
 
 export const Card = styled.div`
     width: 100%;
     max-width: 700px;
-    padding: 35px;
-    border-radius: 15px;
+    padding: 15px;
+    border-radius: 7px;
     ${BoxShadow};
     ${Column};
     gap: 15px;
     background-color: ${theme.colors.lightGray};
+
+    @media ${device.sm} {
+        padding: 25px;
+        border-radius: 12px;
+    };
+    @media ${device.xl} {
+        padding: 35px;
+        border-radius: 15px;
+    };
 `
 
 export const CardHeader = styled.div`

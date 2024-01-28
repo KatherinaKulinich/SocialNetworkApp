@@ -76,5 +76,4 @@ export const Separator = styled.div`
     width:100%;
     height: 1px;
     background-color: #dadddb;
-    /* background-color: ${theme.colors.lightGray}; */
 `

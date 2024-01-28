@@ -6,10 +6,15 @@ import { FullSize } from "@styles/mixins";
 
 export const DrawerContainer = styled.div`
     ${FullSize};
-    padding: 20px 16px;
+    padding: 15px 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+
+    @media ${device.sm} {
+        padding: 20px 16px;
+    };
 `
 
 export const SubContainer = styled.div`
@@ -25,33 +30,49 @@ export const LoginContainer = styled(SubContainer)`
 
 export const DrawerFooter = styled.div`
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding-top: 12px;
     border-top: 1px solid #FFF;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    gap:6px;
 
     @media ${device.sm} {
-        padding-top: 20px;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        gap:12px;
     };
 `
 
 export const Image = styled.img`
     display: none;
-    /* width: 160px;
-    height: 200px; */
-    
+
 
     @media ${device.sm} {
         display: block;
         align-self: center;
-        width: 300px;
-        height: 350px;
+        width: 250px;
+        height: 300px;
     };
 `
 
 export const Links = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
+
+    @media ${device.sm} {
+        gap: 25px;
+    };
+`
+
+export const GridItem = styled.div<{$columnXS?: string, $rowXS?: string, $columnSM?: string, $rowSM?: string}>`
+    grid-column: ${props => props.$columnXS};
+    grid-row: ${props => props.$rowXS};
+    ${FullSize};
+
+    @media ${device.sm} {
+        grid-column: ${props => props.$columnSM};
+        grid-row: ${props => props.$rowSM};
+    };
 `
