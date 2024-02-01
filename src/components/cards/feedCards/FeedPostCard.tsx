@@ -10,6 +10,8 @@ import { fetchFriends } from "rdx/slices/friendsSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useNavigate } from "react-router-dom"
 import { message } from "antd"
+import { useModalForComments } from "hooks/popups/useModalForComments";
+import { useModalForEditing } from "hooks/popups/useModalForEditing";
 
 interface FeedPostCardProps {
     feedPostItem: FeedPost,
@@ -26,21 +28,11 @@ export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem}) => {
     const { friends } = user.contacts
     const ids = friends?.map(user => user.id) || []
 
-    const [isModalComments, setIsModalComments] = useState(false)
-    const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
 
-    const onOpenModalComments = useCallback(() => {
-        setIsModalComments(true)
-    }, [isModalComments])
-    const onCloseModalComments = useCallback(() => {
-        setIsModalComments(false)
-    }, [isModalComments])
+    const { isModalComments, onOpenModalComments, onCloseModalComments } = useModalForComments()
+    const { onOpenModalEdition } = useModalForEditing()
 
-    const onOpenModalEdition = useCallback(() => {
-        setIsModalEditionOpen(true)
-    }, [isModalEditionOpen])
-
-
+ 
 
     const goToUserPage = useCallback(() => {
         message.loading('Loading the page...', 1)

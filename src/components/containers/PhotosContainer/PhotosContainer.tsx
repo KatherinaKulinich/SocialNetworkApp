@@ -12,6 +12,8 @@ import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { useAppSelector } from "hooks/hooks";
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction";
 import { UserProfile } from "types/UserProfile";
+import { useModalForComments } from "hooks/popups/useModalForComments";
+import { useModalForEditing } from "hooks/popups/useModalForEditing";
 
 interface PhotosContainerProps {
     owner: 'me' | 'friend';
@@ -29,35 +31,20 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner
     const { editMyContent } = useManageMyContent()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
     const { togglePhotoLike } = usePhotosLikes(userOwner, myUserData)
-    
-
-
-
-    const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
-    const onOpenModalEdition = useCallback(() => {
-        setIsModalEditionOpen(true)
-    }, [isModalEditionOpen])
-    const onCloseModalEdition = useCallback(() => {
-        setIsModalEditionOpen(false)
-    }, [isModalEditionOpen])
-
 
     const [isModalAddingPhotoOpen, setIsModalAddingPhoto] = useState(false)
+
     const onOpenModalAdding = useCallback(() => {
         setIsModalAddingPhoto(true)
     }, [isModalAddingPhotoOpen])
     const onCloseModalAdding = useCallback(() => {
         setIsModalAddingPhoto(false)
     }, [isModalAddingPhotoOpen])
-    
 
-    const [isModalComments, setIsModalComments] = useState(false)
-    const onOpenModalComments = useCallback(() => {
-        setIsModalComments(true)
-    }, [isModalComments])
-    const onCloseModalComments = useCallback(() => {
-        setIsModalComments(false)
-    }, [isModalComments])
+
+    const { isModalComments, onOpenModalComments, onCloseModalComments } = useModalForComments()
+    const { isModalEditionOpen, onOpenModalEdition, onCloseModalEdition} = useModalForEditing()
+    
 
 
 

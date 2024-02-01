@@ -13,6 +13,8 @@ import { fetchFriends } from "rdx/slices/friendsSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useNavigate } from "react-router-dom"
 import { message } from "antd"
+import { useModalForComments } from "hooks/popups/useModalForComments";
+import { useModalForEditing } from "hooks/popups/useModalForEditing";
 
 interface FeedPhotoCardProps {
     feedPhotoItem: FeedPhoto,
@@ -32,20 +34,11 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
     const myUserData = useMyFullData()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
     const { togglePhotoLike } = usePhotosLikes(user, myUserData)
+
+    const { isModalComments, onOpenModalComments, onCloseModalComments } = useModalForComments()
+    const { onOpenModalEdition } = useModalForEditing()
     
-    const [isModalComments, setIsModalComments] = useState(false)
-    const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
 
-    const onOpenModalComments = useCallback(() => {
-        setIsModalComments(true)
-    }, [isModalComments])
-    const onCloseModalComments = useCallback(() => {
-        setIsModalComments(false)
-    }, [isModalComments])
-
-    const onOpenModalEdition = useCallback(() => {
-        setIsModalEditionOpen(true)
-    }, [isModalEditionOpen])
 
 
     const goToUserPage = useCallback(() => {

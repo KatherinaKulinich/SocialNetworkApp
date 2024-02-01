@@ -10,6 +10,8 @@ import { useAppSelector } from "hooks/hooks"
 import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { useState, useCallback } from "react"
 import { UserProfile } from 'types/UserProfile'
+import { useModalForComments } from "hooks/popups/useModalForComments";
+import { useModalForEditing } from "hooks/popups/useModalForEditing";
 
 
 
@@ -26,23 +28,10 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) 
     const { editMyContent } = useManageMyContent()
     const selectedPost = useAppSelector(state => state.content.selectedPost)
 
+    const { isModalComments, onOpenModalComments, onCloseModalComments } = useModalForComments()
+    const { isModalEditionOpen, onOpenModalEdition, onCloseModalEdition} = useModalForEditing()
 
-    const [isModalEditionOpen, setIsModalEditionOpen] = useState(false)
-    const [isModalComments, setIsModalComments] = useState(false)
 
-    const onOpenModalEdition = useCallback(() => {
-        setIsModalEditionOpen(true)
-    }, [isModalEditionOpen])
-    const onCloseModalEdition = useCallback(() => {
-        setIsModalEditionOpen(false)
-    }, [isModalEditionOpen])
-
-    const onOpenModalComments = useCallback(() => {
-        setIsModalComments(true)
-    }, [isModalComments])
-    const onCloseModalComments = useCallback(() => {
-        setIsModalComments(false)
-    }, [isModalComments])
 
 
     return (
