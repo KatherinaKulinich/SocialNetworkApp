@@ -1,5 +1,5 @@
 import { PostCard } from "../components/PostCard"
-import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent } from "./UserPostCard.styled"
+import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent, ReactionBox } from "./UserPostCard.styled"
 import { Avatar } from "@components/Avatar/Avatar"
 import { theme } from "@styles/Theme"
 import { Post } from "types/Post"
@@ -14,6 +14,8 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { usePostsReactions } from "hooks/content/usePostsReactions"
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
+import { ReactionAnimation } from "@components/ReactionAnimation/ReactionAnimation"
+import {v4 as uuidv4} from 'uuid';
 
 
 
@@ -42,12 +44,29 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
 
     const [reactionValue, setReactionValue] = useState('')
     const [initialValue, setInitialValue] = useState<string | false>(false)
+    const [isAnimation, setIsAnimation] = useState<string | null>(null)
 
 
-    const onChangeReactionValue = useCallback(({ target: { value }}: RadioChangeEvent) => {
+
+    const onChangeReactionValue = useCallback(async ({ target: { value }}: RadioChangeEvent) => {
+        resetAnimation()
         setReactionValue(value)
-        addReaction(post, postOwner, value)
+        await addReaction(post, postOwner, value)
+        setTimeout(() => setIsAnimation(value),500)
     },[post, postOwner])
+
+
+    const resetAnimation = useCallback(() => {
+        setIsAnimation(null)
+    }, [isAnimation])
+
+
+    useEffect(() => {
+        if (isAnimation !== null) {
+            setTimeout(() => resetAnimation(), 4000 )
+        }
+    }, [isAnimation])
+
 
 
     const removePost = useCallback(() => {
@@ -77,6 +96,8 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
 
     const postDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `;
     const postTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
+
+
 
 
 
@@ -138,13 +159,23 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                             return reactionsArray.map((arrayItem) => {
                                 return arrayItem.value === reactionItem.value && 
                                     (
-                                        <ReactionItem 
-                                            value={reactionItem.value} 
-                                            $items={reactionItem.usersReactions.length} 
-                                            key={reactionItem.value}
-                                        >
-                                            <p>{arrayItem.label}</p>
-                                        </ReactionItem>
+                                        <ReactionBox>
+                                            <ReactionItem 
+                                                value={reactionItem.value} 
+                                                $items={reactionItem.usersReactions.length} 
+                                                key={uuidv4()}
+                                            >
+                                                <p>{arrayItem.label}</p>
+                                            </ReactionItem>
+                                            {isAnimation === reactionItem.value &&
+                                                (
+                                                    <ReactionAnimation 
+                                                        value={arrayItem.label} 
+                                                        key={uuidv4()}
+                                                    />
+                                                )
+                                            }
+                                        </ReactionBox>
                                     )
                             })
                         })}

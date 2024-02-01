@@ -205,3 +205,11 @@ export const ControlButton = styled.button`
 export const PostContent = styled.div`
     padding: 25px 0;
 `
+
+export const ReactionBox = styled.div`
+    ${FlexCenter};
+    width: 40px;
+    height: 40px;
+    position: relative;
+    z-index: 10;
+`

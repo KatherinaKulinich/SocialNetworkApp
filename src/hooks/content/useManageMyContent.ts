@@ -64,7 +64,7 @@ export const useManageMyContent = () => {
                 return post.postId !== item.postId
             })
             await updateDoc(userRef, {
-               " content.posts": newPostsArray,
+               "content.posts": newPostsArray,
             })
             await message.success('Post has been deleted!')
         } else if ('photoId' in item) {
