@@ -18,8 +18,6 @@ export const MyProfilePage:React.FC = () => {
     const userData = useMyFullData()
     const { friends } = userData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []
-    console.log(userData);
-    
 
 
     useEffect(() => {

@@ -26,14 +26,16 @@ interface PhotosContainerProps {
 
 export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner, myUserData}) => {
     const { photos } = userOwner.content;
+    
+    
     const selectedPhoto = useAppSelector(state => state.content.selectedPhoto)
 
     const { editMyContent } = useManageMyContent()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
-    const { togglePhotoLike } = usePhotosLikes(userOwner, myUserData)
+    // const { togglePhotoLike } = usePhotosLikes(userOwner, myUserData)
+    // const { togglePhotoLike } = usePhotosLikes(userOwner, myUserData)
 
     const [isModalAddingPhotoOpen, setIsModalAddingPhoto] = useState(false)
-
     const onOpenModalAdding = useCallback(() => {
         setIsModalAddingPhoto(true)
     }, [isModalAddingPhotoOpen])
@@ -63,8 +65,9 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner
                                 owner={owner}
                                 onOpenModalForEditing={onOpenModalEdition}
                                 onOpenModalWithComments={onOpenModalComments}
-                                onToggleLike={(item) => togglePhotoLike(item)}
+                                // onToggleLike={(item) => togglePhotoLike(item)}
                                 isPhotoLiked={checkMyPhotoLike(item)}
+                                photoOwner={userOwner}
                             />
                         ))
                     )}

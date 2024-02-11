@@ -9,6 +9,7 @@ import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { fetchFriends } from "rdx/slices/friendsSlice";
 import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
+import { useMyFullData } from "hooks/useMyFullData";
 
 
 
@@ -17,8 +18,8 @@ import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
 
 export const usePostsReactions = () => {
     const dispatch = useAppDispatch()
+    const userData = useMyFullData()
 
-    const userData = useAppSelector(state => state.userData.user)
     const { personalData, content } = userData;
     const { userId:myId } = personalData;
     const { posts:myPosts } = content;
@@ -30,7 +31,7 @@ export const usePostsReactions = () => {
     const myRef = doc(db, "users", myId);
 
 
-    const refreshUsersData = useCallback((myId:string, userId: string) => {
+    const refreshUsersData = useCallback((userId:string) => {
         if (myId && userId) {
             dispatch(fetchUserFullData(myId))
             dispatch(fetchSelectedUserData(userId))
@@ -38,7 +39,7 @@ export const usePostsReactions = () => {
             dispatch(fetchFriends(followers, 'followers'))
             dispatch(fetchRandomUsers(userCountry, userCity, myId))
         }
-    }, [])
+    }, [dispatch])
     
 
 
@@ -88,14 +89,7 @@ export const usePostsReactions = () => {
                 "content.posts": updatedPostsArray,
             })
         }
-        if (myId && userId) {
-            dispatch(fetchUserFullData(myId))
-            dispatch(fetchSelectedUserData(userId))
-            dispatch(fetchFriends(friendsIds, 'friends'))
-            dispatch(fetchFriends(followers, 'followers'))
-            dispatch(fetchRandomUsers(userCountry, userCity, myId))
-        }
-        // refreshUsersData(myId, userId)
+        refreshUsersData(userId)
     },[myPosts])
 
     

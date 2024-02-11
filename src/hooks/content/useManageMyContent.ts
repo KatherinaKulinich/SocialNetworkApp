@@ -37,7 +37,7 @@ export const useManageMyContent = () => {
             await updateDoc(userRef, {
                 "content.posts": newPostsArray,
             })
-            dispatch(fetchUserFullData(userId))
+            await dispatch(fetchUserFullData(userId))
         } else if ('photoId' in item) {
             const newPhotosArray = photos?.map((photo:Photo) => {
                 if (photo.photoId === item.photoId) {
@@ -48,7 +48,7 @@ export const useManageMyContent = () => {
             await updateDoc(userRef, {
                 "content.photos": newPhotosArray,
             })
-            dispatch(fetchUserFullData(userId))
+            await dispatch(fetchUserFullData(userId))
         }
         await message.success('Updated!')
     }, [photos, posts])
@@ -66,6 +66,7 @@ export const useManageMyContent = () => {
             await updateDoc(userRef, {
                "content.posts": newPostsArray,
             })
+            await dispatch(fetchUserFullData(userId))
             await message.success('Post has been deleted!')
         } else if ('photoId' in item) {
             const { photoFileRef, photoId } = item;
@@ -78,7 +79,7 @@ export const useManageMyContent = () => {
             await updateDoc(userRef, {
                 "content.photos": newPhotos,
             })
-            dispatch(fetchUserFullData(userId))
+            await dispatch(fetchUserFullData(userId))
             
             deleteObject(photoRef)
             .then(() => {

@@ -7,10 +7,14 @@ import { RiDeleteBinLine } from 'react-icons/Ri'
 import { useCallback, useState } from "react";
 import { Photo } from "types/Photo";
 import { Popconfirm } from "antd";
+import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
 import { ReactionAnimation } from "@components/ReactionAnimation/ReactionAnimation";
+import { useMyFullData } from "hooks/useMyFullData";
+import { usePhotosLikes } from "hooks/content/usePhotosLikes";
+import { UserProfile } from "types/UserProfile";
 
 
 interface PhotoCardProps {
@@ -18,17 +22,19 @@ interface PhotoCardProps {
     owner: 'me' | 'friend';
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
-    onToggleLike: (item:Photo) => void;
     isPhotoLiked: boolean;
+    photoOwner: UserProfile;
 }
 
 
 
 
-export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, onToggleLike, isPhotoLiked}) => {
+export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, isPhotoLiked, photoOwner}) => {
     const { photoUrl, photoDescription, photoLikes, photoComments, date } = photo;
 
-    const userData = useAppSelector(state => state.userData.user)
+
+    const userData = useMyFullData()
+    const { togglePhotoLike } = usePhotosLikes()
     const { photos } = userData.content
     
     const dispatch = useAppDispatch()
@@ -56,17 +62,17 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
 
     const [isAnimation, setIsAnimation] = useState(false)
 
-    const onLikePhoto = useCallback((ph: Photo) => {
-        onToggleLike(ph)
-        if (!isPhotoLiked) {
 
+    const onLikePhoto = useCallback((photo: Photo) => {
+        togglePhotoLike(photo, photoOwner)
+        dispatch(fetchUserFullData(userData.personalData.userId))
+        if (!isPhotoLiked) {
             setIsAnimation(true)
             setTimeout(() => setIsAnimation(false), 4000)
         }
 
-    }, [isPhotoLiked, isAnimation])
+    }, [isPhotoLiked, photoOwner])
 
-    //() => onToggleLike(photo)
 
         
     return (
@@ -80,7 +86,6 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
                     <DateText>{photoTime}</DateText>
                 </Action>
             </Actions>
-            {/* <ReactionAnimation/> */}
             <Separator/>
             <Content>
                 { owner === 'me' && (
