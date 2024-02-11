@@ -11,9 +11,6 @@ export const MyPhotosPage:React.FC = () => {
     const userData = useMyFullData()
   
 
-    console.log(userData.content.photos);
-    
-    
 
 
     return (

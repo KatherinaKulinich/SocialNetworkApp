@@ -120,6 +120,7 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
             const sortedNews = allNews.sort((a, b) => {
                 return b.date - a.date
             })
+            
             return sortedNews
         }
         return [] as AllFeedNews

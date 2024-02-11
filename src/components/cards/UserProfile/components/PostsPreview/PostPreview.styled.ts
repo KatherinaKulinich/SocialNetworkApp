@@ -14,6 +14,6 @@ export const PreviewContainer = styled.div`
 
 
 export const PostsContainer = styled(PreviewContainer)`
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 20px;
 `

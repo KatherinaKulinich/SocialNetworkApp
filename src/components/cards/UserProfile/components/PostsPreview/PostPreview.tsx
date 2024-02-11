@@ -24,6 +24,11 @@ interface PostPreviewProps {
 
 export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) => {
     const { posts } = ownerData.content;
+    const sortedPosts = [...posts]?.sort((a, b) => {
+        return b.date - a.date
+    }) 
+
+
 
     const { editMyContent } = useManageMyContent()
     const selectedPost = useAppSelector(state => state.content.selectedPost)
@@ -42,8 +47,8 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) 
                 direction={"row"}
             />
             <PostsContainer>
-                {posts?.length > 0 ? (
-                    posts?.map((postItem:Post) => (
+                {sortedPosts && sortedPosts?.length > 0 ? (
+                    sortedPosts?.map((postItem:Post) => (
                         <UserPostCard 
                             owner={postOwner}
                             post={postItem}
