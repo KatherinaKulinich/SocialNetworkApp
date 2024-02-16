@@ -17,7 +17,9 @@ import { filterOptions } from "utils/data/feedFilterOptions"
 import { FeedPost, FeedPhoto, FeedFriendship } from "types/Feed"
 import { useAppDispatch } from 'hooks/hooks'
 import { useNavigate } from 'react-router-dom'
+import { v4 } from 'uuid'
 
+type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
 interface FeedContainerProps {
     users: UserProfile[],
@@ -39,8 +41,36 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
     const [isNoMoreNews, setIsNoMoreNews] = useState<boolean>(false)
     const [isNoUsersData, setIsNoUsersData] = useState<boolean>(false)
     const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true)
+    
 
     const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, users, myId, role)
+
+   
+
+    const [all, setAll] = useState<AllFeedNews>([])
+
+    useEffect(() => {
+        console.log(newPhotos);
+        console.log(index)
+    }, [newPhotos])
+
+    useEffect(() => {
+        if (newPhotos && newPosts && newFriendships) {
+            const allNews:AllFeedNews = [...newPosts, ...newPhotos, ...newFriendships]
+    
+            const sortedNews = allNews.sort((a, b) => {
+                return b.date - a.date
+            })
+            // console.log('SORTED ALL', sortedNews);
+            
+            setAll(sortedNews)
+            return
+
+            // return sortedNews
+        }
+        setAll([])
+    }, [newPhotos, newPosts, newFriendships])
+    
 
     
 
@@ -49,36 +79,37 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         // if (isVisibleNews?.length === allNews.length) {
         //     setIndex(prev => prev+1)
         // }
-        console.log(allNews);
+        // console.log(all);
         
-        setIsVisibleNews(allNews)
-    }, [allNews])
+        setIsVisibleNews(all)
+        setFeedCards(getFeedCards())
+    }, [all])
     
 
-    useEffect(() => {
-        if (filterValue === 'all') {
-            setIsVisibleNews(allNews)
-            return
-        }
-        if (filterValue === 'posts') {
-            setIsVisibleNews(newPosts)
-            return
-        }
-        if (filterValue === 'photos') {
-            setIsVisibleNews(newPhotos)
-            return
-        }
-        if (filterValue === 'friendship') {
-            setIsVisibleNews(newFriendships)
-            return
-        }
-    }, [allNews, filterValue, index, newPosts, newPhotos, newFriendships, isVisibleNews])
+    // useEffect(() => {
+    //     if (filterValue === 'all') {
+    //         setIsVisibleNews(allNews)
+    //         return
+    //     }
+    //     if (filterValue === 'posts') {
+    //         setIsVisibleNews(newPosts)
+    //         return
+    //     }
+    //     if (filterValue === 'photos') {
+    //         setIsVisibleNews(newPhotos)
+    //         return
+    //     }
+    //     if (filterValue === 'friendship') {
+    //         setIsVisibleNews(newFriendships)
+    //         return
+    //     }
+    // }, [])
 
     
 
     const loadMoreNews = useCallback(() => {
         setIndex(prev => prev+1)
-    }, [])
+    }, [index])
 
     const onChangeFilterValue = useCallback((value: string) => {
         setIsLoading(true)
@@ -90,6 +121,14 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         setFeedCards([])
     }, [filterValue, index, isVisibleNews])
 
+    // useEffect(() => {
+    //     console.log('isVisib', isVisibleNews);
+        
+    //     if (isVisibleNews) {
+    //         setFeedCards(getFeedCards())
+    //     }
+    // }, [isVisibleNews, allNews, index])
+
 
 
     const getFeedCards = useCallback(():JSX.Element[] => {
@@ -98,24 +137,27 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         if (isVisibleNews && isVisibleNews.length > 0) {
             for (let i = 0; i < isVisibleNews.length; i++) {
                 if ('post' in isVisibleNews[i]) {
+                    const id = v4()
                     newsList.push(
                         <FeedPostCard 
                             feedPostItem={isVisibleNews[i]} 
-                            key={isVisibleNews[i].post.postId}
+                            key={id}
                         />
                     )
                 } else if ('photo' in isVisibleNews[i]) {
+                    const id = v4()
                     newsList.push(
                         <FeedPhotoCard
                             feedPhotoItem={isVisibleNews[i]} 
-                            key={isVisibleNews[i].photo.photoId}
+                            key={id}
                         />
                     )
                 } else if ('friend' in isVisibleNews[i]) {
+                    const id = v4()
                     newsList.push(
                         <FeedFriendshipCard
                             feedFriendshipItem={isVisibleNews[i]} 
-                            key={`${isVisibleNews[i].friend.id}${isVisibleNews[i].date}`}
+                            key={id}
                         />
                     )
                 }
@@ -131,17 +173,17 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         // }
         return newsList
 
-    }, [index, isVisibleNews, allNews, isNewsAmount])
+    }, [index, isVisibleNews, all, isNewsAmount])
 
-    const checkNewsAmount = useCallback(() => {
-        console.log(isNewsAmount, allNews.length);
-        if (isNewsAmount === allNews.length && isNewsAmount !== 0) {
-            setIsNoMoreNews(true)
-        } else {
-            setIsNoMoreNews(false)
-            setIsNewsAmount(allNews.length)
-        }
-    }, [isNewsAmount, allNews])
+    // const checkNewsAmount = useCallback(() => {
+    //     console.log(isNewsAmount, allNews.length);
+    //     if (isNewsAmount === allNews.length && isNewsAmount !== 0) {
+    //         setIsNoMoreNews(true)
+    //     } else {
+    //         setIsNoMoreNews(false)
+    //         setIsNewsAmount(allNews.length)
+    //     }
+    // }, [isNewsAmount, allNews])
 
     // function timeout(delay: number) {
     //     return new Promise( res => setTimeout(res, delay) );
@@ -180,6 +222,8 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
             setIsNoUsersData(true)
             setIsButtonVisible(false)
         } else {
+            console.log('1');
+            
             setIsButtonVisible(true)
             setIsNoUsersData(false)
             if (isVisibleNews?.length === 0) {
@@ -189,6 +233,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                     setIsButtonVisible(false)
                 }
             } else {
+                console.log('2');
                 setFeedCards(getFeedCards())
                 // checkNewsAmount()
                 // setTimeout(() => setFeedCards(getFeedCards()))
@@ -199,17 +244,17 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
 
 
-    useEffect(() => {
-        getFeedState()
-    }, [isVisibleNews, index, users])
+    // useEffect(() => {
+    //     getFeedState()
+    // }, [])
 
-    useEffect(() => {
-        if (feedCards.length > 0 || isVisibleNews?.length === 0 && index === 5 || isNoUsersData) {
-            setTimeout(() => setIsLoading(false), 2000)
-        } else {
-            setIsLoading(true)
-        }
-    }, [index, feedCards, isNoUsersData])
+    // useEffect(() => {
+    //     if (feedCards.length > 0 || isVisibleNews?.length === 0 && index === 5 || isNoUsersData) {
+    //         setTimeout(() => setIsLoading(false), 2000)
+    //     } else {
+    //         setIsLoading(true)
+    //     }
+    // }, [])
 
 
     return (
@@ -230,7 +275,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
             {isVisibleNews?.length === 0 && index === 5 && !isLoading && !isNoUsersData && (
                 <ImageErrorMessage 
                     image={imageNoNews} 
-                    text={'It looks like none of your friends have posted anything in the past 5 days'}
+                    text={`${role === 'feedPage' ? 'It looks like none of your friends have posted anything in the past 5 days' : 'It looks like none of users have posted anything in the past 5 days'}`}
                 />
             )}
             {role === 'feedPage' && isNoUsersData && !isLoading && (

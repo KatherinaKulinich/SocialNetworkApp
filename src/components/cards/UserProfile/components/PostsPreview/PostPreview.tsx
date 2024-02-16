@@ -8,7 +8,6 @@ import { ModalComments } from "@components/popups/ModalComments/ModalComments"
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing"
 import { useAppSelector } from "hooks/hooks"
 import { useManageMyContent } from "hooks/content/useManageMyContent"
-import { useState, useCallback } from "react"
 import { UserProfile } from 'types/UserProfile'
 import { useModalForComments } from "hooks/popups/useModalForComments";
 import { useModalForEditing } from "hooks/popups/useModalForEditing";

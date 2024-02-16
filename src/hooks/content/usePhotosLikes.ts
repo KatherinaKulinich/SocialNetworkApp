@@ -40,7 +40,7 @@ export const usePhotosLikes = () => {
             dispatch(fetchFriends(followers, 'followers'))
             dispatch(fetchRandomUsers(userCountry, userCity, myId))
         }
-    }, [dispatch])
+    }, [dispatch, myData])
 
 
 
@@ -64,24 +64,28 @@ export const usePhotosLikes = () => {
 
     const addLikeToPhoto = useCallback((selectedPhoto:Photo, photoOwner:UserProfile) => {
         const { userId } = photoOwner?.personalData ?? {};
-        const userRef = doc(db, "users", userId);
-
-        const newLikesArray = [...selectedPhoto.photoLikes, myId]
-        const updatedPhoto: Photo = {...selectedPhoto, photoLikes: newLikesArray}
- 
-        updatePhotos(photoOwner, updatedPhoto, userRef)
+        if (userId) {
+            const userRef = doc(db, "users", userId);
+    
+            const newLikesArray = [...selectedPhoto.photoLikes, myId]
+            const updatedPhoto: Photo = {...selectedPhoto, photoLikes: newLikesArray}
+     
+            updatePhotos(photoOwner, updatedPhoto, userRef)
+        }
     }, [])
 
 
 
     const removeLikeFromPhoto = useCallback((selectedPhoto:Photo, photoOwner:UserProfile) => {
         const { userId } = photoOwner?.personalData ?? {};
-        const userRef = doc(db, "users", userId);
-
-        const newLikesArray = selectedPhoto?.photoLikes.filter(like => like !== myId)
-        const updatedPhoto:Photo = {...selectedPhoto, photoLikes: newLikesArray};
-
-        updatePhotos(photoOwner, updatedPhoto, userRef)
+        if (userId) {
+            const userRef = doc(db, "users", userId);
+    
+            const newLikesArray = selectedPhoto?.photoLikes.filter(like => like !== myId)
+            const updatedPhoto:Photo = {...selectedPhoto, photoLikes: newLikesArray};
+    
+            updatePhotos(photoOwner, updatedPhoto, userRef)
+        }
     }, [])
 
 

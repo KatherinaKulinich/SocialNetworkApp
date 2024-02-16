@@ -33,6 +33,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
     const { photoUrl, photoDescription, photoLikes, photoComments, date } = photo;
 
 
+
     const userData = useMyFullData()
     const { togglePhotoLike } = usePhotosLikes()
     const { photos } = userData.content
@@ -64,6 +65,8 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
 
 
     const onLikePhoto = useCallback((photo: Photo) => {
+        console.log(photoOwner);
+        
         togglePhotoLike(photo, photoOwner)
         dispatch(fetchUserFullData(userData.personalData.userId))
         if (!isPhotoLiked) {

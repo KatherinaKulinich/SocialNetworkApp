@@ -1,17 +1,21 @@
 import { AnyAction, PayloadAction, ThunkDispatch, createSlice } from "@reduxjs/toolkit";
 import { db } from "firebase";
-import { query, collection, where, limit, onSnapshot } from "firebase/firestore";
+import { query, collection, where, limit, onSnapshot, doc, getDoc } from "firebase/firestore";
 import { RootState } from "rdx/store";
 import { UserProfile } from "types/UserProfile";
 
 interface RandomUsersState {
     error: string;
-    randomUsers: UserProfile[];
+    randomUsers: Array<UserProfile>;
+    randomUsersIds: Array<string>;
+    currentRandomUsers: Array<UserProfile>
 }
 
 const initialState: RandomUsersState = {
     error: '',
-    randomUsers: [] as UserProfile[],
+    randomUsers: [] as Array<UserProfile>,
+    randomUsersIds: [] as Array<string>,
+    currentRandomUsers: [] as Array<UserProfile>,
 }
 
 
@@ -20,8 +24,14 @@ const randomUsersSlice = createSlice({
     name: 'randomUsers',
     initialState,
     reducers: {
-        getRandomUsers(state, action: PayloadAction<UserProfile[]>) {
+        getRandomUsers(state, action: PayloadAction<Array<UserProfile>>) {
             state.randomUsers = action.payload
+        },
+        getRandomUsersIds(state) {
+            state.randomUsersIds = state.randomUsers.map(user => user.personalData.userId)
+        },
+        refreshRandomUsersData(state, action: PayloadAction<Array<UserProfile>> ) {
+            state.currentRandomUsers = action.payload
         },
         getErrorMessage(state, action: PayloadAction<any>) {
             state.error = action.payload;
@@ -79,7 +89,36 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
                 });
                 dispatch(getRandomUsers(filterUsers(users)))
             })
-        } catch (error:unknown) {
+            dispatch(getRandomUsersIds())
+        } catch(error:unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
+        }
+    }
+}
+
+export const fetchCurrentRandomUsersData = (usersIds:string[]) => {
+    return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
+        let users: Array<UserProfile> = [];
+
+        dispatch(refreshRandomUsersData([]))
+        
+
+        try {
+            if (usersIds.length > 0) {
+                usersIds.forEach( async(id) => {
+                    const ref = doc(db, 'users', id)
+                    
+                    const docSnap = await getDoc(ref)
+                    const user = docSnap.data() as UserProfile  
+                    users = [...users, user]
+                    dispatch(refreshRandomUsersData(users))
+                })
+            }
+        } catch(error:unknown) {
             if (error instanceof Error) {
                 dispatch(getErrorMessage(error.message))
                 return
@@ -94,7 +133,9 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 
 export const { 
     getErrorMessage, 
-    getRandomUsers 
+    getRandomUsers,
+    getRandomUsersIds, 
+    refreshRandomUsersData,
 } = randomUsersSlice.actions;
 
 export default randomUsersSlice.reducer;

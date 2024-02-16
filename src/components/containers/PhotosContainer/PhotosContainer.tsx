@@ -8,7 +8,6 @@ import { ModalAddingPhoto } from "@components/popups/ModalAddingPhoto/ModalAddin
 import { ModalComments } from "@components/popups/ModalComments/ModalComments";
 import { ModalEditing } from "@components/popups/ModalEditing/ModalEditing";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
-import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { useAppSelector } from "hooks/hooks";
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction";
 import { UserProfile } from "types/UserProfile";

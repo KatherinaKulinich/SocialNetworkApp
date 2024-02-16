@@ -14,11 +14,22 @@ export const useRandomUsersData = () => {
 
 
 
+    // useEffect(() => {
+    //     dispatch(fetchRandomUsers(userCountry, userCity, userId))
+    // }, [dispatch, userCountry, userCity])
+
     useEffect(() => {
-        dispatch(fetchRandomUsers(userCountry, userCity, userId))
-    }, [dispatch, userCountry, userCity])
+        const getUsersData = () => {
+            if (userId) {
+                return dispatch(fetchRandomUsers(userCountry, userCity, userId))
+            }
+        }
+        getUsersData()
+    }, [myData])
 
     const randomUsers = useAppSelector(state => state.randomUsers.randomUsers)
+    console.warn(randomUsers);
+    
 
 
     return randomUsers

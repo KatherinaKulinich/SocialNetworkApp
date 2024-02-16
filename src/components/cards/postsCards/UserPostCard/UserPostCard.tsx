@@ -16,6 +16,7 @@ import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReacti
 import { UserProfile } from "types/UserProfile"
 import { ReactionAnimation } from "@components/ReactionAnimation/ReactionAnimation"
 import {v4 as uuidv4} from 'uuid';
+import { useMyFullData } from "hooks/useMyFullData"
 
 
 
@@ -36,7 +37,8 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
 
     const dateFormat = new Date(date);
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(state => state.userData.user)
+    const userData = useMyFullData()
+
 
     const { deleteMyContent } = useManageMyContent()
     const { addReaction } = usePostsReactions()

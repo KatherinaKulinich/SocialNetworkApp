@@ -20,6 +20,7 @@ export const useMyFullData = () => {
     }, [])
     
     const userData = useAppSelector(state => state.userData.user)
+
     
     return userData
 }

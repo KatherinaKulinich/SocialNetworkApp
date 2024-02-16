@@ -33,7 +33,7 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
 
     const myUserData = useMyFullData()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
-    const { togglePhotoLike } = usePhotosLikes(user, myUserData)
+
 
     const { isModalComments, onOpenModalComments, onCloseModalComments } = useModalForComments()
     const { onOpenModalEdition } = useModalForEditing()
@@ -72,7 +72,7 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
                     photo={photo}
                     owner={'friend'}
                     onOpenModalWithComments={onOpenModalComments}
-                    onToggleLike={(photo) => togglePhotoLike(photo)}
+                    photoOwner={user}
                     isPhotoLiked={checkMyPhotoLike(photo)}
                     onOpenModalForEditing={onOpenModalEdition}
                 />

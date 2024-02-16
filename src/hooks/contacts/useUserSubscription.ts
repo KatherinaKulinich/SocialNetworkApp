@@ -59,7 +59,7 @@ export const useUserSubscription = (user:UserProfile) => {
             if (userId) {
                 const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
                 await updateDoc(userRef, {
-                   " contacts.friendRequests": userNewFriendRequestsArray
+                   "contacts.friendRequests": userNewFriendRequestsArray
                 })
             }
         }

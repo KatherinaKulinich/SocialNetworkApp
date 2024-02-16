@@ -37,16 +37,16 @@ const friendsSlice = createSlice({
     name: 'friends',
     initialState,
     reducers: {
-        getFriendsData(state, action: PayloadAction<UserProfile[]>) {
+        getFriendsData(state, action: PayloadAction<Array<UserProfile>>) {
             state.friendsData = action.payload 
         },
-        getFollowingListData(state, action: PayloadAction<UserProfile[]>) {
+        getFollowingListData(state, action: PayloadAction<Array<UserProfile>>) {
             state.followingListData = action.payload
         },
-        getFriendRequestData(state, action: PayloadAction<UserProfile[]>) {
+        getFriendRequestData(state, action: PayloadAction<Array<UserProfile>>) {
             state.friendRequestsData = action.payload
         },
-        getFollowersData(state, action: PayloadAction<UserProfile[]>) {
+        getFollowersData(state, action: PayloadAction<Array<UserProfile>>) {
             state.followersData = action.payload
         },
         getErrorMessage(state, action: PayloadAction<string>) {
