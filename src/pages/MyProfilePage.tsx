@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useMyFullData } from 'hooks/useMyFullData';
 import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
 import { BirthdayNotification } from '@components/popups/BirthdayNotification';
+import { useRandomUsersData } from 'hooks/useRandomUsersData';
 
 
 
@@ -18,6 +19,7 @@ export const MyProfilePage:React.FC = () => {
     const userData = useMyFullData()
     const { friends } = userData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []
+    const randomUsers = useRandomUsersData()
 
 
     useEffect(() => {

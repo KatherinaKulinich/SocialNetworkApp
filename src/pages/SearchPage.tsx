@@ -28,9 +28,7 @@ import { useAppSelector } from 'hooks/hooks';
 export const SearchPage:React.FC = () => {
     const [filterOptions, setFilterOptions] = useState<any[]>([])
 
-    const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
-    
-    
+
  
 
     const { 

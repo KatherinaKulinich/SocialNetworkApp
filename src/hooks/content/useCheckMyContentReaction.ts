@@ -21,7 +21,7 @@ export const useCheckMyContentReaction = (myUserData:UserProfile) => {
 
 
     
-    const checkMyPostReaction = useCallback((post:Post):string | false => {
+    const checkMyPostReaction = useCallback((post:Post):string => {
         const reactions = post?.postReactions;
 
         for (let i = 0; i < reactions.length; i++) {
@@ -29,7 +29,8 @@ export const useCheckMyContentReaction = (myUserData:UserProfile) => {
                 return reactions[i].value
             }
         }
-        return false
+        return ''
+        // return false
     }, [myId])
 
 

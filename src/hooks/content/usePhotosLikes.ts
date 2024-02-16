@@ -7,13 +7,13 @@ import {
     updateDoc 
 } from "firebase/firestore"
 import { Photo } from "types/Photo"
-import {useAppDispatch } from "../hooks"
+import {useAppDispatch, useAppSelector } from "../hooks"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
 import { fetchFriends } from "rdx/slices/friendsSlice"
-import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
+import { fetchCurrentRandomUsersData, fetchRandomUsers } from "rdx/slices/randomUsersSlice";
 import { useMyFullData } from "hooks/useMyFullData"
 
 
@@ -22,6 +22,7 @@ import { useMyFullData } from "hooks/useMyFullData"
 
 export const usePhotosLikes = () => {
     const dispatch = useAppDispatch()
+    const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
 
     const myData = useMyFullData()
     const { checkMyPhotoLike } = useCheckMyContentReaction(myData)
@@ -29,18 +30,18 @@ export const usePhotosLikes = () => {
     const { userId:myId } = myData?.personalData ?? {};
     const { friends, followers } = myData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
-    const { userCity, userCountry } = myData?.profileData ?? {}
-
 
     const refreshUsersData = useCallback((userId:string) => {
-        if (myId && userId) {
-            dispatch(fetchUserFullData(myId))
-            dispatch(fetchSelectedUserData(userId))
-            dispatch(fetchFriends(friendsIds, 'friends'))
-            dispatch(fetchFriends(followers, 'followers'))
-            dispatch(fetchRandomUsers(userCountry, userCity, myId))
-        }
-    }, [dispatch, myData])
+        setTimeout(() => {
+            if (myId && userId) {
+                dispatch(fetchUserFullData(myId))
+                dispatch(fetchSelectedUserData(userId))
+                dispatch(fetchFriends(friendsIds, 'friends'))
+                dispatch(fetchFriends(followers, 'followers'))
+                dispatch(fetchCurrentRandomUsersData(randomIds))
+            }
+        }, 2000)
+    }, [dispatch, myData, randomIds])
 
 
 

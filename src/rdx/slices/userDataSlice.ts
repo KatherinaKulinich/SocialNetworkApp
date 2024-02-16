@@ -45,6 +45,7 @@ export const fetchUserFullData = (userId: string) => {
             const docRef = doc(db, "users", userId);
             const docSnap = await getDoc(docRef);
 
+
             if (docSnap.exists()) {
                 dispatch(getUserInfo(docSnap.data() as UserProfile))            
             }

@@ -45,135 +45,118 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
     const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, users, myId, role)
 
-   
-
-    const [all, setAll] = useState<AllFeedNews>([])
 
     useEffect(() => {
-        console.log(newPhotos);
-        console.log(index)
-    }, [newPhotos])
+        setIsVisibleNews(allNews)   
+    }, [allNews])
+
+
 
     useEffect(() => {
-        if (newPhotos && newPosts && newFriendships) {
-            const allNews:AllFeedNews = [...newPosts, ...newPhotos, ...newFriendships]
-    
-            const sortedNews = allNews.sort((a, b) => {
-                return b.date - a.date
-            })
-            // console.log('SORTED ALL', sortedNews);
-            
-            setAll(sortedNews)
+        if (filterValue === 'all') {
+            setIsVisibleNews(allNews)
             return
-
-            // return sortedNews
         }
-        setAll([])
-    }, [newPhotos, newPosts, newFriendships])
-    
+        if (filterValue === 'posts') {
+            setIsVisibleNews(newPosts)
+            return
+        }
+        if (filterValue === 'photos') {
+            setIsVisibleNews(newPhotos)
+            return
+        }
+        if (filterValue === 'friendship') {
+            setIsVisibleNews(newFriendships)
+            return
+        }
+    }, [filterValue, allNews])
 
-    
-
-
-    useEffect(() => {
-        // if (isVisibleNews?.length === allNews.length) {
-        //     setIndex(prev => prev+1)
-        // }
-        // console.log(all);
-        
-        setIsVisibleNews(all)
-        setFeedCards(getFeedCards())
-    }, [all])
-    
-
-    // useEffect(() => {
-    //     if (filterValue === 'all') {
-    //         setIsVisibleNews(allNews)
-    //         return
-    //     }
-    //     if (filterValue === 'posts') {
-    //         setIsVisibleNews(newPosts)
-    //         return
-    //     }
-    //     if (filterValue === 'photos') {
-    //         setIsVisibleNews(newPhotos)
-    //         return
-    //     }
-    //     if (filterValue === 'friendship') {
-    //         setIsVisibleNews(newFriendships)
-    //         return
-    //     }
-    // }, [])
-
-    
 
     const loadMoreNews = useCallback(() => {
         setIndex(prev => prev+1)
     }, [index])
 
+
     const onChangeFilterValue = useCallback((value: string) => {
         setIsLoading(true)
         setFilterValue(value)
-        setIndex(1)
-        setIsVisibleNews([])
         setIsNewsAmount(0)
         setIsNoMoreNews(false)
         setFeedCards([])
-    }, [filterValue, index, isVisibleNews])
+    }, [filterValue])
+    
+
+
+    
+
+    
+
+
+    // useEffect(() => {
+    //     // if (isVisibleNews?.length === allNews.length) {
+    //     //     setIndex(prev => prev+1)
+    //     // }
+    //     console.log(all);
+        
+    //     setIsVisibleNews(all)
+    //     setFeedCards(getFeedCards())
+    // }, [all])
+    
+
+   
 
     // useEffect(() => {
     //     console.log('isVisib', isVisibleNews);
+    //     console.log('all', all);
         
     //     if (isVisibleNews) {
     //         setFeedCards(getFeedCards())
     //     }
-    // }, [isVisibleNews, allNews, index])
+    // }, [isVisibleNews])
 
 
 
-    const getFeedCards = useCallback(():JSX.Element[] => {
+
+    const getFeedCards = (news:Array<any>):JSX.Element[] => {
         let newsList: JSX.Element[] = [];
- 
-        if (isVisibleNews && isVisibleNews.length > 0) {
-            for (let i = 0; i < isVisibleNews.length; i++) {
-                if ('post' in isVisibleNews[i]) {
+        if (news) {
+
+            for (let i = 0; i < news.length; i++) {
+                if ('post' in news[i]) {
                     const id = v4()
-                    newsList.push(
+                    newsList = [...newsList, 
                         <FeedPostCard 
-                            feedPostItem={isVisibleNews[i]} 
+                            feedPostItem={news[i]} 
                             key={id}
                         />
-                    )
-                } else if ('photo' in isVisibleNews[i]) {
+                    ]
+                } else if ('photo' in news[i]) {
                     const id = v4()
-                    newsList.push(
+                    newsList = [...newsList, 
                         <FeedPhotoCard
-                            feedPhotoItem={isVisibleNews[i]} 
+                            feedPhotoItem={news[i]} 
                             key={id}
                         />
-                    )
-                } else if ('friend' in isVisibleNews[i]) {
+                    ]
+                } else if ('friend' in news[i]) {
                     const id = v4()
-                    newsList.push(
+                    newsList = [...newsList, 
                         <FeedFriendshipCard
-                            feedFriendshipItem={isVisibleNews[i]} 
+                            feedFriendshipItem={news[i]} 
                             key={id}
                         />
-                    )
+                    ]
                 }
             }
         }
-        
-        
-        // if (isNewsAmount === newsList.length && isNewsAmount !== 0) {
-        //     setIsNoMoreNews(true)
-        // } else {
-        //     setIsNoMoreNews(false)
-        //     setIsNewsAmount(newsList.length)
-        // }
         return newsList
+    }
 
-    }, [index, isVisibleNews, all, isNewsAmount])
+    useEffect(() => {
+        setFeedCards(getFeedCards(isVisibleNews))
+    }, [isVisibleNews])
+
+
 
     // const checkNewsAmount = useCallback(() => {
     //     console.log(isNewsAmount, allNews.length);
@@ -193,54 +176,54 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
 
 
-    const getFeedState = async () => {
-        // await timeout(1000)
+    // const getFeedState = async () => {
+    //     // await timeout(1000)
 
-        // if (index === 1 && isVisibleNews?.length === 0) {
-        //     await setIndex(2)
-        // }
-
-
+    //     // if (index === 1 && isVisibleNews?.length === 0) {
+    //     //     await setIndex(2)
+    //     // }
 
 
-        // if (index === 1 && isVisibleNews === null) return
-        // setTimeout(() => {
-        //     if (index === 1 && isVisibleNews?.length === 0) {
-        //         setIndex(1)
-        //     }
-        // })
-        if (index === 1) {
-            if (isVisibleNews === null) return
-            setTimeout(() => {
-                if (isVisibleNews?.length === 0) {
-                    setIndex(1) 
-                }
-            })
+
+
+    //     // if (index === 1 && isVisibleNews === null) return
+    //     // setTimeout(() => {
+    //     //     if (index === 1 && isVisibleNews?.length === 0) {
+    //     //         setIndex(1)
+    //     //     }
+    //     // })
+    //     if (index === 1) {
+    //         if (isVisibleNews === null) return
+    //         setTimeout(() => {
+    //             if (isVisibleNews?.length === 0) {
+    //                 setIndex(1) 
+    //             }
+    //         })
     
-        }
-        if (users.length === 0) {
-            setIsNoUsersData(true)
-            setIsButtonVisible(false)
-        } else {
-            console.log('1');
+    //     }
+    //     if (users.length === 0) {
+    //         setIsNoUsersData(true)
+    //         setIsButtonVisible(false)
+    //     } else {
+    //         console.log('1');
             
-            setIsButtonVisible(true)
-            setIsNoUsersData(false)
-            if (isVisibleNews?.length === 0) {
-                if (index < 5) {
-                    setIndex(prev => prev+1)
-                } else {
-                    setIsButtonVisible(false)
-                }
-            } else {
-                console.log('2');
-                setFeedCards(getFeedCards())
-                // checkNewsAmount()
-                // setTimeout(() => setFeedCards(getFeedCards()))
-                // setTimeout(() => checkNewsAmount(), 300)
-            }
-        }
-    }
+    //         setIsButtonVisible(true)
+    //         setIsNoUsersData(false)
+    //         if (isVisibleNews?.length === 0) {
+    //             if (index < 5) {
+    //                 setIndex(prev => prev+1)
+    //             } else {
+    //                 setIsButtonVisible(false)
+    //             }
+    //         } else {
+    //             console.log('2');
+    //             setFeedCards(getFeedCards())
+    //             // checkNewsAmount()
+    //             // setTimeout(() => setFeedCards(getFeedCards()))
+    //             // setTimeout(() => checkNewsAmount(), 300)
+    //         }
+    //     }
+    // }
 
 
 
@@ -285,6 +268,13 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                 />
             )}
 
+            {isVisibleNews?.length === 0 && filterValue !== 'all' && (
+                <SubTitle 
+                    color={theme.colors.mediumGray}
+                    text='No news in this category'
+                />
+            )}
+
             <ListContainer>
                 {isVisibleNews && feedCards}
             </ListContainer>
@@ -302,6 +292,8 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                     text='No more fresh news'
                 />
             )}
+
+           
         </>
     )
 }

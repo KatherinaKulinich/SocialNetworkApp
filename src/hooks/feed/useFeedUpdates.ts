@@ -15,15 +15,16 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
     const currentTime = Date.now()
     const timeRange = currentTime - timeLimit
 
-    const [newPosts, setNewPosts] = useState<FeedPost[]>([])
-    const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>([])
-    const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>([])
+
+    const [newPosts, setNewPosts] = useState<Array<FeedPost>>([])
+    const [newPhotos, setNewPhotos] = useState<Array<FeedPhoto>>([])
+    const [newFriendships, setNewFriendships] = useState<Array<FeedFriendship>>([])
     const [allNews, setAllNews] = useState<AllFeedNews>([])
 
 
 
     const getLatestPosts = useCallback(() => {
-       
+        setNewPosts([])
         const latestPosts = friendsData?.map(user => {
             const { posts } = user?.content ?? {}
             const filteredPosts = posts?.filter(post => post.date >= timeRange)
@@ -42,13 +43,13 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
             return b.post.date - a.post.date
         })
         setNewPosts(sortedPosts)
-        // return sortedPosts
-    }, [newPosts])
+    }, [friendsData, index, newPosts])
 
 
 
 
     const getLatestPhotos = useCallback(() => {
+        setNewPhotos([])
         const latestPhotos = friendsData?.map(user => {
             const { photos } = user?.content ?? {}
             const filteredPhotos = photos?.filter(photo => photo.date >= timeRange)
@@ -66,16 +67,14 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
         const sortedPhotos = latestPhotos.flat().sort((a:FeedPhoto, b:FeedPhoto) => {
             return b.photo.date - a.photo.date
         })
-        // console.log(sortedPhotos);
-        
         setNewPhotos(sortedPhotos)
-        // return sortedPhotos
-    }, [newPhotos])
+    }, [friendsData, index, newPhotos])
 
 
     
     const getLatestFriendships = useCallback(() => {
         if (role === 'feedPage') {
+            setNewFriendships([])
             const latestFriendships = friendsData?.map(user => {
                 const { friends } = user?.contacts ?? {}
     
@@ -104,91 +103,39 @@ export const useFeedUpdates = (index:number, friendsData:UserProfile[], myId:str
             })
             setNewFriendships(sortedFriendsUpdates)
             return
-            // return sortedFriendsUpdates
         }
         setNewFriendships([])
-        // return [] as FeedFriendship[]
-    }, [newFriendships])
+    }, [friendsData, index, newFriendships])
 
  
 
-    // const [newPosts, setNewPosts] = useState<FeedPost[]>([])
-    // const [newPhotos, setNewPhotos] = useState<FeedPhoto[]>([])
-    // const [newFriendships, setNewFriendships] = useState<FeedFriendship[]>([])
-    // const [allNews, setAllNews] = useState<AllFeedNews>([])
 
-    // useEffect(() => {
-    //     console.log('useEffect', index);
-        
-    //     setNewPhotos(getLatestPhotos())
-    //     setNewPosts(getLatestPosts())
-    //     setNewFriendships(getLatestFriendships())
-    // }, [index])
 
-    // useEffect(() => {
-    //     console.log('useEffectSTART', index);
-        
-    //     setNewPhotos(getLatestPhotos())
-    //     setNewPosts(getLatestPosts())
-    //     setNewFriendships(getLatestFriendships())
-    // }, [])
+    const getAllLatestUpdates = useCallback((photos: Array<FeedPhoto>, posts: Array<FeedPost>, friendship: Array<FeedFriendship>) => {
+        const allNews:AllFeedNews = [...photos, ...posts, ...friendship]
+
+        const sortedNews = allNews.sort((a, b) => {
+            return b.date - a.date
+        })
+        setAllNews(sortedNews)
+    }, [friendsData])
 
 
 
-    // const getAllLatestUpdates = useCallback(() => {
-    //     console.log('photos',newPhotos);
-        
-    //     if (newPhotos && newPosts && newFriendships) {
-    //         console.log('photos!!!',newPhotos);
-    //         const allNews:AllFeedNews = [...newPosts, ...newPhotos, ...newFriendships]
-    
-    //         const sortedNews = allNews.sort((a, b) => {
-    //             return b.date - a.date
-    //         })
-    //         console.log('SORTED ALL', sortedNews);
-            
-    //         setAllNews(sortedNews)
-    //         return
-
-    //         // return sortedNews
-    //     }
-    //     setAllNews([])
-    //     // return [] as AllFeedNews
-    // }, [newPhotos, newFriendships, newPosts, allNews])
-
-
-    // const getNews = useCallback(() => {
-
-    //     getLatestPhotos()
-    //     getLatestPosts()
-    //     getLatestFriendships()
-    // }, [index])
 
     useEffect(() => {
-        getLatestPhotos()
-        getLatestPosts()
-        getLatestFriendships()
+        if (friendsData) {
+            getLatestPhotos()
+            getLatestPosts()
+            getLatestFriendships()
+        }
     }, [index, friendsData])
 
-    // useEffect(() => {
-    //     getAllLatestUpdates()
-      
-    // },[newPhotos, newFriendships, newPosts, index])
+    useEffect(() => {
+        getAllLatestUpdates(newPhotos, newPosts, newFriendships)
+    }, [newPhotos, newPosts, newFriendships])
 
 
-
-
-
-
-
-
-    // useEffect(() => {
-    //     setAllNews(getAllLatestUpdates())
-    // }, [newFriendships, newPhotos, newPosts])
-
-
-
-    
 
 
     return {

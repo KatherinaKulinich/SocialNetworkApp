@@ -10,13 +10,15 @@ export const useMyFullData = () => {
     const dispatch = useAppDispatch()
     const { userId } = useAuth()
 
+
     useEffect(() => {
-       const getMyProfileData = () => {
-            if (userId) {
-                return dispatch(fetchUserFullData(userId))
-            }
-        }
-        getMyProfileData()
+    //    const getMyProfileData = () => {
+    //         if (userId) {
+    //             return dispatch(fetchUserFullData(userId))
+    //         }
+    //     }
+    //     getMyProfileData()
+        userId && dispatch(fetchUserFullData(userId))
     }, [])
     
     const userData = useAppSelector(state => state.userData.user)

@@ -41,12 +41,12 @@ export const AnimationItem = styled.div<{$x:number, $y:number}>`
     &:nth-child(1) {
         font-size: 25px;  
         animation-delay: 0s;
-        animation-duration: 3s;
+        animation-duration: 2s;
     }
     &:nth-child(2) {
         font-size: 45px;
         animation-delay: 0s;
-        animation-duration: 4s;
+        animation-duration: 3s;
     }
     &:nth-child(3) {
         font-size: 15px;
@@ -56,7 +56,7 @@ export const AnimationItem = styled.div<{$x:number, $y:number}>`
     &:nth-child(4) {
         font-size: 40px;
         animation-delay: 1s;
-        animation-duration: 2s;
+        animation-duration: 2.5s;
     }
     &:nth-child(5) {
         font-size: 25px;
@@ -76,7 +76,7 @@ export const AnimationItem = styled.div<{$x:number, $y:number}>`
     &:nth-child(8) {
         font-size: 18px;
         animation-delay: 0s;
-        animation-duration: 4s;
+        animation-duration: 3.5s;
     }
     &:nth-child(9) {
         font-size: 10px;
@@ -86,7 +86,7 @@ export const AnimationItem = styled.div<{$x:number, $y:number}>`
     &:nth-child(10) {
         font-size: 20px;
         animation-delay: 2s;
-        animation-duration: 3s;
+        animation-duration: 2.5s;
     }
 `
 

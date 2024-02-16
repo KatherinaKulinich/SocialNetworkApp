@@ -5,6 +5,9 @@ import { PageContainer } from "@components/containers/PageContainer/PageContaine
 import { SubTitle } from "@components/text/Subtitle"
 import { useMyFullData } from "hooks/useMyFullData"
 import { useRandomUsersData } from 'hooks/useRandomUsersData'
+import { useEffect, useState } from 'react'
+import { UserProfile } from 'types/UserProfile'
+import { useAppSelector } from 'hooks/hooks'
 
 
 
@@ -15,6 +18,19 @@ export const InterestingPage:React.FC = () => {
     const { userId } = myData?.personalData ?? {}
 
     const randomUsers = useRandomUsersData()
+    const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
+    const currentRandomUsersData = useAppSelector(state => state.randomUsers.currentRandomUsers)
+
+    const [users, setUsers] = useState<Array<UserProfile>>(randomUsers)
+
+
+    useEffect(() => {
+        if (currentRandomUsersData?.length > 0 && currentRandomUsersData.length === randomIds.length) {
+            setUsers(currentRandomUsersData)
+           
+        }
+    }, [currentRandomUsersData])
+
 
     return (
         <PageContainer>
@@ -25,7 +41,7 @@ export const InterestingPage:React.FC = () => {
             />
             <SubTitle text={'These are updates from other users that you may be interested in:'} />
             <FeedContainer 
-                users={randomUsers} 
+                users={users} 
                 role={"interestingPage"} 
                 myId={userId}            
             />

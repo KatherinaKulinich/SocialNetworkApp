@@ -44,8 +44,8 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
     const { addReaction } = usePostsReactions()
     const { checkMyPostReaction } = useCheckMyContentReaction(userData)
 
-    const [reactionValue, setReactionValue] = useState('')
-    const [initialValue, setInitialValue] = useState<string | false>(false)
+    const [reactionValue, setReactionValue] = useState(checkMyPostReaction(post))
+    const [initialValue, setInitialValue] = useState<string>('')
     const [isAnimation, setIsAnimation] = useState<string | null>(null)
 
 
@@ -53,9 +53,9 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
     const onChangeReactionValue = useCallback(async ({ target: { value }}: RadioChangeEvent) => {
         resetAnimation()
         setReactionValue(value)
+        setTimeout(() => setIsAnimation(value))
         await addReaction(post, postOwner, value)
-        setTimeout(() => setIsAnimation(value),500)
-    },[post, postOwner])
+    },[post, postOwner, isAnimation])
 
 
     const resetAnimation = useCallback(() => {
@@ -65,7 +65,7 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
 
     useEffect(() => {
         if (isAnimation !== null) {
-            setTimeout(() => resetAnimation(), 4000 )
+            setTimeout(() => resetAnimation(), 3000)
         }
     }, [isAnimation])
 

@@ -1,5 +1,5 @@
 import img from '@images/myFeed.svg'
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { useMyFullData } from 'hooks/useMyFullData'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
@@ -7,6 +7,7 @@ import { FeedContainer } from '@components/containers/FeedContainer/FeedContaine
 import { PageContainer } from '@components/containers/PageContainer/PageContainer'
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { SubTitle } from '@components/text/Subtitle'
+import { UserProfile } from 'types/UserProfile'
 
 
 
@@ -18,17 +19,26 @@ export const MyFeedPage: React.FC = () => {
     const myData = useMyFullData()
     const { userId } = myData?.personalData ?? {}
 
-    const { friends, followers } = myData?.contacts ?? {}
+    const { friends, followingList } = myData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
+
 
     useEffect(() => {
         dispatch(fetchFriends(friendsIds, 'friends'))
-        dispatch(fetchFriends(followers, 'followers'))
-    }, [dispatch, myData])
+        dispatch(fetchFriends(followingList, 'followingList'))
+    }, [])
 
     const friendsData = useAppSelector(state => state.friends.friendsData)
-    const followersData = useAppSelector(state => state.friends.followersData)
-    const allUsers = friendsData.concat(followersData)
+    const followingData = useAppSelector(state => state.friends.followingListData)
+
+    const [users, setUsers] = useState<Array<UserProfile>>([])
+
+    useEffect(() => {
+        if (friendsData?.length > 0 || followingData?.length > 0) {
+            const allUsers = friendsData.concat(followingData)
+            setUsers(allUsers)
+        }
+    }, [friendsData, followingData])
 
 
     return (
@@ -40,7 +50,7 @@ export const MyFeedPage: React.FC = () => {
             />
             <SubTitle text={'The latest news from your friends and followers:'} />
             <FeedContainer 
-                users={allUsers} 
+                users={users} 
                 role={"feedPage"} 
                 myId={userId}            
             />

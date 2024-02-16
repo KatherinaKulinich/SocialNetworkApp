@@ -8,7 +8,7 @@ import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { fetchFriends } from "rdx/slices/friendsSlice";
-import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
+import { fetchCurrentRandomUsersData } from "rdx/slices/randomUsersSlice";
 import { useMyFullData } from "hooks/useMyFullData";
 
 
@@ -19,27 +19,30 @@ import { useMyFullData } from "hooks/useMyFullData";
 export const usePostsReactions = () => {
     const dispatch = useAppDispatch()
     const userData = useMyFullData()
+    const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
 
     const { personalData, content } = userData;
     const { userId:myId } = personalData;
     const { posts:myPosts } = content;
     const { friends, followers } = userData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
-    const { userCity, userCountry } = userData?.profileData ?? {}
+
 
     const { checkMyPostReaction } = useCheckMyContentReaction(userData)
     const myRef = doc(db, "users", myId);
 
 
     const refreshUsersData = useCallback((userId:string) => {
-        if (myId && userId) {
-            dispatch(fetchUserFullData(myId))
-            dispatch(fetchSelectedUserData(userId))
-            dispatch(fetchFriends(friendsIds, 'friends'))
-            dispatch(fetchFriends(followers, 'followers'))
-            dispatch(fetchRandomUsers(userCountry, userCity, myId))
-        }
-    }, [dispatch])
+        setTimeout(() => {
+            if (myId && userId) {
+                dispatch(fetchUserFullData(myId))
+                dispatch(fetchSelectedUserData(userId))
+                dispatch(fetchFriends(friendsIds, 'friends'))
+                dispatch(fetchFriends(followers, 'followers'))
+                dispatch(fetchCurrentRandomUsersData(randomIds))
+            }
+        }, 2000)
+    }, [dispatch, userData, randomIds])
     
 
 
