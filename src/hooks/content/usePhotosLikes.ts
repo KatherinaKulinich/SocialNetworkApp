@@ -31,17 +31,17 @@ export const usePhotosLikes = () => {
     const { friends, followers } = myData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
 
-    const refreshUsersData = useCallback((userId:string) => {
-        setTimeout(() => {
-            if (myId && userId) {
-                dispatch(fetchUserFullData(myId))
-                dispatch(fetchSelectedUserData(userId))
-                dispatch(fetchFriends(friendsIds, 'friends'))
-                dispatch(fetchFriends(followers, 'followers'))
-                dispatch(fetchCurrentRandomUsersData(randomIds))
-            }
-        }, 2000)
-    }, [dispatch, myData, randomIds])
+    // const refreshUsersData = useCallback((userId:string) => {
+    //     setTimeout(() => {
+    //         if (myId && userId) {
+    //             dispatch(fetchUserFullData(myId))
+    //             dispatch(fetchSelectedUserData(userId))
+    //             dispatch(fetchFriends(friendsIds, 'friends'))
+    //             dispatch(fetchFriends(followers, 'followers'))
+    //             dispatch(fetchCurrentRandomUsersData(randomIds))
+    //         }
+    //     }, 2000)
+    // }, [dispatch, myData, randomIds])
 
 
 
@@ -58,7 +58,7 @@ export const usePhotosLikes = () => {
         await updateDoc(ref, {
             "content.photos": updatedPhotoArray,
         })
-        refreshUsersData(userId)     
+        // refreshUsersData(userId)     
     }, [])
 
 

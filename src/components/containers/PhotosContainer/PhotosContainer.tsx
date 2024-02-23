@@ -17,13 +17,14 @@ import { useModalForEditing } from "hooks/popups/useModalForEditing";
 interface PhotosContainerProps {
     owner: 'me' | 'friend';
     userOwner: UserProfile;
-    myUserData: UserProfile
+    myUserData: UserProfile;
+    refreshData: () => void;
 }
 
 
 
 
-export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner, myUserData}) => {
+export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner, myUserData, refreshData}) => {
     const { photos } = userOwner.content;
     const sortedPhotos = [...photos]?.sort((a, b) => {
         return b.date - a.date
@@ -68,6 +69,7 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner
                                 onOpenModalWithComments={onOpenModalComments}
                                 isPhotoLiked={checkMyPhotoLike(item)}
                                 photoOwner={userOwner}
+                                refreshData={refreshData}
                             />
                         ))
                     )}

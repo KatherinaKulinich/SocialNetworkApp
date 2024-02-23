@@ -10,6 +10,11 @@ import { PostPreview } from "./components/PostsPreview/PostPreview";
 import { getRandomAvatar } from "utils/getRandomAvatar";
 import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
+import { useCallback } from "react";
+import { useAppDispatch } from "hooks/hooks";
+import { useMyFullData } from "hooks/useMyFullData";
+import { fetchUserFullData } from "rdx/slices/userDataSlice";
+import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 
 
 interface UserProfileProps {
@@ -21,7 +26,11 @@ interface UserProfileProps {
 
 
 export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
-    const { userName, userFullname } = user?.personalData ?? {}
+    const dispatch = useAppDispatch()
+    const myData = useMyFullData()
+    const { userId:myId } = myData?.personalData ?? {}
+
+    const { userName, userFullname, userId } = user?.personalData ?? {}
     const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user?.profileData ?? {}
     const { friends } = user?.contacts ?? {}
 
@@ -30,6 +39,18 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
 
     const linkToFriendsPage = role === 'myProfile' ? '/myFriendsAndFollowers' : `/users/${userFullname}/friends`
     const linkToPhotosPage = role === 'myProfile' ? '/myPhotos' : `/users/${userFullname}/photos`
+
+    const refreshDataAfterPostReaction = useCallback(() => {
+        if (role === 'myProfile') {
+            setTimeout(() => {
+                dispatch(fetchUserFullData(myId))
+            }, 2000)
+        } else if (role === 'userProfile') {
+            setTimeout(() => {
+                dispatch(fetchSelectedUserData(userId))
+            }, 2000)
+        }
+    }, [dispatch, myData])
         
 
 
@@ -123,6 +144,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
             <PostPreview
                 postOwner={role}
                 ownerData={user}
+                refreshData={refreshDataAfterPostReaction}
             />
         </Container>
     )

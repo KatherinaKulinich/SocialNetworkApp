@@ -3,12 +3,23 @@ import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
 import { PhotosContainer } from '@components/containers/PhotosContainer/PhotosContainer';
 import { useMyFullData } from 'hooks/useMyFullData';
+import { useCallback } from 'react';
+import { useAppDispatch } from 'hooks/hooks';
+import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 
 
 
 
 export const MyPhotosPage:React.FC = () => {
-    const userData = useMyFullData()
+    const myData = useMyFullData()
+    const dispatch = useAppDispatch()
+    const { userId:myId } = myData?.personalData ?? {};
+
+    const refreshDataAfterPhotoLike = useCallback(() => {
+        setTimeout(() => {
+            dispatch(fetchUserFullData(myId))
+        },2000)
+    }, [dispatch, myData])
   
 
 
@@ -22,8 +33,9 @@ export const MyPhotosPage:React.FC = () => {
             />
             <PhotosContainer
                 owner='me'
-                userOwner={userData}
-                myUserData={userData}
+                userOwner={myData}
+                myUserData={myData}
+                refreshData={refreshDataAfterPhotoLike}
             />
         </PageContainer>
     )

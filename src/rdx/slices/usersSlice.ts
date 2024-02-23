@@ -6,15 +6,17 @@ import { UserProfile } from "types/UserProfile";
 
 
 interface UsersState {
+    filteredUsers: Array<UserProfile>,
+    selectedUser: UserProfile,
+    selectedUserFriends: Array<UserProfile>,
     error: string;
-    selectedUser: UserProfile
-    filteredUsers: UserProfile[];
 }
 
 const initialState: UsersState = {
+    filteredUsers: [] as Array<UserProfile>,
     selectedUser: {} as UserProfile,
+    selectedUserFriends: [] as Array<UserProfile>,
     error: '',
-    filteredUsers: [] as UserProfile[],
 }
 
 
@@ -22,11 +24,14 @@ const usersSlice = createSlice({
     name: 'users',
     initialState,
     reducers: {
-        getFilteredUsers(state, action: PayloadAction<UserProfile[]>) {
+        getFilteredUsers(state, action: PayloadAction<Array<UserProfile>>) {
             state.filteredUsers = action.payload
         },
         getSelectedUserData(state, action: PayloadAction<UserProfile>) {
             state.selectedUser = action.payload
+        },
+        getSelectedUserFriendsData(state, action: PayloadAction<Array<UserProfile>>) {
+            state.selectedUserFriends = action.payload
         },
         getErrorMessage(state, action: PayloadAction<any>) {
             state.error = action.payload;
@@ -40,7 +45,6 @@ const usersSlice = createSlice({
 
 export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
-
         try {
             dispatch(getErrorMessage(''))
             let sign:WhereFilterOp;
@@ -49,10 +53,8 @@ export const fetchFilteredUsers = (key:string, value: string, myId:string) => {
                 sign = '=='
             } else {
                 sign = 'array-contains'
-            }
-            
+            }            
             const ref = query(collection(db, "users"), where(`${key}`, `${sign}`, `${value}`));
-
             onSnapshot(ref, 
                 (querySnapshot) => {
                     let users: UserProfile[] = [];

@@ -103,7 +103,7 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 export const fetchCurrentRandomUsersData = (usersIds:string[]) => {
     return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>) => {
         let users: Array<UserProfile> = [];
-        dispatch(refreshRandomUsersData(users))
+        // dispatch(refreshRandomUsersData(users))
 
         try {
             if (usersIds.length > 0) {
@@ -113,9 +113,9 @@ export const fetchCurrentRandomUsersData = (usersIds:string[]) => {
                     const docSnap = await getDoc(ref)
                     const user = docSnap.data() as UserProfile  
                     users = [...users, user]
+                    
                     dispatch(refreshRandomUsersData(users))
                 })
-                // dispatch(getRandomUsers(users))
             }
         } catch(error:unknown) {
             if (error instanceof Error) {

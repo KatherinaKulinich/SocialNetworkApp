@@ -26,7 +26,7 @@ export const MyProfilePage:React.FC = () => {
         if (userData) {
             dispatch(fetchFriends(friendsIdsArray, 'friends'))
         }
-    }, [dispatch, userData])
+    }, [])
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
     const { isMyBirthdayToday } = useUsersBirthdays(friendsData)

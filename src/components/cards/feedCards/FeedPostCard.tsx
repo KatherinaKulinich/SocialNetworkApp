@@ -15,11 +15,12 @@ import { useModalForEditing } from "hooks/popups/useModalForEditing";
 
 interface FeedPostCardProps {
     feedPostItem: FeedPost,
+    refreshData: () => void;
 }
 
 
 
-export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem}) => {
+export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem, refreshData}) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -70,6 +71,7 @@ export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem}) => {
                     onOpenModalWithComments={onOpenModalComments} 
                     onOpenModalForEditing={onOpenModalEdition}
                     postOwner={user}
+                    refreshData={refreshData}
                 />
             </Card>
 

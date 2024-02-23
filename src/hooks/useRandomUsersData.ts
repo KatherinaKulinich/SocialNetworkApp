@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useMyFullData } from "./useMyFullData"
 import { fetchCurrentRandomUsersData, fetchRandomUsers } from "rdx/slices/randomUsersSlice"
+import { UserProfile } from "types/UserProfile"
+
 
 
 
@@ -17,10 +19,16 @@ export const useRandomUsersData = () => {
         if (userId) {
             dispatch(fetchRandomUsers(userCountry, userCity, userId))
         }
-    }, [])
+    }, [userId])
 
-    const randomUsers = useAppSelector(state => state.randomUsers.randomUsers)
+    const [randomUsers, setRandomUsers] = useState<Array<UserProfile> | null>(null)
+    const users = useAppSelector(state => state.randomUsers.randomUsers)
 
+    useEffect(() => {
+        if (users?.length > 0) {
+            setRandomUsers(users)
+        }
+    }, [users])
     
     return randomUsers
 }

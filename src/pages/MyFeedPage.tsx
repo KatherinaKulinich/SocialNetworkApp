@@ -28,17 +28,45 @@ export const MyFeedPage: React.FC = () => {
         dispatch(fetchFriends(followingList, 'followingList'))
     }, [])
 
-    const friendsData = useAppSelector(state => state.friends.friendsData)
-    const followingData = useAppSelector(state => state.friends.followingListData)
+    const usersFriends = useAppSelector(state => state.friends.friendsData)
+    const usersFollowing = useAppSelector(state => state.friends.followingListData)
 
-    const [users, setUsers] = useState<Array<UserProfile>>([])
+    const [friendsUsersData, setFriendsUsersData] = useState<Array<UserProfile> | null>(null)
+    const [followingUsersData, setFollowingUsersData] = useState<Array<UserProfile> | null>(null)
+    const [users, setUsers] = useState<Array<UserProfile> | null>(null)
+
 
     useEffect(() => {
-        if (friendsData?.length > 0 || followingData?.length > 0) {
-            const allUsers = friendsData.concat(followingData)
-            setUsers(allUsers)
+        if (usersFriends) {
+            if (usersFriends.length > 0) {
+                setFriendsUsersData(usersFriends)
+                return
+            }
+            setFriendsUsersData([] as Array<UserProfile>)
         }
-    }, [friendsData, followingData])
+    }, [usersFriends])
+
+    useEffect(() => {
+        if (usersFollowing) {
+            if (usersFollowing.length > 0) {
+                setFollowingUsersData(usersFollowing)
+                return
+            }
+            setFollowingUsersData([] as Array<UserProfile>)
+        }
+    }, [usersFollowing])
+
+
+    useEffect(() => {
+        if (friendsUsersData && followingUsersData) {
+            const allUsers = friendsUsersData.concat(followingUsersData)
+            if (allUsers.length > 0) {
+                setUsers(allUsers)
+            }
+        }
+    }, [friendsUsersData, followingUsersData])
+
+
 
 
     return (
@@ -52,7 +80,7 @@ export const MyFeedPage: React.FC = () => {
             <FeedContainer 
                 users={users} 
                 role={"feedPage"} 
-                myId={userId}            
+                myId={userId}       
             />
         </PageContainer>
     )

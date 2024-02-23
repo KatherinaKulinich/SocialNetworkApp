@@ -18,11 +18,12 @@ import { useModalForEditing } from "hooks/popups/useModalForEditing";
 
 interface FeedPhotoCardProps {
     feedPhotoItem: FeedPhoto,
+    refreshData: () => void
 }
 
 
 
-export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
+export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem, refreshData}) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -75,6 +76,7 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem}) => {
                     photoOwner={user}
                     isPhotoLiked={checkMyPhotoLike(photo)}
                     onOpenModalForEditing={onOpenModalEdition}
+                    refreshData={refreshData}
                 />
             </Card>
 

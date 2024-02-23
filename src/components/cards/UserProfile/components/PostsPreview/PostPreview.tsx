@@ -17,11 +17,12 @@ import { useModalForEditing } from "hooks/popups/useModalForEditing";
 interface PostPreviewProps {
     postOwner: 'myProfile'| 'userProfile';
     ownerData: UserProfile;
+    refreshData: () => void;
 }
 
 
 
-export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) => {
+export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData, refreshData}) => {
     const { posts } = ownerData.content;
     const sortedPosts = [...posts]?.sort((a, b) => {
         return b.date - a.date
@@ -55,6 +56,7 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData}) 
                             onOpenModalForEditing={onOpenModalEdition} 
                             onOpenModalWithComments={onOpenModalComments}
                             postOwner={ownerData} 
+                            refreshData={refreshData}
                         />
                     ))
                 ) : (

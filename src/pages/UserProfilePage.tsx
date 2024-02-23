@@ -34,6 +34,7 @@ export const UserProfilePage:React.FC = () => {
         navigate(`/myChats/${userFullname}/chat`)
     },[])
     
+    
     const friendsData = useAppSelector(state => state.friends.friendsData)
 
     const icon:JSX.Element = buttonIcon === 'request' ? < FaRegClock/> : buttonIcon === 'follower' ? <RiUserStarFill/> : buttonIcon === 'addFriend' ? <RiUserAddFill/> : <RiUserUnfollowFill/>

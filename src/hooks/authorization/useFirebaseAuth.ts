@@ -79,7 +79,7 @@ export const useFirebaseAuth = () => {
     const onLoginByGoogle = useCallback(() => {
         signInWithPopup(auth, provider)
         .then(async (result) => {
-            message.loading('Loading...')
+            message.loading('Loading...',3)
 
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential?.accessToken;

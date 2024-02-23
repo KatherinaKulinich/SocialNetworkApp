@@ -26,13 +26,14 @@ interface UserPostCardProps {
     onOpenModalForEditing: () => void;
     onOpenModalWithComments: () => void;
     postOwner: UserProfile;
+    refreshData: () => void;
 }
 
 
 
 
 
-export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner}) => {
+export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner, refreshData}) => {
     const {postOwnerName, postOwnerAvatar, date, postReactions, postComments, postText} = post;
 
     const dateFormat = new Date(date);
@@ -53,9 +54,11 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
     const onChangeReactionValue = useCallback(async ({ target: { value }}: RadioChangeEvent) => {
         resetAnimation()
         setReactionValue(value)
+        // setIsAnimation(value)
         setTimeout(() => setIsAnimation(value))
         await addReaction(post, postOwner, value)
-    },[post, postOwner, isAnimation])
+        await refreshData()
+    },[post, postOwner])
 
 
     const resetAnimation = useCallback(() => {
@@ -96,8 +99,11 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
         }
     }, [initialValue])
 
-    const postDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `;
-    const postTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
+    const postDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `
+    const postTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`
+    const itemKey = uuidv4()
+
+
 
 
 
@@ -157,15 +163,15 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                         value={reactionValue} 
                         onChange={onChangeReactionValue}
                     >
-                        {postReactions?.map((reactionItem:Reaction) => {
+                        {postReactions?.map((reactionItem:Reaction, mainIndex) => {
                             return reactionsArray.map((arrayItem) => {
                                 return arrayItem.value === reactionItem.value && 
                                     (
-                                        <ReactionBox>
+                                        <ReactionBox key={mainIndex}>
                                             <ReactionItem 
                                                 value={reactionItem.value} 
                                                 $items={reactionItem.usersReactions.length} 
-                                                key={uuidv4()}
+                                                key={`${itemKey}${reactionItem.value}`}
                                             >
                                                 <p>{arrayItem.label}</p>
                                             </ReactionItem>
@@ -173,7 +179,7 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                                                 (
                                                     <ReactionAnimation 
                                                         value={arrayItem.label} 
-                                                        key={uuidv4()}
+                                                        key={`${itemKey}${mainIndex}`}
                                                     />
                                                 )
                                             }

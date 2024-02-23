@@ -32,17 +32,17 @@ export const usePostsReactions = () => {
     const myRef = doc(db, "users", myId);
 
 
-    const refreshUsersData = useCallback((userId:string) => {
-        setTimeout(() => {
-            if (myId && userId) {
-                dispatch(fetchUserFullData(myId))
-                dispatch(fetchSelectedUserData(userId))
-                dispatch(fetchFriends(friendsIds, 'friends'))
-                dispatch(fetchFriends(followers, 'followers'))
-                dispatch(fetchCurrentRandomUsersData(randomIds))
-            }
-        }, 2000)
-    }, [dispatch, userData, randomIds])
+    // const refreshUsersData = useCallback((userId:string) => {
+    //     setTimeout(() => {
+    //         if (myId && userId) {
+    //             dispatch(fetchUserFullData(myId))
+    //             dispatch(fetchSelectedUserData(userId))
+    //             dispatch(fetchFriends(friendsIds, 'friends'))
+    //             dispatch(fetchFriends(followers, 'followers'))
+    //             dispatch(fetchCurrentRandomUsersData(randomIds))
+    //         }
+    //     }, 2000)
+    // }, [dispatch, userData, randomIds])
     
 
 
@@ -92,7 +92,7 @@ export const usePostsReactions = () => {
                 "content.posts": updatedPostsArray,
             })
         }
-        refreshUsersData(userId)
+        // refreshUsersData(userId)
     },[myPosts])
 
     

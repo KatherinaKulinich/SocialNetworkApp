@@ -7,13 +7,15 @@ import { useMyFullData } from "hooks/useMyFullData"
 import { useRandomUsersData } from 'hooks/useRandomUsersData'
 import { useEffect, useState } from 'react'
 import { UserProfile } from 'types/UserProfile'
-import { useAppSelector } from 'hooks/hooks'
+import { useAppDispatch, useAppSelector } from 'hooks/hooks'
+import { fetchCurrentRandomUsersData } from 'rdx/slices/randomUsersSlice'
 
 
 
 
 
 export const InterestingPage:React.FC = () => {
+    const dispatch = useAppDispatch()
     const myData = useMyFullData()
     const { userId } = myData?.personalData ?? {}
 
@@ -21,14 +23,22 @@ export const InterestingPage:React.FC = () => {
     const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
     const currentRandomUsersData = useAppSelector(state => state.randomUsers.currentRandomUsers)
 
-    const [users, setUsers] = useState<Array<UserProfile>>(randomUsers)
+
+    const [users, setUsers] = useState<Array<UserProfile>>([])
+
+    useEffect(() => {
+
+        if (randomUsers !== null && currentRandomUsersData?.length === 0 ) {
+            setUsers(randomUsers)
+            dispatch(fetchCurrentRandomUsersData(randomIds))
+        }
+    }, [randomUsers, currentRandomUsersData, randomIds])
 
 
     useEffect(() => {
         if (currentRandomUsersData?.length > 0 && currentRandomUsersData.length === randomIds.length) {
             setUsers(currentRandomUsersData)
-           
-        }
+        } 
     }, [currentRandomUsersData])
 
 
@@ -43,7 +53,7 @@ export const InterestingPage:React.FC = () => {
             <FeedContainer 
                 users={users} 
                 role={"interestingPage"} 
-                myId={userId}            
+                myId={userId}          
             />
         </PageContainer>
     )

@@ -17,6 +17,7 @@ import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { UserProfile } from "types/UserProfile";
 
 
+
 interface PhotoCardProps {
     photo: Photo;
     owner: 'me' | 'friend';
@@ -24,12 +25,13 @@ interface PhotoCardProps {
     onOpenModalWithComments: () => void;
     isPhotoLiked: boolean;
     photoOwner: UserProfile;
+    refreshData: () => void;
 }
 
 
 
 
-export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, isPhotoLiked, photoOwner}) => {
+export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalForEditing, onOpenModalWithComments, isPhotoLiked, photoOwner, refreshData}) => {
     const { photoUrl, photoDescription, photoLikes, photoComments, date } = photo;
 
 
@@ -65,9 +67,8 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
 
 
     const onLikePhoto = useCallback((photo: Photo) => {
-        console.log(photoOwner);
-        
         togglePhotoLike(photo, photoOwner)
+        refreshData()
         dispatch(fetchUserFullData(userData.personalData.userId))
         if (!isPhotoLiked) {
             setIsAnimation(true)
