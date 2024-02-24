@@ -5,12 +5,23 @@ import { AddingNewPostCard } from "@components/cards/postsCards/AddingNewPostCar
 import { ListContainer } from "@components/containers/ListContainer/ListContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { useMyFullData } from 'hooks/useMyFullData'
+import { useAppDispatch } from 'hooks/hooks'
+import { fetchUserFullData } from 'rdx/slices/userDataSlice'
+import { useCallback } from 'react'
 
 
 
 
 export const MyPostsPage: React.FC = () => {
-    const userData = useMyFullData()
+    const myData = useMyFullData()
+    const dispatch = useAppDispatch()
+    const { userId:myId } = myData?.personalData ?? {};
+
+    const refreshDataAfterPhotoLike = useCallback(() => {
+        setTimeout(() => {
+            dispatch(fetchUserFullData(myId))
+        },2000)
+    }, [dispatch, myData])
   
 
     return (
@@ -24,7 +35,8 @@ export const MyPostsPage: React.FC = () => {
                 <AddingNewPostCard/>
                 <PostPreview
                     postOwner='myProfile'
-                    ownerData={userData}
+                    ownerData={myData}
+                    refreshData={refreshDataAfterPhotoLike}
                 />
             </ListContainer>
         </PageContainer>

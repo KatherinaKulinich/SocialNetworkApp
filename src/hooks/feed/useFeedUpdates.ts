@@ -1,6 +1,3 @@
-import { useAppDispatch, useAppSelector } from "hooks/hooks"
-import { useMyFullData } from "hooks/useMyFullData"
-import { fetchFriends } from "rdx/slices/friendsSlice"
 import { useCallback, useEffect, useState } from "react"
 import { FeedFriendship, FeedPhoto, FeedPost } from "types/Feed"
 import { UserProfile } from "types/UserProfile"
@@ -8,6 +5,8 @@ import { UserProfile } from "types/UserProfile"
 type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 type Role = 'feedPage' | 'interestingPage'
 type UsersData = Array<UserProfile> | null
+type ContentEvent = 'indexHasChanged' | 'usersDataHasChanged'
+
 
 
 export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string, role:Role) => {
@@ -16,15 +15,20 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
     const currentTime = Date.now()
     const timeRange = currentTime - timeLimit
 
-
     const [newPosts, setNewPosts] = useState<Array<FeedPost> | null>(null)
     const [newPhotos, setNewPhotos] = useState<Array<FeedPhoto> | null>(null)
     const [newFriendships, setNewFriendships] = useState<Array<FeedFriendship> | null>(null)
     const [allNews, setAllNews] = useState<AllFeedNews | null>(null)
 
+    const [isIdleIndex, setIsIdleIndex] = useState(false)
+    const [prevNewsAmountValue, setPrevNewsAmountValue] = useState(0)
+    const [prevPhotosAmountValue, setPrevPhotosAmountValue] = useState(0)
+    const [prevPostsAmountValue, setPrevPostsAmountValue] = useState(0)
+    const [prevFriendshipAmountValue, setPrevFriendshipAmountValue] = useState(0)
 
 
-    const getLatestPosts = useCallback(() => {
+
+    const getLatestPosts = useCallback((event:ContentEvent) => {
         setNewPosts(null)
         if (friendsData) {
             const latestPosts = friendsData?.map(user => {
@@ -44,6 +48,10 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
             const sortedPosts = latestPosts.flat().sort((a:FeedPost, b:FeedPost) => {
                 return b.post.date - a.post.date
             })
+            if (event === 'indexHasChanged') {
+                const prevNewsAmount = newPosts?.length || 0
+                setPrevPostsAmountValue(prevNewsAmount)
+            }
             if (sortedPosts) {
                 setNewPosts(sortedPosts)
             }
@@ -53,7 +61,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
 
 
 
-    const getLatestPhotos = useCallback(() => {
+    const getLatestPhotos = useCallback((event:ContentEvent) => {
         setNewPhotos(null)
         if (friendsData) {
             const latestPhotos = friendsData?.map(user => {
@@ -73,6 +81,10 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
             const sortedPhotos = latestPhotos.flat().sort((a:FeedPhoto, b:FeedPhoto) => {
                 return b.photo.date - a.photo.date
             })
+            if (event === 'indexHasChanged') {
+                const prevNewsAmount = newPhotos?.length || 0
+                setPrevPhotosAmountValue(prevNewsAmount)
+            }
             if (sortedPhotos) {
                 setNewPhotos(sortedPhotos)
             }
@@ -81,7 +93,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
 
 
     
-    const getLatestFriendships = useCallback(() => {
+    const getLatestFriendships = useCallback((event:ContentEvent) => {
         if (role === 'feedPage') {
             setNewFriendships(null)
             if (friendsData) {
@@ -111,6 +123,10 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
                 const sortedFriendsUpdates = latestFriendships.flat().sort((a:FeedFriendship, b:FeedFriendship) => {
                     return b.friend.date - a.friend.date
                 })
+                if (event === 'indexHasChanged') {
+                    const prevNewsAmount = newFriendships?.length || 0
+                    setPrevFriendshipAmountValue(prevNewsAmount)
+                }
                 if (sortedFriendsUpdates) {
                     setNewFriendships(sortedFriendsUpdates)
                 }
@@ -122,38 +138,57 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
 
  
 
-
-
     const getAllLatestUpdates = useCallback((photos: Array<FeedPhoto>, posts: Array<FeedPost>, friendship: Array<FeedFriendship>) => {
-        // setAllNews(null)
         const all:AllFeedNews = [...photos, ...posts, ...friendship]
 
         const sortedNews = all.sort((a, b) => {
             return b.date - a.date
         })
-        console.log('getting_all_news_hook____', sortedNews.length, allNews?.length);
-        
         if (sortedNews?.length > 0) {
             setAllNews(sortedNews)
         }
-    }, [friendsData, allNews])
+    }, [friendsData])
 
 
+
+    const getLatestContent = useCallback((event:ContentEvent) => {
+        getLatestPhotos(event)
+        getLatestPosts(event)
+        getLatestFriendships(event)
+    }, [friendsData, index])
 
 
     useEffect(() => {
         if (friendsData) {
-            getLatestPhotos()
-            getLatestPosts()
-            getLatestFriendships()
+            getLatestContent('usersDataHasChanged')
         }
-    }, [index, friendsData])
+    }, [friendsData])
+    
+    useEffect(() => {
+        getLatestContent('indexHasChanged') 
+    }, [index])
+    
 
-    useEffect(() => {     
+
+    useEffect(() => {
         if (newPhotos && newPosts && newFriendships) {
             getAllLatestUpdates(newPhotos, newPosts, newFriendships)
         }
     }, [newPhotos, newPosts, newFriendships])
+
+    useEffect(() => {
+        const all = prevFriendshipAmountValue+prevPhotosAmountValue+prevPostsAmountValue
+        setPrevNewsAmountValue(all)  
+    }, [allNews])
+
+
+    useEffect(() => {
+        if (prevNewsAmountValue === allNews?.length) {
+            setIsIdleIndex(true)
+            return
+        }
+        setIsIdleIndex(false)
+    }, [prevNewsAmountValue ])
 
 
 
@@ -163,6 +198,6 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myId:string,
         newPhotos,
         newFriendships,
         allNews,
-        // isLoading
+        isIdleIndex
     }
 }

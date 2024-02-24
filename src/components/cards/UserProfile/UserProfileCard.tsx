@@ -1,4 +1,4 @@
-import { Container, MainInfo, Name, Personal, Subtitle, Field, RegularText, FullInfo,  PersonalMainInfo, InfoContainer, Box, PreviewContainer, PageLink, HobbyItem, HobbiesList } from "./UserProfileCard.styled"
+import { Container, MainInfo, Name, Subtitle, Field, RegularText,  PersonalMainInfo, InfoContainer, Box, PreviewContainer, PageLink, HobbyItem, HobbiesList } from "./UserProfileCard.styled"
 import { FaUsers,  FaHeart, FaBasketballBall, FaBirthdayCake} from 'react-icons/Fa'
 import { ImLocation } from 'react-icons/Im'
 import { BsFillInfoCircleFill } from 'react-icons/Bs'
@@ -15,6 +15,7 @@ import { useAppDispatch } from "hooks/hooks";
 import { useMyFullData } from "hooks/useMyFullData";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { fetchFriends } from "rdx/slices/friendsSlice";
 
 
 interface UserProfileProps {
@@ -29,10 +30,13 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
     const dispatch = useAppDispatch()
     const myData = useMyFullData()
     const { userId:myId } = myData?.personalData ?? {}
+    const { friends:myFriends } = myData?.contacts ?? {}
+    const myFriendsIds = myFriends?.map(friend => friend.id) || []
 
     const { userName, userFullname, userId } = user?.personalData ?? {}
     const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user?.profileData ?? {}
     const { friends } = user?.contacts ?? {}
+    const userFriendsIds = friends?.map(friend => friend.id) || []
 
     const { year, month, day, fullDate } = userBirthday ?? {}
     const userAge = getUserAge(year, month, day);
@@ -44,13 +48,15 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
         if (role === 'myProfile') {
             setTimeout(() => {
                 dispatch(fetchUserFullData(myId))
+                // dispatch(fetchFriends(myFriendsIds, 'friends'))
             }, 2000)
         } else if (role === 'userProfile') {
             setTimeout(() => {
                 dispatch(fetchSelectedUserData(userId))
+                // dispatch(fetchFriends(userFriendsIds, 'friends'))
             }, 2000)
         }
-    }, [dispatch, myData])
+    }, [dispatch, myData, user])
         
 
 

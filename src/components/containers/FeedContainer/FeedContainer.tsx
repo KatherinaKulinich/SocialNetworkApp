@@ -14,99 +14,56 @@ import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { ListContainer } from "../ListContainer/ListContainer"
 import { Filter } from "@components/Filter/Filter"
 import { filterOptions } from "utils/data/feedFilterOptions"
-import { FeedPost, FeedPhoto, FeedFriendship } from "types/Feed"
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
-import { useNavigate } from 'react-router-dom'
 import { v4 } from 'uuid'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
 import { fetchCurrentRandomUsersData } from 'rdx/slices/randomUsersSlice'
 import { useMyFullData } from 'hooks/useMyFullData'
+import { LoaderRing } from '@components/loaders/LoaderRing'
 
-type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
 interface FeedContainerProps {
     users: Array<UserProfile> | null,
     role: 'feedPage' | 'interestingPage',
     myId: string,
 }
-// type AllFeedNews = (FeedPost | FeedPhoto | FeedFriendship)[]
 
-type DayNews = {
-    index: number,
-    news: Array<any>,
-}
 
 export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) => {
     const dispatch = useAppDispatch()
     const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
     const myData = useMyFullData()
     
-
     const [index, setIndex] = useState<number>(1)
     const [filterValue, setFilterValue] = useState('all')
     const [feedCards, setFeedCards] = useState<JSX.Element[]>([])
 
     const [isVisibleNews, setIsVisibleNews] = useState<any | null >(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    const [isNewsAmount, setIsNewsAmount] = useState<Array<number>>([])
+    const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
     const [isNoMoreNews, setIsNoMoreNews] = useState<boolean>(false)
     const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true)
 
-    const [isIdleIndex, setIsIdleIndex] = useState<number>(0)
+    const {newPosts, newPhotos, newFriendships, allNews, isIdleIndex} = useFeedUpdates(index, users, myId, role)
 
-    const {newPosts, newPhotos, newFriendships, allNews} = useFeedUpdates(index, users, myId, role)
-    
+    useEffect(() => {
+        if (isIdleIndex) {
+            setIndex(prev => prev+1)
+        }  
+    }, [isIdleIndex])
     
     useEffect(() => {
-        console.log('news', allNews);
-        
         setIsVisibleNews(allNews)   
     }, [allNews])
 
     useEffect(() => {
-        console.log('users', users);
-        
-    }, [users])
+        console.log('INDEX____', index);
+        if (index >= 7) {
+            setIsNoMoreNews(true)
+        }
+    }, [index])
 
-
-
-    // useEffect(() => {
-    //     setIsNewsAmount(prev => [...prev, isVisibleNews?.length])
-    // }, [isVisibleNews])
-
-    // useEffect(() => {
-    //     console.log('isNewsAmount___', isNewsAmount);
-
-    //     const prevValue = isNewsAmount[isNewsAmount.length-2]
-
-    //     if (prevValue === isVisibleNews?.length && prevValue !== 0) {
-    //         if (isIdleIndex <= 3) {
-    //             setIndex(prev => prev+1)
-    //             setIsIdleIndex(prev => prev+1)
-    //             return
-    //         } else if (isIdleIndex > 4 || index >= 12) {
-
-    //             setIsNoMoreNews(true)
-    //         }
-    //         return
-    //     }
-    //     setIsIdleIndex(0)
-    //     setIsNoMoreNews(false)
-    // }, [isNewsAmount, isVisibleNews])
-
-    // useEffect(() => {
-    //     console.log('INDEX____', index);
-    //     console.log('idle__index____', isIdleIndex)
-        
-    // }, [index, isIdleIndex])
-
-
-
-  
-    
-
-
+ 
     //no users
     const [isNoUsersData, setIsNoUsersData] = useState<boolean>(false)
     useEffect(() => {
@@ -125,17 +82,13 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
     }, [users, allNews])
 
 
-
-
-
-    //no news last 5 days
-
+    //no news last 7 days
     const [isNoFreshNews, setIsNoFreshNews] = useState<boolean>(false)
     const checkNewsAmount = useCallback(() => {
         setIsLoading(true)
 
         if (allNews === null) {
-            if (index <= 9) {
+            if (index <= 6) {
                 setIndex(prev => prev+1)
                 return
             }
@@ -150,13 +103,9 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         if (users && users?.length > 0 && allNews === null) {
             setTimeout(() => {
                 checkNewsAmount()
-            }, 2500)
+            }, 3000)
         }
     }, [allNews, index, users])
-
-    useEffect(() => {
-        console.log('INDEX____', index);
-    }, [index])
 
 
 
@@ -181,27 +130,21 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
 
     const loadMoreNews = useCallback(() => {
-        setIndex(prev => prev+1)
-        console.log(allNews?.length, isVisibleNews?.length);
-
-        
+        setIsButtonLoading(true)
+        setIndex(prev => prev+1) 
     }, [index, allNews, isVisibleNews])
-
 
     const onChangeFilterValue = useCallback((value: string) => {
         setIsLoading(true)
         setFilterValue(value)
-        setIsNewsAmount([])
         setIsNoMoreNews(false)
         setFeedCards([])
     }, [filterValue])
     
 
-
     const getFeedCards = (news:Array<any>):JSX.Element[] => {
         let newsList: JSX.Element[] = [];
         if (news) {
-
             for (let i = 0; i < news.length; i++) {
                 if ('post' in news[i]) {
                     const id = v4()
@@ -235,9 +178,11 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         return newsList
     }
 
+
     useEffect(() => {
         setIsLoading(true)
         setFeedCards(getFeedCards(isVisibleNews))
+        setIsButtonLoading(false)
         setIsLoading(false)
     }, [isVisibleNews])
 
@@ -245,7 +190,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
     //button is visible
     useEffect(() => {
-        if (isNoFreshNews || isNoUsersData || isLoading || isNoMoreNews) {
+        if (isNoFreshNews || isNoUsersData || isLoading || isNoMoreNews || isButtonLoading) {
             setIsButtonVisible(false)
             return
         }
@@ -257,8 +202,6 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
         }
         setIsButtonVisible(true)
     }, [isNoFreshNews, isNoUsersData, isLoading, filterValue, isVisibleNews])
-
-
 
 
 
@@ -276,18 +219,12 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                 dispatch(fetchCurrentRandomUsersData(randomIds))
             }, 2000)
         }
-    }, [dispatch, myData, randomIds])
-
-
+    }, [dispatch, randomIds])
 
 
 
     return (
         <>
-            {/* <SubTitle 
-                color={theme.colors.mediumGray} 
-                text={`User news for the last ${index} ${index === 1 ? 'day' : 'days'}`} 
-            /> */}
             {role === 'feedPage' && (
                 <Filter 
                     filterOptions={filterOptions} 
@@ -300,7 +237,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
             {isNoFreshNews && !isLoading && (
                 <ImageErrorMessage 
                     image={imageNoNews} 
-                    text={`${role === 'feedPage' ? 'It looks like none of your friends have posted anything in the past 10 days' : 'It looks like none of users have posted anything in the past 10 days'}`}
+                    text={`${role === 'feedPage' ? 'It looks like none of your friends have posted anything in the past 7 days' : 'It looks like none of users have posted anything in the past 7 days'}`}
                 />
             )}
             {role === 'feedPage' && isNoUsersData && !isLoading && (
@@ -321,6 +258,9 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                 {isVisibleNews && feedCards}
             </ListContainer>
 
+            {isButtonLoading && (
+                <LoaderRing/>
+            )}
             {isButtonVisible && (
                 <RegularButton 
                     buttonType={'button'} 
@@ -334,8 +274,6 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
                     text='No more fresh news'
                 />
             )}
-
-           
         </>
     )
 }

@@ -38,7 +38,7 @@ export const MyFeedPage: React.FC = () => {
 
     useEffect(() => {
         if (usersFriends) {
-            if (usersFriends.length > 0) {
+            if (usersFriends?.length > 0 && friendsIds?.length === usersFriends?.length ) {
                 setFriendsUsersData(usersFriends)
                 return
             }
@@ -48,7 +48,7 @@ export const MyFeedPage: React.FC = () => {
 
     useEffect(() => {
         if (usersFollowing) {
-            if (usersFollowing.length > 0) {
+            if (usersFollowing?.length > 0 && usersFollowing.length  === followingList?.length) {
                 setFollowingUsersData(usersFollowing)
                 return
             }

@@ -27,7 +27,6 @@ export const InterestingPage:React.FC = () => {
     const [users, setUsers] = useState<Array<UserProfile>>([])
 
     useEffect(() => {
-
         if (randomUsers !== null && currentRandomUsersData?.length === 0 ) {
             setUsers(randomUsers)
             dispatch(fetchCurrentRandomUsersData(randomIds))

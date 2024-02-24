@@ -8,14 +8,12 @@ import { UserProfile } from "types/UserProfile";
 interface UsersState {
     filteredUsers: Array<UserProfile>,
     selectedUser: UserProfile,
-    selectedUserFriends: Array<UserProfile>,
     error: string;
 }
 
 const initialState: UsersState = {
     filteredUsers: [] as Array<UserProfile>,
     selectedUser: {} as UserProfile,
-    selectedUserFriends: [] as Array<UserProfile>,
     error: '',
 }
 
@@ -29,9 +27,6 @@ const usersSlice = createSlice({
         },
         getSelectedUserData(state, action: PayloadAction<UserProfile>) {
             state.selectedUser = action.payload
-        },
-        getSelectedUserFriendsData(state, action: PayloadAction<Array<UserProfile>>) {
-            state.selectedUserFriends = action.payload
         },
         getErrorMessage(state, action: PayloadAction<any>) {
             state.error = action.payload;
