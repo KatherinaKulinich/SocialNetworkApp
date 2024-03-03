@@ -31,7 +31,7 @@ export const InterestingPage:React.FC = () => {
             setUsers(randomUsers)
             dispatch(fetchCurrentRandomUsersData(randomIds))
         }
-    }, [randomUsers, currentRandomUsersData, randomIds])
+    }, [randomUsers, currentRandomUsersData, randomIds, dispatch])
 
 
     useEffect(() => {
@@ -51,8 +51,7 @@ export const InterestingPage:React.FC = () => {
             <SubTitle text={'These are updates from other users that you may be interested in:'} />
             <FeedContainer 
                 users={users} 
-                role={"interestingPage"} 
-                myId={userId}          
+                role={"interestingPage"}        
             />
         </PageContainer>
     )

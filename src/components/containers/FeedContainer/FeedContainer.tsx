@@ -25,14 +25,14 @@ import { LoaderRing } from '@components/loaders/LoaderRing'
 interface FeedContainerProps {
     users: Array<UserProfile> | null,
     role: 'feedPage' | 'interestingPage',
-    myId: string,
 }
 
 
-export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) => {
+export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
     const dispatch = useAppDispatch()
     const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
     const myData = useMyFullData()
+    const {followingList, friends, followers } = myData?.contacts;
     
     const [index, setIndex] = useState<number>(1)
     const [filterValue, setFilterValue] = useState('all')
@@ -44,69 +44,50 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
     const [isNoMoreNews, setIsNoMoreNews] = useState<boolean>(false)
     const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true)
 
-    const {newPosts, newPhotos, newFriendships, allNews, isIdleIndex} = useFeedUpdates(index, users, myId, role)
+    const usersAmount = role === 'feedPage' ? friends?.length+followingList?.length : randomIds?.length
+
+    const {newPosts, newPhotos, newFriendships, allNews, isIdleIndex, isNoUsersData} = useFeedUpdates(index, users, myData, role, usersAmount)
+
 
     useEffect(() => {
-        if (isIdleIndex) {
+        if (isIdleIndex && index <=6 ) {
             setIndex(prev => prev+1)
         }  
-    }, [isIdleIndex])
+    }, [isIdleIndex, index])
     
     useEffect(() => {
-        setIsVisibleNews(allNews)   
+        setIsLoading(true)
+        if (allNews && allNews?.length > 0) {
+
+            setIsVisibleNews(allNews)   
+            setIsLoading(false)
+        }
     }, [allNews])
 
     useEffect(() => {
         console.log('INDEX____', index);
-        if (index >= 7) {
+        if (index >= 8) {
             setIsNoMoreNews(true)
         }
     }, [index])
 
+
+
  
-    //no users
-    const [isNoUsersData, setIsNoUsersData] = useState<boolean>(false)
-    useEffect(() => {
-        checkUsersAmount()
-    }, [users, allNews, filterValue])
 
-    const checkUsersAmount = useCallback(() => {
-        setIsLoading(true)
-
-        if (users?.length === 0 && allNews?.length === 0) {
-            setIsNoUsersData(true)
-            setIsLoading(false)
-            return
-        }
-        setIsNoUsersData(false)
-    }, [users, allNews])
-
-
-    //no news last 7 days
+    //no news last days
     const [isNoFreshNews, setIsNoFreshNews] = useState<boolean>(false)
-    const checkNewsAmount = useCallback(() => {
-        setIsLoading(true)
 
-        if (allNews === null) {
-            if (index <= 6) {
-                setIndex(prev => prev+1)
-                return
-            }
+    useEffect(() => {
+        setIsLoading(true)
+        if (allNews?.length === 0 && index >= 5) {
+            
             setIsNoFreshNews(true)
             setIsLoading(false)
             return
         }
         setIsNoFreshNews(false)
-    }, [allNews, index])
-
-    useEffect(() => {
-        if (users && users?.length > 0 && allNews === null) {
-            setTimeout(() => {
-                checkNewsAmount()
-            }, 3000)
-        }
-    }, [allNews, index, users])
-
+    }, [index, allNews])
 
 
     useEffect(() => {
@@ -181,7 +162,10 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
     useEffect(() => {
         setIsLoading(true)
-        setFeedCards(getFeedCards(isVisibleNews))
+        // if (isVisibleNews?.length > 0) {
+        // }
+        const updatedCards = getFeedCards(isVisibleNews)
+        setFeedCards(updatedCards)
         setIsButtonLoading(false)
         setIsLoading(false)
     }, [isVisibleNews])
@@ -205,7 +189,6 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role, myId}) 
 
 
 
-    const { friends, followers } = myData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
 
     const refreshDataAfterContentReaction = useCallback(() => {

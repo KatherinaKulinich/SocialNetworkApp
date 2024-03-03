@@ -20,26 +20,28 @@ interface UserCardProps {
 export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const userData = useAppSelector(state => state.userData.user)
-    const{ userId:myId } = userData.personalData
+    const myData = useAppSelector(state => state.userData.user)
+    const{ userId:myId } = myData?.personalData
+    const { friends:myFriends} = myData?.contacts
+    const myFriendsIds = myFriends.map(user => user.id)
 
-    const { userFullname, userId } = user.personalData;
-    const { userLocation, userAvatar, userBirthday } = user.profileData;
+    const { userFullname, userId } = user?.personalData;
+    const { userLocation, userAvatar, userBirthday } = user?.profileData;
     const { year, month, day } = userBirthday
 
-    const { friends } = user.contacts
-    const friendsIdsArray = friends.map(user => user.id)
+    const { friends:userFriends } = user?.contacts
+    const userFriendsIdsArray = userFriends.map(user => user.id)
 
 
 
-    const onSaveUserData = useCallback(() => {
-        dispatch(fetchSelectedUserData(userId))
-        dispatch(fetchFriends(friendsIdsArray, 'friends'))
-
+    const onSaveUserData = useCallback(async () => {
         if (userId !== myId) {
+            await dispatch(fetchSelectedUserData(userId))
+            await dispatch(fetchFriends(userFriendsIdsArray, 'friends'))
             navigate(`/users/${userFullname}/profile`)
             return
         }
+        await dispatch(fetchFriends(myFriendsIds, 'friends'))
         navigate(`/myProfile`)
     }, [dispatch, userId, user])
 

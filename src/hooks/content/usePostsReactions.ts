@@ -2,13 +2,8 @@ import { useCallback } from "react"
 import { Post, Reaction } from "types/Post";
 import { db } from "firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { useAppDispatch, useAppSelector } from "../hooks";
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction";
-import { fetchUserFullData } from "rdx/slices/userDataSlice";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
-import { fetchFriends } from "rdx/slices/friendsSlice";
-import { fetchCurrentRandomUsersData } from "rdx/slices/randomUsersSlice";
 import { useMyFullData } from "hooks/useMyFullData";
 
 
@@ -17,33 +12,15 @@ import { useMyFullData } from "hooks/useMyFullData";
 
 
 export const usePostsReactions = () => {
-    const dispatch = useAppDispatch()
     const userData = useMyFullData()
-    const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
 
     const { personalData, content } = userData;
     const { userId:myId } = personalData;
     const { posts:myPosts } = content;
-    const { friends, followers } = userData?.contacts ?? {}
-    const friendsIds = friends?.map(friend => friend.id) || []
-
 
     const { checkMyPostReaction } = useCheckMyContentReaction(userData)
     const myRef = doc(db, "users", myId);
 
-
-    // const refreshUsersData = useCallback((userId:string) => {
-    //     setTimeout(() => {
-    //         if (myId && userId) {
-    //             dispatch(fetchUserFullData(myId))
-    //             dispatch(fetchSelectedUserData(userId))
-    //             dispatch(fetchFriends(friendsIds, 'friends'))
-    //             dispatch(fetchFriends(followers, 'followers'))
-    //             dispatch(fetchCurrentRandomUsersData(randomIds))
-    //         }
-    //     }, 2000)
-    // }, [dispatch, userData, randomIds])
-    
 
 
 
@@ -92,7 +69,6 @@ export const usePostsReactions = () => {
                 "content.posts": updatedPostsArray,
             })
         }
-        // refreshUsersData(userId)
     },[myPosts])
 
     

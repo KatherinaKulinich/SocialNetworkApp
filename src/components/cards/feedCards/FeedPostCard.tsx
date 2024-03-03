@@ -80,6 +80,7 @@ export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem, refreshD
                 onCloseModal={onCloseModalComments}
                 selectedContent={post}
                 contentOwner={user}
+                refreshUsersData={refreshData}
             />
         </>
     )

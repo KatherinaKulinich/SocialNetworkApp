@@ -3,28 +3,21 @@ import { DocumentData, DocumentReference, doc, updateDoc } from "firebase/firest
 import { useCallback } from "react";
 import { Photo } from "types/Photo";
 import { Post } from "types/Post";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { fetchUserFullData } from "rdx/slices/userDataSlice";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
+import { useAppSelector } from "../hooks";
 import { CommentItem } from "types/Comment";
 import { UserProfile } from "types/UserProfile";
-import { fetchFriends } from "rdx/slices/friendsSlice";
-import { fetchRandomUsers } from "rdx/slices/randomUsersSlice";
+
 
 
 
 
 
 export const useContentComments = (contentOwner:UserProfile) => {
-    const dispatch = useAppDispatch()
     const myData = useAppSelector(state => state.userData.user);
 
     const { userId:myId, userFullname } = myData?.personalData ?? {};
     const { userAvatar } = myData?.profileData ?? {};
     const { photos:myPhotos, posts:myPosts } = myData.content;
-    const { friends, followers } = myData?.contacts ?? {}
-    const { userCity, userCountry } = myData?.profileData ?? {}
-    const friendsIds = friends?.map(friend => friend.id) || []
     
     const { posts:userPosts, photos:userPhotos } = contentOwner?.content ?? {};
     const { userId } = contentOwner?.personalData ?? {};
@@ -32,19 +25,9 @@ export const useContentComments = (contentOwner:UserProfile) => {
     const myRef = doc(db, "users", myId);
     const userRef = doc(db, "users", userId);
 
-    const refreshUsersData = useCallback(() => {
-        if (myId && userId) {
-            dispatch(fetchUserFullData(myId))
-            dispatch(fetchSelectedUserData(userId))
-            dispatch(fetchFriends(friendsIds, 'friends'))
-            dispatch(fetchFriends(followers, 'followers'))
-            dispatch(fetchRandomUsers(userCountry, userCity, myId))
-        }
-    }, [])
+  
 
 
-
-    
     
     const createCommentPost = async (currentPost:Post, allPosts:Post[], ref: DocumentReference<DocumentData, DocumentData>, newComment:CommentItem) => {
         const selectedPost = allPosts?.find(post => post.postId === currentPost.postId)
@@ -63,7 +46,6 @@ export const useContentComments = (contentOwner:UserProfile) => {
             await updateDoc(ref, {
                 "content.posts": updatedContentArray,
             })
-            refreshUsersData()
         }
     }
 
@@ -86,7 +68,6 @@ export const useContentComments = (contentOwner:UserProfile) => {
             await updateDoc(ref, {
                 "content.photos": updatedContentArray,
             })
-            refreshUsersData()
         }
     }
 

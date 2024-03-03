@@ -17,7 +17,7 @@ export const MyFeedPage: React.FC = () => {
     const dispatch = useAppDispatch()
 
     const myData = useMyFullData()
-    const { userId } = myData?.personalData ?? {}
+    // const { userId } = myData?.personalData ?? {}
 
     const { friends, followingList } = myData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []
@@ -36,9 +36,16 @@ export const MyFeedPage: React.FC = () => {
     const [users, setUsers] = useState<Array<UserProfile> | null>(null)
 
 
+    //usersFriends?.length > 0
+
+
     useEffect(() => {
         if (usersFriends) {
-            if (usersFriends?.length > 0 && friendsIds?.length === usersFriends?.length ) {
+            // console.log(usersFriends, friendsIds);
+            
+            if (usersFriends && friendsIds?.length === usersFriends?.length ) {
+                // console.log('@@');
+                
                 setFriendsUsersData(usersFriends)
                 return
             }
@@ -48,7 +55,7 @@ export const MyFeedPage: React.FC = () => {
 
     useEffect(() => {
         if (usersFollowing) {
-            if (usersFollowing?.length > 0 && usersFollowing.length  === followingList?.length) {
+            if (usersFollowing && usersFollowing?.length === followingList?.length) {
                 setFollowingUsersData(usersFollowing)
                 return
             }
@@ -60,7 +67,7 @@ export const MyFeedPage: React.FC = () => {
     useEffect(() => {
         if (friendsUsersData && followingUsersData) {
             const allUsers = friendsUsersData.concat(followingUsersData)
-            if (allUsers.length > 0) {
+            if (allUsers) {
                 setUsers(allUsers)
             }
         }
@@ -79,8 +86,7 @@ export const MyFeedPage: React.FC = () => {
             <SubTitle text={'The latest news from your friends and followers:'} />
             <FeedContainer 
                 users={users} 
-                role={"feedPage"} 
-                myId={userId}       
+                role={"feedPage"}       
             />
         </PageContainer>
     )

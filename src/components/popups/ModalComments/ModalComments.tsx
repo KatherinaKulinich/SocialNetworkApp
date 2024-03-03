@@ -18,12 +18,13 @@ interface ModalCommentsProps {
     onCloseModal: () => void;
     selectedContent: Post | Photo;
     contentOwner: UserProfile;
+    refreshUsersData: () => void;
 }
 
 
 
 export const ModalComments:React.FC<ModalCommentsProps> = (
-    {isModalOpen, onCloseModal, selectedContent, contentOwner}) => {
+    {isModalOpen, onCloseModal, selectedContent, contentOwner, refreshUsersData}) => {
 
     const { photos, posts } = contentOwner.content;
     const { saveContentComment } = useContentComments(contentOwner)
@@ -40,6 +41,7 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
     const saveNewComment = useCallback( async () => {
         await message.loading('adding comment...')
         saveContentComment(commentValue, selectedContent)
+        refreshUsersData()
         setCommentValue('')
         getCurrentComments()
         await message.success('done')

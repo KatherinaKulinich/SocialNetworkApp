@@ -2,30 +2,39 @@ import imgNoUsers from '@images/noFollowingList.svg'
 import { FollowingCard } from "@components/cards/userCards/FollowingCard";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { fetchFriends } from "rdx/slices/friendsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UsersContainer } from "./components/UsersContainer";
 import { useMyFullData } from "hooks/useMyFullData";
+import { UserProfile } from 'types/UserProfile';
 
 
 
 export const FollowingListContainer:React.FC = () => {
     const dispatch = useAppDispatch()
     const userData = useMyFullData()
+    const followingIds = userData?.contacts?.followingList
 
     useEffect(() => {
         if (userData) {
-            dispatch(fetchFriends(userData.contacts.followingList, 'followingList'))
+            dispatch(fetchFriends(followingIds, 'followingList'))
         }
-    }, [userData])
+    }, [dispatch, userData])
 
     const followingListUsersData = useAppSelector(state => state.friends.followingListData)
 
+    const [followingOnPage, setFollowingOnPage] = useState<Array<UserProfile> | null>(null)
+
+    useEffect(() => {
+        if (followingListUsersData  && followingListUsersData?.length === followingIds?.length) {
+            setFollowingOnPage(followingListUsersData)
+        }
+    }, [followingListUsersData])
 
     return (
         <UsersContainer 
             usersData={followingListUsersData } 
             usersCards={
-               followingListUsersData.map(user => (
+                followingOnPage && followingOnPage?.map(user => (
                     <FollowingCard 
                         key={user.personalData.userId}
                         user={user}

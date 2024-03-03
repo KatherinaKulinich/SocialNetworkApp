@@ -3,7 +3,7 @@ import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryBu
 import { FriendCard } from "@components/cards/userCards/FriendCard";
 import { theme } from "@styles/Theme";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserProfile } from "types/UserProfile";
 import { fetchFriends } from 'rdx/slices/friendsSlice';
@@ -39,6 +39,14 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
         navigate('/search')
     },[])
 
+    const [friendsOnPage, setFriendsOnPage] = useState<Array<UserProfile> | null>(null)
+
+    useEffect(() => {
+        if (friendsData && friendsData?.length === friendsIdsArray.length) {
+            setFriendsOnPage(friendsData)
+        }
+    }, [friendsData])
+
     
     
 
@@ -48,7 +56,7 @@ export const FriendsContainer:React.FC<FriendsContainerProps> = ({role, user}) =
         <UsersContainer 
             usersData={friendsData} 
             usersCards={
-                friendsData?.map((friend:UserProfile) => (
+                friendsOnPage && friendsOnPage?.map((friend:UserProfile) => (
                     <FriendCard 
                         key={friend.personalData.userId}
                         user={friend}

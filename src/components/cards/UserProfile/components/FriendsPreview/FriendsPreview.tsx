@@ -59,9 +59,9 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
         navigate(`${link}`)
     },[])
 
-    // useEffect(() => {
-    //     dispatch(fetchFriends(friendsIdsArray, 'friends'))
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(fetchFriends(friendsIdsArray, 'friends'))
+    }, [dispatch])
 
 
 

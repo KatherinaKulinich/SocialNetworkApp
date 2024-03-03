@@ -85,6 +85,7 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem, refre
                 onCloseModal={onCloseModalComments}
                 selectedContent={photo}
                 contentOwner={user}
+                refreshUsersData={refreshData}
             />
         </>
     )

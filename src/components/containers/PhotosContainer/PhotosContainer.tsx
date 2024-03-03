@@ -92,6 +92,7 @@ export const PhotosContainer:React.FC<PhotosContainerProps> = ({owner, userOwner
                 onCloseModal={onCloseModalComments}
                 selectedContent={selectedPhoto}
                 contentOwner={userOwner}
+                refreshUsersData={refreshData}
             />
         </>
     )

@@ -7,13 +7,8 @@ import {
     updateDoc 
 } from "firebase/firestore"
 import { Photo } from "types/Photo"
-import {useAppDispatch, useAppSelector } from "../hooks"
-import { fetchUserFullData } from "rdx/slices/userDataSlice"
-import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
-import { fetchFriends } from "rdx/slices/friendsSlice"
-import { fetchCurrentRandomUsersData, fetchRandomUsers } from "rdx/slices/randomUsersSlice";
 import { useMyFullData } from "hooks/useMyFullData"
 
 
@@ -21,32 +16,12 @@ import { useMyFullData } from "hooks/useMyFullData"
 
 
 export const usePhotosLikes = () => {
-    const dispatch = useAppDispatch()
-    const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
-
     const myData = useMyFullData()
-    const { checkMyPhotoLike } = useCheckMyContentReaction(myData)
-
     const { userId:myId } = myData?.personalData ?? {};
-    const { friends, followers } = myData?.contacts ?? {}
-    const friendsIds = friends?.map(friend => friend.id) || []
-
-    // const refreshUsersData = useCallback((userId:string) => {
-    //     setTimeout(() => {
-    //         if (myId && userId) {
-    //             dispatch(fetchUserFullData(myId))
-    //             dispatch(fetchSelectedUserData(userId))
-    //             dispatch(fetchFriends(friendsIds, 'friends'))
-    //             dispatch(fetchFriends(followers, 'followers'))
-    //             dispatch(fetchCurrentRandomUsersData(randomIds))
-    //         }
-    //     }, 2000)
-    // }, [dispatch, myData, randomIds])
-
+    const { checkMyPhotoLike } = useCheckMyContentReaction(myData)
 
 
     const updatePhotos = useCallback(async (user:UserProfile, updatedPhoto:Photo, ref:DocumentReference<DocumentData, DocumentData>) => {
-        const { userId } = user.personalData ?? {};
         const { photos:userPhotos } = user?.content ?? {};
         
         const updatedPhotoArray = userPhotos?.map((photo:Photo) => {
@@ -57,8 +32,7 @@ export const usePhotosLikes = () => {
         })
         await updateDoc(ref, {
             "content.photos": updatedPhotoArray,
-        })
-        // refreshUsersData(userId)     
+        })   
     }, [])
 
 

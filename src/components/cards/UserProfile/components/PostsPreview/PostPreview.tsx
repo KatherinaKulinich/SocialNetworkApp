@@ -78,6 +78,7 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData, r
                 onCloseModal={onCloseModalComments}
                 selectedContent={selectedPost}
                 contentOwner={ownerData}
+                refreshUsersData={refreshData}
             />
         </PreviewContainer>
     )
