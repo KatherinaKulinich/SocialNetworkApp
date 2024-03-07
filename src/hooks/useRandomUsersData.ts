@@ -9,7 +9,8 @@ import { UserProfile } from "types/UserProfile"
 
 export const useRandomUsersData = () => {
     const dispatch = useAppDispatch()
-    const myData = useMyFullData()
+    // const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
 
     const { userId } = myData?.personalData ?? {}
     const { userCity, userCountry } = myData?.profileData ?? {}
@@ -24,10 +25,13 @@ export const useRandomUsersData = () => {
     const [randomUsers, setRandomUsers] = useState<Array<UserProfile> | null>(null)
     const users = useAppSelector(state => state.randomUsers.randomUsers)
 
+    
     useEffect(() => {
-        if (users?.length > 0) {
+        if (users) {
             setRandomUsers(users)
+            return
         }
+        setRandomUsers([])
     }, [users])
     
     return randomUsers

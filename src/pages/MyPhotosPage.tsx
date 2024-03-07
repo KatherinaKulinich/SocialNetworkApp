@@ -4,14 +4,15 @@ import { PageContainer } from '@components/containers/PageContainer/PageContaine
 import { PhotosContainer } from '@components/containers/PhotosContainer/PhotosContainer';
 import { useMyFullData } from 'hooks/useMyFullData';
 import { useCallback } from 'react';
-import { useAppDispatch } from 'hooks/hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 
 
 
 
 export const MyPhotosPage:React.FC = () => {
-    const myData = useMyFullData()
+    // const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const dispatch = useAppDispatch()
     const { userId:myId } = myData?.personalData ?? {};
 

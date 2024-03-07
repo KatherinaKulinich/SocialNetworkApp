@@ -16,7 +16,8 @@ import { UserProfile } from 'types/UserProfile'
 export const MyFeedPage: React.FC = () => {
     const dispatch = useAppDispatch()
 
-    const myData = useMyFullData()
+    // const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     // const { userId } = myData?.personalData ?? {}
 
     const { friends, followingList } = myData?.contacts ?? {}
@@ -40,27 +41,19 @@ export const MyFeedPage: React.FC = () => {
 
 
     useEffect(() => {
-        if (usersFriends) {
-            // console.log(usersFriends, friendsIds);
-            
-            if (usersFriends && friendsIds?.length === usersFriends?.length ) {
-                // console.log('@@');
-                
-                setFriendsUsersData(usersFriends)
-                return
-            }
-            setFriendsUsersData([] as Array<UserProfile>)
+        if (usersFriends && friendsIds?.length === usersFriends?.length ) {
+            setFriendsUsersData(usersFriends)
+            return
         }
+        // setFriendsUsersData([] as Array<UserProfile>)
     }, [usersFriends])
 
     useEffect(() => {
-        if (usersFollowing) {
-            if (usersFollowing && usersFollowing?.length === followingList?.length) {
-                setFollowingUsersData(usersFollowing)
-                return
-            }
-            setFollowingUsersData([] as Array<UserProfile>)
+        if (usersFollowing && usersFollowing?.length === followingList?.length) {
+            setFollowingUsersData(usersFollowing)
+            return
         }
+        // setFollowingUsersData([] as Array<UserProfile>)
     }, [usersFollowing])
 
 
@@ -70,7 +63,9 @@ export const MyFeedPage: React.FC = () => {
             if (allUsers) {
                 setUsers(allUsers)
             }
+            return
         }
+        // setUsers([])
     }, [friendsUsersData, followingUsersData])
 
 

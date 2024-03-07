@@ -11,6 +11,7 @@ import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { UserProfile } from 'types/UserProfile'
 import { useModalForComments } from "hooks/popups/useModalForComments";
 import { useModalForEditing } from "hooks/popups/useModalForEditing";
+import { useEffect } from 'react'
 
 
 
@@ -27,6 +28,11 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData, r
     const sortedPosts = [...posts]?.sort((a, b) => {
         return b.date - a.date
     }) 
+
+    // useEffect(() => {
+    //     console.log('***');
+        
+    // }, [ownerData])
 
 
 

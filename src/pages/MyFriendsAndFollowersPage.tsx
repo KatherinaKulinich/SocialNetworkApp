@@ -18,7 +18,8 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
     const friendsData = useAppSelector(state => state.friends.friendsData)
 
     const { usersBirthdayToday } = useUsersBirthdays(friendsData)
-    const userData = useMyFullData()
+    // const userData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
 
     const birthdaysNotificationText = `${usersBirthdayToday.toString()} celebrate(s) birthday today!`
 
@@ -37,7 +38,7 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
                 firstTabContent={
                     <FriendsContainer
                         role='myFriends' 
-                        user={userData}           
+                        user={myData}           
                     />
                 } 
                 secondTabContent={

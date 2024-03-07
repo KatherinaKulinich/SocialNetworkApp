@@ -12,16 +12,16 @@ export const useMyFullData = () => {
 
 
     useEffect(() => {
-    //    const getMyProfileData = () => {
-    //         if (userId) {
-    //             return dispatch(fetchUserFullData(userId))
-    //         }
-    //     }
-    //     getMyProfileData()
-        userId && dispatch(fetchUserFullData(userId))
+       const getMyProfileData = () => {
+            if (userId) {
+                return dispatch(fetchUserFullData(userId))
+            }
+        }
+        getMyProfileData()
     }, [])
     
     const userData = useAppSelector(state => state.userData.user)
+
 
     
     return userData

@@ -13,9 +13,6 @@ type ContentEvent = 'indexHasChanged' | 'usersDataHasChanged'
 export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserProfile, role:Role, usersAmount:number) => {
     const myId = myData?.personalData?.userId;
    
-    // const usersAmount = friends?.length+followingList?.length
-    
-
     const [newPosts, setNewPosts] = useState<Array<FeedPost> | null>(null)
     const [newPhotos, setNewPhotos] = useState<Array<FeedPhoto> | null>(null)
     const [newFriendships, setNewFriendships] = useState<Array<FeedFriendship> | null>(null)
@@ -23,15 +20,13 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
 
     const [isIdleIndex, setIsIdleIndex] = useState(false)
     const [isNoUsersData, setIsNoUsersData] = useState<boolean>(false)
+    const [isNoFreshLatestNews, setIsNoFreshLatestNews] = useState<boolean>(false)
 
-
-//start:number, end:number
 
     const getLatestPosts = useCallback(async (limit:number, users:UserProfile[]) => {
         const latestPosts = users?.map(user => {
             const { posts } = user?.content ?? {}
             const filteredPosts = posts?.filter(post => post.date >= limit)
-            // const filteredPosts = posts?.filter(post => post.date >= end && post.date <= start)
 
             const filteredUserPosts = filteredPosts.map(post => {
                 const feedPost = {
@@ -46,20 +41,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
         const sortedPosts:FeedPost[] = latestPosts.flat().sort((a:FeedPost, b:FeedPost) => {
             return b.post.date - a.post.date
         })
-        // setNewPosts(sortedPosts)
         return sortedPosts
-
-        // if (friendsData && friendsData?.length === usersAmount) {
-        // } 
-        // if (sortedPosts) {
-        //     if (newPosts === null) {
-        //         setNewPosts(sortedPosts)
-        //         return sortedPosts
-        //     }
-        //     const updated = [...newPosts, ...sortedPosts]
-        //     setNewPosts(updated)
-        //     return sortedPosts
-        // }
     }, [])
 
 
@@ -83,21 +65,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
         const sortedPhotos = latestPhotos.flat().sort((a:FeedPhoto, b:FeedPhoto) => {
             return b.photo.date - a.photo.date
         })
-        // setNewPhotos(sortedPhotos)
-        return sortedPhotos
-        // if (friendsData && friendsData?.length === usersAmount)  {
-        //     // console.log('sorted____', sortedPhotos);
-            
-        //     // if (sortedPhotos) {
-        //     //     if (newPhotos === null) {
-        //     //         setNewPhotos(sortedPhotos)
-        //     //         return sortedPhotos
-        //     //     }          
-        //     //     const updated = [...newPhotos, ...sortedPhotos]
-        //     //     setNewPhotos(updated)
-        //     //     return sortedPhotos
-        //     // }
-        // } 
+        return sortedPhotos 
     }, [])
 
 
@@ -130,19 +98,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
             const sortedFriendsUpdates = latestFriendships.flat().sort((a:FeedFriendship, b:FeedFriendship) => {
                 return b.friend.date - a.friend.date
             })
-            // setNewFriendships(sortedFriendsUpdates)
             return sortedFriendsUpdates
-            // if (friendsData && friendsData?.length === usersAmount) {
-            //     // if (sortedFriendsUpdates) {
-            //     //     if (newFriendships === null) {
-            //     //         setNewFriendships(sortedFriendsUpdates)
-            //     //         return sortedFriendsUpdates
-            //     //     }
-            //     //     const updated = [...newFriendships, ...sortedFriendsUpdates]
-            //     //     setNewFriendships(updated)
-            //     //     return sortedFriendsUpdates
-            //     // }
-            // } 
         }
         setNewFriendships([])
         return []
@@ -166,15 +122,13 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
 
     
 
-    const getLatestContent = useCallback(async(indexValue:number) => {
+
+    const getLatestContent = useCallback(async(indexValue:number, contentEvent: ContentEvent) => {
         setIsIdleIndex(false)
         const currentDay = Date.now()
         const dayTimeSec = 86400000
         const timeRange = dayTimeSec*indexValue
         const timeLimitEnd = currentDay-timeRange
-        // const dateStart = Date.now()-dayTimeSec*indexValue
-        // const dateEnd = dateStart-dayTimeSec
-
 
         if (friendsData && friendsData?.length > 0 && friendsData?.length === usersAmount) {
             setIsNoUsersData(false)
@@ -183,91 +137,66 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
             const filteredPosts = await getLatestPosts(timeLimitEnd, friendsData)
             const filteredFriendship = await getLatestFriendships(timeLimitEnd, friendsData)
     
-            
             if (filteredPhotos && filteredPosts  && filteredFriendship) {
                 setNewFriendships(filteredFriendship)
                 setNewPhotos(filteredPhotos)
                 setNewPosts(filteredPosts)
     
-                await getAllLatestUpdates(filteredPhotos, filteredPosts , filteredFriendship)
-                .then((news) => {
-                    console.log('_____news before SETALLNEWS___', news);
-                    if (news) {
-                        if (news?.length > 0) {
-                            //if news.length === 0 ----> idleIndex === true ?
-                            setAllNews(news)
-                            setIsIdleIndex(false)
-                        } else if (news.length === 0) {
-                            setIsIdleIndex(true)
-                        }
-                    }
-                })
+                const news = await getAllLatestUpdates(filteredPhotos, filteredPosts , filteredFriendship)
+                if (news) {
+                    getNewsResult(news, contentEvent, indexValue)
+                }
             }
         } 
-
-        // else if (friendsData?.length === 0 && allNews?.length === 0 ) {
-        //     setTimeout(() => {    
-        //         if (friendsData?.length === 0 && allNews?.length === 0)  {
-        //             console.log('friendsData', friendsData);
-                    
-        //             setIsNoUsersData(true)
-        //             return
-        //         }   
-        //         setIsNoUsersData(false)
-                
-        //     }, 3500);
-        // }
+    }, [friendsData, allNews])
 
 
-        
-        // if (dayPhotos && dayPosts && dayFriendship) {
-        //     const allDayNews = [...dayPhotos, ...dayPosts, ...dayFriendship]
-        //     return allDayNews
-        // }
-        // return null
-    }, [friendsData])
+    const getNewsResult = useCallback((news: AllFeedNews, contentEvent: ContentEvent, indexValue: number) => {
+        if (news?.length > 0) {
+            if (contentEvent === 'indexHasChanged') {
+                if (news.length === allNews.length) {
+                    setIsIdleIndex(true)
+                    return
+                }
+                setIsIdleIndex(false)
+                setAllNews(news)
+                return
+            }
+            setIsIdleIndex(false)
+            setAllNews(news)
+            return
+        } else if (news?.length === 0) {
+            if (indexValue <= 6) {
+                setIsIdleIndex(true)
+                return
+            }
+            setIsNoFreshLatestNews(true)
+        }
+    }, [allNews, friendsData])
+
+
+
 
     useEffect(() => {
-        if (friendsData && friendsData?.length > 0) {
+        if (friendsData) {
             setIsNoUsersData(false)
             return
+        } else if (!friendsData && allNews?.length === 0) {
+            setIsNoUsersData(true)
         }
-        setIsNoUsersData(true)
-    }, [friendsData])
+    }, [friendsData, allNews])
 
 
 
 
     useEffect(() => {
-        
-        getLatestContent(index)
+        getLatestContent(index, 'usersDataHasChanged')
     }, [friendsData])
     
 
     useEffect(() => {
-        getLatestContent(index)
+        getLatestContent(index, 'indexHasChanged')
     }, [index])
-
-
-    // useEffect(() => {
-    //     if (newPhotos && newPosts && newFriendships) {
-    //         getAllLatestUpdates(newPhotos, newPosts, newFriendships)
-    //         .then((news) => {
-    //             if (news) {
-    //                 if (news?.length > 0) {
-    //                     setAllNews(news)
-    //                 } else if (news?.length === 0) {
-    //                     setAllNews([])
-    //                 }
-    //             }
-    //         })
-    //     }
-    // }, [newPhotos, newPosts, newFriendships])
-
-    // useEffect(() => {
-    //     console.log('____ALL__NEWS_____', allNews);
-        
-    // }, [allNews])
 
 
 
@@ -279,5 +208,6 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
         allNews,
         isIdleIndex,
         isNoUsersData,
+        isNoFreshLatestNews
     }
 }

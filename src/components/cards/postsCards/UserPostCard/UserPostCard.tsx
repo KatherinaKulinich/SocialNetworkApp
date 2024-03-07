@@ -162,6 +162,7 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
                     <Reactions 
                         value={reactionValue} 
                         onChange={onChangeReactionValue}
+                        name="reactions"
                     >
                         {postReactions?.map((reactionItem:Reaction, mainIndex) => {
                             return reactionsArray.map((arrayItem) => {

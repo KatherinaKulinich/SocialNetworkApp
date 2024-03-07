@@ -5,7 +5,7 @@ import { AddingNewPostCard } from "@components/cards/postsCards/AddingNewPostCar
 import { ListContainer } from "@components/containers/ListContainer/ListContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { useMyFullData } from 'hooks/useMyFullData'
-import { useAppDispatch } from 'hooks/hooks'
+import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { fetchUserFullData } from 'rdx/slices/userDataSlice'
 import { useCallback } from 'react'
 
@@ -13,7 +13,8 @@ import { useCallback } from 'react'
 
 
 export const MyPostsPage: React.FC = () => {
-    const myData = useMyFullData()
+    // const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const dispatch = useAppDispatch()
     const { userId:myId } = myData?.personalData ?? {};
 

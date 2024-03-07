@@ -35,6 +35,7 @@ export const useFirebaseAuth = () => {
                 userId: user.uid,
                 userPassword: user.refreshToken,
             }));
+
             
             await createUserProfile(user.uid)
             await updateDoc(userRef, {

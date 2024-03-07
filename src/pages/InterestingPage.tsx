@@ -16,7 +16,8 @@ import { fetchCurrentRandomUsersData } from 'rdx/slices/randomUsersSlice'
 
 export const InterestingPage:React.FC = () => {
     const dispatch = useAppDispatch()
-    const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
+    // const myData = useMyFullData()
     const { userId } = myData?.personalData ?? {}
 
     const randomUsers = useRandomUsersData()

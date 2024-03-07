@@ -18,8 +18,9 @@ import { fetchSelectedUserData } from 'rdx/slices/usersSlice';
 
 export const UserPhotosPage:React.FC = () => {
     const navigate = useNavigate();
+    const myData = useAppSelector(state => state.userData.user)
     const dispatch = useAppDispatch()
-    const myData = useMyFullData()
+    // const myData = useMyFullData()
 
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
     const { userFullname, userName, userId } = user?.personalData ?? {};

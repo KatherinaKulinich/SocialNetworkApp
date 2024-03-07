@@ -29,7 +29,6 @@ export const FooterContainer = styled.div`
 
     @media ${device.sm} {
         font-size: 16px;
-        line-height: 19px;
     };
 `
 export const SubContainer = styled.div`

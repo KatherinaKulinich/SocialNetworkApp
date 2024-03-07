@@ -1,3 +1,4 @@
+
 import { useAppSelector } from "../hooks"
 
 
@@ -10,7 +11,7 @@ export const useAuth = () => {
         userPassword, 
         userId 
     } = useAppSelector(state => state.userAuth);
-    
+
     return {
         isAuth: !!userId,
         userId,
