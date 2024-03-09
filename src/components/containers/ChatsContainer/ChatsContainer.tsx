@@ -1,27 +1,27 @@
 import { ChatItemCard } from "@components/cards/ChatItemCard/ChatItemCard"
 import { ListContainer } from "../ListContainer/ListContainer"
 import userTest from '@images/userTest.jpg';
+import { Chat } from "types/Chat";
 
-export const ChatsContainer:React.FC = () => {
+
+interface ChatsContainerProps {
+    chatsData: Array<Chat>
+}
+
+
+
+export const ChatsContainer:React.FC<ChatsContainerProps> = ({chatsData}) => {
+
     return (
         <ListContainer>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later Hello! See you later Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later Hello! See you later Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later Hello! See you later Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
-            <ChatItemCard userAvatar={userTest} userName='Ivan Ivanov' lastMessage='Hello! See you later'/>
+            {chatsData?.length > 0 && (
+                chatsData.map((chatItem) => (
+                    <ChatItemCard 
+                        key={chatItem.chatId}
+                        chatItemData={chatItem}
+                    />
+                ))
+            )}
         </ListContainer>
     )
 }

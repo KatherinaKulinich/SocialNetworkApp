@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { theme } from "@styles/Theme";
 import { Font } from "@styles/mixins";
+import { Link } from "react-router-dom";
 
 
 export const Container = styled.div`
@@ -10,16 +11,18 @@ export const Container = styled.div`
     border-bottom: 1px solid ${theme.colors.lightGray};
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 6px;
+    cursor: pointer;
 `
 
-export const UserInfo = styled.div`
+export const UserInfo = styled(Link)`
     display: flex;
     align-items: center;
     gap: 15px;
+    text-decoration: none;
 `
 
 export const Name = styled.p`
-    ${Font({size: '12px',weight: '500', line: '15px', color: theme.colors.regularDark})};
+    ${Font({size: '14px',weight: '500', line: '17px', color: theme.colors.regularDark})};
     text-transform: uppercase;
 `

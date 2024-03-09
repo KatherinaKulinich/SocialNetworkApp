@@ -10,17 +10,23 @@ import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyCha
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { backgrounds } from "utils/data/backgrounds"
 import { useAppSelector } from "hooks/hooks"
+import { UserProfile } from 'types/UserProfile'
 
 
+interface ChatProps {
+    user: UserProfile
+}
 
 
+export const Chat:React.FC<ChatProps> = ({user}) => {
+    const {userName} = user?.personalData
 
-export const Chat:React.FC = () => {
-    const [messages, setMessages] = useState(['1'])
+    const chatMessages = useAppSelector(state => state.chat.chat)
     const [bgUrl, setBgUrl] = useState('')
 
-    const userData = useAppSelector(state => state.userData.user)
-    const { chatBackground } = userData.additionalData
+    const myData = useAppSelector(state => state.userData.user)
+    const { chatBackground } = myData?.additionalData ?? {}
+    const { userId:myId }= myData?.personalData
 
     const getUserBgImage = useCallback(() => {
         backgrounds.map((img) => {
@@ -42,57 +48,40 @@ export const Chat:React.FC = () => {
 
     const sendNewMessage = useCallback(() => {}, [])
 
+    const getMessageSender = (id: string) => {
+        if (myId === id) {
+            return 'me'
+        }
+        return 'friend'
+    }
+
     
  
     
     return (
         <Container>
-            <ChatHeader/>
+            <ChatHeader user={user}/>
             <ContainerBackground $url={bgUrl}>
-                {messages.length > 0 ? (
+                {chatMessages?.length > 0 ? (
                     <MessagesContainer>
-                        <MessageRow $sender="me">
-                            <Message sender="me" userName="Vika Petrova" avatar={user1} messageText={"BlaBlaBla"} time={"12:34"}/>
-                        </MessageRow>
-                        <MessageRow $sender="">
-                            <Message sender="" userName="Pavel Ivanov" avatar={user2} messageText={"Hello!!"} time={"12:36"}/>
-                        </MessageRow>
-                        <MessageRow $sender="me">
-                            <Message sender="me" userName="Vika Petrova" avatar={user1} messageText={"How is it going?"} time={"12:39"}/>
-                        </MessageRow>
-                        <MessageRow $sender="">
-                            <Message sender="" userName="Pavel Ivanov" avatar={user2} messageText={"Haven't seen you for a long time!"} time={"12:42"}/>
-                        </MessageRow>
-                        <MessageRow $sender="me">
-                            <Message sender="me" userName="Vika Petrova" avatar={user1} messageText={"BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla"} time={"12:45"}/>
-                        </MessageRow>
-                        <MessageRow $sender="">
-                            <Message sender="" userName="Pavel Ivanov" avatar={user2} messageText={"Good bye BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla "} time={"12:47"}/>
-                        </MessageRow>
-                        <MessageRow $sender="me">
-                            <Message sender="me" userName="Vika Petrova" avatar={user1} messageText={"How is it going?"} time={"12:39"}/>
-                        </MessageRow>
-                        <MessageRow $sender="">
-                            <Message sender="" userName="Pavel Ivanov" avatar={user2} messageText={"Haven't seen you for a long time!"} time={"12:42"}/>
-                        </MessageRow>
-                        <MessageRow $sender="me">
-                            <Message sender="me" userName="Vika Petrova" avatar={user1} messageText={"BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla BlaBlaBla"} time={"12:45"}/>
-                        </MessageRow>
-                        <MessageRow $sender="">
-                            <Message sender="" userName="Pavel Ivanov" avatar={user2} messageText={"Good bye"} time={"12:47"}/>
-                        </MessageRow>
-                        <MessageRow $sender="me">
-                            <Message sender="me" userName="Vika Petrova" avatar={user1} messageText={"How is it going?"} time={"12:39"}/>
-                        </MessageRow>
+                        {chatMessages.map((item) => (
+                            <MessageRow $sender={getMessageSender(item.senderId)}>
+                                <Message 
+                                    sender={getMessageSender(item.senderId)} 
+                                    message={item}
+                                    key={item.messageId}
+                                />
+                            </MessageRow>
+                        ))}
                     </MessagesContainer>
                 ) : (
                     <EmptyChatMessage>
                         <ImageErrorMessage 
                             image={emptyChat} 
-                            text="You don't have any messages with anna yet"
+                            text={`You don't have any messages with ${userName} yet`}
                         />
                         <Text>
-                            Say hello to Anna right now!
+                            {`Say hello to ${userName} right now!`}
                         </Text>
                         <RegularButton 
                             buttonText="Say hello" 

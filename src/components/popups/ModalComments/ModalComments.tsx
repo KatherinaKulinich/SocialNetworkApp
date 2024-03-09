@@ -79,15 +79,6 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
 
 
 
-    const getCommentDate = (comment:CommentItem) => {
-        return `${new Date(comment.date).getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(comment.date)}`
-    }
-
-    const getCommentTime = (comment:CommentItem) => {
-        return `${new Date(comment.date).getHours()}:${new Date(comment.date).getMinutes()}`
-    }
-
-
     return (
         <ModalDefault 
             isModalOpen={isModalOpen} 
@@ -105,14 +96,10 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
                 </PhotoContent>
                 <CommentsBox>
                     {currentComments?.length > 0 ? (
-                        currentComments?.map((item:CommentItem) => (
+                        currentComments?.map((commentItem:CommentItem) => (
                             <CommentCard 
-                                key={`${item.date}${item.userId}`}
-                                userAvatar={item.userAvatar} 
-                                userName={item.userName}
-                                commentText={item.text}
-                                commentDate={getCommentDate(item)}
-                                commentTime={getCommentTime(item)}
+                                key={`${commentItem.date}${commentItem.userId}`}
+                                comment={commentItem}
                             />
                         ))
                         ) : (

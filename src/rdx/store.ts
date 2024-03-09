@@ -6,6 +6,7 @@ import friendsSlice from "./slices/friendsSlice";
 import userContentSlice from "./slices/userContentSlice";
 import randomUsersSlice from "./slices/randomUsersSlice";
 import usersOptionsSlice from "./slices/usersOptionsSlice";
+import chatSlice from "./slices/chatSlice";
 
 
 
@@ -19,6 +20,7 @@ const store = configureStore({
         content: userContentSlice,
         randomUsers: randomUsersSlice,
         usersOptions: usersOptionsSlice,
+        chat: chatSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

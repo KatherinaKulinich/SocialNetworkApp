@@ -1,22 +1,35 @@
+import { useEffect, useRef } from "react";
 import { Avatar } from "@components/Avatar/Avatar"
 import { Card, MainInfo, TextField, Name, Comment, Time, TimeField } from "./CommentCard.styled"
 import { theme } from "@styles/Theme";
+import { CommentItem } from "types/Comment";
 
 
 interface CommentCardProps {
-    userAvatar: string;
-    userName: string;
-    commentText: string;
-    commentDate: string;
-    commentTime: string;
+    comment: CommentItem
 }
 
-export const CommentCard:React.FC<CommentCardProps> = (
-    {userAvatar, userName, commentText, commentDate, commentTime}) => {
+export const CommentCard:React.FC<CommentCardProps> = ({comment}) => {
+    const { userAvatar, userName, text, date } = comment;
+
+    const getCommentDate = (date:number) => {
+        return `${new Date(date).getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)}`
+    }
+    const getCommentTime = (date:number) => {
+        return `${new Date(date).getHours()}:${new Date(date).getMinutes()}`
+    }
+
+
+    const ref = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        if (ref?.current) {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [comment]);
 
         
     return (
-        <Card>
+        <Card ref={ref}>
             <MainInfo>
                 <Avatar 
                     photo={userAvatar} 
@@ -28,16 +41,16 @@ export const CommentCard:React.FC<CommentCardProps> = (
                         {userName}
                     </Name>
                     <Comment>
-                        {commentText}
+                        {text}
                     </Comment>
                 </TextField>
             </MainInfo>
             <TimeField>
                 <Time>
-                    {commentDate}
+                    {getCommentDate(date)}
                 </Time>
                 <Time>
-                    {commentTime}
+                    {getCommentTime(date)}
                 </Time>
             </TimeField>
         </Card>

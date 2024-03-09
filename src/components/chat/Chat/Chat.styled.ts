@@ -62,10 +62,11 @@ export const EmptyChatMessage = styled.div`
     background-color: rgba(255, 255, 255, .7);
     border-radius: 20px;
     ${FlexCenter};
-    gap: 15px;
+    flex-direction: column;
+    gap: 25px;
     text-align: center;
 `
 export const Text = styled.p`
-    ${Font({size: '18px', line: '21px', color: theme.colors.regularDark})};
+    ${Font({size: '14px', line: '17px', color: theme.colors.regularDark})};
 `
 

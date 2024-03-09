@@ -5,10 +5,17 @@ import { MdDoubleArrow } from 'react-icons/Md';
 import { IconButton } from "@components/buttons/IconButton/IconButton";
 import { Link } from "react-router-dom";
 import { Avatar } from "@components/Avatar/Avatar";
+import { UserProfile } from "types/UserProfile";
+
+interface ChatHeaderProps {
+    user: UserProfile
+}
 
 
+export const ChatHeader:React.FC<ChatHeaderProps> = ({user}) => {
+    const { userFullname } = user?.personalData;
+    const { userAvatar} = user?.profileData;
 
-export const ChatHeader:React.FC = () => {
     return (
         <Container>
             <Link to={'/myChats'}>
@@ -19,14 +26,14 @@ export const ChatHeader:React.FC = () => {
                     type={"button"} 
                 />
             </Link>
-            <UserInfo>
+            <UserInfo to={`/users/${userFullname}/profile`}>
                 <Avatar 
-                    photo={user} 
+                    photo={userAvatar} 
                     border={theme.colors.regular} 
                     size='30px'
                 />
                 <Name>
-                    Anna Ivanova
+                    {userFullname}
                 </Name>
             </UserInfo>
         </Container>

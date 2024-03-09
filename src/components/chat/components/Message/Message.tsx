@@ -1,18 +1,41 @@
+import { useEffect, useRef } from "react";
+import { ChatMessageItem } from "types/ChatMessage";
 import { Container, MessageInfo, SenderName, TextBubble,Time, Text } from "./Message.styled"
 import { Avatar } from "@components/Avatar/Avatar";
+import { UserProfile } from 'types/UserProfile';
+import { useAppSelector } from "hooks/hooks";
 
 interface MessageProps {
-    sender: string;
-    userName: string;
-    messageText: string;
-    avatar: string;
-    time: string;
+    message: ChatMessageItem;
+    sender: 'me' | 'friend'
 }
 
 
-export const Message:React.FC<MessageProps> = ({sender, userName, messageText, avatar, time}) => {
+
+export const Message:React.FC<MessageProps> = ({message, sender}) => {
+    const {messageText, messageImg, createdAt } = message;
+
+    const user:UserProfile = useAppSelector(state => state.users.selectedUser);
+    const { userName } = user.personalData ?? {}
+    const { userAvatar } = user.profileData ?? {}
+
+
+    const getMessageTime = (date:number) => {
+        return `${new Date(date).getHours()}:${new Date(date).getMinutes()}`
+    }
+
+    const ref = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        if (ref?.current) {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [message]);
+
     return (
-        <Container $sender={sender}>
+        <Container 
+            $sender={sender} 
+            ref={ref}
+        >
             <TextBubble $sender={sender}>
                 <SenderName>
                     {userName}
@@ -23,12 +46,12 @@ export const Message:React.FC<MessageProps> = ({sender, userName, messageText, a
             </TextBubble>
             <MessageInfo>
                 <Avatar 
-                    photo={avatar} 
+                    photo={userAvatar} 
                     size="30px" 
                     border="FFF"
                 />
                 <Time>
-                    {time}
+                    {getMessageTime(createdAt)}
                 </Time>
             </MessageInfo>
         </Container>

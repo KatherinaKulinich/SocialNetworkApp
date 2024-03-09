@@ -15,7 +15,7 @@ interface MessageInputProps {
 
 export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onChangeInputValue, onSubmitText}) => {
     return (
-        <MessageForm>
+        <MessageForm name="messageForm">
             <MessageField>
                 <IconButton>
                     <Icon 
@@ -25,6 +25,7 @@ export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onCh
                     /> 
                 </IconButton>
                 <MessageText 
+                    name="messageInput"
                     placeholder='message text...'
                     value={inputValue}
                     onChange={onChangeInputValue}

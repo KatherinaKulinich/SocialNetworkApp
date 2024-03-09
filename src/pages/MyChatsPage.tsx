@@ -3,13 +3,16 @@ import errorImg from '@images/nochats.svg'
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer'
 import { ChatsContainer } from '@components/containers/ChatsContainer/ChatsContainer'
-import { useState } from 'react'
 import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage'
+import { useAppSelector } from 'hooks/hooks'
 
 
 
 export const MyChatsPage:React.FC = () => {
-    const [chats, setChats] = useState(['1'])
+
+    const myData = useAppSelector(state => state.userData.user)
+    const { chats } = myData
+
     
     return (
         <PageContainer>
@@ -19,7 +22,7 @@ export const MyChatsPage:React.FC = () => {
                 titleSecond='chats'
             />
             {chats.length > 0 ? (
-                <ChatsContainer/>
+                <ChatsContainer chatsData={chats}/>
             ) : (
                 <ImageErrorMessage
                     image={errorImg} 

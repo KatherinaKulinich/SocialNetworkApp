@@ -14,6 +14,7 @@ import { useFriendshipWithUser } from 'hooks/contacts/useFriendshipWithUser';
 import { UserProfile } from 'types/UserProfile';
 import { FaRegClock  } from 'react-icons/Fa'
 import { RiUserUnfollowFill, RiUserAddFill, RiUserStarFill } from "react-icons/Ri"
+import { useChatChecking } from 'hooks/chat/useChatChecking';
 
 
 
@@ -26,12 +27,16 @@ export const UserProfilePage:React.FC = () => {
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
     const { interactWithUser } = useFriendshipWithUser(user)
 
+    const { openChatWithUser } = useChatChecking(user)
+
     const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
     const { userFullname, userName } = user?.personalData ?? {}
 
   
-    const goToChatWithUser = useCallback(() => {
-        navigate(`/myChats/${userFullname}/chat`)
+    const goToChatWithUser = useCallback(async() => {
+        openChatWithUser().then(() => {
+            navigate(`/myChats/${userFullname}/chat`)
+        })
     },[])
     
     

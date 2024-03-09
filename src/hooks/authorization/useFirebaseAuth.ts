@@ -1,5 +1,5 @@
 import { message} from "antd";
-import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, signInWithRedirect } from "firebase/auth";
 import { useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import { removeUser, setUser } from "../../rdx/slices/userAuthSlice";
@@ -78,6 +78,7 @@ export const useFirebaseAuth = () => {
     
 
     const onLoginByGoogle = useCallback(() => {
+        // signInWithRedirect(auth, provider)
         signInWithPopup(auth, provider)
         .then(async (result) => {
             message.loading('Loading...',3)
