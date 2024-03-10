@@ -11,6 +11,9 @@ import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { backgrounds } from "utils/data/backgrounds"
 import { useAppSelector } from "hooks/hooks"
 import { UserProfile } from 'types/UserProfile'
+import { useChatChecking } from 'hooks/chat/useChatChecking'
+import { useMessageSending } from 'hooks/chat/useMessageSending'
+import EmojiPicker from 'emoji-picker-react';
 
 
 interface ChatProps {
@@ -19,14 +22,23 @@ interface ChatProps {
 
 
 export const Chat:React.FC<ChatProps> = ({user}) => {
-    const {userName} = user?.personalData
-
     const chatMessages = useAppSelector(state => state.chat.chat)
-    const [bgUrl, setBgUrl] = useState('')
 
     const myData = useAppSelector(state => state.userData.user)
-    const { chatBackground } = myData?.additionalData ?? {}
     const { userId:myId }= myData?.personalData
+    const { userName, userId } = user?.personalData ?? {}
+
+    const { isSelectedChat, getChatWithUser } = useChatChecking(user)
+
+    useEffect(() => {
+        if (user) {
+            getChatWithUser(myData.chats, userId)
+        }
+    }, [myData.chats, user])
+
+
+    const [bgUrl, setBgUrl] = useState('')
+    const { chatBackground } = myData?.additionalData ?? {}
 
     const getUserBgImage = useCallback(() => {
         backgrounds.map((img) => {
@@ -36,17 +48,38 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
         })
     }, [backgrounds, chatBackground, bgUrl])
 
-
     useEffect(() => {
         getUserBgImage()
     }, [backgrounds, chatBackground, bgUrl])
 
-    const [messageValue, setMessageValue] = useState('')
-    const onChangeMessageValue:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
-        setMessageValue(event.target.value)
-    }, [])
 
-    const sendNewMessage = useCallback(() => {}, [])
+
+    const [messageText, setMessageText] = useState<string>('')
+    const [messageImg, setMessageImg] = useState<File | null>(null)
+
+    const onChangeMessageText:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+        setMessageText(event.target.value)
+    }, [messageText])
+
+    const onChangeMessageImg:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+        if (!event?.currentTarget?.files) return;
+
+        const img = event?.currentTarget?.files[0]
+        setMessageImg(img)
+    }, [messageImg])
+
+    const { sendNewMessage } = useMessageSending(isSelectedChat, user, myData)
+
+    const onSubmitForm = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        
+        if (isSelectedChat && messageText || messageImg) {
+            sendNewMessage(messageImg, messageText, isSelectedChat)
+            setMessageText('')
+            setMessageImg(null)
+        }
+    }, [messageImg, messageText, isSelectedChat])
+
 
     const getMessageSender = (id: string) => {
         if (myId === id) {
@@ -55,21 +88,34 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
         return 'friend'
     }
 
-    
- 
+
+    const sayHelloToUser = useCallback(() => {
+        if (isSelectedChat) {
+            sendNewMessage(messageImg, `Hello, ${userName}! 👋🏼`, isSelectedChat)
+        }
+    }, [isSelectedChat])
+
+
     
     return (
         <Container>
             <ChatHeader user={user}/>
             <ContainerBackground $url={bgUrl}>
+                {/* <EmojiPicker 
+                    onEmojiClick={(event) => console.log(event.emoji)}
+                    open={true}
+                    theme="dark"
+                /> */}
                 {chatMessages?.length > 0 ? (
                     <MessagesContainer>
                         {chatMessages.map((item) => (
-                            <MessageRow $sender={getMessageSender(item.senderId)}>
+                            <MessageRow 
+                                $sender={getMessageSender(item.senderId)}
+                                key={item.messageId}
+                            >
                                 <Message 
                                     sender={getMessageSender(item.senderId)} 
                                     message={item}
-                                    key={item.messageId}
                                 />
                             </MessageRow>
                         ))}
@@ -84,17 +130,20 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                             {`Say hello to ${userName} right now!`}
                         </Text>
                         <RegularButton 
-                            buttonText="Say hello" 
+                            buttonText="Say hello 👋🏼" 
                             buttonType="button"
+                            onClickHandler={sayHelloToUser}
                         />
                     </EmptyChatMessage>
                 )}
             </ContainerBackground>
             <MessageInput 
                 role="message" 
-                inputValue={messageValue} 
-                onChangeInputValue={onChangeMessageValue} 
-                onSubmitText={sendNewMessage}
+                inputValue={messageText}
+                fileValue={messageImg}
+                onChangeInputValue={onChangeMessageText} 
+                onChangeFileValue={onChangeMessageImg}
+                onSubmitText={onSubmitForm}
             />
         </Container>
     )

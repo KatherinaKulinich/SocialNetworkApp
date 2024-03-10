@@ -1,6 +1,7 @@
-import { Card, CardImage, Content } from "./AddingPhotoCard.styled"
 import Image from '@images/addNewPhoto.jpg';
-import { RegularButton } from "../../../buttons/RegularButton/RegularButton";
+import { Card, CardImage, Content } from "./AddingPhotoCard.styled"
+import { RegularButton } from '@components/buttons/RegularButton/RegularButton';
+
 
 
 interface AddingPhotoCardProps {

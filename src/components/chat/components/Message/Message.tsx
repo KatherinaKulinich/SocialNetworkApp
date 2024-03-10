@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import { ChatMessageItem } from "types/ChatMessage";
-import { Container, MessageInfo, SenderName, TextBubble,Time, Text } from "./Message.styled"
+import { Container, MessageInfo, SenderName, TextBubble,Time, Text, ImageBox } from "./Message.styled"
 import { Avatar } from "@components/Avatar/Avatar";
 import { UserProfile } from 'types/UserProfile';
 import { useAppSelector } from "hooks/hooks";
+import { theme } from "@styles/Theme";
 
 interface MessageProps {
     message: ChatMessageItem;
@@ -18,10 +19,18 @@ export const Message:React.FC<MessageProps> = ({message, sender}) => {
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
     const { userName } = user.personalData ?? {}
     const { userAvatar } = user.profileData ?? {}
+    
+    const myData: UserProfile = useAppSelector(state => state.userData.user)
+    const { userName:myName } = myData.personalData ?? {}
+    const { userAvatar:myAvatar } = myData.profileData ?? {}
 
 
     const getMessageTime = (date:number) => {
-        return `${new Date(date).getHours()}:${new Date(date).getMinutes()}`
+        const min = new Date(date).getMinutes()
+        const minFormat = min < 9 ?`0${min}` : min;
+        const hours = new Date(date).getHours()
+
+        return `${hours}:${minFormat}`
     }
 
     const ref = useRef<HTMLDivElement | null>(null);
@@ -31,6 +40,9 @@ export const Message:React.FC<MessageProps> = ({message, sender}) => {
         }
     }, [message]);
 
+    const name = sender === 'me' ? myName : userName
+    const avatar = sender === 'me' ? myAvatar : userAvatar
+
     return (
         <Container 
             $sender={sender} 
@@ -38,17 +50,20 @@ export const Message:React.FC<MessageProps> = ({message, sender}) => {
         >
             <TextBubble $sender={sender}>
                 <SenderName>
-                    {userName}
+                    {name}
                 </SenderName>
                 <Text>
                     {messageText}
                 </Text>
+                {messageImg && (
+                    <ImageBox src={messageImg}/>
+                )}
             </TextBubble>
             <MessageInfo>
                 <Avatar 
-                    photo={userAvatar} 
+                    photo={avatar} 
                     size="30px" 
-                    border="FFF"
+                    border={theme.colors.white}
                 />
                 <Time>
                     {getMessageTime(createdAt)}

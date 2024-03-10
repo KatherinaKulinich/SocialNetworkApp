@@ -1,5 +1,5 @@
 import img from '@images/friendprofile.svg';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { styled } from "styled-components";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { UserProfileCard } from "@components/cards/UserProfile/UserProfileCard"
@@ -25,8 +25,9 @@ import { useChatChecking } from 'hooks/chat/useChatChecking';
 export const UserProfilePage:React.FC = () => {
     const navigate = useNavigate();
     const user:UserProfile = useAppSelector(state => state.users.selectedUser);
-    const { interactWithUser } = useFriendshipWithUser(user)
 
+    
+    const { interactWithUser } = useFriendshipWithUser(user)
     const { openChatWithUser } = useChatChecking(user)
 
     const { buttonText, buttonIcon, isButtonDisabled } = useCheckUserStatus()
@@ -34,15 +35,24 @@ export const UserProfilePage:React.FC = () => {
 
   
     const goToChatWithUser = useCallback(async() => {
-        openChatWithUser().then(() => {
-            navigate(`/myChats/${userFullname}/chat`)
-        })
-    },[])
+        if (user) {
+            openChatWithUser()
+            .then(() => {
+                navigate(`/myChats/${userFullname}/chat`)
+            })
+        }
+    },[user])
     
     
     const friendsData = useAppSelector(state => state.friends.friendsData)
 
-    const icon:JSX.Element = buttonIcon === 'request' ? < FaRegClock/> : buttonIcon === 'follower' ? <RiUserStarFill/> : buttonIcon === 'addFriend' ? <RiUserAddFill/> : <RiUserUnfollowFill/>
+    const icon:JSX.Element = buttonIcon === 'request' 
+    ? < FaRegClock/> 
+    : buttonIcon === 'follower' 
+    ? <RiUserStarFill/> 
+    : buttonIcon === 'addFriend' 
+    ? <RiUserAddFill/> 
+    : <RiUserUnfollowFill/>
 
 
 

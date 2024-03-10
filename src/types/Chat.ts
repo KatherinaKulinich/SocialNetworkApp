@@ -11,6 +11,7 @@ export interface Chat {
 interface ChatUserData {
     userId: string,
     userName: string,
+    userFullname: string,
     userAvatar: string,
 }
 

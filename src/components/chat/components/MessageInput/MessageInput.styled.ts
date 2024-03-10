@@ -32,10 +32,11 @@ export const MessageField = styled.div`
     };
 `
 
-export const IconButton = styled.button`
+export const IconButton = styled.div`
     padding: 6px;
     background-color: transparent;
     font-size:0;
+    cursor: pointer;
 
     @media ${device.sm} {
         padding: 10px;
@@ -48,10 +49,18 @@ export const MessageText = styled.input`
     outline: none;
 `
 
-export const SendButton = styled(IconButton)`
+export const SendButton = styled.button`
     width: 60px;
     ${FlexCenter};
     border-left: 1px solid #bebebe;
+    padding: 6px;
+    background-color: transparent;
+    font-size:0;
+    cursor: pointer;
+
+    @media ${device.sm} {
+        padding: 10px;
+    };
 
 
     @media ${device.sm} {

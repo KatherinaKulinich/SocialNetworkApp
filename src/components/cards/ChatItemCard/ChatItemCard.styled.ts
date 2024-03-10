@@ -4,7 +4,7 @@ import { theme } from "@styles/Theme";
 import { Link } from "react-router-dom";
 
 
-export const ChatCard = styled(Link)`
+export const ChatCard = styled.div`
     padding: 10px 20px;
     display: block;
     text-decoration: none;
@@ -45,7 +45,7 @@ export const UserName = styled.p`
 `
 
 export const MessageText = styled.p`
-    ${Font({size: '11px', line: '13px', color: theme.colors.mediumGray})};
+    ${Font({size: '9px', line: '13px', color: theme.colors.mediumGray})};
     max-width: 120px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -55,7 +55,7 @@ export const MessageText = styled.p`
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
-    background-image: linear-gradient(90deg, #5a5858 0%, #dcdcdc 90%);
+    background-image: linear-gradient(90deg, #5a5858 20%, #dcdcdc 90%);
 `
 
 

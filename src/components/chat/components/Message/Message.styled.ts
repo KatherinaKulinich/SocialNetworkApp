@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { BoxShadow, Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
+import { Image } from "antd";
 
 
 export const Container = styled.div<{$sender: string}>`
@@ -43,4 +44,10 @@ export const MessageInfo = styled.div`
     flex-direction: column;
     align-items: start;
     gap:2px;
+`
+
+export const ImageBox = styled(Image)`
+    object-fit: cover;
+    width: 100px;
+    border-radius: 10px;
 `

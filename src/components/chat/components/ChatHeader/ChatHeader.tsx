@@ -1,5 +1,5 @@
 import { Container, Name, UserInfo } from "./ChatHeader.styled"
-import user from '@images/404.svg';
+import { Tooltip } from 'antd';
 import { theme } from "@styles/Theme";
 import { MdDoubleArrow } from 'react-icons/Md';
 import { IconButton } from "@components/buttons/IconButton/IconButton";
@@ -18,14 +18,16 @@ export const ChatHeader:React.FC<ChatHeaderProps> = ({user}) => {
 
     return (
         <Container>
-            <Link to={'/myChats'}>
-                <IconButton 
-                    icon={<MdDoubleArrow style = {{transform: 'rotate(180deg)' }}/>} 
-                    color={theme.colors.regular} 
-                    size={"40px"} 
-                    type={"button"} 
-                />
-            </Link>
+            <Tooltip title="back to chats page">
+                <Link to={'/myChats'}>
+                    <IconButton 
+                        icon={<MdDoubleArrow style = {{transform: 'rotate(180deg)' }}/>} 
+                        color={theme.colors.regular} 
+                        size={"40px"} 
+                        type={"button"} 
+                    />
+                </Link>
+            </Tooltip>
             <UserInfo to={`/users/${userFullname}/profile`}>
                 <Avatar 
                     photo={userAvatar} 

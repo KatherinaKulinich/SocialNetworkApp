@@ -4,20 +4,19 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchChatData } from "rdx/slices/chatSlice"
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
-import { useCallback } from "react"
-import { useNavigate } from "react-router-dom"
+import { useCallback, useEffect, useState } from "react"
 import { Chat } from "types/Chat"
 import { UserProfile } from "types/UserProfile"
 
 
 
 export const useChatChecking = (user:UserProfile) => {
+
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
     const myData = useAppSelector(state => state.userData.user)
 
     const myChats = myData?.chats || []
-    const {userId:myId, userName:myName} = myData?.personalData ?? {}
+    const {userId:myId, userName:myName, userFullname:myFullname} = myData?.personalData ?? {}
     const { userAvatar:myAvatar } = myData?.profileData ?? {}
 
     const userChats = user?.chats
@@ -28,17 +27,28 @@ export const useChatChecking = (user:UserProfile) => {
     const userRef:DocumentReference<DocumentData, DocumentData> = doc(db, 'users', userId as string)
 
 
+    const [isSelectedChat, setIsSelectedChat] = useState<Chat>({} as Chat)
+
+    const getChatWithUser = useCallback((chats: Chat[], id:string) => {
+        const chat = chats.find(chat => chat.user.userId === id)
+        if (chat) {
+            setIsSelectedChat(chat)
+            return chat
+        }
+    }, [])
+
+
 
     const checkChatAvailability = useCallback(async (chats: Chat[], id: string) => {
-        if (chats?.length > 0) {
-            for (const chat of chats) {
-                if (chat.user.userId === id) return chat
-                return false
-            }
-            return
+        const chat = chats.some(chat => chat.user.userId === id)
+
+        if (chat) {
+            const chatData = getChatWithUser(chats, id) || {} as Chat
+            return chatData
         }
         return false
     }, [])
+
 
 
     const refreshUsersData = useCallback(() => {
@@ -47,13 +57,13 @@ export const useChatChecking = (user:UserProfile) => {
     }, [user, myData])
 
 
+
     const createNewChatWithUser = useCallback(async () => {
         const docRef = await addDoc(collection(db, 'chats'), {
             messages: [],
         })
 
         const chatId = docRef.id
-
         const currentTime = Date.now()
         const newChat = {
             chatId: chatId,
@@ -68,17 +78,16 @@ export const useChatChecking = (user:UserProfile) => {
             userId,
             userName,
             userAvatar, 
+            userFullname,
         }}
         const userNewChat:Chat = {...newChat, user: {
             userId: myId,
             userName: myName,
-            userAvatar: myAvatar
-        }}
-        console.log('myChats', myChats);
-        
+            userAvatar: myAvatar,
+            userFullname: myFullname,
+        }} 
         const userUpdatedChats = [...userChats, userNewChat]
         const myUpdatedChats = [...myChats, myNewChat]
-
 
         await updateDoc(myRef, {
             chats: myUpdatedChats
@@ -87,39 +96,35 @@ export const useChatChecking = (user:UserProfile) => {
             chats: userUpdatedChats
         })
         refreshUsersData()
-
         return chatId
     }, [myData, user])
 
 
     const openChatWithUser = useCallback(async () => {
-        console.log('myChats', myChats);
-        const isChat = await checkChatAvailability(myChats, userId)
-        console.log(isChat);
-
-        if (isChat !== undefined) {
-            if (isChat === false) {
-                
+        checkChatAvailability(myChats, userId).then((data) => {
+            if (!data) {
                 createNewChatWithUser()
                 .then((chatId) => {
                     dispatch(fetchChatData(chatId))
                 })
-                // .then(() => {
-                //     navigate(`myChats/${userFullname}/chat`)
-                // })
                 return
-            } 
-            dispatch(fetchChatData(isChat.chatId))
-            // navigate(`myChats/${userFullname}/chat`)
+            }
+            dispatch(fetchChatData(data.chatId))
+        })
+    }, [isSelectedChat])
+
+
+    useEffect(() => {
+        const chat = getChatWithUser(myChats, userId)
+        if (chat) {
+            setIsSelectedChat(chat)
         }
     }, [myChats, userId])
 
-    
-
-
-
 
     return {
-        openChatWithUser
+        openChatWithUser,
+        isSelectedChat,
+        getChatWithUser
     }
 }

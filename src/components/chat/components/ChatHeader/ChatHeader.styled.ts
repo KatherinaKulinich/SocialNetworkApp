@@ -11,7 +11,7 @@ export const Container = styled.div`
     border-bottom: 1px solid ${theme.colors.lightGray};
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 100px;
     cursor: pointer;
 `
 
