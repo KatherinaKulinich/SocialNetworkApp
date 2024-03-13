@@ -40,8 +40,8 @@ export const MessagesContainer = styled.div`
     ${FullSize};
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: stretch;
+    /* justify-content: end; */
+    /* align-items: stretch; */
     gap: 15px;
     overflow-x:auto;
     z-index:10;

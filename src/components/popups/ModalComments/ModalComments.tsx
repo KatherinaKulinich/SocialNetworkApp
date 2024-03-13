@@ -9,6 +9,8 @@ import { message } from "antd";
 import { useContentComments } from "hooks/content/useContentComments";
 import { Post } from "types/Post";
 import { UserProfile } from "types/UserProfile";
+import { EmojiPopup } from '@components/popups/Emoji/EmojiPopup'
+import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
 
 
 
@@ -35,11 +37,14 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
 
     const onChangeCommentValue:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
         setCommentValue(event.target.value)
+        setIsEmojiiPickerOpen(false)
     }, [])
 
 
-    const saveNewComment = useCallback( async () => {
+    const saveNewComment = useCallback( async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
         await message.loading('adding comment...')
+        setIsEmojiiPickerOpen(false)
         saveContentComment(commentValue, selectedContent)
         refreshUsersData()
         setCommentValue('')
@@ -79,6 +84,18 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
 
 
 
+    const [isEmojiPickerOpen, setIsEmojiiPickerOpen] = useState<boolean>(false)
+
+    const onToggleEmojiiPicker = useCallback(() => {
+        setIsEmojiiPickerOpen(prev => !prev)
+    }, [isEmojiPickerOpen])
+
+    const addEmojiToMessage: MouseDownEvent = useCallback((event) => {
+        setCommentValue(prev => prev.concat(event.emoji))
+    }, [commentValue])
+
+
+
     return (
         <ModalDefault 
             isModalOpen={isModalOpen} 
@@ -107,12 +124,20 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
                                 There are no comments here yet
                             </Text>
                     )}
+                   
                 </CommentsBox>
                 <MessageInput 
                     role="comment"
                     inputValue={commentValue}
                     onChangeInputValue={onChangeCommentValue}
                     onSubmitText={saveNewComment}
+                    onToggleEmoji={onToggleEmojiiPicker}
+                />
+                
+                <EmojiPopup
+                    popupIsOpen={isEmojiPickerOpen}
+                    getEmoji={addEmojiToMessage}
+                    role="modal"
                 />
             </Container>
         </ModalDefault>

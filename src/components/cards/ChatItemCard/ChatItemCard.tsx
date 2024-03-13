@@ -30,8 +30,12 @@ export const ChatItemCard:React.FC<ChatItemCardProps> = ({chatItemData}) => {
 
     const onCardClickHandler = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
-        dispatch(fetchChatData(chatId))
-        navigate(`/myChats/${userFullname}/chat`)
+        .then(() => {
+            dispatch(fetchChatData(chatId))
+        })
+        .then(() => {
+            navigate(`/myChats/${userFullname}/chat`)
+        })
     }, [dispatch])
 
 

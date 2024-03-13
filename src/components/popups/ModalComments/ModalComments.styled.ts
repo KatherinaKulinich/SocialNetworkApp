@@ -6,6 +6,8 @@ export const Container = styled.div`
     ${Column};
     /* gap: 30px; */
     width: 100%;
+    position: relative;
+    
 `
 
 export const PhotoContent = styled.div`
@@ -43,6 +45,7 @@ export const CommentsBox = styled.div`
     gap: 10px;
     height: min(220px, 220px);
     overflow-y: auto;
+   
 
     &:last-child {
         background-color:red;

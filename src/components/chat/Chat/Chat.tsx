@@ -1,5 +1,3 @@
-import user1 from '@images/userTest.jpg'
-import user2 from '@images/user2.jpg'
 import emptyChat from '@images/emptyChat.svg'
 import { ChatHeader } from "../components/ChatHeader/ChatHeader"
 import { MessageInput } from "../components/MessageInput/MessageInput"
@@ -13,7 +11,9 @@ import { useAppSelector } from "hooks/hooks"
 import { UserProfile } from 'types/UserProfile'
 import { useChatChecking } from 'hooks/chat/useChatChecking'
 import { useMessageSending } from 'hooks/chat/useMessageSending'
-import EmojiPicker from 'emoji-picker-react';
+import { EmojiPopup } from '@components/popups/Emoji/EmojiPopup'
+import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
+
 
 
 interface ChatProps {
@@ -58,6 +58,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     const [messageImg, setMessageImg] = useState<File | null>(null)
 
     const onChangeMessageText:React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+        setIsEmojiiPickerOpen(false)
         setMessageText(event.target.value)
     }, [messageText])
 
@@ -77,6 +78,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
             sendNewMessage(messageImg, messageText, isSelectedChat)
             setMessageText('')
             setMessageImg(null)
+            setIsEmojiiPickerOpen(false)
         }
     }, [messageImg, messageText, isSelectedChat])
 
@@ -96,16 +98,24 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [isSelectedChat])
 
 
+
+    const [isEmojiPickerOpen, setIsEmojiiPickerOpen] = useState<boolean>(false)
+
+    const onToggleEmojiiPicker = useCallback(() => {
+        setIsEmojiiPickerOpen(prev => !prev)
+    }, [isEmojiPickerOpen])
+
+
+    const addEmojiToMessage: MouseDownEvent = useCallback((event) => {
+        setMessageText(prev => prev.concat(event.emoji))
+    }, [messageText])
+
+
     
     return (
         <Container>
             <ChatHeader user={user}/>
             <ContainerBackground $url={bgUrl}>
-                {/* <EmojiPicker 
-                    onEmojiClick={(event) => console.log(event.emoji)}
-                    open={true}
-                    theme="dark"
-                /> */}
                 {chatMessages?.length > 0 ? (
                     <MessagesContainer>
                         {chatMessages.map((item) => (
@@ -136,6 +146,11 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                         />
                     </EmptyChatMessage>
                 )}
+                <EmojiPopup
+                    popupIsOpen={isEmojiPickerOpen}
+                    getEmoji={addEmojiToMessage}
+                    role='chat'
+                />
             </ContainerBackground>
             <MessageInput 
                 role="message" 
@@ -144,6 +159,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                 onChangeInputValue={onChangeMessageText} 
                 onChangeFileValue={onChangeMessageImg}
                 onSubmitText={onSubmitForm}
+                onToggleEmoji={onToggleEmojiiPicker}
             />
         </Container>
     )
