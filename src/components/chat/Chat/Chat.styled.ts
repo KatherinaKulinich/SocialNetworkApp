@@ -9,7 +9,7 @@ export const Container = styled.div`
     position:relative;
 `
 export const ContainerBackground = styled.div<{$url: string}>`
-    height:calc(100vh - 334px);
+    height:calc(100vh - 322px);
     position: relative;
     background-color: #fff9f9;
     background-image: url(${props => props.$url});
@@ -24,7 +24,6 @@ export const ContainerBackground = styled.div<{$url: string}>`
         left:0;
         z-index: 30;
         background:linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .4) 51%, rgba(255, 255, 255, .6) 80%, rgba(255, 255, 255, .8) 100%);
-
     }
 
     @media ${device.sm} {       
@@ -41,7 +40,7 @@ export const MessagesContainer = styled.div`
     display: flex;
     flex-direction: column;
     /* justify-content: end; */
-    /* align-items: stretch; */
+    align-items: stretch;
     gap: 15px;
     overflow-x:auto;
     z-index:10;

@@ -69,7 +69,8 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
         setMessageImg(img)
     }, [messageImg])
 
-    const { sendNewMessage } = useMessageSending(isSelectedChat, user, myData)
+    const { sendNewMessage, isImageLoading } = useMessageSending(isSelectedChat, user, myData)
+
 
     const onSubmitForm = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -160,6 +161,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                 onChangeFileValue={onChangeMessageImg}
                 onSubmitText={onSubmitForm}
                 onToggleEmoji={onToggleEmojiiPicker}
+                isImageLoading={isImageLoading}
             />
         </Container>
     )

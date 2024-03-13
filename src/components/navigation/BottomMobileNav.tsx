@@ -39,6 +39,7 @@ export const BottomMobileNav:React.FC = () => {
                 right:0,
                 bottom: 0, 
                 left:0,
+                zIndex: 20,
             }}     
         >
             {links.map((item) => (

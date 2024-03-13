@@ -7,7 +7,7 @@ import { useAppDispatch } from "hooks/hooks";
 import { fetchChatData } from "rdx/slices/chatSlice";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { Chat } from "types/Chat";
 import { ChatMessageItem } from "types/ChatMessage";
 import { UserProfile } from "types/UserProfile";
@@ -27,6 +27,10 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
 
     const userRef = doc(db, 'users', userId)
     const myRef = doc(db, 'users', myId)
+
+
+    const [isImageLoading, setIsImageLoading] = useState<boolean>(false)
+
 
 
 
@@ -91,9 +95,11 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
             }
     
             if (image) {
-                message.loading('', 2)
+                setIsImageLoading(true)
+                // message.loading('', 2)
                 const url = await getURL(image, chat)
                 newMessage.messageImg = url
+                setIsImageLoading(false)
             }
     
             const updatedMyChats = updateChatsArray(myChats, createdAt, textValue)
@@ -118,6 +124,7 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
 
 
     return {
-        sendNewMessage
+        sendNewMessage, 
+        isImageLoading
     }
 }

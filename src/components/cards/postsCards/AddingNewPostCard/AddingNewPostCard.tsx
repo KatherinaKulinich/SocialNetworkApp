@@ -35,6 +35,7 @@ export const AddingNewPostCard:React.FC = () => {
                 <CreatingPostField>
                     <CardImage src={image}/>
                     <TextField 
+                        name='postInput'
                         value={postText}
                         onChange={onChangePostText}
                         placeholder="Type smth..."

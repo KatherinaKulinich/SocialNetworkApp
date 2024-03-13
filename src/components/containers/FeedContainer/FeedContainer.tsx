@@ -247,7 +247,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
             </ListContainer>
 
             {isButtonLoading && (
-                <LoaderRing/>
+                <LoaderRing size={70}/>
             )}
             {isButtonVisible && (
                 <RegularButton 

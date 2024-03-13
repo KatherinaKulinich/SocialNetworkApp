@@ -4,6 +4,7 @@ import { Icon } from '@components/icons/Icon';
 import { BsEmojiSmile } from "react-icons/Bs"
 import { MdOutlineImageSearch, MdSend} from "react-icons/Md"
 import { FaFileCircleCheck } from "react-icons/fa6";
+import { LoaderRing } from "@components/loaders/LoaderRing";
 
 
 interface MessageInputProps {
@@ -14,12 +15,13 @@ interface MessageInputProps {
     fileValue?: File | null;
     onChangeFileValue?: React.ChangeEventHandler<HTMLInputElement>;
     onToggleEmoji: () => void;
+    isImageLoading?: boolean
 }
 
 
 
 
-export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onChangeInputValue, onSubmitText, fileValue, onChangeFileValue, onToggleEmoji}) => {
+export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onChangeInputValue, onSubmitText, fileValue, onChangeFileValue, onToggleEmoji, isImageLoading}) => {
 
     const getImageIcon = useCallback(() => {
         if (!fileValue) {
@@ -79,12 +81,19 @@ export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onCh
                 />
                 {role === 'message' && getImageIcon()}
             </MessageField>
-            <SendButton type="submit">
-                <Icon 
-                    icon={<MdSend/>} 
-                    iconSize="30px" 
-                    iconColor='bebebe'
-                /> 
+            <SendButton 
+                type="submit" 
+                disabled={isImageLoading}
+            >
+                {isImageLoading ? (
+                    <LoaderRing size={32}/>
+                ) : (
+                    <Icon 
+                        icon={<MdSend/>} 
+                        iconSize="30px" 
+                        iconColor='bebebe'
+                    /> 
+                )}
             </SendButton>
         </MessageForm>
         </>

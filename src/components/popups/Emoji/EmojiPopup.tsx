@@ -15,8 +15,8 @@ export const EmojiPopup:React.FC<EmojiPopupProps> = ({popupIsOpen, getEmoji, rol
             <EmojiPicker 
                 onEmojiClick={getEmoji}
                 open={popupIsOpen}
-                width={role === 'chat' ? '350px' : '280px'}
-                height={role === 'chat' ? '450px' : '370px'}
+                width={role === 'chat' ? '350px' : '300px'}
+                height={role === 'chat' ? '450px' : '380px'}
             />
         </EmojiContainer>
     )

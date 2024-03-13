@@ -85,5 +85,5 @@ export const LikeBox = styled.div`
     width: 40px;
     height: 40px;
     position: relative;
-    z-index: 100;
+    z-index: 10;
 `

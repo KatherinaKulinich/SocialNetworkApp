@@ -1,11 +1,16 @@
 import { ColorRing } from "react-loader-spinner"
 
-export const LoaderRing:React.FC = () => {
+interface LoaderRingProps {
+    size: number;
+}
+
+
+export const LoaderRing:React.FC<LoaderRingProps> = ({size}) => {
     return (
         <ColorRing
             visible={true}
-            height="80"
-            width="80"
+            height={size}
+            width={size}
             ariaLabel="color-ring-loading"
             wrapperStyle={{}}
             wrapperClass="color-ring-wrapper"

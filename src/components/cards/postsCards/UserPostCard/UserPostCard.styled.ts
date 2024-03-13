@@ -28,7 +28,7 @@ export const PostTime = styled(Text)`
 export const Reactions = styled(Radio.Group)`
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
 
     @media ${device.sm} {
         gap: 10px;
@@ -208,8 +208,8 @@ export const PostContent = styled.div`
 
 export const ReactionBox = styled.div`
     ${FlexCenter};
-    width: 40px;
-    height: 40px;
+    /* width: 40px;
+    height: 40px; */
     position: relative;
     z-index: 10;
 `

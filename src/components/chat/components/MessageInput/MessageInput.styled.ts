@@ -1,6 +1,7 @@
 import { FlexCenter, FullSize } from "@styles/mixins";
 import { styled } from "styled-components";
 import { device } from "@styles/Breakpoints";
+import { theme } from "@styles/Theme";
 
 export const MessageForm = styled.form`
     width: 100%;
@@ -70,5 +71,10 @@ export const SendButton = styled.button`
 
     &:hover {
         background-color: #EEE;
+    }
+
+    &:disabled {
+        background-color: ${theme.colors.lightGray};
+        cursor: wait;
     }
 `
