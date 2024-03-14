@@ -76,8 +76,6 @@ export const PhotoUpload:React.FC<PhotoUploadProps> = ({onChange, role, fileList
                     </div>
                 </div>
             </Upload>
-            {/* <ImgCrop rotationSlider> */}
-            {/* </ImgCrop> */}
             <Modal 
                 open={previewOpen} 
                 title={previewTitle} 

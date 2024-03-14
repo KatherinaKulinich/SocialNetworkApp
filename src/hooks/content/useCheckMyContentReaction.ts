@@ -30,7 +30,6 @@ export const useCheckMyContentReaction = (myUserData:UserProfile) => {
             }
         }
         return ''
-        // return false
     }, [myId])
 
 

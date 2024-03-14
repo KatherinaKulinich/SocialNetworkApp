@@ -1,7 +1,6 @@
 import img from '@images/myFeed.svg'
 import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
-import { useMyFullData } from 'hooks/useMyFullData'
 import { fetchFriends } from 'rdx/slices/friendsSlice'
 import { FeedContainer } from '@components/containers/FeedContainer/FeedContainer'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer'
@@ -15,10 +14,8 @@ import { UserProfile } from 'types/UserProfile'
 
 export const MyFeedPage: React.FC = () => {
     const dispatch = useAppDispatch()
-
-    // const myData = useMyFullData()
     const myData = useAppSelector(state => state.userData.user)
-    // const { userId } = myData?.personalData ?? {}
+
 
     const { friends, followingList } = myData?.contacts ?? {}
     const friendsIds = friends?.map(friend => friend.id) || []

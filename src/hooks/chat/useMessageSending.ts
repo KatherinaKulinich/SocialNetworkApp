@@ -96,7 +96,6 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
     
             if (image) {
                 setIsImageLoading(true)
-                // message.loading('', 2)
                 const url = await getURL(image, chat)
                 newMessage.messageImg = url
                 setIsImageLoading(false)

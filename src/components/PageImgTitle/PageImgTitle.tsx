@@ -12,7 +12,9 @@ export const PageImgTitle:React.FC<PageImgTitleProps> = ({image, titleFirst, tit
         <TitleContainer>
             <TextContainer>
                 <Title text={titleFirst}/>
-                {titleSecond && (<Title text={titleSecond}/>)}
+                {titleSecond && (
+                    <Title text={titleSecond}/>
+                )}
             </TextContainer>
             <Image src={image}/>
         </TitleContainer>

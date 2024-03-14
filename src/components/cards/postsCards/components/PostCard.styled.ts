@@ -1,5 +1,5 @@
 import { theme } from "@styles/Theme";
-import { BoxShadow, Column, Font } from "@styles/mixins";
+import { BoxShadow, Column } from "@styles/mixins";
 import { styled } from "styled-components";
 import { device } from "@styles/Breakpoints";
 
@@ -12,13 +12,11 @@ export const CardContainer = styled.div`
     border-radius: 15px;
     ${BoxShadow};
     ${Column};
-    /* gap: 10px; */
     align-items: center;
     background-color: #ffffff;
 
     @media ${device.sm} {
         padding: 25px;
-        /* gap: 20px; */
     };
 `
 
@@ -42,6 +40,5 @@ export const CardFooter = styled.div`
 
 export const  MainContent = styled.div`
     width: 100%;
-    /* padding: 10px; */
 `
 

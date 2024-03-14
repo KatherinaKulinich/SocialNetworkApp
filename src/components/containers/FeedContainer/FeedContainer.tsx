@@ -32,8 +32,7 @@ interface FeedContainerProps {
 export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
     const dispatch = useAppDispatch()
     const myData = useAppSelector(state => state.userData.user)
-    // const myData = useMyFullData()
-    // const randomUsers = useRandomUsersData()
+
     const randomIds = useAppSelector(state => state.randomUsers.randomUsersIds)
     const {followingList, friends, followers } = myData?.contacts;
     

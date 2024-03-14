@@ -17,18 +17,8 @@ import { UserProfile } from 'types/UserProfile';
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
     const userData = useMyFullData()
-    // const userData = useAppSelector(state => state.userData.user)
     const { friends } = userData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []
-
-    // useEffect(() => {
-    //     console.log('owner');
-        
-    // }, [userData])
-    //  useEffect(() => {
-    //     console.log('USER__', userData );
-        
-    // }, [ userData])
 
 
     useEffect(() => {

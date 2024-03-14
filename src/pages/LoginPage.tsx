@@ -11,10 +11,8 @@ import { useAppSelector } from "hooks/hooks"
 
 
 export const LoginPage:React.FC = () => {
-    // const myData = useMyFullData()
     const myData = useAppSelector(state => state.userData.user)
-    // console.log(myData);
-    
+
     const { width } = useWindowSize();
     const [isLogin, setIsLogin] = useState(true)
 

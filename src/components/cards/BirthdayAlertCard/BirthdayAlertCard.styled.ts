@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import { BoxShadow, FlexCenter, Font } from "../../../styles/mixins";
-import { theme } from "../../../styles/Theme";
-import { device } from "../../../styles/Breakpoints";
+import { BoxShadow, Font } from "@styles/mixins";
+import { theme } from "@styles/Theme";
+import { device } from "@styles/Breakpoints";
 
 
 

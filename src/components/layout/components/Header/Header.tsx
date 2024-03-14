@@ -2,7 +2,6 @@ import { Logo } from '@components/Logo/Logo'
 import { BsThreeDotsVertical } from 'react-icons/Bs'
 import { MdOutlineClose } from 'react-icons/Md'
 import { useWindowSize } from '../../../../hooks/useWindowSize';
-import { Icon } from '@components/icons/Icon';
 import { HeaderSection, HeaderContainer, HeaderText } from './Header.styled';
 import { Wrapper } from '../Wrapper/Wrapper';
 import { IconButton } from '@components/buttons/IconButton/IconButton';

@@ -28,7 +28,6 @@ interface UserProfileProps {
 
 export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsData}) => {
     const dispatch = useAppDispatch()
-    // const myData = useMyFullData()
     const myData = useAppSelector(state => state.userData.user)
     const { userId:myId } = myData?.personalData ?? {}
     const { friends:myFriends } = myData?.contacts ?? {}

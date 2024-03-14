@@ -65,13 +65,3 @@ export const Text = styled.p`
     };
 `
 
-// export const CardButton = styled.button<{bg: string, color: string}>`
-//     ${Font({size: '15px', line: '17px', color: theme.colors.regularDark})};
-//     text-transform: uppercase;
-//     border-radius: 7px;
-//     background-color: 'FFFFFF';
-
-//         &:hover {
-//             color: ${theme.colors.regular};
-//         }
-// `

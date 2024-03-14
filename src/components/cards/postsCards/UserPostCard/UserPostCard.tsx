@@ -54,7 +54,6 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
     const onChangeReactionValue = useCallback(async ({ target: { value }}: RadioChangeEvent) => {
         resetAnimation()
         setReactionValue(value)
-        // setIsAnimation(value)
         setTimeout(() => setIsAnimation(value))
         await addReaction(post, postOwner, value)
         await refreshData()

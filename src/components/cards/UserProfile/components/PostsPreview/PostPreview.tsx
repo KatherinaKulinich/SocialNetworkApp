@@ -29,12 +29,6 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData, r
         return b.date - a.date
     }) 
 
-    // useEffect(() => {
-    //     console.log('***');
-        
-    // }, [ownerData])
-
-
 
     const { editMyContent } = useManageMyContent()
     const selectedPost = useAppSelector(state => state.content.selectedPost)

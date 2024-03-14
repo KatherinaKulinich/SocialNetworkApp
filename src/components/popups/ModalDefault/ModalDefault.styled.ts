@@ -7,9 +7,6 @@ import { device } from "@styles/Breakpoints";
 
 
 export const ModalContainer = styled(Dialog)`
-    /* background-color: ${theme.colors.lightRose}; */
-    /* ${Column};
-    gap: 25px; */
     
     & .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
         padding: 14px;

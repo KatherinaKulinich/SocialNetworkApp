@@ -78,7 +78,6 @@ export const useFirebaseAuth = () => {
     
 
     const onLoginByGoogle = useCallback(() => {
-        // signInWithRedirect(auth, provider)
         signInWithPopup(auth, provider)
         .then(async (result) => {
             message.loading('Loading...',3)
