@@ -9,6 +9,7 @@ export const PageContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 70px 1fr 55px;
+    position: relative;
 
     @media ${device.md} {
         grid-template-rows: 70px 1fr 90px;

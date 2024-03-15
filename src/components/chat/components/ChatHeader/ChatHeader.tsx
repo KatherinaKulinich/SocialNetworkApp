@@ -7,15 +7,22 @@ import { Link } from "react-router-dom";
 import { Avatar } from "@components/Avatar/Avatar";
 import { UserProfile } from "types/UserProfile";
 import { DropdownMenu } from "../DropdownMenu";
+import { useAppSelector } from "hooks/hooks";
+import { useChatManagement } from "hooks/chat/useChatManagement";
 
 interface ChatHeaderProps {
-    user: UserProfile
+    user: UserProfile,
+    onOpenDrawer: () => void,
+    chatId: string,
 }
 
 
-export const ChatHeader:React.FC<ChatHeaderProps> = ({user}) => {
+export const ChatHeader:React.FC<ChatHeaderProps> = ({user, onOpenDrawer, chatId}) => {
     const { userFullname } = user?.personalData;
     const { userAvatar} = user?.profileData;
+    const myData = useAppSelector(state => state.userData.user)
+
+    const { deleteChat } = useChatManagement(chatId, myData, user)
 
     return (
         <Container>
@@ -39,7 +46,10 @@ export const ChatHeader:React.FC<ChatHeaderProps> = ({user}) => {
                     {userFullname}
                 </Name>
             </UserInfo>
-            <DropdownMenu/>
+            <DropdownMenu 
+                openDrawer={onOpenDrawer} 
+                deleteChat={deleteChat}
+            />
         </Container>
     )
 }

@@ -1,6 +1,5 @@
 import drawerImage from '@images/drawer.svg';
 import { UserLogData } from "@components/UserLogData/UserLogData";
-import { Drawer } from "../Drawer"
 import { Link } from "@components/navigation/NavDesktop/NavDesktop.styled";
 import { Icon } from "@components/icons/Icon";
 import { Created } from "@components/layout/components/Footer/components/Created/Created";
@@ -9,6 +8,8 @@ import { DrawerContainer, SubContainer, LoginContainer, DrawerFooter, Image, Lin
 import { navItems, navMobItems } from "utils/data/navigationItems";
 import { LogOutButton } from "@components/buttons/LogOutButton";
 import { ProfileLink } from '@components/layout/components/Footer/components/ProfileLink/ProfileLink';
+import { SwipeableDrawer } from "@mui/material"
+import { theme } from "@styles/Theme";
 
 interface MainDrawerProps {
     isOpen: boolean;
@@ -24,10 +25,22 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose})
     
 
     return (
-        <Drawer 
-            isOpen={isOpen} 
-            onOpenDrawer={onOpen} 
-            onCloseDrawer={onClose}
+        <SwipeableDrawer
+            anchor='right'
+            open={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
+            PaperProps={{
+                sx: {
+                    height: 'calc(100% - 126px)',
+                    position: 'absolute',
+                    top: 70,
+                    bottom: 56,
+                    width: '100%',
+                    maxWidth: 500,
+                    background: `${theme.colors.mediumGray}`,
+                },
+            }}
         >
             <DrawerContainer>
                 <LoginContainer>
@@ -66,6 +79,6 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose})
                     </GridItem>
                 </DrawerFooter>
             </DrawerContainer>
-        </Drawer>
+        </SwipeableDrawer>
     )
 }

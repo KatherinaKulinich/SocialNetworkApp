@@ -7,6 +7,7 @@ export const Container = styled.div`
     width:100%;
     min-height:100%;
     position:relative;
+    border-right: 1px solid ${theme.colors.lightGray};
 `
 export const ContainerBackground = styled.div<{$url: string}>`
     height:calc(100vh - 322px);

@@ -2,16 +2,19 @@ import { Icon } from '@components/icons/Icon';
 import { theme } from '@styles/Theme';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space } from 'antd';
-import { BsThreeDotsVertical } from 'react-icons/Bs';
+import { BsThreeDots } from 'react-icons/Bs';
 import { Link, useNavigate } from 'react-router-dom';
 import AnchorLink from 'antd/es/anchor/AnchorLink';
 import { useCallback } from 'react';
 
 
+interface DropdownMenuProps {
+    deleteChat: () => void,
+    openDrawer: () => void,
+}
 
 
-
-export const DropdownMenu:React.FC = () => {
+export const DropdownMenu:React.FC<DropdownMenuProps> = ({deleteChat, openDrawer}) => {
     const navigate = useNavigate();
 
     const navigateToChatSettings = useCallback(() => {
@@ -24,12 +27,12 @@ export const DropdownMenu:React.FC = () => {
         }, 100);
     }, [])
 
-    
+
     const items: MenuProps['items'] = [
         {
             label: 'media files',
             key: '0',
-            onClick: () => {console.log("open drawer")}, 
+            onClick: openDrawer, 
         },
         {
             label: 'chat settings',
@@ -43,7 +46,7 @@ export const DropdownMenu:React.FC = () => {
             label: 'delete chat',
             key: '3',
             danger: true,
-            onClick: () => {console.log("delete chat")}, 
+            onClick: deleteChat, 
         },
     ];
 
@@ -57,8 +60,8 @@ export const DropdownMenu:React.FC = () => {
             <a onClick={(e) => e.preventDefault()}>
                 <Space>
                     <Icon 
-                        icon={<BsThreeDotsVertical/>} 
-                        iconSize={'20px'}
+                        icon={<BsThreeDots/>} 
+                        iconSize={'30px'}
                         iconColor={theme.colors.mediumGray}
                     />
                 </Space>

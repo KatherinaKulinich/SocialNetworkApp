@@ -13,6 +13,8 @@ import { useChatChecking } from 'hooks/chat/useChatChecking'
 import { useMessageSending } from 'hooks/chat/useMessageSending'
 import { EmojiPopup } from '@components/popups/Emoji/EmojiPopup'
 import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
+import { ChatDrawer } from '../components/Drawer/ChatDrawer'
+
 
 
 
@@ -112,57 +114,84 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [messageText])
 
 
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+
+    const onOpenDrawer = useCallback(() => {
+        setIsDrawerOpen(true)
+    }, [isDrawerOpen])
+    const onCloseDrawer = useCallback(() => {
+        setIsDrawerOpen(false)
+    }, [isDrawerOpen])
+
+
     
     return (
-        <Container>
-            <ChatHeader user={user}/>
-            <ContainerBackground $url={bgUrl}>
-                {chatMessages?.length > 0 ? (
-                    <MessagesContainer>
-                        {chatMessages.map((item) => (
-                            <MessageRow 
-                                $sender={getMessageSender(item.senderId)}
-                                key={item.messageId}
-                            >
-                                <Message 
-                                    sender={getMessageSender(item.senderId)} 
-                                    message={item}
-                                />
-                            </MessageRow>
-                        ))}
-                    </MessagesContainer>
-                ) : (
-                    <EmptyChatMessage>
-                        <ImageErrorMessage 
-                            image={emptyChat} 
-                            text={`You don't have any messages with ${userName} yet`}
-                        />
-                        <Text>
-                            {`Say hello to ${userName} right now!`}
-                        </Text>
-                        <RegularButton 
-                            buttonText="Say hello 👋🏼" 
-                            buttonType="button"
-                            onClickHandler={sayHelloToUser}
-                        />
-                    </EmptyChatMessage>
-                )}
-                <EmojiPopup
-                    popupIsOpen={isEmojiPickerOpen}
-                    getEmoji={addEmojiToMessage}
-                    role='chat'
+        <>
+            <Container>
+                <ChatHeader 
+                    user={user} 
+                    onOpenDrawer={onOpenDrawer} 
+                    chatId={isSelectedChat.chatId}
                 />
-            </ContainerBackground>
-            <MessageInput 
-                role="message" 
-                inputValue={messageText}
-                fileValue={messageImg}
-                onChangeInputValue={onChangeMessageText} 
-                onChangeFileValue={onChangeMessageImg}
-                onSubmitText={onSubmitForm}
-                onToggleEmoji={onToggleEmojiiPicker}
-                isImageLoading={isImageLoading}
-            />
-        </Container>
+                <ContainerBackground $url={bgUrl}>
+                    {chatMessages?.length > 0 ? (
+                        <MessagesContainer>
+                            {chatMessages.map((item) => (
+                                <MessageRow 
+                                    $sender={getMessageSender(item.senderId)}
+                                    key={item.messageId}
+                                >
+                                    <Message 
+                                        sender={getMessageSender(item.senderId)} 
+                                        message={item}
+                                    />
+                                </MessageRow>
+                            ))}
+                        </MessagesContainer>
+                    ) : (
+                        <EmptyChatMessage>
+                            <ImageErrorMessage 
+                                image={emptyChat} 
+                                text={`You don't have any messages with ${userName} yet`}
+                            />
+                            <Text>
+                                {`Say hello to ${userName} right now!`}
+                            </Text>
+                            <RegularButton 
+                                buttonText="Say hello 👋🏼" 
+                                buttonType="button"
+                                onClickHandler={sayHelloToUser}
+                            />
+                        </EmptyChatMessage>
+                    )}
+                    <EmojiPopup
+                        popupIsOpen={isEmojiPickerOpen}
+                        getEmoji={addEmojiToMessage}
+                        role='chat'
+                    />
+                    
+                    <ChatDrawer
+                        isOpen={isDrawerOpen}
+                        onOpen={onOpenDrawer}
+                        onClose={onCloseDrawer}
+                        user={user}
+                        chatId={isSelectedChat.chatId}
+                    />
+                </ContainerBackground>
+                <MessageInput 
+                    role="message" 
+                    inputValue={messageText}
+                    fileValue={messageImg}
+                    onChangeInputValue={onChangeMessageText} 
+                    onChangeFileValue={onChangeMessageImg}
+                    onSubmitText={onSubmitForm}
+                    onToggleEmoji={onToggleEmojiiPicker}
+                    isImageLoading={isImageLoading}
+                />
+            </Container>
+
+                
+        </>
     )
 }
