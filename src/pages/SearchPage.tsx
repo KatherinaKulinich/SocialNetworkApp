@@ -114,8 +114,8 @@ export const SearchPage:React.FC = () => {
             }
             {loading && <LoaderGlass/>}
             <ListContainer>
-                {showRandomUsers && randomUsers?.length > 0 && (
-                    randomUsers.map((user:UserProfile) => {
+                {showRandomUsers &&randomUsers && randomUsers?.length > 0 && (
+                    randomUsers?.map((user:UserProfile) => {
                         if (user !== undefined) 
                             return  <SearchUserCard 
                                         key={user.personalData.userId}

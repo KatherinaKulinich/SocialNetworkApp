@@ -19,7 +19,7 @@ export const ChatBackground:React.FC = () => {
 
     
     return (
-        <Container>
+        <Container id="chat-background">
             <SubTitle text='Choose a background for chats'/>
             <BackgroundForm 
                 form={form}

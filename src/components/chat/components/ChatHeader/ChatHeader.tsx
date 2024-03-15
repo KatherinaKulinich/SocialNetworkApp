@@ -6,6 +6,7 @@ import { IconButton } from "@components/buttons/IconButton/IconButton";
 import { Link } from "react-router-dom";
 import { Avatar } from "@components/Avatar/Avatar";
 import { UserProfile } from "types/UserProfile";
+import { DropdownMenu } from "../DropdownMenu";
 
 interface ChatHeaderProps {
     user: UserProfile
@@ -38,6 +39,7 @@ export const ChatHeader:React.FC<ChatHeaderProps> = ({user}) => {
                     {userFullname}
                 </Name>
             </UserInfo>
+            <DropdownMenu/>
         </Container>
     )
 }
