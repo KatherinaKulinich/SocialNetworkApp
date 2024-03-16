@@ -83,7 +83,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
             setMessageImg(null)
             setIsEmojiiPickerOpen(false)
         }
-    }, [messageImg, messageText, isSelectedChat])
+    }, [messageImg, messageText, isSelectedChat, user])
 
 
     const getMessageSender = (id: string) => {
@@ -98,7 +98,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
         if (isSelectedChat) {
             sendNewMessage(messageImg, `Hello, ${userName}! 👋🏼`, isSelectedChat)
         }
-    }, [isSelectedChat])
+    }, [isSelectedChat, user])
 
 
 

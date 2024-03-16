@@ -56,13 +56,13 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
 
   
 
-    const updateChatsArray = useCallback((chats:Chat[], timeUpdated:number, textValue:string) => {
+    const updateChatsArray = useCallback((chats:Chat[], timeUpdated:number, textValue:string, isNewMessageForUser:boolean) => {
         const text = textValue.length > 0 ? textValue : 'sent an image'
-
         const {chatId} = chat;
 
         const updatedChats:Chat[] = chats.map(chat => {
             if (chat.chatId === chatId) {
+
                 return {
                     ...chat, 
                     updatedAt: timeUpdated,
@@ -70,10 +70,16 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
                         senderName: myName,
                         text,
                     }, 
+                    newUnreadMessages: {
+                        [userId]: isNewMessageForUser,
+                        [myId]: false,
+                    }
                 }
             }
+
             return chat
         })
+
         return updatedChats
     }, [myData, user])
 
@@ -101,8 +107,8 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
                 setIsImageLoading(false)
             }
     
-            const updatedMyChats = updateChatsArray(myChats, createdAt, textValue)
-            const updatedUserChats = updateChatsArray(userChats, createdAt, textValue)
+            const updatedMyChats = updateChatsArray(myChats, createdAt, textValue, false)
+            const updatedUserChats = updateChatsArray(userChats, createdAt, textValue, true)
     
     
             await updateDoc(chatRef, {

@@ -1,10 +1,10 @@
 import { styled } from "styled-components";
-import { BoxShadow, Font } from "@styles/mixins";
+import { AbsoluteCenter, BoxShadow, Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
 import { Link } from "react-router-dom";
 
 
-export const ChatCard = styled.div`
+export const ChatCard = styled.div<{$new:boolean}>`
     padding: 10px 20px;
     display: block;
     text-decoration: none;
@@ -17,6 +17,8 @@ export const ChatCard = styled.div`
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    position:relative;
+    border: ${props => props.$new === true ? `2px solid ${theme.colors.regular}` : ''} ;
 
     &:hover {
         background-color: ${theme.colors.lightRose};
@@ -58,6 +60,18 @@ export const MessageText = styled.p`
     background-image: linear-gradient(90deg, #5a5858 20%, #dcdcdc 90%);
 `
 
+export const Badge = styled.div`
+    padding: 2px 6px;
+    border-radius: 15px;
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: ${theme.colors.regular};
+`
 
+export const BadgeText = styled.p`
+    ${Font({size: '9px', line: '9px', color: 'white'})};
+`
 
 

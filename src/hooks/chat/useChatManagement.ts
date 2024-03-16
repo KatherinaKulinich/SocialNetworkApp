@@ -25,14 +25,12 @@ export const useChatManagement = (chatId:string, myData:UserProfile, user:UserPr
 
     const [myImagesURLs, setMyImagesURLs] = useState<Array<string>>([])
     const [userImagesURLs, setUserImagesURLs] = useState<Array<string>>([])
-    const [isFilesLoading, setIsFilesLoading] = useState<boolean>(false)
+
 
 
 
 
     const getChatMediaFiles = useCallback(async (id:string) => {
-        setIsFilesLoading(true)
-
         const storageRef = ref(storage, `chats/${chatId}/${id}`)
         const result = await listAll(storageRef);
 

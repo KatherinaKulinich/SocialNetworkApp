@@ -72,6 +72,10 @@ export const useChatChecking = (user:UserProfile) => {
                 senderName: null,
                 text: null,
             },
+            newUnreadMessages: {
+                [myId]: false,
+                [userId]: false,
+            }
         }
 
         const myNewChat:Chat = {...newChat, user: {

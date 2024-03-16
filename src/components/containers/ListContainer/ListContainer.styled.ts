@@ -7,6 +7,7 @@ export const List = styled.div`
     ${FullSize};
     ${Column};
     gap: 10px;
+    
 
     @media ${device.sm} {
         gap: 15px;

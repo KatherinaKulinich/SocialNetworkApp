@@ -4,6 +4,7 @@ export interface Chat {
     updatedAt: number,
     lastMessage: LastMessageInfo,
     userIsTyping?: boolean,
+    newUnreadMessages: NewMessagesData,
 }
 
 
@@ -19,4 +20,8 @@ interface LastMessageInfo {
     senderName: string | null,
     text: string | null,
     messageHasRead?: boolean,
+}
+
+interface NewMessagesData {
+    [key: string]: boolean,
 }
