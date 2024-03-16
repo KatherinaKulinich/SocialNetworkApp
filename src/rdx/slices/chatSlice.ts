@@ -9,11 +9,13 @@ import { db } from "firebase";
 interface ChatState {
     chat: Array<ChatMessageItem>,
     error: string | null,
+    userIsTyping:boolean;
 }
 
 const initialState: ChatState = {
     chat: [] as Array<ChatMessageItem>,
     error: null,
+    userIsTyping: false,
 }
 
 
@@ -27,6 +29,9 @@ const chatSlice = createSlice({
         getErrorMessage(state, action: PayloadAction<string>) {
             state.error = action.payload
         },
+        getUserInputFocus(state, action:  PayloadAction<boolean>) {
+            state.userIsTyping = action.payload
+        }
     }
 })
 
@@ -52,6 +57,28 @@ export const fetchChatData = (chatId: string) => {
 }
 
 
+export const fetchInputFocusData = (chatId: string, userId: string) => {
+    return async (dispatch:ThunkDispatch< RootState, unknown, AnyAction>, getState:() => RootState) => {
+        try {
+            const docRef = doc(db, "chats", chatId)
+            onSnapshot(docRef, (doc) => {
+                if (doc.exists()) {
+                    console.log(doc.data().userIsTyping[userId]);
+                    
+                    dispatch(getUserInputFocus(doc.data().userIsTyping[userId]))
+                }
+            })
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                dispatch(getErrorMessage(error.message))
+                return
+            }
+            dispatch(getErrorMessage(String(error)))
+        }
+    }
+}
+
+
 
 
 
@@ -59,6 +86,7 @@ export const fetchChatData = (chatId: string) => {
 export const { 
     getChatData, 
     getErrorMessage,
+    getUserInputFocus
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

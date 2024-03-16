@@ -19,17 +19,16 @@ export const useUnreadMessages = (myData:UserProfile) => {
 
     const checkNewUnreadChatsIds = useCallback(async () => {
         myChats?.forEach((chat) => {
-            const myField = chat?.newUnreadMessages[myId]
-            if (myField === true) {
+            if (chat?.newUnreadMessages && chat.newUnreadMessages[myId] === true) {
                 setAreUnreadMessages(prev => [...prev, chat.chatId])
             }
             return chat
         })
-    }, [myChats])
+    }, [])
 
     useEffect(() => {
         checkNewUnreadChatsIds()
-    }, [myChats])
+    }, [])
 
 
     const checkChatForNewMessages = useCallback((id:string) => {

@@ -36,6 +36,7 @@ export const NewUnreadMessagesNotification:React.FC<NewUnreadMessagesNotificatio
             text={notificationText}
             title="New messages" 
             icon={<HiChatBubbleLeftRight />}
+            // place={"topRight"}
             place={'bottomRight'}
         />
     )

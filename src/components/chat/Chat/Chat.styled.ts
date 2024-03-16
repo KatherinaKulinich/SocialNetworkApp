@@ -15,6 +15,7 @@ export const ContainerBackground = styled.div<{$url: string}>`
     background-color: #fff9f9;
     background-image: url(${props => props.$url});
     background-size: cover;
+    padding-bottom: 40px;
 
     &::after {
         content: '';
@@ -70,3 +71,9 @@ export const Text = styled.p`
     ${Font({size: '14px', line: '17px', color: theme.colors.regularDark})};
 `
 
+export const TypingMessage = styled.p`
+    ${Font({size: '14px', line: '17px', color: theme.colors.regularDark})};
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+`

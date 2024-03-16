@@ -61,6 +61,10 @@ export const useChatChecking = (user:UserProfile) => {
     const createNewChatWithUser = useCallback(async () => {
         const docRef = await addDoc(collection(db, 'chats'), {
             messages: [],
+            userIsTyping: {
+                [myId]: false,
+                [userId]: false,
+            }
         })
 
         const chatId = docRef.id

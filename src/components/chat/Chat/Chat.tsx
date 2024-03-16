@@ -4,16 +4,17 @@ import { MessageInput } from "../components/MessageInput/MessageInput"
 import { Message } from "../components/Message/Message"
 import { useCallback, useEffect, useState } from "react"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
-import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text } from "./Chat.styled"
+import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text, TypingMessage } from "./Chat.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { backgrounds } from "utils/data/backgrounds"
-import { useAppSelector } from "hooks/hooks"
+import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { UserProfile } from 'types/UserProfile'
 import { useChatChecking } from 'hooks/chat/useChatChecking'
 import { useMessageSending } from 'hooks/chat/useMessageSending'
 import { EmojiPopup } from '@components/popups/Emoji/EmojiPopup'
 import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
 import { ChatDrawer } from '../components/Drawer/ChatDrawer'
+import { fetchInputFocusData } from 'rdx/slices/chatSlice'
 
 
 
@@ -25,6 +26,7 @@ interface ChatProps {
 
 export const Chat:React.FC<ChatProps> = ({user}) => {
     const chatMessages = useAppSelector(state => state.chat.chat)
+    const dispatch = useAppDispatch()
 
     const myData = useAppSelector(state => state.userData.user)
     const { userId:myId }= myData?.personalData
@@ -125,6 +127,17 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [isDrawerOpen])
 
 
+
+
+    useEffect(() => {
+        if (isSelectedChat.chatId) {
+            dispatch(fetchInputFocusData(isSelectedChat.chatId, userId))
+        }
+    }, [isSelectedChat.chatId])
+
+    const userIsTyping = useAppSelector(state => state.chat.userIsTyping)
+
+
     
     return (
         <>
@@ -165,6 +178,8 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                             />
                         </EmptyChatMessage>
                     )}
+                    {userIsTyping && <TypingMessage>User is typing...</TypingMessage>}
+                    
                     <EmojiPopup
                         popupIsOpen={isEmojiPickerOpen}
                         getEmoji={addEmojiToMessage}
@@ -188,6 +203,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                     onSubmitText={onSubmitForm}
                     onToggleEmoji={onToggleEmojiiPicker}
                     isImageLoading={isImageLoading}
+                    chatId={isSelectedChat.chatId}
                 />
             </Container>
 

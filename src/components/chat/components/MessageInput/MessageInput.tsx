@@ -5,6 +5,9 @@ import { BsEmojiSmile } from "react-icons/Bs"
 import { MdOutlineImageSearch, MdSend} from "react-icons/Md"
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { LoaderRing } from "@components/loaders/LoaderRing";
+import { doc, updateDoc } from "firebase/firestore";
+import {  useAppSelector } from "hooks/hooks"
+import { db } from "firebase";
 
 
 interface MessageInputProps {
@@ -15,13 +18,19 @@ interface MessageInputProps {
     fileValue?: File | null;
     onChangeFileValue?: React.ChangeEventHandler<HTMLInputElement>;
     onToggleEmoji: () => void;
-    isImageLoading?: boolean
+    isImageLoading?: boolean;
+    chatId: string;
 }
 
 
 
 
-export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onChangeInputValue, onSubmitText, fileValue, onChangeFileValue, onToggleEmoji, isImageLoading}) => {
+export const MessageInput:React.FC<MessageInputProps> = (
+    {role, inputValue, onChangeInputValue, onSubmitText, fileValue, onChangeFileValue, onToggleEmoji, isImageLoading, chatId}) => {
+
+    const myData = useAppSelector(state => state.userData.user)
+    const myId = myData?.personalData?.userId
+
 
     const getImageIcon = useCallback(() => {
         if (!fileValue) {
@@ -55,7 +64,30 @@ export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onCh
             )
         }
     }, [fileValue])
+
+
+    const objField = `userIsTyping.${myId}`
     
+    const onInputFocus = useCallback(async () => {
+        if (chatId) {
+            const chatRef = doc(db, 'chats', chatId)
+
+            await updateDoc(chatRef, {
+                [objField]: true,
+            })
+        }
+    }, [chatId])
+
+    const onInputBlur = useCallback(async () => {
+         if (chatId) {
+            const chatRef = doc(db, 'chats', chatId)
+            await updateDoc(chatRef, {
+                [objField]: false,
+            })
+        }
+    }, [chatId])
+    
+
 
 
     return (
@@ -65,7 +97,10 @@ export const MessageInput:React.FC<MessageInputProps> = ({role, inputValue, onCh
             method="post" 
             onSubmit={(e:React.FormEvent<HTMLFormElement>) => onSubmitText(e)}
         >
-            <MessageField>
+            <MessageField 
+                onFocus={onInputFocus} 
+                onBlur={onInputBlur}
+            > 
                 <IconButton onClick={onToggleEmoji}>
                     <Icon 
                         icon={<BsEmojiSmile/>} 
