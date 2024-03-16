@@ -5,6 +5,8 @@ import { PhotosContainer } from '@components/containers/PhotosContainer/PhotosCo
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { fetchUserFullData } from 'rdx/slices/userDataSlice';
+import { NewUnreadMessagesNotification } from '@components/notifications/NewUnreadMessagesNotification';
+import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
 
 
 
@@ -19,6 +21,10 @@ export const MyPhotosPage:React.FC = () => {
             dispatch(fetchUserFullData(myId))
         },2000)
     }, [dispatch, myData])
+
+    const { areUnreadMessages } = useUnreadMessages(myData)
+    const isChatsAmount =  areUnreadMessages.length
+    const isMessagesNotification = isChatsAmount > 0
   
 
 
@@ -36,6 +42,8 @@ export const MyPhotosPage:React.FC = () => {
                 myUserData={myData}
                 refreshData={refreshDataAfterPhotoLike}
             />
+
+            {isMessagesNotification && <NewUnreadMessagesNotification  chatsAmount={isChatsAmount}/>}
         </PageContainer>
     )
 }

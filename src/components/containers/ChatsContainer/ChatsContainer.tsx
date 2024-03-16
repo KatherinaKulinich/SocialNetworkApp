@@ -20,10 +20,6 @@ export const ChatsContainer:React.FC<ChatsContainerProps> = ({chatsData}) => {
     const myData = useMyFullData()
     const { checkChatForNewMessages } = useUnreadMessages(myData)
 
-    // const checkChatForNewMessages = (id:string) => {
-    //     if (areUnreadMessages.includes(id)) return true
-    //     return false
-    // }
 
     
     return (

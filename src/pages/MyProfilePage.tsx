@@ -7,8 +7,10 @@ import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { useEffect, useState } from 'react';
 import { useMyFullData } from 'hooks/useMyFullData';
 import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
-import { BirthdayNotification } from '@components/popups/BirthdayNotification';
+import { BirthdayNotification } from '@components/notifications/BirthdayNotification';
 import { UserProfile } from 'types/UserProfile';
+import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
+import { NewUnreadMessagesNotification } from '@components/notifications/NewUnreadMessagesNotification';
 
 
 
@@ -16,9 +18,9 @@ import { UserProfile } from 'types/UserProfile';
 
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
-    const userData = useMyFullData()
+    const myData = useMyFullData()
     // const userData = useAppSelector(state => state.userData.user)
-    const { friends } = userData.contacts ?? {}
+    const { friends } = myData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []
 
 
@@ -38,6 +40,10 @@ export const MyProfilePage:React.FC = () => {
     }, [friendsData])
     
     const { isMyBirthdayToday } = useUsersBirthdays(friendsUsersData)
+
+    const { areUnreadMessages } = useUnreadMessages(myData)
+    const isChatsAmount =  areUnreadMessages.length
+    const isMessagesNotification = isChatsAmount > 0
     
     return (
         <PageContainer>
@@ -46,16 +52,17 @@ export const MyProfilePage:React.FC = () => {
                 titleFirst="My"
                 titleSecond="profile"
             />
-            {Object.keys(userData).length === 6 && (
+            {Object.keys(myData).length === 6 && (
                 <UserProfileCard
                     role='myProfile'
-                    user={userData} 
+                    user={myData} 
                     friendsData={friendsUsersData}
                 />
             )}
             {isMyBirthdayToday && (
-                <BirthdayNotification text={`Happy Birthday, ${userData?.personalData?.userName}!`}/>
+                <BirthdayNotification text={`Happy Birthday, ${myData?.personalData?.userName}!`}/>
             )}
+            {isMessagesNotification && <NewUnreadMessagesNotification  chatsAmount={isChatsAmount}/>}
         </PageContainer>
     )
 }

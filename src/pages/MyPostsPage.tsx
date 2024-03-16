@@ -8,6 +8,8 @@ import { useMyFullData } from 'hooks/useMyFullData'
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { fetchUserFullData } from 'rdx/slices/userDataSlice'
 import { useCallback } from 'react'
+import { NewUnreadMessagesNotification } from '@components/notifications/NewUnreadMessagesNotification';
+import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
 
 
 
@@ -22,6 +24,10 @@ export const MyPostsPage: React.FC = () => {
             dispatch(fetchUserFullData(myId))
         },2000)
     }, [dispatch, myData])
+
+    const { areUnreadMessages } = useUnreadMessages(myData)
+    const isChatsAmount =  areUnreadMessages.length
+    const isMessagesNotification = isChatsAmount > 0
   
 
     return (
@@ -39,6 +45,8 @@ export const MyPostsPage: React.FC = () => {
                     refreshData={refreshDataAfterPhotoLike}
                 />
             </ListContainer>
+
+            {isMessagesNotification && <NewUnreadMessagesNotification   chatsAmount={isChatsAmount}/>}
         </PageContainer>
     )
 }

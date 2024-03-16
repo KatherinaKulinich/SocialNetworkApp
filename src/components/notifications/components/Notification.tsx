@@ -1,26 +1,31 @@
 import { Icon } from "@components/icons/Icon";
 import { theme } from "@styles/Theme";
 import { notification } from "antd";
+import { NotificationPlacement } from "antd/es/notification/interface";
 import { useEffect } from "react";
 import { GiGlassCelebration } from "react-icons/gi";
 
-interface BirthdayNotificationProps{
+interface NotificationProps{
+    title: string;
     text: string;
+    icon: React.ReactNode;
+    place: NotificationPlacement ;
 }
 
-export const BirthdayNotification:React.FC<BirthdayNotificationProps> = ({text}) => {
+export const Notification:React.FC<NotificationProps> = ({text, title, icon, place}) => {
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = () => {
         api.open({
-            message: 'Birthday',
+            message: title,
             description: text,
             icon: <Icon 
-                icon={<GiGlassCelebration />} 
+                icon={icon} 
                 iconSize={'30px'} 
                 iconColor={theme.colors.regular}
             />,
             duration: 8,
+            placement: place,
         });
     };
 
