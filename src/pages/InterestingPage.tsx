@@ -3,7 +3,6 @@ import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { FeedContainer } from "@components/containers/FeedContainer/FeedContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { SubTitle } from "@components/text/Subtitle"
-import { useMyFullData } from "hooks/useMyFullData"
 import { useRandomUsersData } from 'hooks/useRandomUsersData'
 import { useEffect, useState } from 'react'
 import { UserProfile } from 'types/UserProfile'
@@ -17,7 +16,6 @@ import { fetchCurrentRandomUsersData } from 'rdx/slices/randomUsersSlice'
 export const InterestingPage:React.FC = () => {
     const dispatch = useAppDispatch()
     const myData = useAppSelector(state => state.userData.user)
-    // const myData = useMyFullData()
     const { userId } = myData?.personalData ?? {}
 
     const randomUsers = useRandomUsersData()
