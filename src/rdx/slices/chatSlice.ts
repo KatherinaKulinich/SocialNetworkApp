@@ -63,8 +63,6 @@ export const fetchInputFocusData = (chatId: string, userId: string) => {
             const docRef = doc(db, "chats", chatId)
             onSnapshot(docRef, (doc) => {
                 if (doc.exists()) {
-                    console.log(doc.data().userIsTyping[userId]);
-                    
                     dispatch(getUserInputFocus(doc.data().userIsTyping[userId]))
                 }
             })

@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { usePostsReactions } from "hooks/content/usePostsReactions"
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
-import { ReactionAnimation } from "@components/ReactionAnimation/ReactionAnimation"
+import { ReactionAnimation } from "@components/animations/ReactionAnimation/ReactionAnimation"
 import {v4 as uuidv4} from 'uuid';
 import { useMyFullData } from "hooks/useMyFullData"
 

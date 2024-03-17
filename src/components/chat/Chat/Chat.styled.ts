@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { device } from "@styles/Breakpoints";
-import { AbsoluteCenter, FlexCenter, Font, FullSize } from '@styles/mixins';
 import { theme } from '@styles/Theme';
+import { AbsoluteCenter, FlexCenter, Font, FullSize } from '@styles/mixins';
 
 export const Container = styled.div`
     width:100%;
@@ -15,7 +15,7 @@ export const ContainerBackground = styled.div<{$url: string}>`
     background-color: #fff9f9;
     background-image: url(${props => props.$url});
     background-size: cover;
-    padding-bottom: 40px;
+
 
     &::after {
         content: '';
@@ -36,22 +36,26 @@ export const ContainerBackground = styled.div<{$url: string}>`
     };
 `
 
-export const MessagesContainer = styled.div`
+export const MessagesContainer = styled.div<{$isUserTyping: boolean}>`
     padding: 15px 30px ;
     ${FullSize};
     display: flex;
     flex-direction: column;
-    /* justify-content: end; */
     align-items: stretch;
     gap: 15px;
     overflow-x:auto;
     z-index:10;
+    padding-bottom: ${props => props.$isUserTyping === true ? '40px' : '15px'};
 `
 export const MessageRow = styled.div<{$sender: string}>`
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: ${props => props.$sender === 'me' ? 'end' : 'start'};
+
+    &:last-child {
+        margin-bottom: 50px;
+    }
 `
 
 export const EmptyChatMessage = styled.div`
@@ -71,9 +75,3 @@ export const Text = styled.p`
     ${Font({size: '14px', line: '17px', color: theme.colors.regularDark})};
 `
 
-export const TypingMessage = styled.p`
-    ${Font({size: '14px', line: '17px', color: theme.colors.regularDark})};
-    position: absolute;
-    bottom: 20px;
-    left: 40px;
-`

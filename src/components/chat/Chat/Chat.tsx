@@ -4,7 +4,7 @@ import { MessageInput } from "../components/MessageInput/MessageInput"
 import { Message } from "../components/Message/Message"
 import { useCallback, useEffect, useState } from "react"
 import { ImageErrorMessage } from "@components/ImageErrorMessage/ImageErrorMessage"
-import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text, TypingMessage } from "./Chat.styled"
+import { Container, ContainerBackground, MessagesContainer, MessageRow, EmptyChatMessage, Text } from "./Chat.styled"
 import { RegularButton } from "@components/buttons/RegularButton/RegularButton"
 import { backgrounds } from "utils/data/backgrounds"
 import { useAppDispatch, useAppSelector } from "hooks/hooks"
@@ -15,6 +15,7 @@ import { EmojiPopup } from '@components/popups/Emoji/EmojiPopup'
 import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
 import { ChatDrawer } from '../components/Drawer/ChatDrawer'
 import { fetchInputFocusData } from 'rdx/slices/chatSlice'
+import { TypingAnimation } from '@components/animations/TypingAnimation/TypingAnimation'
 
 
 
@@ -149,7 +150,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                 />
                 <ContainerBackground $url={bgUrl}>
                     {chatMessages?.length > 0 ? (
-                        <MessagesContainer>
+                        <MessagesContainer $isUserTyping={userIsTyping}>
                             {chatMessages.map((item) => (
                                 <MessageRow 
                                     $sender={getMessageSender(item.senderId)}
@@ -178,7 +179,8 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                             />
                         </EmptyChatMessage>
                     )}
-                    {userIsTyping && <TypingMessage>User is typing...</TypingMessage>}
+                    {userIsTyping && <TypingAnimation/>}
+                    {/* {userIsTyping && <TypingMessage>User is typing...</TypingMessage>} */}
                     
                     <EmojiPopup
                         popupIsOpen={isEmojiPickerOpen}

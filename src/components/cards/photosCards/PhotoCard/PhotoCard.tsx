@@ -11,7 +11,7 @@ import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
-import { ReactionAnimation } from "@components/ReactionAnimation/ReactionAnimation";
+import { ReactionAnimation } from "@components/animations/ReactionAnimation/ReactionAnimation";
 import { useMyFullData } from "hooks/useMyFullData";
 import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { UserProfile } from "types/UserProfile";
