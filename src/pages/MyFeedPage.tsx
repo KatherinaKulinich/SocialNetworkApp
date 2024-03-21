@@ -34,15 +34,11 @@ export const MyFeedPage: React.FC = () => {
     const [users, setUsers] = useState<Array<UserProfile> | null>(null)
 
 
-    //usersFriends?.length > 0
-
-
     useEffect(() => {
         if (usersFriends && friendsIds?.length === usersFriends?.length ) {
             setFriendsUsersData(usersFriends)
             return
         }
-        // setFriendsUsersData([] as Array<UserProfile>)
     }, [usersFriends])
 
     useEffect(() => {
@@ -50,7 +46,6 @@ export const MyFeedPage: React.FC = () => {
             setFollowingUsersData(usersFollowing)
             return
         }
-        // setFollowingUsersData([] as Array<UserProfile>)
     }, [usersFollowing])
 
 
@@ -62,7 +57,6 @@ export const MyFeedPage: React.FC = () => {
             }
             return
         }
-        // setUsers([])
     }, [friendsUsersData, followingUsersData])
 
 

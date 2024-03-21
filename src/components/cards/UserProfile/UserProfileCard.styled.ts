@@ -70,7 +70,6 @@ export const Subtitle = styled.p`
     text-transform: uppercase;
     display:flex;
     align-items: center;
-    /* gap: 10px; */
 
     @media ${device.sm} {
         font-size: 18px;
@@ -105,7 +104,6 @@ export const FullInfo = styled.div`
 
     @media ${device.md} {
         gap: 60px;
-        /* width:80%; */
     };
 `
 
@@ -137,7 +135,6 @@ export const InfoContainer = styled.div`
 `
 
 export const Box = styled.div`
-    /* width: 100%; */
     display: flex;
     flex-direction: column;
     gap: 10px;

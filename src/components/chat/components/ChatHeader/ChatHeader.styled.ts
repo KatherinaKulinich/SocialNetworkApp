@@ -13,7 +13,6 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content:space-between;
-    /* gap: 100px; */
     cursor: pointer;
 
     @media ${device.sm} {

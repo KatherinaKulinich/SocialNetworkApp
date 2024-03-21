@@ -1,15 +1,13 @@
 import { styled } from "styled-components";
+import { theme } from "@styles/Theme";
+import { device } from "@styles/Breakpoints";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import { theme } from "@styles/Theme";
-import { Column, Font } from "@styles/mixins";
-import { device } from "@styles/Breakpoints";
 
 
 export const ModalContainer = styled(Dialog)`
-    /* padding: 14px; */
-
-    & .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+    & .css-1t1j96h-MuiPaper-root-MuiDialog-paper,
+    &.MuiDialog-container {
         padding: 14px;
         position:relative;
         border-radius: 8px;

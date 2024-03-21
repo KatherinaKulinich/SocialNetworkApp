@@ -37,7 +37,6 @@ export const Flex = styled.div`
 `
 export const CardContent = styled(Flex)`
     gap: 7px;
-    /* align-items: start; */
 
     @media ${device.sm} {
         gap: 15px;

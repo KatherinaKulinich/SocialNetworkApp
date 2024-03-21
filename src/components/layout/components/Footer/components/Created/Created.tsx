@@ -8,8 +8,6 @@ import { Container,  IconsBox, IconLink, Content } from "./Created.styled";
 
 
 
-
-
 export const Created:React.FC = () => {
     
 

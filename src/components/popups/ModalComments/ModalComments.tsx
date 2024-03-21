@@ -108,7 +108,11 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
                         <PhotoField src={selectedContent?.photoUrl}/>
                     )}
                     <Text>
-                        {'photoId' in selectedContent ? selectedContent.photoDescription : selectedContent.postText }
+                        {
+                            'photoId' in selectedContent 
+                            ? selectedContent.photoDescription 
+                            : selectedContent.postText 
+                        }
                     </Text>
                 </PhotoContent>
                 <CommentsBox>

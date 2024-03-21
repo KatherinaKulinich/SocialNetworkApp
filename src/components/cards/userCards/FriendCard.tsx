@@ -26,23 +26,22 @@ export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
 
     const chatToUser = useCallback((event:  React.MouseEvent<HTMLElement>) => {
         event.stopPropagation()
+
         if (user) {
             dispatch(fetchSelectedUserData(userId))
-            .then(() => {
-                openChatWithUser()
-            })
-            .then(() => {
-                navigate(`/myChats/${userFullname}/chat`)
-            })
-
+            .then(() => openChatWithUser())
+            .then(() => navigate(`/myChats/${userFullname}/chat`))
         }
     }, [user])
+
+
+    const buttonText = `Chat to ${userGender === 'Female' ? 'her' : 'him'}`
 
 
     return (
         <UserCard user={user} >
             <TextIconButton 
-                text={`Chat to ${userGender === 'Female' ? 'her' : 'him'}`} 
+                text={buttonText} 
                 icon={<BsFillChatHeartFill/>} 
                 color={theme.colors.regularDark} 
                 textSize={"10px"} 

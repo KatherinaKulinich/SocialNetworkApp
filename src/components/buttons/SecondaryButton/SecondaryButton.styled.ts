@@ -1,6 +1,6 @@
-import { FlexCenter } from "@styles/mixins";
 import styled from "styled-components";
 import { device } from "@styles/Breakpoints";
+import { FlexCenter } from "@styles/mixins";
 
 
 export const Button = styled.button<{color:string}>`

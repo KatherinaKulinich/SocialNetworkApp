@@ -21,8 +21,7 @@ export const LoginContainer = styled.div<FormContainerProps>`
     z-index: 2;
     ${props => (props.$login !== true ? `transform: translateX(100%); opacity: 0; z-index: 1;` : null)};
     border-right: 2px solid ${theme.colors.regular};
-    background-color: #fbfbfb;
-    /* background-color: #f7f7f7; */
+    background-color: #ffffff;
 `;
 
 export const ContainerMobile = styled.div`
@@ -33,7 +32,6 @@ export const ContainerMobile = styled.div`
         padding: 35px;
     }
 `
-
 
 export const SignUpContainer = styled.div<FormContainerProps>`
     padding: 20px;
@@ -46,14 +44,13 @@ export const SignUpContainer = styled.div<FormContainerProps>`
     opacity: 0;
     z-index: 1;
     border-left: 2px solid ${theme.colors.regular};
-    background-color: #f7f7f7;
+    background-color: #ffffff;
     ${props => props.$login !== true ? `
         transform: translateX(100%);
         opacity: 1;
         z-index: 5;
     ` 
     : null};
-
 `;
 
 export const LoginContent = styled.div`
@@ -102,6 +99,11 @@ export const Input = styled(Field)`
 
     &::placeholder {
         color: ${theme.colors.mediumGray}
+    }
+
+    @media ${device.lg}  {
+        padding: 12px 18px;
+        border-radius: 9px;
     }
 `;
 

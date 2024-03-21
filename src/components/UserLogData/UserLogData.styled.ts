@@ -24,6 +24,6 @@ export const NameContainer = styled.div`
 `
 
 export const Text = styled.p`
-    ${Font({size: '13px', line: '16px', color: theme.colors.lightGray})};
+    ${Font({size: '11px', line: '16px', color: theme.colors.lightGray})};
     text-transform: uppercase;
 `

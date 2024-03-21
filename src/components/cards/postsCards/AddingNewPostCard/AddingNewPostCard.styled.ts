@@ -39,7 +39,6 @@ export const TextField = styled(TextArea)`
 `
 
 export const Wrap= styled.div`
-    /* align-self: center; */
     margin-left: auto;
     margin-right: auto;
 `

@@ -6,13 +6,6 @@ import { AbsoluteCenter, FlexCenter, Font, FullSize } from '@styles/mixins';
 export const Container = styled.div`
     width:100%;
     min-height:100%;
-    /* position:fixed; */
-    /* top: 160px;
-    left: 0;
-    right: 0;
-    bottom: 56px; */
-    /* height: 100%; */
-     /* height:calc(100vh - 285px); */
     position:relative;
     border-right: 1px solid ${theme.colors.lightGray};
 `
@@ -23,7 +16,6 @@ export const ContainerBackground = styled.div<{$url: string}>`
     background-color: #fff9f9;
     background-image: url(${props => props.$url});
     background-size: cover;
-
 
     &::after {
         content: '';

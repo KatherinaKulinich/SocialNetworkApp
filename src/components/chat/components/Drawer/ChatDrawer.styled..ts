@@ -1,5 +1,5 @@
-import { Column, FlexCenter, FullSize } from '@styles/mixins';
 import styled from 'styled-components';
+import { Column, FlexCenter, FullSize } from '@styles/mixins';
 import { Drawer } from "antd";
 
 

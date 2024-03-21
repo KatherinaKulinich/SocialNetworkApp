@@ -18,10 +18,6 @@ export const SidebarSection = styled.section`
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-
-    /* display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto; */
     border-left: 1px solid ${theme.colors.lightGray};
     border-right: 1px solid ${theme.colors.lightGray};
     position: fixed;

@@ -23,7 +23,7 @@ export const UserLogData:React.FC = () => {
                         <Avatar 
                             photo={userAvatar}
                             border={`${theme.colors.lightGray}`}
-                            size={'50px'}
+                            size={'40px'}
                         />  
                     ) : (
                         <Icon 

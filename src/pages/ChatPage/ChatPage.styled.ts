@@ -23,11 +23,8 @@ export const ChatsPreview = styled.div`
         grid-column: 1/2;
         padding: 10px;
         background-color: ${theme.colors.lightGray};
-        /* max-height: calc(100vh - 129px);
-        min-height: calc(100vh - 129px); */
         overflow-y: auto;
         position: absolute;
-        /* position: absolute; */
         top: 0;
         left:0;
         bottom:0;
@@ -40,7 +37,6 @@ export const MainChat = styled.div`
     flex-direction: column;
     align-items: stretch;
     position:absolute;
-    /* position:relative; */
     height:calc(100% - 165px);
 
     @media ${device.sm} {  

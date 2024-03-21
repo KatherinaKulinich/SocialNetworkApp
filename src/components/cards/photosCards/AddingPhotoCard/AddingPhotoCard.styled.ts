@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
-import { BoxShadow, Column, FlexCenter, FullSize, Size } from "@styles/mixins";
-import { theme } from "@styles/Theme"
 import { device } from "@styles/Breakpoints";
+import { BoxShadow, Column, FlexCenter, FullSize, Size } from "@styles/mixins";
 
 
 export const Card = styled.div`
@@ -12,9 +11,6 @@ export const Card = styled.div`
     ${BoxShadow};
     ${Column};
 
-    @media ${device.sm} {
-        /* padding: 20px; */
-    };
     @media ${device.lg} {
         min-height: 450px;
     };

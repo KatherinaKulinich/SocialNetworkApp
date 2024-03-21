@@ -9,7 +9,6 @@ import { UserProfile } from "types/UserProfile"
 
 export const useRandomUsersData = () => {
     const dispatch = useAppDispatch()
-    // const myData = useMyFullData()
     const myData = useAppSelector(state => state.userData.user)
 
     const { userId } = myData?.personalData ?? {}

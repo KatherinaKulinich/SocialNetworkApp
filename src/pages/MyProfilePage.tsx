@@ -19,7 +19,6 @@ import { NewUnreadMessagesNotification } from '@components/notifications/NewUnre
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
     const myData = useMyFullData()
-    // const userData = useAppSelector(state => state.userData.user)
     const { friends } = myData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []
 

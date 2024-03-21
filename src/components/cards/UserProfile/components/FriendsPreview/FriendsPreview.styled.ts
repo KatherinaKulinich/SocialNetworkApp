@@ -34,7 +34,6 @@ export const Name = styled.p`
 export const DefaultImage = styled.div`
     width: 70px;
     height: 70px;
-    /* border-radius: 10px; */
     background-color: white;
     ${FlexCenter};
 `

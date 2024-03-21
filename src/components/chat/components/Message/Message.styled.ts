@@ -28,11 +28,6 @@ export const TextBubble = styled.div<{$sender: string}>`
 export const SenderName = styled.p`
     ${Font({size: '9px',weight: '600', line: '11px', color: theme.colors.regularDark})};
     text-transform: uppercase;
-
-    /* @media ${device.sm} {
-        font-size: 9px;
-        line-height: 13px;
-    } */
 `
 
 export const Text = styled.p`

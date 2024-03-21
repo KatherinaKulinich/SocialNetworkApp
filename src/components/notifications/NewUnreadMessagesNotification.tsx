@@ -10,9 +10,6 @@ interface NewUnreadMessagesNotificationProps {
 }
 
 export const NewUnreadMessagesNotification:React.FC<NewUnreadMessagesNotificationProps> = ({chatsAmount}) => {
-    // const myData = useAppSelector(state => state.userData.user)
-    // const { areUnreadMessages } = useUnreadMessages(myData)
-
     const notificationText = `You have new unread messages in ${chatsAmount} ${chatsAmount === 1 ? 'chat' : 'chats'}`
 
     useEffect(() => {
@@ -20,23 +17,12 @@ export const NewUnreadMessagesNotification:React.FC<NewUnreadMessagesNotificatio
         
     }, [chatsAmount])
 
-    // const [notificationText, setNotificationText]= useState<string>('')
-
-    // useEffect(() => {
-    //     if (areUnreadMessages.length > 0) {
-
-    //         const chatAmount = areUnreadMessages.length
-    //         setNotificationText(`You have new unread messages in ${areUnreadMessages.length} ${areUnreadMessages.length === 1 ? 'chat' : 'chats'}`)
-    //     }
-    // }, [areUnreadMessages])
-
 
     return (
         <Notification 
             text={notificationText}
             title="New messages" 
             icon={<HiChatBubbleLeftRight />}
-            // place={"topRight"}
             place={'bottomRight'}
         />
     )

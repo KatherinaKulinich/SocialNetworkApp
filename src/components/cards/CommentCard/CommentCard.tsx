@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
-import { Avatar } from "@components/Avatar/Avatar"
-import { Card, MainInfo, TextField, Name, Comment, Time, TimeField } from "./CommentCard.styled"
 import { theme } from "@styles/Theme";
 import { CommentItem } from "types/Comment";
+import { Avatar } from "@components/Avatar/Avatar"
+import { Card, MainInfo, TextField, Name, Comment, Time, TimeField } from "./CommentCard.styled"
+import { getDate, getTime } from 'utils/getDateFormat'
 
 
 interface CommentCardProps {
@@ -12,12 +13,6 @@ interface CommentCardProps {
 export const CommentCard:React.FC<CommentCardProps> = ({comment}) => {
     const { userAvatar, userName, text, date } = comment;
 
-    const getCommentDate = (date:number) => {
-        return `${new Date(date).getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)}`
-    }
-    const getCommentTime = (date:number) => {
-        return `${new Date(date).getHours()}:${new Date(date).getMinutes()}`
-    }
 
 
     const ref = useRef<HTMLDivElement | null>(null);
@@ -47,10 +42,10 @@ export const CommentCard:React.FC<CommentCardProps> = ({comment}) => {
             </MainInfo>
             <TimeField>
                 <Time>
-                    {getCommentDate(date)}
+                    {getDate(date)}
                 </Time>
                 <Time>
-                    {getCommentTime(date)}
+                    {getTime(date)}
                 </Time>
             </TimeField>
         </Card>

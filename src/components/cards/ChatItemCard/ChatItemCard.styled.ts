@@ -26,7 +26,6 @@ export const ChatCard = styled.div<{$new:boolean}>`
     &:active {
         background-color: ${theme.colors.regularLight};
     }
-
 `
 
 export const CardContent = styled.div`
@@ -83,6 +82,7 @@ export const Badge = styled.div`
 
 export const BadgeText = styled.p`
     ${Font({size: '9px', line: '9px', color: 'white'})};
+    text-transform: uppercase;
 `
 
 

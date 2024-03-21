@@ -5,9 +5,9 @@ import { theme } from "@styles/Theme";
 import { PersonalInfo, Name, ActionsContainer, Card, Text } from './UserCard.styled'
 import { Avatar } from "@components/Avatar/Avatar";
 import { fetchFriends} from "rdx/slices/friendsSlice";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
+import { useNavigateToUserPage } from "hooks/contacts/useNavigateToUserPage";
 
 
 interface UserCardProps {
@@ -18,8 +18,11 @@ interface UserCardProps {
 
 
 export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
+    const { goToUserPage } = useNavigateToUserPage(user)
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+
     const myData = useAppSelector(state => state.userData.user)
     const{ userId:myId } = myData?.personalData
     const { friends:myFriends} = myData?.contacts
@@ -28,22 +31,18 @@ export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
     const { userFullname, userId } = user?.personalData;
     const { userLocation, userAvatar, userBirthday } = user?.profileData;
     const { year, month, day } = userBirthday
-
-    const { friends:userFriends } = user?.contacts
-    const userFriendsIdsArray = userFriends.map(user => user.id)
+    const age = `${getUserAge(year, month, day)} y.o`;
 
 
 
     const onSaveUserData = useCallback(async () => {
         if (userId !== myId) {
-            await dispatch(fetchSelectedUserData(userId))
-            await dispatch(fetchFriends(userFriendsIdsArray, 'friends'))
-            navigate(`/users/${userFullname}/profile`)
+            goToUserPage()
             return
         }
         await dispatch(fetchFriends(myFriendsIds, 'friends'))
         navigate(`/myProfile`)
-    }, [dispatch, userId, user])
+    }, [dispatch])
 
     
     return (
@@ -58,7 +57,7 @@ export const UserCard:React.FC<UserCardProps> = ({children, user}) => {
                     {userFullname}
                 </Name>
                 <Text>
-                    {`${getUserAge(year, month, day)} y.o`}
+                    {age}
                 </Text>
                 <Text>
                     {userLocation}

@@ -1,6 +1,5 @@
-import { AbsoluteCenter, FlexCenter } from "@styles/mixins";
 import styled, { keyframes } from "styled-components";
-
+import { AbsoluteCenter } from "@styles/mixins";
 
 
 
@@ -20,10 +19,9 @@ const reactionsAnimation = (x:number, y:number) => keyframes`
 `
 
 
-
 export const AnimationContainer = styled.div`
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     position: absolute;
     ${AbsoluteCenter};
     z-index: -1;

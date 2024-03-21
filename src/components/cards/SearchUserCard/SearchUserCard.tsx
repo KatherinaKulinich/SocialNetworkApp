@@ -10,6 +10,7 @@ import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
 import { fetchFriends} from "rdx/slices/friendsSlice";
 import { useNavigate } from "react-router-dom";
+import { useNavigateToUserPage } from "hooks/contacts/useNavigateToUserPage";
 
 
 
@@ -20,26 +21,17 @@ interface SearchUserCardProps {
 
 
 export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    const { goToUserPage } = useNavigateToUserPage(user)
 
-    const { userFullname, userId } = user?.personalData || {}
+    const { userFullname } = user?.personalData || {}
     const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData ?? {}
-    const { friends } = user.contacts ?? {}
-    const friendsIdsArray = friends?.map(user => user.id) || []
-    const friendsData = useAppSelector(state => state.friends.friendsData)
 
-    const getUserProfile = useCallback(async () => {
-        if (userId && friends) {
-            await dispatch(fetchSelectedUserData(userId))
-            await dispatch(fetchFriends(friendsIdsArray, 'friends'))
-            navigate(`/users/${userFullname}/profile`)
-        }
-    }, [dispatch, userId, friends, friendsData])
+    const age = `${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.`
+
 
     
     return (
-        <UserCard onClick={getUserProfile}>
+        <UserCard onClick={goToUserPage}>
             <CardContent>
                 <Avatar 
                     photo={userAvatar} 
@@ -59,7 +51,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                                 iconColor={theme.colors.mediumGray}
                             /> 
                             <Text>
-                                {`${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.`}
+                                {age}
                             </Text>
                         </Flex>
                         <Flex>

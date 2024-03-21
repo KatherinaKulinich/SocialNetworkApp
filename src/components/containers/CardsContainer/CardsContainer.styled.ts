@@ -4,7 +4,6 @@ import { FullSize } from "@styles/mixins";
 
 export const Cards = styled.div`
     width: 100%;
-    /* ${FullSize}; */
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;

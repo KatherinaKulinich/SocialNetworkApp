@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { theme } from "@styles/Theme";
-import { device } from "@styles/Breakpoints";
+import { AbsoluteCenter } from "@styles/mixins";
 
 export const Avatar = styled.div`
     width: 160px;
@@ -9,10 +9,7 @@ export const Avatar = styled.div`
     border-radius: 50%;
     border: 3px solid ${theme.colors.regular};
     z-index: 50;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    ${AbsoluteCenter};
     overflow:hidden;
 `
 

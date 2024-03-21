@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { BoxShadow, Font } from '@styles/mixins';
 import { device } from "@styles/Breakpoints";
 import { theme } from "@styles/Theme"
+import { BoxShadow, Font } from '@styles/mixins';
 
 
 export const Button = styled.button`

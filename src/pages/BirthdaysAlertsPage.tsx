@@ -1,5 +1,5 @@
-import { PageContainer } from "@components/containers/PageContainer/PageContainer";
 import img from '@images/bitrhPage.svg';
+import { PageContainer } from "@components/containers/PageContainer/PageContainer";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle";
 import { BirthdaysContainer } from "@components/containers/BirthdaysContainer/BirthdaysContainer";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";

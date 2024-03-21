@@ -1,7 +1,7 @@
-import { Font } from "@styles/mixins";
-import { theme } from "@styles/Theme";
 import { styled, keyframes } from "styled-components";
+import { theme } from "@styles/Theme";
 import { device } from "@styles/Breakpoints";
+import { Font } from "@styles/mixins";
 
 
 const lastCommentAnimation = keyframes`

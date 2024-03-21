@@ -5,12 +5,12 @@ import { CardContent, ChatCard, MessageInfo, MessageText, UserName, Badge, Badge
 import { Avatar } from "@components/Avatar/Avatar";
 import { Chat } from "types/Chat";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { fetchChatData } from "rdx/slices/chatSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { useNavigate } from "react-router-dom";
 import { useUnreadMessages } from "hooks/chat/useUreadMessages";
-import { fetchUserFullData } from "rdx/slices/userDataSlice"
+
 
 
 
@@ -35,10 +35,6 @@ export const ChatItemCard:React.FC<ChatItemCardProps> = ({chatItemData, isChatWi
     : 'no messages yet'
 
 
-    // useEffect(() => {
-    //     console.log('PAGE', areUnreadMessages);
-        
-    // }, [areUnreadMessages])
 
     const onCardClickHandler = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
@@ -81,7 +77,7 @@ export const ChatItemCard:React.FC<ChatItemCardProps> = ({chatItemData, isChatWi
             {isChatWithNewMessages && (
                 <Badge>
                     <BadgeText>
-                        NEW MESSAGES
+                        new messages
                     </BadgeText>
                 </Badge>
             )}

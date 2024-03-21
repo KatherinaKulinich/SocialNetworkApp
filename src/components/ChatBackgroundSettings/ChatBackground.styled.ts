@@ -72,6 +72,4 @@ export const BackgroundForm = styled(Form)`
     &.ant-form label {
         font-size:0;
     }
-
-
 `

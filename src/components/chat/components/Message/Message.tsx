@@ -5,6 +5,7 @@ import { Avatar } from "@components/Avatar/Avatar";
 import { UserProfile } from 'types/UserProfile';
 import { useAppSelector } from "hooks/hooks";
 import { theme } from "@styles/Theme";
+import { getTime } from "utils/getDateFormat";
 
 interface MessageProps {
     message: ChatMessageItem;
@@ -25,13 +26,6 @@ export const Message:React.FC<MessageProps> = ({message, sender}) => {
     const { userAvatar:myAvatar } = myData.profileData ?? {}
 
 
-    const getMessageTime = (date:number) => {
-        const min = new Date(date).getMinutes()
-        const minFormat = min < 9 ?`0${min}` : min;
-        const hours = new Date(date).getHours()
-
-        return `${hours}:${minFormat}`
-    }
 
     const ref = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
@@ -66,7 +60,7 @@ export const Message:React.FC<MessageProps> = ({message, sender}) => {
                     border={theme.colors.white}
                 />
                 <Time>
-                    {getMessageTime(createdAt)}
+                    {getTime(createdAt)}
                 </Time>
             </MessageInfo>
         </Container>

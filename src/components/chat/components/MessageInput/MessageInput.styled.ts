@@ -1,12 +1,11 @@
-import { FlexCenter, FullSize, Font } from "@styles/mixins";
 import { styled } from "styled-components";
+import { FlexCenter, FullSize, Font } from "@styles/mixins";
 import { device } from "@styles/Breakpoints";
 import { theme } from "@styles/Theme";
 
 export const MessageForm = styled.form`
     width: 100%;
     display:flex;
-    /* align-items: stretch; */
     justify-content: space-between;
     border: 0.5px solid #bebebe;
     border-radius: 3px;
@@ -72,7 +71,6 @@ export const SendButton = styled.button`
     @media ${device.sm} {
         padding: 10px;
     };
-
 
     @media ${device.sm} {
         border-left: 2px solid #bebebe;

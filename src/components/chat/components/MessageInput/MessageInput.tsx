@@ -6,7 +6,7 @@ import { MdOutlineImageSearch, MdSend} from "react-icons/Md"
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { LoaderRing } from "@components/loaders/LoaderRing";
 import { doc, updateDoc } from "firebase/firestore";
-import {  useAppSelector } from "hooks/hooks"
+import { useAppSelector } from "hooks/hooks"
 import { db } from "firebase";
 
 

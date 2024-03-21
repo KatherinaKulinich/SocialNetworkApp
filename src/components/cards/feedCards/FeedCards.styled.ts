@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { BoxShadow, Column, Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
 import { device } from "@styles/Breakpoints";
+import { BoxShadow, Column, Font } from "@styles/mixins";
 
 
 export const Card = styled.div`

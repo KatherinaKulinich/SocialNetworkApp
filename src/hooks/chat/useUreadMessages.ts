@@ -61,9 +61,6 @@ export const useUnreadMessages = (myData:UserProfile) => {
 
 
 
-
-
-
     return {
         areUnreadMessages,
         checkChatForNewMessages,

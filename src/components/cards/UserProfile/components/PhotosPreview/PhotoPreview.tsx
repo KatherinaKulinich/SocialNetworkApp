@@ -1,7 +1,7 @@
+import emptyPhoto from '@images/defaultPhoto.jpg';
 import { theme } from "@styles/Theme";
 import { PhotosBox, PhotoSrc } from "./PhotoPreview.styled"
 import { useCallback, useEffect, useState } from "react";
-import emptyPhoto from '@images/defaultPhoto.jpg';
 import { IoMdImages } from "react-icons/Io";
 import { useNavigate } from "react-router-dom";
 import { Photo } from "types/Photo";
@@ -52,14 +52,16 @@ export const PhotoPreview:React.FC<PhotoPreviewProps> = ({link, role, user}) => 
         setPhotosForPreview(convertUserPhotos(photos))
     }, [photos])
     
-    
 
+    
+    const previewName = role === 'userProfile' ? `${userName}'s photos` : 'My photos';
+    
 
     return (
         <PreviewContainer>
             <DataItem 
                 icon={<IoMdImages/>} 
-                itemName={role === 'userProfile' ? `${userName}'s photos` : 'My photos'} 
+                itemName={previewName} 
                 direction='column'
             />
             {photos?.length > 0 ? (

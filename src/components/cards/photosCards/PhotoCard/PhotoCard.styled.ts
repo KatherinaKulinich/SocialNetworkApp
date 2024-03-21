@@ -15,9 +15,6 @@ export const Card = styled.div`
     gap: 8px; 
     background-color: #ffffff;
 
-    @media ${device.sm} {
-        /* padding: 20px; */
-    };
     @media ${device.lg} {
         min-height: 450px;
     };
@@ -26,7 +23,11 @@ export const Card = styled.div`
 export const CardImage = styled(Image)`
     object-fit: cover;
     width: 260px;
-    min-height: 260px;
+    height: 260px;
+    max-width: 260px;
+    min-width: 260px;
+    max-height: 260px;
+    min-height:260px;
 `
 
 export const Content = styled.div`
@@ -68,7 +69,6 @@ export const Action = styled.div`
     display:flex;
     align-items: center;
     gap: 8px;
-    
 `
 
 export const Comments = styled.button`
