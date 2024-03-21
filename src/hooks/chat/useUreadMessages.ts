@@ -38,24 +38,28 @@ export const useUnreadMessages = (myData:UserProfile) => {
 
 
     const markChatAsRead = useCallback(async (id:string) => {
-        const myUpdatedChats = myChats?.map((chat:Chat) => {
-            if (chat.chatId === id) {
-                
-                return {
-                    ...chat,
-                    newUnreadMessages: {
-                        [myId]: false, 
+        if (id) {
+
+            const myUpdatedChats = myChats?.map((chat:Chat) => {
+                if (chat.chatId === id) {
+                    
+                    return {
+                        ...chat,
+                        newUnreadMessages: {
+                            [myId]: false, 
+                        }
                     }
                 }
-            }
-            return chat
-        })
+                return chat
+            })
+    
+            const myRef = doc(db, 'users', myId)
+            await updateDoc(myRef, {
+                chats: myUpdatedChats
+            })
+            await dispatch(fetchUserFullData(myId))
+        }
 
-        const myRef = doc(db, 'users', myId)
-        await updateDoc(myRef, {
-            chats: myUpdatedChats
-        })
-        await dispatch(fetchUserFullData(myId))
     }, [myData, areUnreadMessages])
 
 

@@ -16,6 +16,7 @@ import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
 import { ChatDrawer } from '../components/Drawer/ChatDrawer'
 import { fetchInputFocusData } from 'rdx/slices/chatSlice'
 import { TypingAnimation } from '@components/animations/TypingAnimation/TypingAnimation'
+import { useUnreadMessages } from 'hooks/chat/useUreadMessages'
 
 
 interface ChatProps {
@@ -34,6 +35,11 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
 
     const { isSelectedChat, getChatWithUser } = useChatChecking(user)
     const { sendNewMessage, isImageLoading } = useMessageSending(isSelectedChat, user, myData)
+    const { markChatAsRead } = useUnreadMessages(myData)
+
+    useEffect(() => {
+        markChatAsRead(isSelectedChat.chatId)
+    }, [chatMessages])
 
     useEffect(() => {
         if (user) {
