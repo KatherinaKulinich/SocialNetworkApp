@@ -7,10 +7,11 @@ import { theme } from "@styles/Theme";
 export const CardContainer = styled.div`
     perspective:2000px;
     border-radius: 10px;
-    width: 100%;
+    width: 95%;
     max-width: 600px;
-    height: 450px;
+    height: 370px;
     background-color: transparent;  
+    
 `
 
 export const CardBody = styled.div<{$login: boolean}>`
@@ -64,5 +65,5 @@ export const SwitchContainer = styled.div`
 `
 
 export const Text = styled.p`
-    ${Font({size: '16px', line: '18px', color: theme.colors.regular})};
+    ${Font({size: '12px', line: '16px', color: theme.colors.darkGray})};
 `

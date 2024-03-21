@@ -19,7 +19,7 @@ export const TextBubble = styled.div<{$sender: string}>`
     padding: 10px 16px;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 4px;
     background-color: rgba(255, 255, 255, .8);
     ${BoxShadow};
     border-radius: ${props => props.$sender === 'me' ? '14px 14px 0 14px' : '14px 14px 14px 0'}; 
@@ -29,17 +29,17 @@ export const SenderName = styled.p`
     ${Font({size: '9px',weight: '600', line: '11px', color: theme.colors.regularDark})};
     text-transform: uppercase;
 
-    @media ${device.sm} {
-        font-size: 12px;
-        line-height: 15px;
-    }
+    /* @media ${device.sm} {
+        font-size: 9px;
+        line-height: 13px;
+    } */
 `
 
 export const Text = styled.p`
     ${Font({size: '8px', line: '11px', color: theme.colors.textColor})};
 
     @media ${device.sm} {
-        font-size: 11px;
+        font-size: 10px;
         line-height: 13px;
     }
 `

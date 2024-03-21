@@ -5,9 +5,11 @@ import { Created } from './components/Created/Created';
 import { ProfileLink } from './components/ProfileLink/ProfileLink';
 
 
+interface FooterProps {
+    role: 'mainLayout' | 'secondaryLayout'
+}
 
-
-export const Footer:React.FC = () => {
+export const Footer:React.FC<FooterProps> = ({role}) => {
     return (
         <FooterSection>
             <Wrapper>
@@ -15,7 +17,7 @@ export const Footer:React.FC = () => {
                     <Copyright/>
                     <SubContainer>
                         <Created/>
-                        <ProfileLink/>
+                        {role === 'mainLayout' && <ProfileLink/>}
                     </SubContainer>
                 </FooterContainer>
             </Wrapper>

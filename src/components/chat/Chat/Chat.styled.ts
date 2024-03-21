@@ -57,10 +57,12 @@ export const MessagesContainer = styled.div<{$isUserTyping: boolean}>`
 
     @media ${device.sm} {       
         padding: 15px 22px ;
-        gap: 15px;
+        gap: 12px;
         padding-bottom: ${props => props.$isUserTyping === true ? '40px' : '15px'};
     };
 `
+
+
 export const MessageRow = styled.div<{$sender: string}>`
     z-index: 10;
     display: flex;
@@ -73,17 +75,22 @@ export const MessageRow = styled.div<{$sender: string}>`
 `
 
 export const EmptyChatMessage = styled.div`
-    padding: 20px;
+    padding: 15px;
     max-width: 500px;
-    min-width: 220px;
+    min-width: 250px;
     position:absolute;
     ${AbsoluteCenter};
     background-color: rgba(255, 255, 255, .7);
     border-radius: 20px;
     ${FlexCenter};
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
     text-align: center;
+
+    @media ${device.sm}  {
+        padding: 20px;
+        gap: 25px;
+    }
 `
 export const Text = styled.p`
     ${Font({size: '11px', line: '14px', color: theme.colors.regularDark})};

@@ -62,7 +62,7 @@ export const Message:React.FC<MessageProps> = ({message, sender}) => {
             <MessageInfo>
                 <Avatar 
                     photo={avatar} 
-                    size="30px" 
+                    size="26px" 
                     border={theme.colors.white}
                 />
                 <Time>

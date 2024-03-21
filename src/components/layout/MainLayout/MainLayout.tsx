@@ -67,7 +67,7 @@ export const MainLayout:React.FC = () => {
 
                 {width >= 1024 ? (
                     <GridItem $row='3/4'>
-                        <Footer/>
+                        <Footer role='mainLayout'/>
                     </GridItem>
                 ) : (
                     <GridItem $row='3/4'>

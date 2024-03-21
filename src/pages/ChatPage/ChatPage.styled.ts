@@ -9,7 +9,7 @@ export const Container = styled.div`
 
     @media ${device.lg} {
         display: grid;
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 260px 1fr;
         grid-template-rows: auto;
     };
 `
@@ -44,7 +44,7 @@ export const MainChat = styled.div`
     height:calc(100% - 165px);
 
     @media ${device.sm} {  
-        height:calc(100% - 155px);     
+        height:calc(100% - 152px);     
     };
 
     @media ${device.lg}  {

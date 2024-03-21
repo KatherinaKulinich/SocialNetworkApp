@@ -14,7 +14,7 @@ export const SecondaryLayout:React.FC = () => {
             <MainContent>
                 <Outlet/>
             </MainContent>
-            <Footer/>
+            <Footer role={'secondaryLayout'}/>
         </Container>  
     )
 }
