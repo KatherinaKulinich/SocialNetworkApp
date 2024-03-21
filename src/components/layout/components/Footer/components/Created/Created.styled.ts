@@ -14,19 +14,11 @@ export const Container = styled.div`
 export const IconsBox = styled.div`
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding-top: 5px;
-    border-top: 1px solid #FFFFFF;
+    gap: 8px;
+    padding-top: 3px;
+    border-top: 0.5px solid #FFFFFF;
 `
 
-export const Image = styled.img`
-    display: none;
-    
-    @media ${device.sm} {
-        display: block;
-        ${Size({w: '70px', h: '60px'})};
-    }
-`
 
 export const IconLink = styled.a`
     display: block;
@@ -36,6 +28,6 @@ export const Content = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 4px;
+    gap: 2px;
 `
 

@@ -46,7 +46,7 @@ export const MyPostsPage: React.FC = () => {
                 />
             </ListContainer>
 
-            {isMessagesNotification && <NewUnreadMessagesNotification   chatsAmount={isChatsAmount}/>}
+            {isMessagesNotification && <NewUnreadMessagesNotification  chatsAmount={isChatsAmount}/>}
         </PageContainer>
     )
 }

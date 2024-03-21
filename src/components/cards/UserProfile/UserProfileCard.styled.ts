@@ -8,7 +8,7 @@ export const Container = styled.div`
     width:100%; 
     max-width: 900px;
     ${Column};
-    gap: 60px;
+    gap: 35px;
 
     @media ${device.md} {
         gap: 80px;
@@ -20,7 +20,7 @@ export const MainInfo = styled.div`
     justify-content: center;
     ${FlexCenter};
     flex-direction:column;
-    gap: 30px;
+    gap: 20px;
 
     @media ${device.sm} {
         flex-direction:row;
@@ -37,7 +37,7 @@ export const MainInfo = styled.div`
 export const Personal = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     width: 100%;
 
     @media ${device.sm} {
@@ -56,16 +56,26 @@ export const PersonalMainInfo = styled(Personal)`
 `
 
 export const Name = styled.h2`
-    ${Font({size: '24px', weight: '600', line: '27px', color: theme.colors.regularDark})};
+    ${Font({size: '19px', weight: '600', line: '23px', color: theme.colors.regularDark})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 24px;
+        line-height: 27px;
+    };
 `
 
 export const Subtitle = styled.p`
-    ${Font({size: '18px', weight: '600', line: '20px', color: theme.colors.textColor})};
+    ${Font({size: '13px', weight: '600', line: '17px', color: theme.colors.textColor})};
     text-transform: uppercase;
     display:flex;
     align-items: center;
-    gap: 12px;
+    /* gap: 10px; */
+
+    @media ${device.sm} {
+        font-size: 18px;
+        line-height: 21px;
+    };
 `
 
 export const RegularText = styled(Subtitle)`
@@ -75,7 +85,7 @@ export const RegularText = styled(Subtitle)`
 export const Field = styled.div`
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 `
 
 
@@ -116,7 +126,7 @@ export const InfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 30px;
 
     @media ${device.sm} {
         align-items: start;
@@ -130,7 +140,11 @@ export const Box = styled.div`
     /* width: 100%; */
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+
+    @media ${device.sm} {
+        gap: 15px;
+    }
 `
 
 export const PreviewContainer = styled(Box)`
@@ -139,8 +153,13 @@ export const PreviewContainer = styled(Box)`
 
 
 export const PageLink = styled(Link)`
-    ${Font({size: '14px', weight: '500', line: '17px', color: theme.colors.regular})};
+    ${Font({size: '11px', weight: '300', line: '14px', color: theme.colors.regular})};
     text-decoration: none;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    }
 `
 
 
@@ -152,7 +171,12 @@ export const HobbiesList = styled.ul`
 
 export const HobbyItem = styled.li`
     list-style-type: none;
-    ${Font({size: '14px', weight: '300', line: '16px'})};
+    ${Font({size: '11px', weight: '300', line: '14px'})};
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    }
 
 
     &::before {

@@ -46,6 +46,8 @@ export const ModalEditing:React.FC<ModalEditingProps> = ({isModalOpen, onCloseMo
         >
             <Container>
                 <TextField  
+                    id="editingContentField"
+                    name="editingContentField"
                     value={inputValue}
                     onChange={onChangeInputValue}
                 />

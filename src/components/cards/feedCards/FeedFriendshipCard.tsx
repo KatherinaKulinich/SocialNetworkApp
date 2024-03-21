@@ -39,7 +39,7 @@ export const FeedFriendshipCard:React.FC<FeedFriendshipCardProps> = ({feedFriend
                     <Avatar 
                         photo={user?.profileData?.userAvatar} 
                         border={theme.colors.regularDark} 
-                        size={"40px"}
+                        size={'25px'}
                     />
                     <CardUserName>
                         {user?.personalData?.userFullname}
@@ -52,7 +52,7 @@ export const FeedFriendshipCard:React.FC<FeedFriendshipCardProps> = ({feedFriend
                     <Avatar 
                         photo={friend?.avatar} 
                         border={theme.colors.regularDark} 
-                        size={"40px"}
+                        size={'25px'}
                     />
                     <CardUserName>
                         {friend.name}

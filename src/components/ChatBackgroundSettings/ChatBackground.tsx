@@ -15,7 +15,7 @@ export const ChatBackground:React.FC = () => {
     const { updateChatBackground } = useChatSettings();
 
     const userData = useAppSelector(state => state.userData.user)
-    const { chatBackground } = userData.additionalData
+    const { chatBackground } = userData?.additionalData
 
     
     return (
@@ -34,6 +34,7 @@ export const ChatBackground:React.FC = () => {
                     <Group>
                         {backgrounds.map(item => (
                             <RadioItem 
+                                id={item.value}
                                 value={item.value} 
                                 key={item.id}
                             >

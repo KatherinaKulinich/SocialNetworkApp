@@ -21,7 +21,7 @@ export const FollowingCard:React.FC<FollowingCardProps> = ({user}) => {
                 text='Unfollow' 
                 icon={<FaUserSlash/>} 
                 color={theme.colors.regularDark} 
-                textSize={"12px"} 
+                textSize={"11px"} 
                 iconSize={"13px"} 
                 buttonType={"button"} 
                 fontWeight={600}

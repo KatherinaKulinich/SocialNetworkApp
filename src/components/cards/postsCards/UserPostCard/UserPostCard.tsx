@@ -1,5 +1,5 @@
 import { PostCard } from "../components/PostCard"
-import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent, ReactionBox } from "./UserPostCard.styled"
+import { UserInfo, PostTime, Text, Reactions, ReactionItem, DateField, CommentsButton, Info, PostControls, ControlButton, PostContent, ReactionBox, PostText } from "./UserPostCard.styled"
 import { Avatar } from "@components/Avatar/Avatar"
 import { theme } from "@styles/Theme"
 import { Post } from "types/Post"
@@ -133,9 +133,9 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
             content={
                 <>
                     <PostContent>
-                        <p>
+                        <PostText>
                             {postText}
-                        </p>
+                        </PostText>
                     </PostContent>
                     {owner === 'myProfile' && (
                        <PostControls>

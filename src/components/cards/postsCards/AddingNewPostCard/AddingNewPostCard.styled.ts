@@ -7,9 +7,13 @@ import { device } from "@styles/Breakpoints";
 const { TextArea } = Input;
 
 export const CardImage = styled.img`
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
 
+    @media ${device.xs} {
+        width: 70px;
+        height: 70px;
+    };
     @media ${device.sm} {
         width: 150px;
         height: 150px;

@@ -1,4 +1,4 @@
-import { CardContent, Flex, Text, UserCard, UserInfo, UserName } from "./SearchUserCard.styled"
+import { CardContent, Flex, Text, UserAdditionalInfo, UserCard, UserInfo, UserName } from "./SearchUserCard.styled"
 import { MdDoubleArrow, MdOutlinePermContactCalendar, MdLocationOn } from "react-icons/Md";
 import { Icon } from "../../icons/Icon";
 import { theme } from "@styles/Theme";
@@ -44,35 +44,38 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                 <Avatar 
                     photo={userAvatar} 
                     border={theme.colors.regular} 
-                    size="50px"
+                    size="40px"
                 />
                 <UserInfo>
                     <UserName>
                         {userFullname}
                     </UserName>
-                    <Flex>
-                        <Icon 
-                            icon={<MdOutlinePermContactCalendar/>} 
-                            iconSize="15px" 
-                            iconColor={theme.colors.mediumGray}
-                        /> 
+                    <UserAdditionalInfo>
+                        
+                        <Flex>
+                            <Icon 
+                                icon={<MdOutlinePermContactCalendar/>} 
+                                iconSize="15px" 
+                                iconColor={theme.colors.mediumGray}
+                            /> 
+                            <Text>
+                                {`${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.`}
+                            </Text>
+                        </Flex>
+                        <Flex>
+                            <Icon 
+                                icon={<MdLocationOn/>} 
+                                iconSize="15px" 
+                                iconColor={theme.colors.mediumGray}
+                            /> 
+                            <Text>
+                                {userLocation}
+                            </Text>
+                        </Flex>
                         <Text>
-                            {`${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.`}
+                            {userInterests.join(', ')}
                         </Text>
-                    </Flex>
-                    <Flex>
-                        <Icon 
-                            icon={<MdLocationOn/>} 
-                            iconSize="15px" 
-                            iconColor={theme.colors.mediumGray}
-                        /> 
-                        <Text>
-                            {userLocation}
-                        </Text>
-                    </Flex>
-                    <Text>
-                        {userInterests.join(', ')}
-                    </Text>
+                    </UserAdditionalInfo>
                 </UserInfo>
             </CardContent>
             <Icon 

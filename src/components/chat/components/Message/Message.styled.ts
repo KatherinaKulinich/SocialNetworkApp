@@ -2,10 +2,11 @@ import { styled } from "styled-components";
 import { BoxShadow, Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
 import { Image } from "antd";
+import { device } from "@styles/Breakpoints";
 
 
 export const Container = styled.div<{$sender: string}>`
-    width: 300px;
+    max-width: 300px;
     display: flex;
     flex-direction: ${props => props.$sender === 'me' ? 'row' : 'row-reverse'};
     align-items: flex-end;
@@ -14,6 +15,7 @@ export const Container = styled.div<{$sender: string}>`
 `
 
 export const TextBubble = styled.div<{$sender: string}>`
+    width: inherit;
     padding: 10px 16px;
     display: flex;
     flex-direction: column;
@@ -24,25 +26,35 @@ export const TextBubble = styled.div<{$sender: string}>`
 `
 
 export const SenderName = styled.p`
-    ${Font({size: '12px',weight: '600', line: '15px', color: theme.colors.regularDark})};
+    ${Font({size: '9px',weight: '600', line: '11px', color: theme.colors.regularDark})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 12px;
+        line-height: 15px;
+    }
 `
 
 export const Text = styled.p`
-    ${Font({size: '11px', line: '13px', color: theme.colors.textColor})};
+    ${Font({size: '8px', line: '11px', color: theme.colors.textColor})};
+
+    @media ${device.sm} {
+        font-size: 11px;
+        line-height: 13px;
+    }
 `
 
 
 export const Time = styled(Text)`
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 9px;
+    font-weight: 500;
     color: ${theme.colors.mediumGray};
 `
 
 export const MessageInfo = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     gap:2px;
 `
 

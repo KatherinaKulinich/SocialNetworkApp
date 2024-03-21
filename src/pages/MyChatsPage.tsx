@@ -5,9 +5,7 @@ import { PageContainer } from '@components/containers/PageContainer/PageContaine
 import { ChatsContainer } from '@components/containers/ChatsContainer/ChatsContainer'
 import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage'
 import { useMyFullData } from 'hooks/useMyFullData'
-import { useUnreadMessages } from 'hooks/chat/useUreadMessages'
-import { useEffect, useState } from 'react'
-import { Chat } from 'types/Chat'
+
 
 
 

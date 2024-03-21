@@ -6,8 +6,12 @@ import { device } from "@styles/Breakpoints";
 
 
 export const FooterText = styled.p`
-    ${Font({size: '8px', line: '10px', color: '#FFFFFF'})};
+    ${Font({size: '6px', line: '10px', color: '#FFFFFF'})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 7px;
+    };
 `
 
 export const FooterSection = styled.footer`
@@ -22,7 +26,7 @@ export const FooterSection = styled.footer`
 `
 
 export const FooterContainer = styled.div`
-    padding: 15px 0;
+    padding: 10px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;

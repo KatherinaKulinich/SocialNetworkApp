@@ -45,8 +45,8 @@ export const FriendCard:React.FC<FriendCardProps> = ({user}) => {
                 text={`Chat to ${userGender === 'Female' ? 'her' : 'him'}`} 
                 icon={<BsFillChatHeartFill/>} 
                 color={theme.colors.regularDark} 
-                textSize={"12px"} 
-                iconSize={"15px"} 
+                textSize={"10px"} 
+                iconSize={"13px"} 
                 buttonType={"button"} 
                 fontWeight={600}
                 onClickHandler={(e) => chatToUser(e)}

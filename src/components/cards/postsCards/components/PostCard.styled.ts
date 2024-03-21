@@ -5,11 +5,11 @@ import { device } from "@styles/Breakpoints";
 
 
 export const CardContainer = styled.div`
-    padding: 10px;
+    padding: 12px;
     width: 100%;
     max-width: 600px;
     border: 1px solid ${theme.colors.regularLight};
-    border-radius: 15px;
+    border-radius: 10px;
     ${BoxShadow};
     ${Column};
     align-items: center;
@@ -17,6 +17,7 @@ export const CardContainer = styled.div`
 
     @media ${device.sm} {
         padding: 25px;
+        border-radius: 15px;
     };
 `
 
@@ -25,8 +26,12 @@ export const CardHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     border-bottom: 1px solid ${theme.colors.lightGray};
+
+    @media ${device.sm} {
+        padding-bottom: 15px;
+    };
 `
 
 export const CardFooter = styled.div`
@@ -34,8 +39,12 @@ export const CardFooter = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 15px;
+    padding-top: 10px;
     border-top: 1px solid ${theme.colors.lightGray};
+
+    @media ${device.sm} {
+        padding-top: 15px;
+    };
 `
 
 export const  MainContent = styled.div`

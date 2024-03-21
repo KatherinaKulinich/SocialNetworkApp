@@ -4,8 +4,8 @@ export const LoaderComment:React.FC = () => {
     return (
         <Comment
             visible={true}
-            height="80"
-            width="80"
+            height="50"
+            width="50"
             ariaLabel="comment-loading"
             wrapperStyle={{}}
             wrapperClass="comment-wrapper"

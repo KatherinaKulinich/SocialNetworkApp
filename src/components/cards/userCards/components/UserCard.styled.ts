@@ -7,8 +7,9 @@ import { device } from "@styles/Breakpoints";
 
 
 export const Card = styled.div`
-    padding: 12px;
-    width: 150px;
+    padding: 18px;
+    width: 100%;
+    max-width: 220px;
     border-radius: 10px;
     background-color: ${theme.colors.lightGray};
     ${Column};
@@ -20,12 +21,13 @@ export const Card = styled.div`
     cursor: pointer;
 
     @media ${device.sm} {
-        width: 200px;
-        padding: 15px;
+        max-width: none;
+        width: 220px;
+        padding: 22px;
         border-radius: 15px;
     };
     @media ${device.xl} {
-        width: 220px;
+        width: 250px;
     };
 `
 
@@ -40,27 +42,31 @@ export const ActionsContainer = styled.div`
 
 
 export const Name = styled.h3`
-    ${Font({size: '13px', line: '16px', color: theme.colors.regularDark})};
+    ${Font({size: '12px', line: '15px', color: theme.colors.regularDark})};
     text-transform: uppercase;
 
     @media ${device.sm} {
-        font-size: 16px;
-        line-height: 19px;
+        font-size: 14px;
+        line-height: 17px;
     };
 `
 
 export const PersonalInfo = styled.div`
     ${Column};
-    gap: 5px;
+    gap: 3px;
     text-align: center;
+
+    @media ${device.sm} {
+        gap: 6px;
+    };
 `
 
 export const Text = styled.p`
-    ${Font({size: '11px', line: '14px', color: theme.colors.mediumGray})};
+    ${Font({size: '9px', line: '14px', color: theme.colors.mediumGray})};
     text-transform: uppercase;
 
     @media ${device.sm} {
-        font-size: 13px;
+        font-size: 11px;
         line-height: 15px;
     };
 `

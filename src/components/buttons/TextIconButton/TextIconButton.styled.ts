@@ -12,7 +12,7 @@ interface ButtonProps {
 
 
 export const Button = styled.button<ButtonProps>`
-    padding: 3px 6px;
+    padding: 4px 10px;
     font-size: ${props => props.textSize};
     font-weight: ${props => props.fontWeight};
     text-decoration: none;
@@ -20,7 +20,7 @@ export const Button = styled.button<ButtonProps>`
     color: ${props => props.isDisabled ? theme.colors.mediumGray : props.color};
     ${FlexCenter}
     gap: 6px;
-    background-color: rgba(235, 235, 235, .4);
+    background-color: rgba(235, 235, 235, .5);
     border-radius: 10px;
     cursor: ${props => props.isDisabled ? 'not-allowed' : 'pointer'};
 
@@ -30,7 +30,7 @@ export const Button = styled.button<ButtonProps>`
 
     @media ${device.sm} {
         gap: 10px;
-        padding: 5px 10px;
+        padding: 5px 12px;
         font-size: ${props => props.textSize};
     };
 `

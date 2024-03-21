@@ -18,22 +18,22 @@ import { fetchInputFocusData } from 'rdx/slices/chatSlice'
 import { TypingAnimation } from '@components/animations/TypingAnimation/TypingAnimation'
 
 
-
-
 interface ChatProps {
     user: UserProfile
 }
 
 
 export const Chat:React.FC<ChatProps> = ({user}) => {
-    const chatMessages = useAppSelector(state => state.chat.chat)
     const dispatch = useAppDispatch()
+    const chatMessages = useAppSelector(state => state.chat.chat)
 
     const myData = useAppSelector(state => state.userData.user)
     const { userId:myId }= myData?.personalData
     const { userName, userId } = user?.personalData ?? {}
 
+
     const { isSelectedChat, getChatWithUser } = useChatChecking(user)
+    const { sendNewMessage, isImageLoading } = useMessageSending(isSelectedChat, user, myData)
 
     useEffect(() => {
         if (user) {
@@ -42,6 +42,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [myData.chats, user])
 
 
+    //bg
     const [bgUrl, setBgUrl] = useState('')
     const { chatBackground } = myData?.additionalData ?? {}
 
@@ -58,7 +59,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [backgrounds, chatBackground, bgUrl])
 
 
-
+    //message
     const [messageText, setMessageText] = useState<string>('')
     const [messageImg, setMessageImg] = useState<File | null>(null)
 
@@ -74,9 +75,6 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
         setMessageImg(img)
     }, [messageImg])
 
-    const { sendNewMessage, isImageLoading } = useMessageSending(isSelectedChat, user, myData)
-
-
     const onSubmitForm = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         
@@ -88,15 +86,6 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
         }
     }, [messageImg, messageText, isSelectedChat, user])
 
-
-    const getMessageSender = (id: string) => {
-        if (myId === id) {
-            return 'me'
-        }
-        return 'friend'
-    }
-
-
     const sayHelloToUser = useCallback(() => {
         if (isSelectedChat) {
             sendNewMessage(messageImg, `Hello, ${userName}! 👋🏼`, isSelectedChat)
@@ -104,21 +93,21 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [isSelectedChat, user])
 
 
-
+    //emoji
     const [isEmojiPickerOpen, setIsEmojiiPickerOpen] = useState<boolean>(false)
 
     const onToggleEmojiiPicker = useCallback(() => {
         setIsEmojiiPickerOpen(prev => !prev)
     }, [isEmojiPickerOpen])
 
-
     const addEmojiToMessage: MouseDownEvent = useCallback((event) => {
         setMessageText(prev => prev.concat(event.emoji))
     }, [messageText])
 
 
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
+    //drawer
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
     const onOpenDrawer = useCallback(() => {
         setIsDrawerOpen(true)
@@ -129,7 +118,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
 
 
 
-
+    //userIsTyping
     useEffect(() => {
         if (isSelectedChat.chatId) {
             dispatch(fetchInputFocusData(isSelectedChat.chatId, userId))
@@ -137,6 +126,15 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
     }, [isSelectedChat.chatId])
 
     const userIsTyping = useAppSelector(state => state.chat.userIsTyping)
+
+
+
+    const getMessageSender = (id: string) => {
+        if (myId === id) {
+            return 'me'
+        }
+        return 'friend'
+    }
 
 
     
@@ -180,14 +178,11 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                         </EmptyChatMessage>
                     )}
                     {userIsTyping && <TypingAnimation/>}
-                    {/* {userIsTyping && <TypingMessage>User is typing...</TypingMessage>} */}
-                    
                     <EmojiPopup
                         popupIsOpen={isEmojiPickerOpen}
                         getEmoji={addEmojiToMessage}
                         role='chat'
                     />
-                    
                     <ChatDrawer
                         isOpen={isDrawerOpen}
                         onOpen={onOpenDrawer}
@@ -207,9 +202,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                     isImageLoading={isImageLoading}
                     chatId={isSelectedChat.chatId}
                 />
-            </Container>
-
-                
+            </Container>   
         </>
     )
 }

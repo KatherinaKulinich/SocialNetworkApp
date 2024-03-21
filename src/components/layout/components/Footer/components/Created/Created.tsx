@@ -32,7 +32,7 @@ export const Created:React.FC = () => {
                         <Icon 
                             icon={<AiFillGithub/>} 
                             iconColor='#FFFFFF' 
-                            iconSize='20px'
+                            iconSize='15px'
                         />
                     </IconLink>
                     <IconLink 
@@ -42,14 +42,14 @@ export const Created:React.FC = () => {
                         <Icon 
                             icon={<AiFillLinkedin/>} 
                             iconColor='#FFFFFF' 
-                            iconSize='20px'
+                            iconSize='15px'
                         />
                     </IconLink>
                     <IconLink href="mailto:kulinichcatherina@gmail.com">
                         <Icon 
                             icon={<SiGmail/>} 
                             iconColor='#FFFFFF' 
-                            iconSize='20px'
+                            iconSize='15px'
                         />
                     </IconLink>
                 </IconsBox>

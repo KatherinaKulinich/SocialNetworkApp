@@ -132,13 +132,16 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                 >
                     <Col xs={24} lg={12}>
                         <Form.Item
-                            label="Gender"
+                            // htmlFor="Gender"
+                            // label="Gender"
                             name="userGender"
                             rules={[{ required: true, message: 'Please select your gender' }]}
                             labelAlign="left"
                             wrapperCol={{span: 10, offset: 0}}
                         >
                             <Radio.Group 
+                                // id="Gender"
+                                name="Gender"
                                 options={genderOptions} 
                                 optionType="button" 
                             />
@@ -227,10 +230,12 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                     <Col xs={24} lg={24}>
                         <Form.Item
                             label="About"
+                            htmlFor="About"
                             name="userAbout"
                             wrapperCol={{span: 24, offset: 0}}
                         >
                             <TextArea
+                                id="About"
                                 placeholder="Please share some sentences about your personality..."
                                 autoSize={{ minRows: 3, maxRows: 5 }}
                             />

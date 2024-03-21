@@ -34,7 +34,7 @@ export const CommentCard:React.FC<CommentCardProps> = ({comment}) => {
                 <Avatar 
                     photo={userAvatar} 
                     border={theme.colors.regular} 
-                    size={"30px"}
+                    size={"25px"}
                 />
                 <TextField>
                     <Name>

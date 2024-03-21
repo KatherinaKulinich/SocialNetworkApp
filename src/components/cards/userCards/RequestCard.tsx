@@ -24,7 +24,7 @@ export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
                     text='Delete' 
                     icon={<FaUserTimes/>} 
                     color={theme.colors.regularDark} 
-                    textSize={"12px"} 
+                    textSize={"11px"} 
                     iconSize={"13px"} 
                     buttonType={"button"} 
                     fontWeight={600}
@@ -34,7 +34,7 @@ export const RequestCard:React.FC<RequestCardProps> = ({user}) => {
                     text='Accept' 
                     icon={<FaUserCheck/>} 
                     color={theme.colors.success} 
-                    textSize={"12px"} 
+                    textSize={"11px"} 
                     iconSize={"13px"} 
                     buttonType={"button"} 
                     fontWeight={600}

@@ -6,9 +6,9 @@ import { FlexCenter } from "@styles/mixins";
 export const TitleContainer = styled.div`
     align-self: stretch;
     ${FlexCenter};
-    gap: 10px;
+    gap: 7px;
     z-index: 5;
-    padding-bottom: 15px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #eee;
 `
 
@@ -17,7 +17,7 @@ export const Image = styled.img`
     width: 100px;
 
     @media ${device.sm} {
-        width: 190px;
+        width: 140px;
     };
 `
 
@@ -26,5 +26,5 @@ export const TextContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: end;
-    gap: 8px;
+    gap: 3px;
 `

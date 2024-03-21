@@ -8,11 +8,11 @@ export const PageContainer = styled.div`
     height: 100vh ;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 70px 1fr 55px;
+    grid-template-rows: 58px 1fr 55px;
     position: relative;
 
     @media ${device.md} {
-        grid-template-rows: 70px 1fr 90px;
+        grid-template-rows: 58px 1fr 71px;
     };
 `
 

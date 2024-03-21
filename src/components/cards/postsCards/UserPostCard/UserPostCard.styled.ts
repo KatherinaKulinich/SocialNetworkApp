@@ -1,6 +1,6 @@
+import { styled } from "styled-components"
 import { BoxShadow, FlexCenter, Font } from "@styles/mixins"
 import { theme } from "@styles/Theme"
-import { styled } from "styled-components"
 import { device } from "@styles/Breakpoints";
 import Radio from "antd/lib/radio";
 
@@ -17,21 +17,39 @@ export const DateField = styled.div`
 `
 
 export const Text = styled.p`
-    ${Font({size: '12px', line: '16px', color: theme.colors.mediumGray})};
+    ${Font({size: '10px', line: '14px', color: theme.colors.mediumGray})};
+
+    @media ${device.sm} {
+        font-size: 12px;
+        line-height: 15px;
+    };
+`
+
+export const PostText = styled.p`
+    ${Font({size: '12px', line: '14px', color: theme.colors.textColor})};
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 15px;
+    };
 `
 
 export const PostTime = styled(Text)`
-    font-size: 9px;
+    font-size: 7px;
+
+    @media ${device.sm} {
+        font-size: 9px;
+    };
 `
 
 
 export const Reactions = styled(Radio.Group)`
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 9px;
 
     @media ${device.sm} {
-        gap: 10px;
+        gap: 13px;
     };
     @media ${device.xl} {
         gap: 15px;
@@ -136,7 +154,7 @@ export const CommentsButton = styled.button<{$items: number}>`
     padding: 7px;
     border-radius: 5px;
     width: initial;
-    ${Font({size: '12px', weight: '600', line: '16px', color: theme.colors.regularDark})};
+    ${Font({size: '11px', weight: '600', line: '16px', color: theme.colors.regularDark})};
     text-transform: uppercase;
     ${BoxShadow};
     position: relative;
@@ -177,7 +195,11 @@ export const CommentsButton = styled.button<{$items: number}>`
 export const Info = styled.div`
     display: flex;
     align-items: end;
-    gap: 12px;
+    gap: 8px;
+
+    @media ${device.sm} {
+        gap: 10px;
+    }
 `
 
 export const PostControls = styled.div`
@@ -187,10 +209,14 @@ export const PostControls = styled.div`
     justify-content:flex-end;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
+
+    @media ${device.sm} {
+        gap: 10px;
+    }
 `
 export const ControlButton = styled.button`
-    ${Font({size: '11px', weight: '600' ,line: '15px', color: theme.colors.mediumGray})};
+    ${Font({size: '8px', weight: '600' ,line: '13px', color: theme.colors.mediumGray})};
     text-transform: uppercase;
     padding: 3px 6px;
     border-radius: 4px;
@@ -200,6 +226,11 @@ export const ControlButton = styled.button`
         background-color: ${theme.colors.mediumGray};
         color: ${theme.colors.lightGray};
     }
+
+    @media ${device.sm} {
+        font-size: 11px;
+        line-height: 15px;
+    }
 `
 
 export const PostContent = styled.div`
@@ -208,8 +239,17 @@ export const PostContent = styled.div`
 
 export const ReactionBox = styled.div`
     ${FlexCenter};
-    /* width: 40px;
-    height: 40px; */
+    width: 24px;
+    height: 24px;
     position: relative;
     z-index: 10;
+
+    @media ${device.sm} {
+        width: 28px;
+        height: 28px;
+    };
+    @media ${device.xl} {
+        width: 32px;
+        height: 32px;
+    };
 `

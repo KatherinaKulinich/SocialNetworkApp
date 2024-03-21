@@ -16,18 +16,21 @@ export const Container = styled.div`
 
 
 export const ChatsPreview = styled.div`
-    
+    z-index: 20;
+
     @media ${device.lg} {
         width: 100%;
         grid-column: 1/2;
-        padding: 15px;
+        padding: 10px;
         background-color: ${theme.colors.lightGray};
-        max-height: calc(100vh - 160px);
-        min-height: calc(100vh - 160px);
+        /* max-height: calc(100vh - 129px);
+        min-height: calc(100vh - 129px); */
         overflow-y: auto;
         position: absolute;
+        /* position: absolute; */
         top: 0;
         left:0;
+        bottom:0;
     };
 `
 
@@ -36,19 +39,14 @@ export const MainChat = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    position: absolute;
-    max-height: calc(100vh - 125px);
-    overflow-y: auto;
-    grid-column: 2/3;
+    position:absolute;
+    /* position:relative; */
+    height:calc(100% - 165px);
 
-
-    @media ${device.sm} {       
-        max-height: calc(100vh - 125px);
+    @media ${device.sm} {  
+        height:calc(100% - 155px);     
     };
 
-    @media ${device.md}  {
-        max-height: calc(100vh - 160px);
-    }
     @media ${device.lg}  {
         grid-column: 2/3;
     }

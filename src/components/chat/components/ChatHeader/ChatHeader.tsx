@@ -31,7 +31,7 @@ export const ChatHeader:React.FC<ChatHeaderProps> = ({user, onOpenDrawer, chatId
                     <IconButton 
                         icon={<MdDoubleArrow style = {{transform: 'rotate(180deg)' }}/>} 
                         color={theme.colors.regular} 
-                        size={"40px"} 
+                        size={"30px"} 
                         type={"button"} 
                     />
                 </Link>
@@ -40,7 +40,7 @@ export const ChatHeader:React.FC<ChatHeaderProps> = ({user, onOpenDrawer, chatId
                 <Avatar 
                     photo={userAvatar} 
                     border={theme.colors.regular} 
-                    size='30px'
+                    size='25px'
                 />
                 <Name>
                     {userFullname}

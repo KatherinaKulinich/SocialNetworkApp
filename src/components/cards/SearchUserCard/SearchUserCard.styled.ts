@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
 import { BoxShadow,Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
+import { device } from "@styles/Breakpoints";
 
 
 
 export const UserCard = styled.div`
-    padding: 10px 20px;
+    padding: 7px 14px;
     display: block;
     width: 100%;
     max-width: 500px;
@@ -23,6 +24,10 @@ export const UserCard = styled.div`
     &:active {
         background-color: ${theme.colors.regularLight};
     }
+
+    @media ${device.sm} {
+        padding: 10px 20px;
+    };
 `
 
 export const Flex = styled.div`
@@ -31,22 +36,49 @@ export const Flex = styled.div`
     gap: 5px;
 `
 export const CardContent = styled(Flex)`
-    gap: 15px;
+    gap: 7px;
+    /* align-items: start; */
+
+    @media ${device.sm} {
+        gap: 15px;
+    };
     
 `
 export const UserInfo = styled.div`
     display:flex;
     flex-direction: column;
-    gap: 11px;
+    gap: 10px;
     max-width: 200px;
+
+    @media ${device.sm} {
+        gap: 18px;
+    };
+`
+
+export const UserAdditionalInfo = styled(UserInfo)`
+    gap: 2px;
+
+    @media ${device.sm} {
+        gap: 6px;
+    };
 `
 
 export const UserName = styled.p`
-    ${Font({size: '14px', weight: '600', line: '17px', color: theme.colors.regularDark})};
+    ${Font({size: '11px', weight: '600', line: '14px', color: theme.colors.regularDark})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    };
 `
 
 export const Text = styled.p`
-    ${Font({size: '11px', line: '13px', color: theme.colors.mediumGray})};
+    ${Font({size: '8px', weight: '300', line: '11px', color: theme.colors.mediumGray})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 10px;
+        line-height: 13px;
+    };
 `

@@ -64,6 +64,7 @@ export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, o
                     style={{width: '100%'}}
                 >
                     <TextField 
+                        id="addingPhoto"
                         placeholder="Photo description" 
                         style={{width: '100%'}}
                     />

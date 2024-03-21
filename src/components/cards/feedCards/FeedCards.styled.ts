@@ -11,12 +11,13 @@ export const Card = styled.div`
     border-radius: 7px;
     ${BoxShadow};
     ${Column};
-    gap: 15px;
+    gap: 10px;
     background-color: ${theme.colors.lightGray};
 
     @media ${device.sm} {
         padding: 25px;
         border-radius: 12px;
+        gap: 15px;
     };
     @media ${device.xl} {
         padding: 35px;
@@ -32,12 +33,22 @@ export const CardHeader = styled.div`
 `
 
 export const CardUserName = styled.p`
-    ${Font({size: '14px', weight: '600', line: '17px', color: theme.colors.regularDark})};
+    ${Font({size: '11px', weight: '600', line: '14px', color: theme.colors.regularDark})};
     cursor: pointer;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    };
 `
 
 export const CardText = styled.p`
-    ${Font({size: '11px', weight: '400', line: '15px', color: theme.colors.darkGray})};
+    ${Font({size: '9px', weight: '300', line: '12px', color: theme.colors.darkGray})};
+
+    @media ${device.sm} {
+        font-size: 11px;
+        line-height: 15px;
+    };
 `
 
 export const UserDataContainer = styled.div`
@@ -48,6 +59,9 @@ export const UserDataContainer = styled.div`
 `
 
 export const CardImage = styled.img`
-    width: 300px;
+    width: 150px;
 
+    @media ${device.sm} {
+        width: 300px;
+    };
 `

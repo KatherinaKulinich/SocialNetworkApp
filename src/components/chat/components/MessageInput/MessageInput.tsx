@@ -19,7 +19,7 @@ interface MessageInputProps {
     onChangeFileValue?: React.ChangeEventHandler<HTMLInputElement>;
     onToggleEmoji: () => void;
     isImageLoading?: boolean;
-    chatId: string;
+    chatId?: string;
 }
 
 
@@ -47,7 +47,7 @@ export const MessageInput:React.FC<MessageInputProps> = (
                         <IconButton>
                             <Icon 
                                 icon={<MdOutlineImageSearch/>} 
-                                iconSize="25px" 
+                                iconSize="20px" 
                                 iconColor='bebebe'
                             /> 
                         </IconButton>
@@ -58,7 +58,7 @@ export const MessageInput:React.FC<MessageInputProps> = (
             return (
                 <Icon 
                     icon={<FaFileCircleCheck/>} 
-                    iconSize="25px" 
+                    iconSize="20px" 
                     iconColor='green'
                 /> 
             )
@@ -104,7 +104,7 @@ export const MessageInput:React.FC<MessageInputProps> = (
                 <IconButton onClick={onToggleEmoji}>
                     <Icon 
                         icon={<BsEmojiSmile/>} 
-                        iconSize="25px" 
+                        iconSize="15px" 
                         iconColor='bebebe'
                     /> 
                 </IconButton>

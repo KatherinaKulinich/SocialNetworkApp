@@ -40,7 +40,7 @@ export const ProfileLink:React.FC = () => {
             <Icon 
                 icon={<AiOutlineUser/>} 
                 iconColor='#FFFFFF' 
-                iconSize='36px'
+                iconSize='26px'
             />
             <ProfileCardText>
                 <ProfileCardTitle>My profile</ProfileCardTitle>

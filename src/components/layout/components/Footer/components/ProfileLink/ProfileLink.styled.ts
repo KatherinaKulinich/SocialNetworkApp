@@ -24,19 +24,14 @@ export const ProfileCardText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
 `
 
 export const ProfileCardTitle = styled.p`
     ${Font({size: '10px', line: '13px', color: '#FFFFFF'})};
     text-transform: uppercase;
 
-    @media ${device.sm} {
-        font-size: 12px;
-        line-height: 16px;
-    }
     @media ${device.xl} {
-        font-size: 15px;
+        font-size: 14px;
         line-height: 19px;
     }
 `

@@ -14,14 +14,14 @@ export const HeaderSection = styled.header`
 `
 
 export const HeaderContainer = styled.div`
-    padding: 10px 0;
+    padding: 8px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `
 
 export const HeaderText = styled.p`
-    ${Font({size: '14px', line: '17px', weight: '600', color: '#FFFFFF'})};
+    ${Font({size: '12px', line: '17px', weight: '600', color: '#FFFFFF'})};
     text-transform: uppercase;
 `
 

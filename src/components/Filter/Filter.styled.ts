@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
-import { Select } from "antd";
+import { device } from "@styles/Breakpoints";
 
 
 export const FilterField = styled.div`
@@ -12,6 +12,11 @@ export const FilterField = styled.div`
 
 
 export const Label = styled.p`
-    ${Font({size: '18px', line: '21px', color: theme.colors.regularDark})};
+    ${Font({size: '12px', line: '15px', color: theme.colors.regularDark})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 16px;
+        line-height: 19px;
+    };
 `

@@ -57,7 +57,7 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem, refre
                         <Avatar 
                             photo={user?.profileData?.userAvatar} 
                             border={theme.colors.regularDark} 
-                            size={"40px"}
+                            size={"25px"}
                         />
                         <CardUserName>
                             {user?.personalData?.userFullname}

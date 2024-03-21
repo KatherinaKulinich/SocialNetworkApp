@@ -1,34 +1,24 @@
 import img from '@images/chat.svg'
-import { useState } from 'react'
 import { Chat } from "@components/chat/Chat/Chat"
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { ChatsContainer } from "@components/containers/ChatsContainer/ChatsContainer"
 import { Container, ChatsPreview, MainChat } from "./ChatPage.styled"
 import { useWindowSize } from "../../hooks/useWindowSize"
-import { useAppDispatch, useAppSelector } from 'hooks/hooks'
-import { useCallback } from 'react'
+import { useAppSelector } from 'hooks/hooks'
 import { useMyFullData } from 'hooks/useMyFullData'
-import { fetchChatData } from 'rdx/slices/chatSlice'
-import { ChatDrawer } from '@components/chat/components/Drawer/ChatDrawer'
+
 
 
 
 export const ChatPage:React.FC = () => {
-    const dispatch = useAppDispatch()
     const { width } = useWindowSize();
 
-    // const myData = useAppSelector(state => state.userData.user)
+
     const myData = useMyFullData()
     const { chats } = myData
 
     const user = useAppSelector(state => state.users.selectedUser )
     const { userName } = user?.personalData ?? ''
-
-
-   
-
-    
-
 
 
     
@@ -47,9 +37,7 @@ export const ChatPage:React.FC = () => {
                     titleFirst={"chat"} 
                     titleSecond={userName && `with ${userName}`}
                 />
-                <Chat user={user}/>
-
-                
+                <Chat user={user}/> 
             </MainChat>
         </Container>
     )

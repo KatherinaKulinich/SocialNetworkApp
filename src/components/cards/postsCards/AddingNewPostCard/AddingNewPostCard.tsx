@@ -35,6 +35,7 @@ export const AddingNewPostCard:React.FC = () => {
                 <CreatingPostField>
                     <CardImage src={image}/>
                     <TextField 
+                        id='postInput'
                         name='postInput'
                         value={postText}
                         onChange={onChangePostText}
@@ -49,8 +50,8 @@ export const AddingNewPostCard:React.FC = () => {
                         text='Save post' 
                         icon={<GiCheckMark/>} 
                         color={theme.colors.regularDark} 
-                        textSize={"16px"} 
-                        iconSize={"20px"} 
+                        textSize={"12px"} 
+                        iconSize={"16px"} 
                         buttonType={"button"} 
                         fontWeight={600}
                         onClickHandler={onSavePost}

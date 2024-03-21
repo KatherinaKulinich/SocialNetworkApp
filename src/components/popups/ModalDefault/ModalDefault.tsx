@@ -28,7 +28,7 @@ export const ModalDefault:React.FC<ModalProps> = ({children, title, isModalOpen,
                 <Icon 
                     icon={<MdClose/>} 
                     iconColor={theme.colors.regular} 
-                    iconSize="40px"
+                    iconSize="20px"
                 />
             </CloseButton>
         </ModalContainer>

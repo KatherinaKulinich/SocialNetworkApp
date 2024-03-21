@@ -32,9 +32,9 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose})
             onOpen={onOpen}
             PaperProps={{
                 sx: {
-                    height: 'calc(100% - 126px)',
+                    height: 'calc(100% - 114px)',
                     position: 'absolute',
-                    top: 70,
+                    top: 58,
                     bottom: 56,
                     width: '100%',
                     maxWidth: 500,

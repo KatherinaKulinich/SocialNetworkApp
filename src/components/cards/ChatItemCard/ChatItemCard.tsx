@@ -75,7 +75,7 @@ export const ChatItemCard:React.FC<ChatItemCardProps> = ({chatItemData, isChatWi
             </CardContent>
             <Icon 
                 icon={<MdDoubleArrow/>} 
-                iconSize="40px" 
+                iconSize="30px" 
                 iconColor={theme.colors.regular}
             /> 
             {isChatWithNewMessages && (

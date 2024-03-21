@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 
+
 interface AvatarImageProps {
     border: string;
     size: string;
@@ -8,8 +9,8 @@ interface AvatarImageProps {
 
 export const AvatarImage = styled.img<AvatarImageProps>`
     object-fit: cover;
-    width: ${props => props.size};
+    width: ${props => props.size };
     height: ${props => props.size};
-    border: 2px solid ${props => props.border};
+    border: 1px solid ${props => props.border};
     border-radius: 50px;
 `

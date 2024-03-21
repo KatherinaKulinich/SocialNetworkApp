@@ -39,14 +39,14 @@ export const TabsBox:React.FC<TabsBoxProps> = (
                 >
                     <Tab  
                         label={
-                            <span style={{ color: '#FF4F5A'}}>
+                            <span style={{ color: '#FF4F5A', fontSize: '11px'}}>
                                 {firstTabName}
                             </span>
                         }
                     />
                     <Tab  
                         label={
-                            <span style={{ color: '#FF4F5A' }}>
+                            <span style={{ color: '#FF4F5A', fontSize: '11px' }}>
                                 {secondTabName}
                             </span>
                         }

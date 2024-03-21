@@ -10,11 +10,11 @@ export const NavContainer = styled.nav`
     display: flex;
     flex-direction: column;
     align-items: start;
-    gap: 20px;
+    gap: 12px;
 `
 
 export const Link = styled(NavLink)`
-    ${Font({size: '13px', line: '16px', color: theme.colors.white})};
+    ${Font({size: '11px', line: '16px', color: theme.colors.white})};
     text-transform: uppercase;
     text-decoration:none;
     display: inline-flex;
@@ -44,7 +44,7 @@ export const Link = styled(NavLink)`
         border-bottom: 1px solid #bcbcbc;
 
         @media ${device.sm} {
-            padding-bottom: 20px;
+            padding-bottom: 14px;
         };
     }
 
@@ -53,7 +53,7 @@ export const Link = styled(NavLink)`
         border-top: 1px solid #bcbcbc;
 
         @media ${device.sm} {
-            padding-bottom: 20px;
+            padding-bottom: 14px;
         };
     }
 `

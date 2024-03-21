@@ -2,43 +2,57 @@ import { styled } from "styled-components";
 import { BoxShadow, Column, FullSize, Font, FlexCenter } from "@styles/mixins";
 import { theme } from "@styles/Theme";
 import { Image } from "antd";
+import { device } from "@styles/Breakpoints";
 
 
 export const Card = styled.div`
-    padding: 20px;
-    width: 300px;
-    min-height: 450px;
+    padding: 15px;
+    width:100%;
+    max-width: 300px;
+    min-height: 400px;
     ${BoxShadow};
     ${Column};
     gap: 8px; 
     background-color: #ffffff;
+
+    @media ${device.sm} {
+        /* padding: 20px; */
+    };
+    @media ${device.lg} {
+        min-height: 450px;
+    };
 `
 
 export const CardImage = styled(Image)`
     object-fit: cover;
-    min-width: 260px;
-    min-height: 260px;
     width: 260px;
-    height: 260px;
-    max-width: 260px;
-    max-height: 260px;
+    min-height: 260px;
 `
 
 export const Content = styled.div`
     ${FullSize};
     ${Column};
     justify-content: space-between;
-    gap: 30px;
+    gap: 20px;
     text-align: center;
     position: relative;
+
+    @media ${device.sm} {
+        gap: 30px;
+    };
 `
 
 export const PhotoDescription = styled.p`
-    ${Font({size: '14px', weight: '500', line: '16px', color: theme.colors.regularDark})};
+    ${Font({size: '12px', weight: '500', line: '14px', color: theme.colors.regularDark})};
     word-wrap: wrap;
     max-height: 75px;
     max-width: 260px;
     overflow: hidden;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    };
 `
 
 export const Actions = styled.div`
@@ -61,17 +75,33 @@ export const Comments = styled.button`
     border: none;
     outline: none;
     background-color: transparent;
-    color: ${theme.colors.regular};
+    ${Font({size: '12px', line: '15px', color: theme.colors.regular})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    };
 `
 
 export const Text = styled.p`
-    ${Font({size: '16px', line: '19px', color: theme.colors.mediumGray})};
+    ${Font({size: '12px', line: '15px', color: theme.colors.mediumGray})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 14px;
+        line-height: 17px;
+    };
 `
 
 export const DateText = styled(Text)`
-    font-size: 10px;
+    font-size: 8px;
+    line-height: 11px;
+
+    @media ${device.sm} {
+        font-size: 10px;
+        line-height: 13px;
+    };
 `
 
 export const Separator = styled.div`

@@ -6,11 +6,19 @@ import { AbsoluteCenter, FlexCenter, Font, FullSize } from '@styles/mixins';
 export const Container = styled.div`
     width:100%;
     min-height:100%;
+    /* position:fixed; */
+    /* top: 160px;
+    left: 0;
+    right: 0;
+    bottom: 56px; */
+    /* height: 100%; */
+     /* height:calc(100vh - 285px); */
     position:relative;
     border-right: 1px solid ${theme.colors.lightGray};
 `
 export const ContainerBackground = styled.div<{$url: string}>`
-    height:calc(100vh - 322px);
+    height:calc(100vh - 320px);
+    height: 100%;
     position: relative;
     background-color: #fff9f9;
     background-image: url(${props => props.$url});
@@ -29,23 +37,29 @@ export const ContainerBackground = styled.div<{$url: string}>`
     }
 
     @media ${device.sm} {       
-        height:calc(100vh - 396px);
+        height:calc(100vh - 320px);
     };
     @media ${device.md} {       
-        height:calc(100vh - 434px);
+        height:calc(100vh - 344px);
     };
 `
 
 export const MessagesContainer = styled.div<{$isUserTyping: boolean}>`
-    padding: 15px 30px ;
+    padding: 7px 10px ;
     ${FullSize};
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 15px;
+    gap: 9px;
     overflow-x:auto;
     z-index:10;
-    padding-bottom: ${props => props.$isUserTyping === true ? '40px' : '15px'};
+    padding-bottom: ${props => props.$isUserTyping === true ? '25px' : '7px'};
+
+    @media ${device.sm} {       
+        padding: 15px 22px ;
+        gap: 15px;
+        padding-bottom: ${props => props.$isUserTyping === true ? '40px' : '15px'};
+    };
 `
 export const MessageRow = styled.div<{$sender: string}>`
     z-index: 10;
@@ -72,6 +86,11 @@ export const EmptyChatMessage = styled.div`
     text-align: center;
 `
 export const Text = styled.p`
-    ${Font({size: '14px', line: '17px', color: theme.colors.regularDark})};
+    ${Font({size: '11px', line: '14px', color: theme.colors.regularDark})};
+
+    @media ${device.sm}  {
+        font-size: 14px;
+        line-height: 17px;
+    }
 `
 

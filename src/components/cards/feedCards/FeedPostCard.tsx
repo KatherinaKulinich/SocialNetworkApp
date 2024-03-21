@@ -54,7 +54,7 @@ export const FeedPostCard:React.FC<FeedPostCardProps> = ({feedPostItem, refreshD
                         <Avatar 
                             photo={user?.profileData?.userAvatar} 
                             border={theme.colors.regularDark} 
-                            size={"40px"}
+                            size={'25px'}
                         />
                         <CardUserName>
                             {user?.personalData?.userFullname}

@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import { AbsoluteCenter, BoxShadow, Font } from "@styles/mixins";
+import { BoxShadow, Font } from "@styles/mixins";
 import { theme } from "@styles/Theme";
-import { Link } from "react-router-dom";
+import { device } from "@styles/Breakpoints";
 
 
 export const ChatCard = styled.div<{$new:boolean}>`
@@ -26,6 +26,7 @@ export const ChatCard = styled.div<{$new:boolean}>`
     &:active {
         background-color: ${theme.colors.regularLight};
     }
+
 `
 
 export const CardContent = styled.div`
@@ -42,12 +43,17 @@ export const MessageInfo = styled.div`
 `
 
 export const UserName = styled.p`
-    ${Font({size: '14px', weight: '600', line: '17px', color: theme.colors.regularDark})};
+    ${Font({size: '11px', weight: '600', line: '15px', color: theme.colors.regularDark})};
     text-transform: uppercase;
+
+    @media ${device.sm} {
+        font-size: 12px;
+        line-height: 17px;
+    };
 `
 
 export const MessageText = styled.p`
-    ${Font({size: '9px', line: '13px', color: theme.colors.mediumGray})};
+    ${Font({size: '8px', line: '11px', color: theme.colors.mediumGray})};
     max-width: 120px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -58,6 +64,11 @@ export const MessageText = styled.p`
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
     background-image: linear-gradient(90deg, #5a5858 20%, #dcdcdc 90%);
+
+    @media ${device.sm} {
+        font-size: 9px;
+        line-height: 13px;
+    };
 `
 
 export const Badge = styled.div`

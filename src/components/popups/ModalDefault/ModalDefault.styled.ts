@@ -7,7 +7,8 @@ import { device } from "@styles/Breakpoints";
 
 
 export const ModalContainer = styled(Dialog)`
-    
+    /* padding: 14px; */
+
     & .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
         padding: 14px;
         position:relative;
@@ -15,6 +16,7 @@ export const ModalContainer = styled(Dialog)`
         width: 100%;
         max-width: 600px;
         text-align: center;
+        margin: 10px;
 
         @media ${device.sm} {
             padding: 30px;
@@ -23,14 +25,24 @@ export const ModalContainer = styled(Dialog)`
 `
 
 export const ModalTitle = styled(DialogTitle)`
-    ${Font({size: '12px', line: '15px', color: theme.colors.regular})};
     text-transform: uppercase;
+    color: ${theme.colors.regular};
+
+    &.css-bdhsul-MuiTypography-root-MuiDialogTitle-root {
+        font-size: 11px;
+        line-height: 14px;
+    
+        @media ${device.sm} {
+            font-size: 14px;
+            line-height: 17px;
+        };
+    }
 `
 
 export const CloseButton = styled.button`
     position: absolute;
-    top: 7px;
-    right: 7px;
+    top: 10px;
+    right: 10px;
     background-color: white;
     border-radius: 5px;
     padding:0;
