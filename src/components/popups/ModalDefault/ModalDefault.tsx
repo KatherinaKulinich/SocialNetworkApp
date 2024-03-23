@@ -17,6 +17,13 @@ export const ModalDefault:React.FC<ModalProps> = ({children, title, isModalOpen,
         <ModalContainer 
             open={isModalOpen} 
             onClose={onCloseModal}
+            // maxWidth
+            sx={{
+                width: 600,
+                // maxWidth: 600,
+                padding: '20px',
+                margin: '10px'
+            }}
         >
             <ModalTitle>
                 {title}

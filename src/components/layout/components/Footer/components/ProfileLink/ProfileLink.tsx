@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { fetchFriends } from "rdx/slices/friendsSlice";
 import { message } from "antd";
+import { UserProfile } from "types/UserProfile";
 
 
 
@@ -19,20 +20,13 @@ export const ProfileLink:React.FC = () => {
     const MY_ID = import.meta.env.VITE_MY_ID;
 
 
-    const user = useAppSelector(state => state.users.selectedUser)
-    const userFullname = user?.personalData?.userFullname
-    const friends = user?.contacts?.friends
-    const ids = friends?.map(user => user.id) || []
-
-
     const goToMyProfilePage = useCallback(async () => {
-        message.loading('Loading the page...', 6)
-        await dispatch(fetchSelectedUserData(MY_ID)) 
-        if (ids && userFullname) {
-            await dispatch(fetchFriends(ids, 'friends')) 
-            setTimeout(navigate, 6000, `/users/${userFullname}/profile`)
-        }
-    }, [dispatch, navigate])
+        message.loading('', 2)
+
+        await dispatch(fetchSelectedUserData(MY_ID))
+        navigate('/users/KatherinaKulinich/profile')
+
+    }, [])
 
 
     return (

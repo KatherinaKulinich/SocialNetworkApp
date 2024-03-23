@@ -60,8 +60,9 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
     },[])
 
     useEffect(() => {
+        if (friendsIdsArray.length === friendsData.length) return
         dispatch(fetchFriends(friendsIdsArray, 'friends'))
-    }, [dispatch])
+    }, [dispatch, friends])
 
 
 

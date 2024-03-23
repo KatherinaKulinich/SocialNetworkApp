@@ -8,17 +8,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 export const ModalContainer = styled(Dialog)`
     & .css-1t1j96h-MuiPaper-root-MuiDialog-paper,
     &.MuiDialog-container {
-        padding: 14px;
+        /* padding: 14px;
         position:relative;
         border-radius: 8px;
         width: 100%;
         max-width: 600px;
         text-align: center;
-        margin: 10px;
+        margin: 10px; */
 
-        @media ${device.sm} {
+        /* @media ${device.sm} {
             padding: 30px;
-        };
+        }; */
     }
 `
 

@@ -18,12 +18,11 @@ export const useNavigateToUserPage = (user:UserProfile) => {
 
 
     const goToUserPage = useCallback(async () => {
-        message.loading('Loading the page...', 1)
+        message.loading('', 1)
 
-        dispatch(fetchSelectedUserData(userId))
-        .then(() => dispatch(fetchFriends(ids, 'friends')))
-        .then(() => navigate( `/users/${userFullname}/profile`))
-    }, [dispatch])
+        await dispatch(fetchSelectedUserData(userId))
+        navigate( `/users/${userFullname}/profile`)
+    }, [])
 
 
     return {
