@@ -19,7 +19,7 @@ export const useRandomUsersData = () => {
         if (userId) {
             dispatch(fetchRandomUsers(userCountry, userCity, userId))
         }
-    }, [userId])
+    }, [dispatch, userId])
 
     const [randomUsers, setRandomUsers] = useState<Array<UserProfile> | null>(null)
     const users = useAppSelector(state => state.randomUsers.randomUsers)

@@ -143,6 +143,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
                 setNewPosts(filteredPosts)
     
                 const news = await getAllLatestUpdates(filteredPhotos, filteredPosts , filteredFriendship)
+                
                 if (news) {
                     getNewsResult(news, contentEvent, indexValue)
                 }
@@ -178,13 +179,13 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
 
 
     useEffect(() => {
-        if (friendsData) {
+        if (friendsData && friendsData?.length > 0) {
             setIsNoUsersData(false)
             return
-        } else if (!friendsData && allNews?.length === 0) {
+        } else if (role === 'feedPage' && usersAmount === 0) {
             setIsNoUsersData(true)
         }
-    }, [friendsData, allNews])
+    }, [friendsData, usersAmount, role])
 
 
 
