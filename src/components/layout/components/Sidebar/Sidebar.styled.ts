@@ -1,12 +1,16 @@
 import styled from 'styled-components';
 import { theme } from '@styles/Theme'
-import { Column } from '@styles/mixins';
+import { device } from "@styles/Breakpoints";
 
 
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
+
+    @media ${device.sm} {
+        gap: 30px;
+    }
 `
 
 export const SidebarSection = styled.section`
@@ -23,4 +27,7 @@ export const SidebarSection = styled.section`
     position: fixed;
     overflow-x: none;
     z-index:90;
+`
+export const ButtonBox = styled.div`
+    align-self: center;
 `

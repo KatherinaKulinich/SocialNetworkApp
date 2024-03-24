@@ -3,19 +3,20 @@ import { device } from "@styles/Breakpoints";
 import { FlexCenter } from "@styles/mixins";
 
 
+
 export const Button = styled.button<{color:string}>`
     background-color: transparent;
-    border: 2px solid ${props => props.color};
+    border: 1px solid ${props => props.color};
     color: ${props => props.color};
-    font-size: 13px;
-    line-height: 17px;
     text-transform: uppercase;
-    padding: 5px 16px;
+    padding: 4px 18px;
     border-radius: 18px;
     outline: none;
     cursor: pointer;
-    ${FlexCenter}
+    ${FlexCenter};
     gap: 6px;
+    font-size: 10px;
+    line-height: 14px;
 
 
     &:hover {
@@ -23,14 +24,11 @@ export const Button = styled.button<{color:string}>`
     }
 
     @media ${device.sm} {
-        padding: 6px 20px;
+        padding: 6px 26px;
         border-radius: 20px;
+        border-width: 2px;
         gap: 9px;
-        font-size: 16px;
-        line-height: 19px;
-    };
-    @media ${device.xl} {
-       padding: 8px 25px;
-        border-radius: 25px;
+        font-size: 12px;
+        line-height: 17px;
     };
 `

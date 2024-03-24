@@ -1,6 +1,7 @@
 import img from '@images/friendprofile.svg';
 import { useCallback, useState } from 'react';
 import { styled } from "styled-components";
+import { device } from "@styles/Breakpoints";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { UserProfileCard } from "@components/cards/UserProfile/UserProfileCard"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
@@ -69,8 +70,8 @@ export const UserProfilePage:React.FC = () => {
                     icon={icon} 
                     text={buttonText} 
                     color={theme.colors.regularDark} 
-                    textSize={'12px'} 
-                    iconSize={"24px"} 
+                    textSize={'11px'} 
+                    iconSize={"22px"} 
                     buttonType={"button"}
                     fontWeight={600}
                     onClickHandler={interactWithUser}
@@ -80,8 +81,8 @@ export const UserProfilePage:React.FC = () => {
                     icon={<BsFillChatSquareHeartFill />} 
                     text={`Chat to ${userName}`} 
                     color={theme.colors.regularDark} 
-                    textSize={'12px'} 
-                    iconSize={"24px"} 
+                    textSize={'11px'} 
+                    iconSize={"22px"} 
                     buttonType={"button"}
                     fontWeight={600}
                     onClickHandler={goToChatWithUser}
@@ -99,8 +100,13 @@ export const UserProfilePage:React.FC = () => {
 }
 
 const Actions = styled.div`
-    align-self: end;
+    align-self: center;
     display:flex;
     align-items: center;
-    gap:30px;
+    gap:15px;
+
+    @media ${device.sm} {
+        align-self: end;
+        gap:30px;
+    }
 `

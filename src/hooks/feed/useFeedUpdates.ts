@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react"
-import { IoIosReturnLeft } from "react-icons/Io"
 import { FeedFriendship, FeedPhoto, FeedPost } from "types/Feed"
 import { UserProfile } from "types/UserProfile"
 

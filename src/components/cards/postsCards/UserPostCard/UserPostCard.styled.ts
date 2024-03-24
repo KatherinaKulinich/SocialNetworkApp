@@ -108,13 +108,13 @@ export const ReactionItem = styled(Radio)<{$items: number}>`
     }
 
     &:hover p {
-        font-size: 14px;
+        font-size: 11px;
 
         @media ${device.sm} {
-            font-size: 18px;
+            font-size: 13px;
         };
         @media ${device.xl} {
-            font-size: 24px;
+            font-size: 18px;
         };
     }
     

@@ -26,10 +26,6 @@ const randomUsersSlice = createSlice({
     reducers: {
         getRandomUsers(state, action: PayloadAction<Array<UserProfile>>) {
             state.randomUsers = action.payload
-            console.log(state.randomUsers);
-            
-        },
-        getRandomUsersIds(state) {
             state.randomUsersIds = state.randomUsers.map(user => user.personalData.userId)
         },
         refreshRandomUsersData(state, action: PayloadAction<Array<UserProfile>> ) {
@@ -72,7 +68,6 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 
                 if (users.length > 4) {
                     dispatch(getRandomUsers(filterUsers(users)))
-                    dispatch(getRandomUsersIds())
                     return
                 }
             })
@@ -83,8 +78,6 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
 
                 if (users.length > 6) {
                     dispatch(getRandomUsers(filterUsers(users)))
-                    dispatch(getRandomUsersIds())
-
                     return
                 }
             })
@@ -93,7 +86,6 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
                     users.push(doc.data() as UserProfile)
                 });
                 dispatch(getRandomUsers(filterUsers(users)))
-                dispatch(getRandomUsersIds())
             })
         } catch(error:unknown) {
             if (error instanceof Error) {
@@ -137,7 +129,6 @@ export const fetchCurrentRandomUsersData = (usersIds:string[]) => {
 export const { 
     getErrorMessage, 
     getRandomUsers,
-    getRandomUsersIds, 
     refreshRandomUsersData,
 } = randomUsersSlice.actions;
 

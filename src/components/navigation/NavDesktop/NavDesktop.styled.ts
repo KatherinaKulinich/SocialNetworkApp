@@ -14,7 +14,7 @@ export const NavContainer = styled.nav`
 `
 
 export const Link = styled(NavLink)`
-    ${Font({size: '11px', line: '16px', color: theme.colors.white})};
+    ${Font({size: '10px', line: '16px', color: theme.colors.white})};
     text-transform: uppercase;
     text-decoration:none;
     display: inline-flex;
@@ -37,10 +37,15 @@ export const Link = styled(NavLink)`
         }
     }
 
+    @media ${device.sm} {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
 
 
     &:first-child {
-        padding-bottom: 10px;
+        padding-bottom: 7px;
         border-bottom: 1px solid #bcbcbc;
 
         @media ${device.sm} {
@@ -49,7 +54,7 @@ export const Link = styled(NavLink)`
     }
 
     &:last-child {
-        padding-top: 10px;
+        padding-top: 7px;
         border-top: 1px solid #bcbcbc;
 
         @media ${device.sm} {

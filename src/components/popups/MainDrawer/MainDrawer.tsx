@@ -58,7 +58,7 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose})
                                 {
                                     <Icon 
                                         icon={<item.icon/>}
-                                        iconSize="25px"
+                                        iconSize="20px"
                                         iconColor="#fff"
                                     />
                                 } {item.label}

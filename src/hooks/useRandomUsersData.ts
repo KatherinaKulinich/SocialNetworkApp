@@ -1,7 +1,6 @@
 import { useAppDispatch, useAppSelector } from "./hooks"
 import { useEffect, useState } from "react"
-import { useMyFullData } from "./useMyFullData"
-import { fetchCurrentRandomUsersData, fetchRandomUsers } from "rdx/slices/randomUsersSlice"
+import { fetchRandomUsers } from "rdx/slices/randomUsersSlice"
 import { UserProfile } from "types/UserProfile"
 
 
