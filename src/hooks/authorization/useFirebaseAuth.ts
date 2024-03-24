@@ -98,9 +98,18 @@ export const useFirebaseAuth = () => {
             }))
 
             if (docSnap.exists()) {
-                navigate('/myProfile')
-                message.success(`Welcome to the app, ${name}`)
-                return
+                const surname = docSnap.data().personalData?.userSurname
+                const gender = docSnap.data().profileData?.userGender
+                const country = docSnap.data().profileData?.userCountry
+
+                if (surname !== '' && gender !== '' && country !== '') {
+                    navigate('/myProfile')
+                    message.success(`Welcome to the app, ${name}`)
+                    return
+                }
+                message.info('It appears that the registration process was not completed correctly or was interrupted last time. Please fill out the required profile fields.', 6)
+                navigate('/profileCreating')
+                return  
             }
             await createUserProfile(user.uid)
             await updateDoc(userRef, {
