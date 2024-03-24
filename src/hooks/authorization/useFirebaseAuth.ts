@@ -1,15 +1,16 @@
 import { message} from "antd";
-import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, signInWithRedirect } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth";
 import { useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import { removeUser, setUser } from "../../rdx/slices/userAuthSlice";
 import { useAppDispatch } from "../hooks";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
+import { doc, getDoc, updateDoc } from "firebase/firestore"; 
 import { db, firebaseApp } from "firebase";
 import { getRandomAvatar } from "utils/getRandomAvatar";
 import { createUserProfile } from "utils/createUserProfile";
 import { changePhotoSize } from "utils/changePhotoSize";
-import { fetchUserFullData, removeUserData } from "rdx/slices/userDataSlice";
+import {  removeUserData } from "rdx/slices/userDataSlice";
+import { checkUserProfile } from "utils/checkUserProfile";
 
 
 
@@ -63,8 +64,18 @@ export const useFirebaseAuth = () => {
                 userId: user.uid,
                 userPassword: user.refreshToken,
             }));
-            navigate('/myProfile')
-            message.success(`Welcome to the app!`)
+            const userRef = doc(db, 'users', user.uid)
+            const docSnap = await getDoc(userRef);
+
+            if (docSnap.exists()) {
+                const isSuccess = await checkUserProfile(docSnap)
+
+                if (isSuccess) {
+                    navigate('/myProfile')
+                    return
+                }
+                navigate('/profileCreating')
+            }
         })
         .catch((error) => {
             message.info(error.message, 5)
@@ -98,18 +109,14 @@ export const useFirebaseAuth = () => {
             }))
 
             if (docSnap.exists()) {
-                const surname = docSnap.data().personalData?.userSurname
-                const gender = docSnap.data().profileData?.userGender
-                const country = docSnap.data().profileData?.userCountry
+                const isSuccess = await checkUserProfile(docSnap)
 
-                if (surname !== '' && gender !== '' && country !== '') {
+                if (isSuccess) {
                     navigate('/myProfile')
-                    message.success(`Welcome to the app, ${name}`)
                     return
                 }
-                message.info('It appears that the registration process was not completed correctly or was interrupted last time. Please fill out the required profile fields.', 6)
                 navigate('/profileCreating')
-                return  
+                return
             }
             await createUserProfile(user.uid)
             await updateDoc(userRef, {
