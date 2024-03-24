@@ -3,7 +3,7 @@ import { theme } from "@styles/Theme";
 import { notification } from "antd";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { useEffect } from "react";
-import { GiGlassCelebration } from "react-icons/gi";
+
 
 interface NotificationProps{
     title: string;

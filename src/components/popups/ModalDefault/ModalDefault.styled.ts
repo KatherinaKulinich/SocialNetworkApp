@@ -1,24 +1,5 @@
 import { styled } from "styled-components";
-import { theme } from "@styles/Theme";
 import { device } from "@styles/Breakpoints";
-import Dialog from '@mui/material/Dialog';
-
-import { Modal } from "@mui/material";
-
-
-export const ModalContainer = styled(Dialog)`
-    /* padding: 14px;
-    position:relative;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-    margin: 10px;
-
-    @media ${device.sm} {
-        padding: 30px;
-    } */
-`
 
 
 

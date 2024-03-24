@@ -2,7 +2,6 @@ import { UserProfile } from "types/UserProfile"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "hooks/hooks"
 import { message } from "antd"
-import { fetchFriends } from "rdx/slices/friendsSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
 import { useCallback } from "react"
 

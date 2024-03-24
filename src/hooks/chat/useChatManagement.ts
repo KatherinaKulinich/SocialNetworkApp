@@ -6,7 +6,7 @@ import { UserProfile } from "types/UserProfile"
 import { useAppDispatch } from "hooks/hooks";
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { fetchSelectedUserData } from "rdx/slices/usersSlice"
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { message } from "antd"
 
 

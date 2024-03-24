@@ -11,7 +11,7 @@ export const Container = styled.div`
 export const MainContent = styled.main`
     width: 100%;
     position: absolute;
-    top: 70px;
-    bottom: 90px;
+    top: 58px;
+    bottom: 72px;
     overflow-y: auto;
 `

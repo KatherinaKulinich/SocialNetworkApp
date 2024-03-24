@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { device } from "@styles/Breakpoints";
-import { FullSize } from "@styles/mixins";
+
 
 
 
