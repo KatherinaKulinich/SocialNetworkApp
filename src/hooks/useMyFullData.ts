@@ -18,7 +18,7 @@ export const useMyFullData = () => {
             }
         }
         getMyProfileData()
-    }, [])
+    }, [dispatch])
     
     const userData = useAppSelector(state => state.userData.user)
 

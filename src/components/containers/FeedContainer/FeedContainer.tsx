@@ -67,6 +67,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
     useEffect(() => {
         if (isIdleIndex && !isNoFreshLatestNews) {
             setIndex(prev => prev+1)
+            return
         }  
     }, [isIdleIndex, isNoFreshLatestNews])
     
@@ -84,7 +85,9 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
     useEffect(() => {
         if (index >= 7 && allNews.length > 0) {
             setIsNoMoreNews(true)
+            return
         }
+        setIsNoMoreNews(false)
     }, [index])
 
 
@@ -126,6 +129,12 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
         }
     }, [isVisibleNews])
 
+    useEffect(() => {
+        if (isNoMoreNews) {
+            setIsButtonLoading(false)
+        }
+    }, [isNoMoreNews])
+
 
     useEffect(() => {
         if (isNoFreshLatestNews || isNoUsersData || isLoading || isNoMoreNews || isButtonLoading) {
@@ -139,7 +148,7 @@ export const FeedContainer:React.FC<FeedContainerProps> = ({users, role}) => {
             return
         }
         setIsButtonVisible(true)
-    }, [isNoFreshLatestNews, isNoUsersData, isLoading, filterValue, isVisibleNews])
+    }, [isNoFreshLatestNews, isNoUsersData, isLoading, filterValue, isVisibleNews, isNoMoreNews])
 
 
     useEffect(() => {

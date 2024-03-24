@@ -6,9 +6,8 @@ import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
-import { fetchFriends } from "rdx/slices/friendsSlice";
 import { message } from "antd";
-import { UserProfile } from "types/UserProfile";
+
 
 
 
@@ -30,7 +29,7 @@ export const ProfileLink:React.FC = () => {
         } else if (myId === MY_ID) {
             navigate('/myProfile')
         }
-    }, [])
+    }, [myId, MY_ID])
 
 
     return (
