@@ -1,5 +1,4 @@
 import { theme } from "@styles/Theme";
-import { BoxShadow, Column, Font } from "@styles/mixins";
 import { styled } from "styled-components";
 import { Input } from 'antd';
 import { device } from "@styles/Breakpoints";
@@ -42,5 +41,4 @@ export const Wrap= styled.div`
     margin-left: auto;
     margin-right: auto;
 `
-
 

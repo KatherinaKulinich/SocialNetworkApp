@@ -10,10 +10,11 @@ export const Container = styled(Form)`
     width: 100%;
     ${Column};
     gap: 20px;
+    padding: 20px;
 
     @media ${device.sm} {
         gap: 20px;
-        padding: 20px;
+        padding: 30px;
     };
 `
 
@@ -26,3 +27,5 @@ export const TextField = styled.textarea`
     padding: 10px;
     border-radius: 7px;
 `
+
+

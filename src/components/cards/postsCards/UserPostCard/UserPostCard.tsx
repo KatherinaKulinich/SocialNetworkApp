@@ -17,6 +17,7 @@ import { UserProfile } from "types/UserProfile"
 import { ReactionAnimation } from "@components/animations/ReactionAnimation/ReactionAnimation"
 import {v4 as uuidv4} from 'uuid';
 import { useMyFullData } from "hooks/useMyFullData"
+import { getDate, getTime } from "utils/getDateFormat";
 
 
 
@@ -98,8 +99,8 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
         }
     }, [initialValue])
 
-    const postDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `
-    const postTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`
+    const postDate =  getDate(date);
+    const postTime = getTime(date);
     const itemKey = uuidv4()
 
 

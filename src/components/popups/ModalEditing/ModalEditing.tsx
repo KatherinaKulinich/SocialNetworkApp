@@ -8,6 +8,8 @@ import { Post } from "types/Post";
 
 
 
+
+
 interface ModalEditingProps {
     isModalOpen: boolean;
     onCloseModal: () => void;
@@ -36,8 +38,7 @@ export const ModalEditing:React.FC<ModalEditingProps> = ({isModalOpen, onCloseMo
         onCloseModal()
     }, [inputValue, selectedObject])
 
-    
-    
+
 
     return (
         <ModalDefault title={`Edit description`} 

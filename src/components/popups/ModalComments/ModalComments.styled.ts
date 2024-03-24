@@ -7,6 +7,11 @@ export const Container = styled.div`
     ${Column};
     width: 100%;
     position: relative; 
+    padding: 10px;
+
+    @media ${device.sm} {
+        padding: 20px;
+    }
 `
 
 export const PhotoContent = styled.div`

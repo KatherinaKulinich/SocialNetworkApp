@@ -207,6 +207,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                     onToggleEmoji={onToggleEmojiiPicker}
                     isImageLoading={isImageLoading}
                     chatId={isSelectedChat.chatId}
+                    isEmojiPickerOpen={isEmojiPickerOpen}
                 />
             </Container>   
         </>

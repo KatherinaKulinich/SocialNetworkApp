@@ -18,14 +18,18 @@ export const ProfileLink:React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const MY_ID = import.meta.env.VITE_MY_ID;
+    const myData = useAppSelector(state => state.userData.user)
+    const myId = myData?.personalData?.userId
 
 
     const goToMyProfilePage = useCallback(async () => {
-        message.loading('', 2)
-
-        await dispatch(fetchSelectedUserData(MY_ID))
-        navigate('/users/KatherinaKulinich/profile')
-
+        if (myId !== MY_ID) {
+            message.loading('', 2)
+            await dispatch(fetchSelectedUserData(MY_ID))
+            navigate('/users/KatherinaKulinich/profile')
+        } else if (myId === MY_ID) {
+            navigate('/myProfile')
+        }
     }, [])
 
 

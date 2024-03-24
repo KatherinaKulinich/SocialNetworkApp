@@ -1,11 +1,10 @@
 import { PhotoUpload } from "@components/ProfileEditing/components/PhotoUpload";
 import { ModalDefault } from "../ModalDefault/ModalDefault"
-import { ModalForm, TextField } from "./ModalAddingPhoto.styled";
+import { ModalForm, TextField} from "./ModalAddingPhoto.styled";
 import { theme } from "@styles/Theme";
 import { SecondaryButton } from "@components/buttons/SecondaryButton/SecondaryButton";
 import { Form, UploadFile } from "antd";
 import { useCallback, useState } from "react";
-import { useAppSelector } from "hooks/hooks";
 import { useCreateNewContent } from "hooks/content/useCreateNewContent";
 
 
@@ -31,10 +30,9 @@ export const ModalAddingPhoto:React.FC<ModalAddingPhotoProps> = ({isModalOpen, o
         onCloseModal()
         form.resetFields()
         setFileList([])
-
-        await addNewPhoto(values)
-        
+        await addNewPhoto(values)      
     }, [form, isModalOpen])
+
 
     
 

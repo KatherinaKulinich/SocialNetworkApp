@@ -9,12 +9,13 @@ import { Photo } from "types/Photo";
 import { Popconfirm } from "antd";
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
-import { useAppDispatch, useAppSelector } from "hooks/hooks";
+import { useAppDispatch} from "hooks/hooks";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
 import { ReactionAnimation } from "@components/animations/ReactionAnimation/ReactionAnimation";
 import { useMyFullData } from "hooks/useMyFullData";
 import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { UserProfile } from "types/UserProfile";
+import { getDate, getTime } from "utils/getDateFormat";
 
 
 
@@ -59,13 +60,11 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
         deleteMyContent(photo)
     }, [photo])
 
-    const dateFormat = new Date(date);
-    const photoDate = `${dateFormat.getDate()} ${new Intl.DateTimeFormat("en-US", {month: 'long'}).format(date)} `;
-    const photoTime = `${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
-
+    
+    
+    
     const [isAnimation, setIsAnimation] = useState(false)
-
-
+    
     const onLikePhoto = useCallback((photo: Photo) => {
         togglePhotoLike(photo, photoOwner)
         refreshData()
@@ -74,10 +73,12 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
             setIsAnimation(true)
             setTimeout(() => setIsAnimation(false), 4000)
         }
-
+        
     }, [isPhotoLiked, photoOwner])
-
-
+    
+    
+    const photoDate = getDate(date);
+    const photoTime = getTime(date);
         
     return (
         <Card>

@@ -135,9 +135,9 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
                     inputValue={commentValue}
                     onChangeInputValue={onChangeCommentValue}
                     onSubmitText={saveNewComment}
-                    onToggleEmoji={onToggleEmojiiPicker}               
-                    />
-                
+                    onToggleEmoji={onToggleEmojiiPicker}   
+                    isEmojiPickerOpen={isEmojiPickerOpen}            
+                />               
                 <EmojiPopup
                     popupIsOpen={isEmojiPickerOpen}
                     getEmoji={addEmojiToMessage}

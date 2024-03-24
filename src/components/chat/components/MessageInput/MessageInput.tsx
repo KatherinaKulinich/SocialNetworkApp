@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { IconButton, MessageField, MessageForm, SendButton, MessageText } from "./MessageInput.styled"
 import { Icon } from '@components/icons/Icon';
 import { BsEmojiSmile } from "react-icons/Bs"
+import { IoIosCloseCircle } from "react-icons/Io";
 import { MdOutlineImageSearch, MdSend} from "react-icons/Md"
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { LoaderRing } from "@components/loaders/LoaderRing";
@@ -20,13 +21,14 @@ interface MessageInputProps {
     onToggleEmoji: () => void;
     isImageLoading?: boolean;
     chatId?: string;
+    isEmojiPickerOpen: boolean;
 }
 
 
 
 
 export const MessageInput:React.FC<MessageInputProps> = (
-    {role, inputValue, onChangeInputValue, onSubmitText, fileValue, onChangeFileValue, onToggleEmoji, isImageLoading, chatId}) => {
+    {role, inputValue, onChangeInputValue, onSubmitText, fileValue, onChangeFileValue, onToggleEmoji, isImageLoading, chatId, isEmojiPickerOpen}) => {
 
     const myData = useAppSelector(state => state.userData.user)
     const myId = myData?.personalData?.userId
@@ -102,11 +104,19 @@ export const MessageInput:React.FC<MessageInputProps> = (
                 onBlur={onInputBlur}
             > 
                 <IconButton onClick={onToggleEmoji}>
-                    <Icon 
-                        icon={<BsEmojiSmile/>} 
-                        iconSize="15px" 
-                        iconColor='bebebe'
-                    /> 
+                    {isEmojiPickerOpen ? (
+                        <Icon 
+                            icon={<IoIosCloseCircle/>} 
+                            iconSize="15px" 
+                            iconColor='bebebe'
+                        /> 
+                    ) : (
+                        <Icon 
+                            icon={<BsEmojiSmile/>} 
+                            iconSize="15px" 
+                            iconColor='bebebe'
+                        /> 
+                    )}
                 </IconButton>
                 <MessageText 
                     name="messageInput"
