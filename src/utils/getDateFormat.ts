@@ -8,8 +8,10 @@ export const getDate = (date:number) => {
 export const getTime = (date:number) => {
     const min = new Date(date).getMinutes()
     const minFormat = min < 9 ? `0${min}` : min;
-    const hours = new Date(date).getHours()
 
-    return `${hours}:${minFormat}`
+    const hours = new Date(date).getHours()
+    const hoursFormat = hours < 9 ? `0${hours}` : hours;
+
+    return `${hoursFormat}:${minFormat}`
 }
 
