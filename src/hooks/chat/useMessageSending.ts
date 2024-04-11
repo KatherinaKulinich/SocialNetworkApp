@@ -122,7 +122,7 @@ export const useMessageSending = (chat:Chat, user:UserProfile, myData:UserProfil
             await dispatch(fetchUserFullData(myId))
             await dispatch(fetchSelectedUserData(userId))
         }
-    }, [myData, user, chat])
+    }, [myData, user, chat, dispatch, myId, userId])
 
 
 

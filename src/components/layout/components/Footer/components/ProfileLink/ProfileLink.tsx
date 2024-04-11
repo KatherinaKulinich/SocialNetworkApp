@@ -22,14 +22,16 @@ export const ProfileLink:React.FC = () => {
 
 
     const goToMyProfilePage = useCallback(async () => {
-        if (myId !== MY_ID) {
-            message.loading('', 2)
-            await dispatch(fetchSelectedUserData(MY_ID))
-            navigate('/users/KatherinaKulinich/profile')
-        } else if (myId === MY_ID) {
-            navigate('/myProfile')
+        if (myId && MY_ID) {
+            if (myId !== MY_ID) {
+                message.loading('', 2)
+                await dispatch(fetchSelectedUserData(MY_ID))
+                navigate('/users/KatherinaKulinich/profile')
+            } else if (myId === MY_ID) {
+                navigate('/myProfile')
+            }
         }
-    }, [myId, MY_ID])
+    }, [myId, MY_ID, dispatch, navigate])
 
 
     return (

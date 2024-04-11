@@ -5,6 +5,7 @@ import { useMyFullData } from "hooks/useMyFullData";
 import { useUnreadMessages } from 'hooks/chat/useUreadMessages'
 
 
+
 interface ChatsContainerProps {
     chatsData: Array<Chat>,
 }
@@ -19,7 +20,6 @@ export const ChatsContainer:React.FC<ChatsContainerProps> = ({chatsData}) => {
 
     const myData = useMyFullData()
     const { checkChatForNewMessages } = useUnreadMessages(myData)
-
 
     
     return (

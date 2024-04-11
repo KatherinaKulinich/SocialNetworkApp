@@ -34,6 +34,8 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
 
 
     const { isSelectedChat, getChatWithUser } = useChatChecking(user)
+
+    
     const { sendNewMessage, isImageLoading } = useMessageSending(isSelectedChat, user, myData)
     const { markChatAsRead } = useUnreadMessages(myData)
 

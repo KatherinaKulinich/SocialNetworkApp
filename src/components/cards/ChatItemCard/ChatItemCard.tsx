@@ -24,11 +24,12 @@ export const ChatItemCard:React.FC<ChatItemCardProps> = ({chatItemData, isChatWi
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const myData = useAppSelector(state => state.userData.user)
-
     const { markChatAsRead, areUnreadMessages } = useUnreadMessages(myData)
+
 
     const { user, lastMessage, chatId } = chatItemData
     const { userId, userName, userFullname, userAvatar } = user
+
 
     const isLastMessage = lastMessage.senderName 
     ? `${lastMessage.senderName}: ${lastMessage.text}` 
@@ -38,7 +39,7 @@ export const ChatItemCard:React.FC<ChatItemCardProps> = ({chatItemData, isChatWi
 
     const onCardClickHandler = useCallback(() => {
         dispatch(fetchSelectedUserData(userId))
-        .then(() => dispatch(fetchChatData(chatId))) 
+        .then(() => dispatch(fetchChatData(chatId)))
         .then(async() => {
             if (isChatWithNewMessages) {
                 await markChatAsRead(chatId)

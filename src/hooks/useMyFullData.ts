@@ -12,7 +12,7 @@ export const useMyFullData = () => {
 
 
     useEffect(() => {
-       const getMyProfileData = () => {
+        const getMyProfileData = () => {
             if (userId) {
                 return dispatch(fetchUserFullData(userId))
             }

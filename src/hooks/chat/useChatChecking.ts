@@ -109,7 +109,8 @@ export const useChatChecking = (user:UserProfile) => {
 
 
     const openChatWithUser = useCallback(async () => {
-        checkChatAvailability(myChats, userId).then((data) => {
+        checkChatAvailability(myChats, userId)
+        .then((data) => {
             if (!data) {
                 createNewChatWithUser()
                 .then((chatId) => {

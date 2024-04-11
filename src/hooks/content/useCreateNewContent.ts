@@ -70,29 +70,33 @@ export const useCreateNewContent = () => {
 
 
     const addNewPost = useCallback(async (newPostText: string) => {
-        await message.loading('Adding new post...', 5)
-        const postId = uuidv4();
-        const postReactions:Reaction[] = reactionsArray.map((item) => ({value: item.value, usersReactions: []}))
-
-        const newPost:Post = {
-            postId,
-            postText: newPostText,
-            postOwnerName: userName,
-            postOwnerAvatar: userAvatar,
-            postReactions,
-            postComments: [] as CommentItem[],
-            date: Date.now(),
-        }
-        
-        if (posts !== undefined) {
-            const updatedUserPosts:Post[] = [...posts, newPost];
-
-            await updateDoc(userRef, {
-                "content.posts": updatedUserPosts,
-            });
-
-            dispatch(fetchUserFullData(userId))
-            await message.success('Added!')
+        if (newPostText) {
+            await message.loading('Adding new post...', 5)
+            const postId = uuidv4();
+            const postReactions:Reaction[] = reactionsArray.map((item) => ({value: item.value, usersReactions: []}))
+    
+            const newPost:Post = {
+                postId,
+                postText: newPostText,
+                postOwnerName: userName,
+                postOwnerAvatar: userAvatar,
+                postReactions,
+                postComments: [] as CommentItem[],
+                date: Date.now(),
+            }
+            
+            if (posts !== undefined) {
+                const updatedUserPosts:Post[] = [...posts, newPost];
+    
+                await updateDoc(userRef, {
+                    "content.posts": updatedUserPosts,
+                });
+    
+                dispatch(fetchUserFullData(userId))
+                await message.success('Added!')
+            }
+        } else {
+            message.info('At first you should type smth..')
         }
     }, [posts, userData, userId])
 

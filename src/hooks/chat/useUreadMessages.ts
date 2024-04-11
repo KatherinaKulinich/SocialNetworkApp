@@ -24,11 +24,11 @@ export const useUnreadMessages = (myData:UserProfile) => {
             }
             return chat
         })
-    }, [])
+    }, [myChats])
 
     useEffect(() => {
         checkNewUnreadChatsIds()
-    }, [])
+    }, [myChats])
 
 
     const checkChatForNewMessages = useCallback((id:string) => {
