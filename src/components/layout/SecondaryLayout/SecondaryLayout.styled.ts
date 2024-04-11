@@ -4,6 +4,7 @@ import { FlexCenter, FullSize } from '@styles/mixins';
 export const Container = styled.div`
     ${FullSize};
     min-height: 100vh;
+    height: 100svh;
     ${FlexCenter};
     justify-content: space-between;
 `

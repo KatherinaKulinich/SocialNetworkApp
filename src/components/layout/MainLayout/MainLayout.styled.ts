@@ -6,6 +6,7 @@ import { FullSize } from '@styles/mixins'
 export const PageContainer = styled.div`
     width: 100%;
     height: 100vh ;
+    height: 100svh ;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 58px 1fr 55px;
