@@ -68,13 +68,29 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({isOpen, onOpen, onClose})
                 </SubContainer>
                 <Image src={drawerImage}/>
                 <DrawerFooter>
-                    <GridItem $columnXS='1/3' $rowXS='2/3' $columnSM='1/2' $rowSM='1/2'>
+                    <GridItem 
+                        $columnXS='1/3' 
+                        $rowXS='2/3' 
+                        $columnSM='1/2' 
+                        $rowSM='1/2'
+                    >
                         <Copyright/>
                     </GridItem>
-                    <GridItem $columnXS='2/3' $rowXS='1/2' $columnSM='2/3' $rowSM='1/2'>
+                    <GridItem 
+                        $columnXS='2/3' 
+                        $rowXS='1/2' 
+                        $columnSM='2/3' 
+                        $rowSM='1/2'
+                    >
                         <Created/>
                     </GridItem>
-                    <GridItem $columnXS='1/2' $rowXS='1/2' $columnSM='3/4' $rowSM='1/2'>
+                    <GridItem 
+                        $columnXS='1/2' 
+                        $rowXS='1/2' 
+                        $columnSM='3/4' 
+                        $rowSM='1/2' 
+                        onClick={onClose}
+                    >
                         <ProfileLink/>
                     </GridItem>
                 </DrawerFooter>
