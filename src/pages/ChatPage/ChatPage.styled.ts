@@ -6,11 +6,12 @@ import { FullSize } from "@styles/mixins";
 export const Container = styled.div`
     ${FullSize};
     position: relative;
-
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  
     @media ${device.lg} {
-        display: grid;
         grid-template-columns: 260px 1fr;
-        grid-template-rows: auto;
     };
 `
 
@@ -37,13 +38,17 @@ export const MainChat = styled.div`
     flex-direction: column;
     align-items: stretch;
     position:absolute;
+    top:0;
+    bottom:0;
     height:calc(100% - 165px);
 
+
     @media ${device.sm} {  
-        height:calc(100% - 152px);     
+        height:calc(100% - 210px);
     };
 
     @media ${device.lg}  {
         grid-column: 2/3;
+        height:calc(100% - 250px); 
     }
 `

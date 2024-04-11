@@ -10,8 +10,8 @@ export const Container = styled.div`
     border-right: 1px solid ${theme.colors.lightGray};
 `
 export const ContainerBackground = styled.div<{$url: string}>`
-    height:calc(100vh - 320px);
-    height:calc(100svh - 320px);
+    height:calc(100vh - 280px);
+    height:calc(100svh - 280px);
     height: 100%;
     position: relative;
     background-color: #fff9f9;
@@ -29,10 +29,11 @@ export const ContainerBackground = styled.div<{$url: string}>`
         background:linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .4) 51%, rgba(255, 255, 255, .6) 80%, rgba(255, 255, 255, .8) 100%);
     }
 
-    /* @media ${device.sm} {       
+    @media ${device.sm} {       
         height:calc(100vh - 320px);
         height:calc(100svh - 320px);
-    }; */
+    };
+    
     @media ${device.md} {       
         height:calc(100vh - 344px);
         height:calc(100svh - 344px);
