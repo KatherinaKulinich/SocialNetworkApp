@@ -2,13 +2,16 @@ import img from '@images/friends2.svg'
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer';
 import { FriendsContainer } from '@components/containers/usersContainers/FriendsContainer';
-import { useAppSelector } from 'hooks/hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
 import { TwoTabsContainer } from '@components/tabs/TwoTabsContainer';
 import { FollowersContainer } from '@components/containers/usersContainers/FollowersContainer';
 import { BirthdayNotification } from '@components/notifications/BirthdayNotification';
 import { NewUnreadMessagesNotification } from '@components/notifications/NewUnreadMessagesNotification';
 import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
+import { useAuth } from 'hooks/authorization/useAuth';
+import { fetchUserFullData } from 'rdx/slices/userDataSlice';
+import { useEffect } from 'react';
 
 
 
@@ -16,6 +19,14 @@ import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
 
 
 export const MyFriendsAndFollowersPage:React.FC = () => {
+    const dispatch = useAppDispatch()
+    const { userId } = useAuth()
+
+    useEffect(() => {
+        if (userId) {
+            dispatch(fetchUserFullData(userId))
+        }
+    }, [])
     const friendsData = useAppSelector(state => state.friends.friendsData)
 
     const { usersBirthdayToday } = useUsersBirthdays(friendsData)

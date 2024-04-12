@@ -7,6 +7,8 @@ import { PageContainer } from '@components/containers/PageContainer/PageContaine
 import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { SubTitle } from '@components/text/Subtitle'
 import { UserProfile } from 'types/UserProfile'
+import { useAuth } from 'hooks/authorization/useAuth'
+import { fetchUserFullData } from 'rdx/slices/userDataSlice'
 
 
 
@@ -14,6 +16,13 @@ import { UserProfile } from 'types/UserProfile'
 
 export const MyFeedPage: React.FC = () => {
     const dispatch = useAppDispatch()
+    const { userId } = useAuth()
+
+    useEffect(() => {
+        if (userId) {
+            dispatch(fetchUserFullData(userId))
+        }
+    }, [])
     const myData = useAppSelector(state => state.userData.user)
 
 

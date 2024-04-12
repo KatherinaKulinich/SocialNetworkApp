@@ -1,13 +1,10 @@
 import { TwoTabsContainer } from "@components/tabs/TwoTabsContainer";
-import { SubTitle } from "@components/text/Subtitle";
 import { UserProfile } from "types/UserProfile";
 import { Drawer } from "antd";
 import { DrawerContainer } from "./ChatDrawer.styled.";
-import { Paragraph } from "@components/text/Paragraph";
 import { theme } from "@styles/Theme";
 import { useChatManagement } from "hooks/chat/useChatManagement";
 import { useAppSelector } from "hooks/hooks"
-import { useEffect } from "react";
 import { DrawerFileContainer } from "../DrawerFileContainer";
 
 
