@@ -9,7 +9,6 @@ import { useChatManagement } from "hooks/chat/useChatManagement";
 import { useAppSelector } from "hooks/hooks"
 import { useEffect } from "react";
 import { DrawerFileContainer } from "../DrawerFileContainer";
-import { useMyFullData } from "hooks/useMyFullData";
 
 
 interface ChatDrawerProps {
