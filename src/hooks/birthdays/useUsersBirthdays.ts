@@ -1,13 +1,14 @@
+import { useAppSelector } from "hooks/hooks"
 import { useCallback, useEffect, useState } from "react"
 import { UserProfile } from "types/UserProfile"
-import { useMyFullData } from "hooks/useMyFullData";
+
 
 
 
 
 
 export const useUsersBirthdays = (usersProfileData:UserProfile[]) => {
-    const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const month= myData?.profileData?.userBirthday?.month
     const day = myData?.profileData?.userBirthday?.day
 

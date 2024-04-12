@@ -1,6 +1,6 @@
 import img from '@images/friendFriends.svg';
 import styled from 'styled-components';
-import {  useAppSelector } from "hooks/hooks";
+import { useAppSelector } from "hooks/hooks";
 import { PageImgTitle } from "@components/PageImgTitle/PageImgTitle"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { FriendsContainer } from "@components/containers/usersContainers/FriendsContainer";

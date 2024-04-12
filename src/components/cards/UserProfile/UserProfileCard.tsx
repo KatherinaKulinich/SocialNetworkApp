@@ -12,10 +12,10 @@ import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector  } from "hooks/hooks";
-import { useMyFullData } from "hooks/useMyFullData";
 import { fetchUserFullData } from "rdx/slices/userDataSlice";
 import { fetchSelectedUserData } from "rdx/slices/usersSlice";
-import { fetchFriends } from "rdx/slices/friendsSlice";
+
+
 
 
 interface UserProfileProps {
@@ -30,13 +30,12 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
     const dispatch = useAppDispatch()
     const myData = useAppSelector(state => state.userData.user)
     const { userId:myId } = myData?.personalData ?? {}
-    const { friends:myFriends } = myData?.contacts ?? {}
-    const myFriendsIds = myFriends?.map(friend => friend.id) || []
+
 
     const { userName, userFullname, userId } = user?.personalData ?? {}
     const { userBirthday, userGender, userFamStatus, userAbout, userAvatar, userInterests, userLocation } = user?.profileData ?? {}
     const { friends } = user?.contacts ?? {}
-    const userFriendsIds = friends?.map(friend => friend.id) || []
+
 
     const { year, month, day, fullDate } = userBirthday ?? {}
     const userAge = getUserAge(year, month, day);
@@ -54,8 +53,8 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                 dispatch(fetchSelectedUserData(userId))
             }, 2000)
         }
-    }, [dispatch, myData, user])
-        
+    }, [myId, userId])
+
 
 
     return (

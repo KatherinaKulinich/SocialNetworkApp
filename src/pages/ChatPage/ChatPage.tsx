@@ -5,7 +5,6 @@ import { ChatsContainer } from "@components/containers/ChatsContainer/ChatsConta
 import { Container, ChatsPreview, MainChat } from "./ChatPage.styled"
 import { useWindowSize } from "../../hooks/useWindowSize"
 import { useAppSelector } from 'hooks/hooks'
-import { useMyFullData } from 'hooks/useMyFullData'
 
 
 
@@ -13,8 +12,7 @@ import { useMyFullData } from 'hooks/useMyFullData'
 export const ChatPage:React.FC = () => {
     const { width } = useWindowSize();
 
-
-    const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const { chats } = myData
 
     const user = useAppSelector(state => state.users.selectedUser )

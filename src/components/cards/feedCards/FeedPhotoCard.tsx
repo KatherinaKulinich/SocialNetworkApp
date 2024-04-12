@@ -4,11 +4,11 @@ import { PhotoCard } from "../photosCards/PhotoCard/PhotoCard"
 import { Avatar } from "@components/Avatar/Avatar"
 import { ModalComments } from "@components/popups/ModalComments/ModalComments"
 import { Card, CardHeader, UserDataContainer, CardUserName, CardText } from "./FeedCards.styled"
-import { useMyFullData } from "hooks/useMyFullData"
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction"
 import { useModalForComments } from "hooks/popups/useModalForComments";
 import { useModalForEditing } from "hooks/popups/useModalForEditing";
 import { useNavigateToUserPage } from 'hooks/contacts/useNavigateToUserPage'
+import { useAppSelector } from 'hooks/hooks';
 
 interface FeedPhotoCardProps {
     feedPhotoItem: FeedPhoto,
@@ -21,7 +21,7 @@ export const FeedPhotoCard:React.FC<FeedPhotoCardProps> = ({feedPhotoItem, refre
     const { user, photo } = feedPhotoItem
     const { goToUserPage } = useNavigateToUserPage(user)
 
-    const myUserData = useMyFullData()
+    const myUserData = useAppSelector(state => state.userData.user)
     const { checkMyPhotoLike } = useCheckMyContentReaction(myUserData)
 
 

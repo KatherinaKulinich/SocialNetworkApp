@@ -1,8 +1,8 @@
 import { ChatItemCard } from "@components/cards/ChatItemCard/ChatItemCard"
 import { ListContainer } from "../ListContainer/ListContainer"
 import { Chat } from "types/Chat";
-import { useMyFullData } from "hooks/useMyFullData";
 import { useUnreadMessages } from 'hooks/chat/useUreadMessages'
+import { useAppSelector } from "hooks/hooks";
 
 
 
@@ -18,7 +18,7 @@ export const ChatsContainer:React.FC<ChatsContainerProps> = ({chatsData}) => {
         return b.updatedAt - a.updatedAt
     }) 
 
-    const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const { checkChatForNewMessages } = useUnreadMessages(myData)
 
     

@@ -6,11 +6,10 @@ import { RegularButton } from "@components/buttons/RegularButton/RegularButton";
 import { listOfHobbies, genderOptions, famStatusOptions } from "utils/data/profileOptions";
 import { SelectTag } from "./SelectTag";
 import { useEditProfile } from "hooks/settings/useEditProfile";
-import { dateFormat, getFormFields } from "utils/getFormFields";
-import { UserProfile } from "types/UserProfile";
-import { useMyFullData } from "hooks/useMyFullData";
+import { dateFormat } from "utils/getFormFields";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { useAppSelector } from "hooks/hooks";
 
 interface EditingFormProps {
     buttonText: string;
@@ -21,7 +20,8 @@ interface EditingFormProps {
 export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation}) => {
     const [form] = Form.useForm();
     const navigate = useNavigate()
-    const userData = useMyFullData()
+    const userData = useAppSelector(state => state.userData.user)
+
     
     const { userName, userSurname } = userData?.personalData ?? {};
     const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout, userAvatar } = userData?.profileData ?? {};

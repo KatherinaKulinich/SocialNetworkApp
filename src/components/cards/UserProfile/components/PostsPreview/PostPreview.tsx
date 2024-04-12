@@ -11,7 +11,8 @@ import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { UserProfile } from 'types/UserProfile'
 import { useModalForComments } from "hooks/popups/useModalForComments";
 import { useModalForEditing } from "hooks/popups/useModalForEditing";
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 
 
 
@@ -25,9 +26,12 @@ interface PostPreviewProps {
 
 export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData, refreshData}) => {
     const { posts } = ownerData.content;
+    
     const sortedPosts = [...posts]?.sort((a, b) => {
         return b.date - a.date
     }) 
+
+
 
 
     const { editMyContent } = useManageMyContent()
@@ -43,12 +47,12 @@ export const PostPreview:React.FC<PostPreviewProps> = ({ postOwner, ownerData, r
         <PreviewContainer>
             <DataItem 
                 itemName={"posts"} 
-                itemValue={posts.length}
+                itemValue={sortedPosts.length}
                 direction={"row"}
             />
             <PostsContainer>
                 {sortedPosts && sortedPosts?.length > 0 ? (
-                    sortedPosts?.map((postItem:Post) => (
+                    sortedPosts?.map((postItem:Post) => (                      
                         <UserPostCard 
                             owner={postOwner}
                             post={postItem}

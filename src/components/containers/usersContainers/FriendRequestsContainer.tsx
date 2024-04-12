@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { fetchFriends } from "rdx/slices/friendsSlice"
 import { useEffect, useState } from "react"
 import { UsersContainer } from './components/UsersContainer';
-import { useMyFullData } from 'hooks/useMyFullData';
 import { UserProfile } from 'types/UserProfile'
 
 
@@ -12,14 +11,14 @@ import { UserProfile } from 'types/UserProfile'
 
 export const FriendRequestsContainer:React.FC = () => {
     const dispatch = useAppDispatch()
-    const userData = useMyFullData()
-    const requestsIds = userData?.contacts?.friendRequests
+    const myData = useAppSelector(state => state.userData.user)
+    const requestsIds = myData?.contacts?.friendRequests
 
     useEffect(() => {
-        if (userData) {
+        if (myData) {
             dispatch(fetchFriends(requestsIds, 'friendRequests'))
         }
-    }, [dispatch, userData])
+    }, [dispatch, myData])
 
     const friendRequestsUsersData = useAppSelector(state => state.friends.friendRequestsData)
 

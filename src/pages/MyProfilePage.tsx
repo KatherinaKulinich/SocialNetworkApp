@@ -5,12 +5,13 @@ import { PageContainer } from "@components/containers/PageContainer/PageContaine
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { fetchFriends } from 'rdx/slices/friendsSlice';
 import { useEffect, useState } from 'react';
-import { useMyFullData } from 'hooks/useMyFullData';
 import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
 import { BirthdayNotification } from '@components/notifications/BirthdayNotification';
 import { UserProfile } from 'types/UserProfile';
 import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
 import { NewUnreadMessagesNotification } from '@components/notifications/NewUnreadMessagesNotification';
+import { useAuth } from 'hooks/authorization/useAuth';
+import { fetchUserFullData } from 'rdx/slices/userDataSlice';
 
 
 
@@ -18,7 +19,17 @@ import { NewUnreadMessagesNotification } from '@components/notifications/NewUnre
 
 export const MyProfilePage:React.FC = () => {
     const dispatch = useAppDispatch()
-    const myData = useMyFullData()
+    const { userId } = useAuth()
+
+    useEffect(() => {
+        if (userId) {
+            dispatch(fetchUserFullData(userId))
+        }
+    }, [])
+    const myData = useAppSelector(state => state.userData.user)
+
+
+    
     const { friends } = myData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []
 
@@ -41,8 +52,8 @@ export const MyProfilePage:React.FC = () => {
     const { isMyBirthdayToday } = useUsersBirthdays(friendsUsersData)
 
     const { areUnreadMessages } = useUnreadMessages(myData)
-    const isChatsAmount =  areUnreadMessages.length
-    const isMessagesNotification = isChatsAmount > 0
+    const isUnreadMessagesAmount =  areUnreadMessages.length > 0
+
     
     return (
         <PageContainer>
@@ -61,7 +72,7 @@ export const MyProfilePage:React.FC = () => {
             {isMyBirthdayToday && (
                 <BirthdayNotification text={`Happy Birthday, ${myData?.personalData?.userName}!`}/>
             )}
-            {isMessagesNotification && <NewUnreadMessagesNotification  chatsAmount={isChatsAmount}/>}
+            {isUnreadMessagesAmount  && <NewUnreadMessagesNotification/>}
         </PageContainer>
     )
 }

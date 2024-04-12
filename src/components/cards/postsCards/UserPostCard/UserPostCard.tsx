@@ -10,13 +10,12 @@ import { reactionsArray } from "utils/data/postReactions"
 import { DeleteOutlined } from "@ant-design/icons"
 import { useManageMyContent } from "hooks/content/useManageMyContent"
 import { getSelectedUserPost } from "rdx/slices/userContentSlice"
-import { useAppDispatch } from "hooks/hooks"
+import { useAppDispatch, useAppSelector } from "hooks/hooks"
 import { usePostsReactions } from "hooks/content/usePostsReactions"
 import { useCheckMyContentReaction } from "hooks/content/useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
 import { ReactionAnimation } from "@components/animations/ReactionAnimation/ReactionAnimation"
 import {v4 as uuidv4} from 'uuid';
-import { useMyFullData } from "hooks/useMyFullData"
 import { getDate, getTime } from "utils/getDateFormat";
 
 
@@ -37,9 +36,8 @@ interface UserPostCardProps {
 export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenModalForEditing, onOpenModalWithComments, postOwner, refreshData}) => {
     const {postOwnerName, postOwnerAvatar, date, postReactions, postComments, postText} = post;
 
-    const dateFormat = new Date(date);
     const dispatch = useAppDispatch()
-    const userData = useMyFullData()
+    const userData = useAppSelector(state => state.userData.user)
 
 
     const { deleteMyContent } = useManageMyContent()
@@ -57,7 +55,7 @@ export const UserPostCard:React.FC<UserPostCardProps> = ({owner, post, onOpenMod
         setReactionValue(value)
         setTimeout(() => setIsAnimation(value))
         await addReaction(post, postOwner, value)
-        await refreshData()
+        refreshData()
     },[post, postOwner])
 
 

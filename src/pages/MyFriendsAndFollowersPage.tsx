@@ -7,7 +7,6 @@ import { useUsersBirthdays } from 'hooks/birthdays/useUsersBirthdays';
 import { TwoTabsContainer } from '@components/tabs/TwoTabsContainer';
 import { FollowersContainer } from '@components/containers/usersContainers/FollowersContainer';
 import { BirthdayNotification } from '@components/notifications/BirthdayNotification';
-import { useMyFullData } from 'hooks/useMyFullData';
 import { NewUnreadMessagesNotification } from '@components/notifications/NewUnreadMessagesNotification';
 import { useUnreadMessages } from 'hooks/chat/useUreadMessages';
 
@@ -25,8 +24,7 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
     const birthdaysNotificationText = `${usersBirthdayToday.toString()} celebrate(s) birthday today!`
 
     const { areUnreadMessages } = useUnreadMessages(myData)
-    const isChatsAmount =  areUnreadMessages.length
-    const isMessagesNotification = isChatsAmount > 0
+    const isUnreadMessagesAmount =  areUnreadMessages.length > 0
 
     
 
@@ -54,7 +52,7 @@ export const MyFriendsAndFollowersPage:React.FC = () => {
             {usersBirthdayToday.length > 0 && (
                 <BirthdayNotification text={birthdaysNotificationText}/>
             )}
-            {isMessagesNotification && <NewUnreadMessagesNotification   chatsAmount={isChatsAmount}/>}
+            {isUnreadMessagesAmount  && <NewUnreadMessagesNotification/>}
         </PageContainer>
     )
 }

@@ -9,10 +9,9 @@ import { Photo } from "types/Photo";
 import { Popconfirm } from "antd";
 import { fetchUserFullData } from "rdx/slices/userDataSlice"
 import { getSelectedUserPhoto } from "rdx/slices/userContentSlice";
-import { useAppDispatch} from "hooks/hooks";
+import { useAppDispatch, useAppSelector} from "hooks/hooks";
 import { useManageMyContent } from "hooks/content/useManageMyContent";
 import { ReactionAnimation } from "@components/animations/ReactionAnimation/ReactionAnimation";
-import { useMyFullData } from "hooks/useMyFullData";
 import { usePhotosLikes } from "hooks/content/usePhotosLikes";
 import { UserProfile } from "types/UserProfile";
 import { getDate, getTime } from "utils/getDateFormat";
@@ -36,8 +35,7 @@ export const PhotoCard:React.FC<PhotoCardProps> = ({photo,  owner, onOpenModalFo
     const { photoUrl, photoDescription, photoLikes, photoComments, date } = photo;
 
 
-
-    const userData = useMyFullData()
+    const userData = useAppSelector(state => state.userData.user)
     const { togglePhotoLike } = usePhotosLikes()
     const { photos } = userData.content
     

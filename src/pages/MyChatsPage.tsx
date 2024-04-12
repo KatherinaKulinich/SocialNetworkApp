@@ -4,13 +4,14 @@ import { PageImgTitle } from '@components/PageImgTitle/PageImgTitle'
 import { PageContainer } from '@components/containers/PageContainer/PageContainer'
 import { ChatsContainer } from '@components/containers/ChatsContainer/ChatsContainer'
 import { ImageErrorMessage } from '@components/ImageErrorMessage/ImageErrorMessage'
-import { useMyFullData } from 'hooks/useMyFullData'
+import { useAppSelector } from 'hooks/hooks'
+
 
 
 
 
 export const MyChatsPage:React.FC = () => {
-    const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const { chats } = myData
 
     

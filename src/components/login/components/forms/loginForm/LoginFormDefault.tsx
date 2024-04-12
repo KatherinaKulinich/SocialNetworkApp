@@ -14,6 +14,7 @@ export const LoginFormDefault:React.FunctionComponent = () => {
     const { onLoginByGoogle, onLoginHandler } = useFirebaseAuth()
     const { validateEmail, validatePassword } = useValidateLogForm()
 
+
     return (
         <LoginContent>
             <Formik

@@ -37,7 +37,7 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
             <DateField>
                 <Icon 
                     icon={<HiCake/>} 
-                    iconSize="40px" 
+                    iconSize="25px" 
                     iconColor="#FFF"
                 />
                 <BirthdayField>
@@ -60,7 +60,7 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
                 <Avatar 
                     photo={userAvatar} 
                     border={theme.colors.regularLight} 
-                    size="40px"
+                    size="30px"
                 />
             </UserInfo>
         </Card>

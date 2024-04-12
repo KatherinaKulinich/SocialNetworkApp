@@ -4,7 +4,8 @@ import { useFirebaseAuth } from "hooks/authorization/useFirebaseAuth";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { SecondaryButton } from "./SecondaryButton/SecondaryButton";
-import { useMyFullData } from "hooks/useMyFullData";
+import { useAppSelector } from "hooks/hooks";
+
 
 
 
@@ -13,7 +14,7 @@ export const LogOutButton:React.FC = () => {
     const { onLogOut } = useFirebaseAuth()
     const { isAuth } = useAuth()
 
-    const userData = useMyFullData()
+    const userData = useAppSelector(state => state.userData.user)
     const userName = userData?.personalData?.userName
     
     

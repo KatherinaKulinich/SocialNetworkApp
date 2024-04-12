@@ -4,7 +4,7 @@ import type { RcFile, UploadFile } from 'antd/es/upload';
 import { Icon } from "@components/icons/Icon";
 import { PiUserCirclePlusDuotone } from 'react-icons/Pi';
 import { MdImageSearch } from 'react-icons/Md';
-import ImgCrop from "antd-img-crop";
+
 
 const getBase64 = (file: RcFile):any => {
     new Promise((resolve, reject) => {

@@ -4,7 +4,6 @@ import { PostPreview } from "@components/cards/UserProfile/components/PostsPrevi
 import { AddingNewPostCard } from "@components/cards/postsCards/AddingNewPostCard/AddingNewPostCard"
 import { ListContainer } from "@components/containers/ListContainer/ListContainer"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
-import { useMyFullData } from 'hooks/useMyFullData'
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { fetchUserFullData } from 'rdx/slices/userDataSlice'
 import { useCallback } from 'react'
@@ -26,8 +25,7 @@ export const MyPostsPage: React.FC = () => {
     }, [dispatch, myData])
 
     const { areUnreadMessages } = useUnreadMessages(myData)
-    const isChatsAmount =  areUnreadMessages.length
-    const isMessagesNotification = isChatsAmount > 0
+    const isUnreadMessagesAmount =  areUnreadMessages.length > 0
   
 
     return (
@@ -46,7 +44,7 @@ export const MyPostsPage: React.FC = () => {
                 />
             </ListContainer>
 
-            {isMessagesNotification && <NewUnreadMessagesNotification  chatsAmount={isChatsAmount}/>}
+            {isUnreadMessagesAmount  && <NewUnreadMessagesNotification/>}
         </PageContainer>
     )
 }

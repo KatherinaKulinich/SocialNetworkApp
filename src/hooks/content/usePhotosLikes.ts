@@ -9,15 +9,17 @@ import {
 import { Photo } from "types/Photo"
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction"
 import { UserProfile } from "types/UserProfile"
-import { useMyFullData } from "hooks/useMyFullData"
+import { useAppSelector } from "hooks/hooks"
+
 
 
 
 
 
 export const usePhotosLikes = () => {
-    const myData = useMyFullData()
+    const myData = useAppSelector(state => state.userData.user)
     const { userId:myId } = myData?.personalData ?? {};
+    
     const { checkMyPhotoLike } = useCheckMyContentReaction(myData)
 
 

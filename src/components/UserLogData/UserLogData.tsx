@@ -3,21 +3,22 @@ import { Icon } from '@components/icons/Icon';
 import { PiUserCircleLight } from 'react-icons/Pi'
 import { Avatar } from '@components/Avatar/Avatar';
 import { theme } from '@styles/Theme';
-import { useMyFullData } from 'hooks/useMyFullData';
+import { useAppSelector } from 'hooks/hooks';
+
 
 
 
 
 
 export const UserLogData:React.FC = () => {
-    const userData = useMyFullData()
-    const { userName, userSurname } = userData?.personalData ?? {}
-    const { userAvatar } = userData?.profileData ?? {}
+    const myData = useAppSelector(state => state.userData.user)
+    const { userName, userSurname } = myData.personalData ?? {}
+    const { userAvatar } = myData?.profileData ?? {}
 
 
     return (
         <Container>
-            {Object.keys(userData).length === 6 && (
+            {Object.keys(myData).length === 6 && (
                 <>
                     {userAvatar ? (
                         <Avatar 

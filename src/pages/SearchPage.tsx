@@ -18,7 +18,7 @@ import { useSearchValues } from 'hooks/search/useSearchValues';
 import { useUsersSearch } from 'hooks/search/useUsersSearch';
 import { UserProfile } from 'types/UserProfile';
 import { useRandomUsersData } from 'hooks/useRandomUsersData';
-import { useAppSelector } from 'hooks/hooks';
+
 
 
 

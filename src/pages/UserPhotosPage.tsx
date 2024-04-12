@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components"
 import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { UserProfile } from 'types/UserProfile';
-import { useMyFullData } from 'hooks/useMyFullData';
 import { fetchSelectedUserData } from 'rdx/slices/usersSlice';
 
 

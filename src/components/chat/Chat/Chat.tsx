@@ -110,6 +110,7 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
 
     const addEmojiToMessage: MouseDownEvent = useCallback((event) => {
         setMessageText(prev => prev.concat(event.emoji))
+        onToggleEmojiiPicker()
     }, [messageText])
 
 

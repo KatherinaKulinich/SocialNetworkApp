@@ -4,15 +4,12 @@ import { useState, useCallback } from "react"
 import { useWindowSize } from "../hooks/useWindowSize"
 import { PageContainer } from "@components/containers/PageContainer/PageContainer"
 import { Wrapper } from "@components/layout/components/Wrapper/Wrapper"
-import { useMyFullData } from "hooks/useMyFullData"
-import { useAppSelector } from "hooks/hooks"
+
 
 
 
 
 export const LoginPage:React.FC = () => {
-    const myData = useAppSelector(state => state.userData.user)
-
     const { width } = useWindowSize();
     const [isLogin, setIsLogin] = useState(true)
 

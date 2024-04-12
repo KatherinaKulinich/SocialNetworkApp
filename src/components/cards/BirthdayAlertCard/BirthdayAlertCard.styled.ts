@@ -6,7 +6,7 @@ import { device } from "@styles/Breakpoints";
 
 
 export const Card =  styled.div`
-    padding: 10px 16px;
+    padding: 8px 12px;
     width: 100%;
     max-width: 600px;
     border-radius: 10px;
@@ -26,7 +26,7 @@ export const Card =  styled.div`
 export const DateField = styled.div`
     display:flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 
     @media ${device.lg} {
         gap: 30px;
@@ -34,8 +34,8 @@ export const DateField = styled.div`
 `
 
 export const UserInfo = styled(DateField)`
-    gap: 5px;
-    max-width: 80px;
+    gap: 7px;
+
 
     @media ${device.lg} {
         gap: 10px;
@@ -50,7 +50,7 @@ export const BirthdayField = styled.div`
 `
 
 export const DateText = styled.p`
-    ${Font({size: '14px', weight: '700', line: '16px', color: theme.colors.white})};
+    ${Font({size: '11px', weight: '700', line: '13px', color: theme.colors.white})};
     letter-spacing: 1px;
 
     @media ${device.lg} {
@@ -60,7 +60,7 @@ export const DateText = styled.p`
 `
 
 export const Text = styled.p`
-    ${Font({size: '8px', line: '12px', color: theme.colors.white})};
+    ${Font({size: '7px', line: '11px', color: theme.colors.white})};
     text-transform: uppercase;
 
     @media ${device.lg} {

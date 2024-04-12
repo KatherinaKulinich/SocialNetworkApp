@@ -4,7 +4,8 @@ import { db } from "firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useCheckMyContentReaction } from "./useCheckMyContentReaction";
 import { UserProfile } from "types/UserProfile";
-import { useMyFullData } from "hooks/useMyFullData";
+import { useAppSelector } from "hooks/hooks";
+
 
 
 
@@ -12,7 +13,7 @@ import { useMyFullData } from "hooks/useMyFullData";
 
 
 export const usePostsReactions = () => {
-    const userData = useMyFullData()
+    const userData = useAppSelector(state => state.userData.user)
 
     const { personalData, content } = userData;
     const { userId:myId } = personalData;

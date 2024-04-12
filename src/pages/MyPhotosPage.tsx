@@ -20,11 +20,10 @@ export const MyPhotosPage:React.FC = () => {
         setTimeout(() => {
             dispatch(fetchUserFullData(myId))
         },2000)
-    }, [dispatch, myData])
+    }, [dispatch, myId])
 
     const { areUnreadMessages } = useUnreadMessages(myData)
-    const isChatsAmount =  areUnreadMessages.length
-    const isMessagesNotification = isChatsAmount > 0
+    const isUnreadMessagesAmount =  areUnreadMessages.length > 0
   
 
 
@@ -43,7 +42,7 @@ export const MyPhotosPage:React.FC = () => {
                 refreshData={refreshDataAfterPhotoLike}
             />
 
-            {isMessagesNotification && <NewUnreadMessagesNotification  chatsAmount={isChatsAmount}/>}
+            {isUnreadMessagesAmount  && <NewUnreadMessagesNotification/>}
         </PageContainer>
     )
 }

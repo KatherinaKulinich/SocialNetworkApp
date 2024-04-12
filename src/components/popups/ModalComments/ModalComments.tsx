@@ -92,6 +92,7 @@ export const ModalComments:React.FC<ModalCommentsProps> = (
 
     const addEmojiToMessage: MouseDownEvent = useCallback((event) => {
         setCommentValue(prev => prev.concat(event.emoji))
+        onToggleEmojiiPicker()
     }, [commentValue])
 
 
