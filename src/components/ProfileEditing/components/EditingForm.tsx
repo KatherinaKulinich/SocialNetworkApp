@@ -51,7 +51,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
     }, [userData])
     
 
-    const maxDate = new Date().getFullYear() - 90;
+    const maxDate = new Date().getFullYear() - 100;
     const minDate = new Date().getFullYear() - 16;
 
     const saveUserData = useCallback(async(values:any) => {

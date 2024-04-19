@@ -20,7 +20,7 @@ export const useEditProfile = () => {
 
         await message.loading('Updating profile...')
 
-        const month = (userBirthday.$M <= 9 ? `0${userBirthday.$M + 1}` : (userBirthday.$M + 1))
+        const month = (userBirthday.$M <= 8 ? `0${userBirthday.$M + 1}` : (userBirthday.$M + 1))
         const day = (userBirthday.$D <= 9 ? `0${userBirthday.$D}` : userBirthday.$D) 
         
         const isAvatar = userAvatar?.fileList?.length || userAvatar !== undefined
