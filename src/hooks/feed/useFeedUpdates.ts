@@ -148,7 +148,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
                 }
             }
         } 
-    }, [friendsData])
+    }, [friendsData, allNews])
 
 
     const getNewsResult = useCallback((news: AllFeedNews, contentEvent: ContentEvent, indexValue: number) => {
@@ -172,7 +172,7 @@ export const useFeedUpdates = (index:number, friendsData:UsersData, myData:UserP
             }
             setIsNoFreshLatestNews(true)
         }
-    }, [friendsData])
+    }, [friendsData, allNews])
 
 
 
