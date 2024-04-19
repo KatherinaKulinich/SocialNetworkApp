@@ -10,6 +10,8 @@ import { dateFormat } from "utils/getFormFields";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useAppSelector } from "hooks/hooks";
+import { Paragraph } from "@components/text/Paragraph";
+import { theme } from "@styles/Theme";
 
 interface EditingFormProps {
     buttonText: string;
@@ -133,7 +135,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                     <Col xs={24} lg={12}>
                         <Form.Item
                             name="userGender"
-                            rules={[{ required: true, message: 'Please select your gender' }]}
+                            // rules={[{ required: true, message: 'Please select your gender' }]}
                             labelAlign="left"
                             wrapperCol={{span: 10, offset: 0}}
                         >
@@ -149,13 +151,35 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                             label="Birthday"
                             name="userBirthday"
                             labelAlign="left"
-                            wrapperCol={{span: 10, offset: 0}}
-                            rules={[{ required: true, message: 'Please chose your birth date' }]}
+                            wrapperCol={{span: 24, offset: 0}}
+                            // rules={[{ required: true, message: 'Please chose your birth date' }]}
                         >
-                            <DatePicker 
-                                format={dateFormat} 
-                                disabledDate={d => !d || d.isAfter(`${minDate}/12/31`) || d.isBefore(`${maxDate}/01/01`) }
-                            />
+                            <Space 
+                                direction="vertical" 
+                                size="large" 
+                                style={{ display: 'flex' }}
+                            >
+                                <Space
+                                    direction="vertical" 
+                                    size="small" 
+                                    style={{ display: 'flex' }}
+                                >
+                                    <Paragraph 
+                                        text="Enter the date in the format 'DD/MM/YYYY' or select a date from the drop-down calendar" 
+                                        color={theme.colors.darkGray}
+                                    />
+                                    <Paragraph 
+                                        text={`Attention, the date is available for selection from ${minDate} year, since registration in the application is available from 16 years of age.`} 
+                                        color={theme.colors.mediumGray}
+                                    />
+                                </Space>
+                                <DatePicker 
+                                    placeholder="DD/MM/YYYY"
+                                    format={dateFormat} 
+                                    disabledDate={d => !d || d.isAfter(`${minDate}/12/31`) || d.isBefore(`${maxDate}/01/01`) }
+                                />
+                            </Space>
+
                         </Form.Item>
                     </Col>
                 </Row>
@@ -169,7 +193,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                             label="Country"
                             name="userCountry"
                             wrapperCol={{span: 24, offset: 0}}
-                            rules={[{ required: true, message: 'Please write down your country' }]}
+                            // rules={[{ required: true, message: 'Please write down your country' }]}
                         >
                             <Input/>
                         </Form.Item>
@@ -179,7 +203,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                             label="City"
                             name="userCity"
                             wrapperCol={{span: 24, offset: 0}}
-                            rules={[{ required: true, message: 'Please write down your city' }]}
+                            // rules={[{ required: true, message: 'Please write down your city' }]}
                         >
                             <Input/>
                         </Form.Item>

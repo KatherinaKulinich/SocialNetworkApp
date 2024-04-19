@@ -76,8 +76,6 @@ export const SearchPage:React.FC = () => {
     useEffect(() => {
         getSearchOptions()
     }, [filterValue, namesOptions, interestsOptions, locationsOptions])
-
-    
     
 
     return (
@@ -114,9 +112,9 @@ export const SearchPage:React.FC = () => {
             }
             {loading && <LoaderGlass/>}
             <ListContainer>
-                {showRandomUsers &&randomUsers && randomUsers?.length > 0 && (
+                {showRandomUsers && randomUsers && randomUsers?.length > 0 && (
                     randomUsers?.map((user:UserProfile) => {
-                        if (user !== undefined) 
+                        if (user !== undefined)  
                             return  <SearchUserCard 
                                         key={user.personalData.userId}
                                         user={user}
@@ -125,12 +123,12 @@ export const SearchPage:React.FC = () => {
                 )}
 
                 {!showRandomUsers && filteredUsers.length > 0 && (
-                    filteredUsers.map(user => (
-                        <SearchUserCard 
-                            key={user.personalData.userId}
-                            user={user}
-                        />
-                    ))
+                    filteredUsers.map(user => {
+                        return <SearchUserCard 
+                                    key={user.personalData.userId}
+                                    user={user}
+                                />
+                    })
                 )}
 
                 {showEmptyUsersImg && (

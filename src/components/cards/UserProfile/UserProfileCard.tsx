@@ -67,11 +67,13 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                     </Name>
                     <Field>
                         <Subtitle> age: </Subtitle>
-                        <RegularText> {userAge} y.o. </RegularText>
+                        <RegularText> 
+                            {userAge ? `${userAge} y.o.` : `--`} 
+                        </RegularText>
                     </Field>
                     <Field>
                         <Subtitle> gender: </Subtitle>
-                        <RegularText> {userGender} </RegularText>
+                        <RegularText> {userGender || 'not indicated'} </RegularText>
                     </Field>
                 </PersonalMainInfo>
             </MainInfo>
@@ -86,19 +88,19 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                     <DataItem 
                         icon={<ImLocation/>} 
                         itemName={role === 'userProfile' ? 'Lives in' : 'Live in'} 
-                        itemValue={userLocation}
+                        itemValue={userLocation || 'location not specified'}
                         direction='row'
                     />
                     <DataItem 
                         icon={<FaHeart/>} 
                         itemName={'Family status'} 
-                        itemValue={userFamStatus || 'no data'}
+                        itemValue={userFamStatus || 'no information'}
                         direction='row'
                     />
                     <DataItem 
                         icon={<FaBirthdayCake/>} 
                         itemName={'Birthday'} 
-                        itemValue={fullDate}
+                        itemValue={fullDate || 'no information'}
                         direction='row'
                     />
                 </Box>
@@ -108,7 +110,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                         itemName={'Interests/hobbies'} 
                         direction='column'
                         itemValue={
-                            userInterests ? (
+                            userInterests?.length > 0 ? (
                                 <HobbiesList>
                                     {userInterests?.map((item, index) => (
                                         <HobbyItem key={index}>
@@ -117,7 +119,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                                     ))}
                                 </HobbiesList>
                             ) : (
-                                'no data'
+                                'no selected hobbies'
                             ) 
                         }
                     />
@@ -127,7 +129,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                 <DataItem 
                     icon={<BsFillInfoCircleFill/>} 
                     itemName={role === 'userProfile' ? `About ${userName}` : 'About me'} 
-                    itemValue={userAbout || 'no data'}
+                    itemValue={userAbout || 'The user has not provided information in this section'}
                     direction='column'
                 />
             </Box>

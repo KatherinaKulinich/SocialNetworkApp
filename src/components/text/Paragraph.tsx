@@ -19,7 +19,7 @@ export const Paragraph:React.FC<ParagraphProps> = ({text, color}) => {
 
 
 const Text = styled.p<{$color: string}>`
-    font-size: 12px;
+    font-size: 11px;
     line-height: 14px;
     color: ${props => props.$color};
 `

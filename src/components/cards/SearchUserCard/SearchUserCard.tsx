@@ -3,13 +3,8 @@ import { MdDoubleArrow, MdOutlinePermContactCalendar, MdLocationOn } from "react
 import { Icon } from "../../icons/Icon";
 import { theme } from "@styles/Theme";
 import { Avatar } from "@components/Avatar/Avatar";
-import { useAppDispatch, useAppSelector } from "hooks/hooks";
-import { useCallback } from "react";
-import { fetchSelectedUserData } from "rdx/slices/usersSlice";
 import { UserProfile } from "types/UserProfile";
 import { getUserAge } from "utils/getUserAge";
-import { fetchFriends} from "rdx/slices/friendsSlice";
-import { useNavigate } from "react-router-dom";
 import { useNavigateToUserPage } from "hooks/contacts/useNavigateToUserPage";
 
 
@@ -26,7 +21,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const { userFullname } = user?.personalData || {}
     const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData ?? {}
 
-    const age = `${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.`
+    const age = userBirthday?.year ? `${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.` : 'no info';
 
 
     
@@ -61,7 +56,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                                 iconColor={theme.colors.mediumGray}
                             /> 
                             <Text>
-                                {userLocation}
+                                {userLocation || 'location not specified'}
                             </Text>
                         </Flex>
                         <Text>
