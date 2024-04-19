@@ -15,3 +15,7 @@ export const getTime = (date:number) => {
     return `${hoursFormat}:${minFormat}`
 }
 
+export const getDateFormatter = (date: number) => {
+    const dateFormatter = new Intl.DateTimeFormat(navigator.language).format(date);
+    return dateFormatter
+}

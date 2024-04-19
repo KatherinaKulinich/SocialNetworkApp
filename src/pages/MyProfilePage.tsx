@@ -28,7 +28,6 @@ export const MyProfilePage:React.FC = () => {
     }, [])
     const myData = useAppSelector(state => state.userData.user)
 
-
     
     const { friends } = myData.contacts ?? {}
     const friendsIdsArray = friends?.map(user => user.id) || []

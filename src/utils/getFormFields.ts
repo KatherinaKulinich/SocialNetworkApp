@@ -6,6 +6,7 @@ export const dateFormat = 'DD/MM/YYYY';
 
 
 
+
 export const getFormFields = (user:any) => {
     const { userName, userSurname } = user?.personalData ?? {}
     const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout } = user?.profileData ?? {}
