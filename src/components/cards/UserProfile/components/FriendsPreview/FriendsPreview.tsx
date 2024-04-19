@@ -26,6 +26,7 @@ interface FriendsPreviewProps {
 export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, friendsData}) =>  {
     const dispatch = useAppDispatch();
     const [defaultAvatars, setDefaultAvatars] = useState<JSX.Element[]>([])
+    const [friendsForPreview, setFriendsForPreview] = useState<Array<UserProfile>>([])
 
     const { userName } = user?.personalData ?? {}
     const { friends } = user?.contacts ?? {}
@@ -47,7 +48,20 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
         }
         return defaultAvatarsList
     }, [])
-    
+
+    useEffect(() => {
+        if (friendsData && friendsData?.length === friendsIdsArray?.length) {
+            if (friendsData?.length >= 9) {
+                const cards = [...friendsData]
+                cards.splice(9)
+                
+                setFriendsForPreview(cards)
+                return
+            }
+            setFriendsForPreview(friendsData)
+        }
+    }, [friendsData])
+
     
     useEffect(() => {
         setDefaultAvatars(createDefaultAvatars(friendsIdsArray))
@@ -87,8 +101,8 @@ export const FriendsPreview:React.FC<FriendsPreviewProps> = ({link, user, role, 
             <FriendsBox onClick={goToFriendsPage}>
                {friendsData && (
                     <>
-                        {friendsData?.length > 0 && (
-                            friendsData.map((friend, index) => (
+                        {friendsData?.length > 0 && friendsForPreview?.length && (
+                            friendsForPreview?.map((friend, index) => (
                                 <FriendCard key={index}>
                                     <Avatar 
                                         photo={friend.profileData.userAvatar} 
