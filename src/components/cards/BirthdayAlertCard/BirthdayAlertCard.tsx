@@ -29,7 +29,8 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
     }, [dispatch])
     
     const { year, month, day, fullDate } = userBirthday
-    const userAge = getUserAge(year, month, day) + 1
+    const age = getUserAge(year, month, day)
+    const userAge = age !== null ? age + 1 : null
 
 
     return (
@@ -44,13 +45,15 @@ export const BirthdayAlertCard:React.FC<BirthdayAlertCardProps > = ({user}) => {
                     <DateText>
                         {fullDate}
                     </DateText>
-                    <Text>
-                        will celebrate 
-                        <Age>
-                            {userAge}
-                        </Age>
-                        y.o
-                    </Text>
+                    {userAge && (
+                        <Text>
+                            will celebrate 
+                            <Age>
+                                {userAge}
+                            </Age>
+                            y.o
+                        </Text>
+                    )}
                 </BirthdayField>
             </DateField>
             <UserInfo>

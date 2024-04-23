@@ -5,8 +5,6 @@ import { UserProfile } from "types/UserProfile"
 
 
 
-
-
 export const useUsersBirthdays = (usersProfileData:UserProfile[]) => {
     const myData = useAppSelector(state => state.userData.user)
     const month= myData?.profileData?.userBirthday?.month
@@ -29,12 +27,16 @@ export const useUsersBirthdays = (usersProfileData:UserProfile[]) => {
         usersArray.map(user => {
             const { userBirthday } = user?.profileData;
 
-            if (userBirthday.month === currentMonth && userBirthday.day >= currentDay) {
-                setUsersThisMonth(prev => [...prev, user])
-            } else if (userBirthday.month === currentMonth + 1) {
-                setUsersNextMonth(prev => [...prev, user])
-                return
+            if (userBirthday !== undefined && userBirthday.month !== null && userBirthday.day !== null) {
+
+                if (userBirthday?.month === currentMonth && userBirthday?.day >= currentDay) {
+                    setUsersThisMonth(prev => [...prev, user])
+                } else if (userBirthday?.month === currentMonth + 1) {
+                    setUsersNextMonth(prev => [...prev, user])
+                    return
+                }
             }
+
         })
     }, [usersThisMonth, usersNextMonth])
 
