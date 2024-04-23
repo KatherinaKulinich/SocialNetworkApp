@@ -25,6 +25,8 @@ export const useEditProfile = () => {
         
         const isAvatar = userAvatar?.fileList?.length || userAvatar !== undefined
 
+        const location = `${userCountry && userCity ? `${userCountry}, ${userCity}` : `${userCountry} ${userCity}`}`
+
 
         if (userId) {         
             await updateDoc(userRef, {
@@ -41,7 +43,7 @@ export const useEditProfile = () => {
                 "profileData.userFamStatus": userFamStatus,
                 "profileData.userCity": userCity,
                 "profileData.userCountry": userCountry,
-                "profileData.userLocation": `${userCountry}, ${userCity}`,
+                "profileData.userLocation": location,
                 "profileData.userInterests": userInterests,
                 "profileData.userAbout": userAbout,
             })

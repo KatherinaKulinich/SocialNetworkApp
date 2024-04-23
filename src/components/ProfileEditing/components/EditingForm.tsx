@@ -1,4 +1,4 @@
-import { Row, Col, Input, Form, Radio, DatePicker, Space, Select, UploadFile, message } from "antd"
+import { Row, Col, Input, Form, Radio, DatePicker, Space, Select, UploadFile, message, DatePickerProps } from "antd"
 import { PhotoUpload } from "./PhotoUpload";
 import { useCallback, useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
@@ -36,6 +36,16 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
     }
 
+    // const [isBirthData, setIsBirthData] = useState<dayjs.Dayjs | null>(null)
+    // const onChangeDatePickerValues: DatePickerProps['onChange'] = (_date, dateString) => {
+    //     setIsBirthData(_date)
+    // }
+
+    // useEffect(() => {
+    //     console.log(isBirthData);
+        
+    // }, [isBirthData])
+
     const defaultUserAvatar: UploadFile<any>[] = [{
         thumbUrl: userAvatar,
         name: `avatar${userName}`,
@@ -55,6 +65,8 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
     const minDate = new Date().getFullYear() - 16;
 
     const saveUserData = useCallback(async(values:any) => {
+        console.log(values);
+        
         await updateUserProfile(values)
         await message.success('The profile has been updated!')
         navigation && navigate(navigation)
@@ -147,40 +159,41 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                         </Form.Item>
                     </Col>
                     <Col xs={24} lg={12}>
-                        <Form.Item
-                            label="Birthday"
-                            name="userBirthday"
-                            labelAlign="left"
-                            wrapperCol={{span: 24, offset: 0}}
-                            // rules={[{ required: true, message: 'Please chose your birth date' }]}
+                        <Space 
+                            direction="vertical" 
+                            size="large" 
+                            style={{ display: 'flex' }}
                         >
-                            <Space 
+                            <Space
                                 direction="vertical" 
-                                size="large" 
+                                size="small" 
                                 style={{ display: 'flex' }}
                             >
-                                <Space
-                                    direction="vertical" 
-                                    size="small" 
-                                    style={{ display: 'flex' }}
-                                >
-                                    <Paragraph 
-                                        text="Enter the date in the format 'DD/MM/YYYY' or select a date from the drop-down calendar" 
-                                        color={theme.colors.darkGray}
-                                    />
-                                    <Paragraph 
-                                        text={`Attention, the date is available for selection from ${minDate} year, since registration in the application is available from 16 years of age.`} 
-                                        color={theme.colors.mediumGray}
-                                    />
-                                </Space>
+                                <Paragraph 
+                                    text="Enter the date in the format 'DD/MM/YYYY' or select a date from the drop-down calendar" 
+                                    color={theme.colors.darkGray}
+                                />
+                                <Paragraph 
+                                    text={`Attention, the date is available for selection from ${minDate} year, since registration in the application is available from 16 years of age.`} 
+                                    color={theme.colors.mediumGray}
+                                />
+                            </Space>
+                            <Form.Item
+                                label="Birthday"
+                                name="userBirthday"
+                                labelAlign="left"
+                                wrapperCol={{span: 24, offset: 0}}
+                                rules={[{ required: true, message: 'Please chose your birth date' }]}
+                            >
                                 <DatePicker 
                                     placeholder="DD/MM/YYYY"
                                     format={dateFormat} 
+                                    // value={isBirthData}
+                                    // onChange={onChangeDatePickerValues}
                                     disabledDate={d => !d || d.isAfter(`${minDate}/12/31`) || d.isBefore(`${maxDate}/01/01`) }
                                 />
-                            </Space>
-
-                        </Form.Item>
+                            </Form.Item>
+                        </Space>
                     </Col>
                 </Row>
                 <Row 

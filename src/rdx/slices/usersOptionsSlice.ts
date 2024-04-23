@@ -56,7 +56,7 @@ export const fetchUsersOptions = (myFullName: string) => {
                     locations.push(doc.data().profileData.userLocation)
                     interests.push(doc.data().profileData.userInterests)
                     
-                    if (doc.data().personalData.userFullname !== myFullName) {
+                    if (doc.data().personalData.userFullname !== myFullName && doc.data().personalData.userFullname !== '') {
                         names.push(doc.data().personalData.userFullname)
                     }
                 });

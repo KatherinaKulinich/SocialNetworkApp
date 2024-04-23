@@ -55,6 +55,8 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
         }
     }, [myId, userId])
 
+    const location = userLocation && userLocation.trim() !== '' ? userLocation : 'location not specified'
+
 
 
     return (
@@ -88,7 +90,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                     <DataItem 
                         icon={<ImLocation/>} 
                         itemName={role === 'userProfile' ? 'Lives in' : 'Live in'} 
-                        itemValue={userLocation || 'location not specified'}
+                        itemValue={location}
                         direction='row'
                     />
                     <DataItem 

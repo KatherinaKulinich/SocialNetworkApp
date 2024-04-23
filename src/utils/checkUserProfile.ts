@@ -9,10 +9,10 @@ export const checkUserProfile = async (dataSnapShot:SnapShotData) => {
     const data = dataSnapShot.data()
 
     const surname = data?.personalData?.userSurname
-    const gender = data?.profileData?.userGender
-    const country = data?.profileData?.userCountry
+    const name = data?.personalData?.userName
+    const birthday = data?.profileData?.userBirthday
 
-    if (surname !== '' && gender !== '' && country !== '') {
+    if (surname !== '' && name !== '' && birthday !== undefined) {
         message.success(`Welcome to the app`)
         return true
     }

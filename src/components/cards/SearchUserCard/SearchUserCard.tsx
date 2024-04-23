@@ -22,6 +22,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData ?? {}
 
     const age = userBirthday?.year ? `${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.` : 'no info';
+    const location = userLocation && userLocation.trim() !== '' ? userLocation : 'location not specified'
 
 
     
@@ -56,7 +57,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
                                 iconColor={theme.colors.mediumGray}
                             /> 
                             <Text>
-                                {userLocation || 'location not specified'}
+                                {location}
                             </Text>
                         </Flex>
                         <Text>
