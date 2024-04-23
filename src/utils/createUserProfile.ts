@@ -27,6 +27,12 @@ export const createUserProfile = async (userId:string) => {
             userLocation: '',
             userInterests: [],
             userAbout: '',
+            userBirthday: {
+                fullDate: '',
+                year: null,
+                month: null,
+                day: null,
+            }
         },
         content:  {
             photos: [] as Photo[],

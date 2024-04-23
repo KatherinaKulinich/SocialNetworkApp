@@ -56,6 +56,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
     }, [myId, userId])
 
     const location = userLocation && userLocation.trim() !== '' ? userLocation : 'location not specified'
+    const birthday = userBirthday && fullDate?.trim() !== '' ? fullDate : 'no information'
 
 
 
@@ -102,7 +103,7 @@ export const UserProfileCard:React.FC<UserProfileProps> = ({user, role, friendsD
                     <DataItem 
                         icon={<FaBirthdayCake/>} 
                         itemName={'Birthday'} 
-                        itemValue={fullDate || 'no information'}
+                        itemValue={birthday}
                         direction='row'
                     />
                 </Box>

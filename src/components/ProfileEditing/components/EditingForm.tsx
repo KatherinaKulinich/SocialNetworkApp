@@ -36,15 +36,10 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
         setFileList(newFileList.filter((file: { status: string; }) => file.status !== "error"))
     }
 
-    // const [isBirthData, setIsBirthData] = useState<dayjs.Dayjs | null>(null)
-    // const onChangeDatePickerValues: DatePickerProps['onChange'] = (_date, dateString) => {
-    //     setIsBirthData(_date)
-    // }
-
-    // useEffect(() => {
-    //     console.log(isBirthData);
-        
-    // }, [isBirthData])
+    const [isBirthData, setIsBirthData] = useState<dayjs.Dayjs | null>(null)
+    const onChangeDatePickerValues: DatePickerProps['onChange'] = (_date, dateString) => {
+        setIsBirthData(_date)
+    }
 
     const defaultUserAvatar: UploadFile<any>[] = [{
         thumbUrl: userAvatar,
@@ -65,8 +60,6 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
     const minDate = new Date().getFullYear() - 16;
 
     const saveUserData = useCallback(async(values:any) => {
-        console.log(values);
-        
         await updateUserProfile(values)
         await message.success('The profile has been updated!')
         navigation && navigate(navigation)
@@ -78,7 +71,7 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
             userName: userName || '',
             userSurname: userSurname || '',
             userGender: userGender || '',
-            userBirthday: userBirthday && dayjs(`${userBirthday.fullDate}`, dateFormat),
+            userBirthday: userBirthday !== undefined && userBirthday.year !== null && dayjs(`${userBirthday.fullDate}`, dateFormat) || null,
             userFamStatus:  userFamStatus || '',
             userCity: userCity || '',
             userCountry: userCountry || '',
@@ -97,6 +90,10 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
             labelCol={{ span: 16 }}
             wrapperCol={{ span: 16 }}
             autoComplete="off"
+            onChange={(val) => {
+                console.log(val);
+                
+            }}
             onFinish={(values) => {
                 saveUserData(values)
             }}
@@ -188,8 +185,8 @@ export const EditingForm:React.FC<EditingFormProps> = ({buttonText, navigation})
                                 <DatePicker 
                                     placeholder="DD/MM/YYYY"
                                     format={dateFormat} 
-                                    // value={isBirthData}
-                                    // onChange={onChangeDatePickerValues}
+                                    value={isBirthData}
+                                    onChange={onChangeDatePickerValues}
                                     disabledDate={d => !d || d.isAfter(`${minDate}/12/31`) || d.isBefore(`${maxDate}/01/01`) }
                                 />
                             </Form.Item>

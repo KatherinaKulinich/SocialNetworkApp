@@ -11,9 +11,7 @@ export const getFormFields = (user:any) => {
     const { userName, userSurname } = user?.personalData ?? {}
     const { userGender, userBirthday, userFamStatus, userCity, userCountry, userInterests, userAbout } = user?.profileData ?? {}
 
-    
 
-    
 
     const fields = [
         {
@@ -30,7 +28,7 @@ export const getFormFields = (user:any) => {
         },
         {
             name: ["userBirthday"],
-            value: userBirthday && dayjs(`${userBirthday.fullDate}`, dateFormat),
+            value: userBirthday !== undefined && userBirthday.year !== null && dayjs(`${userBirthday.fullDate}`, dateFormat) || null,
         },
         {
             name: ["userFamStatus"],

@@ -12,7 +12,9 @@ export const checkUserProfile = async (dataSnapShot:SnapShotData) => {
     const name = data?.personalData?.userName
     const birthday = data?.profileData?.userBirthday
 
-    if (surname !== '' && name !== '' && birthday !== undefined) {
+    const isCompletedProfile = surname !== '' && name !== '' && birthday !== undefined && birthday.year !== null
+
+    if (isCompletedProfile) {
         message.success(`Welcome to the app`)
         return true
     }

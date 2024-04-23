@@ -21,7 +21,7 @@ export const SearchUserCard:React.FC<SearchUserCardProps> = ({user}) => {
     const { userFullname } = user?.personalData || {}
     const { userAvatar, userBirthday, userLocation, userInterests } = user?.profileData ?? {}
 
-    const age = userBirthday?.year ? `${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.` : 'no info';
+    const age = userBirthday !== undefined && userBirthday?.year !== null ? `${getUserAge(userBirthday?.year, userBirthday?.month, userBirthday?.day)} y.o.` : 'no info';
     const location = userLocation && userLocation.trim() !== '' ? userLocation : 'location not specified'
 
 

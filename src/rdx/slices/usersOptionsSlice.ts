@@ -53,11 +53,22 @@ export const fetchUsersOptions = (myFullName: string) => {
                 let interests:string[] = [];
 
                 querySnapshot.forEach((doc) => {
-                    locations.push(doc.data().profileData.userLocation)
-                    interests.push(doc.data().profileData.userInterests)
-                    
-                    if (doc.data().personalData.userFullname !== myFullName && doc.data().personalData.userFullname !== '') {
-                        names.push(doc.data().personalData.userFullname)
+                    const birthday = doc.data().profileData.userBirthday
+
+                    if (birthday !== undefined && birthday.year !== null) {
+                        
+                        const userInterests = doc.data().profileData.userInterests
+                        interests.push(userInterests)
+    
+                        const userLocation = doc.data().profileData.userLocation
+                        if (userLocation.trim() !== '') {
+                            locations.push(userLocation)
+                        }
+    
+                        const userFullname = doc.data().personalData.userFullname
+                        if (userFullname !== myFullName && userFullname.trim() !== '') {
+                            names.push(userFullname)
+                        }
                     }
                 });
                 dispatch(getUsersInterests([...new Set(interests.flat())]))

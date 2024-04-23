@@ -20,6 +20,8 @@ export const useEditProfile = () => {
 
         await message.loading('Updating profile...')
 
+        console.log(userBirthday);
+        
         const month = (userBirthday.$M <= 8 ? `0${userBirthday.$M + 1}` : (userBirthday.$M + 1))
         const day = (userBirthday.$D <= 9 ? `0${userBirthday.$D}` : userBirthday.$D) 
         

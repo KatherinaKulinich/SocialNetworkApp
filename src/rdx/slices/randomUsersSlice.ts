@@ -58,8 +58,8 @@ export const fetchRandomUsers = (myCountry: string, myCity:string, myId: string)
             dispatch(getErrorMessage(''))
             let users: UserProfile[] = [];
             const refCity = query(collection(db, "users"), where("profileData.userCity", "==", `${myCity}`), limit(6));
-            const refCountry = query(collection(db, "users"), where("profileData.userCountry", "==", `${myCountry}`), limit(6));
-            const refGeneral = query(collection(db, "users"), limit(6));
+            const refCountry = query(collection(db, "users"), where("profileData.userCountry", "==", `${myCountry}`),  limit(6));
+            const refGeneral = query(collection(db, "users"),  limit(6));
 
             onSnapshot(refCity, (querySnapshot) => {
                 querySnapshot.forEach((doc) => {
