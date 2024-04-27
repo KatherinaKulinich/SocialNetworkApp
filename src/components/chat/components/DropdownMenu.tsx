@@ -10,35 +10,41 @@ import { useCallback } from 'react';
 
 interface DropdownMenuProps {
     deleteChat: () => void,
-    openDrawer: () => void,
+    openDrawerMedia: () => void,
+    openDrawerSettings: () => void,
 }
 
 
-export const DropdownMenu:React.FC<DropdownMenuProps> = ({deleteChat, openDrawer}) => {
+export const DropdownMenu:React.FC<DropdownMenuProps> = ({deleteChat, openDrawerMedia, openDrawerSettings}) => {
     const navigate = useNavigate();
 
-    const navigateToChatSettings = useCallback(() => {
-        navigate("/settings");
-        setTimeout(() => {
-            const contactSection = document.getElementById("chat-background");
-                if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: "smooth" });
-                }
-        }, 100);
-    }, [])
+    // const navigateToChatSettings = useCallback(() => {
+    //     navigate("/settings");
+    //     setTimeout(() => {
+    //         const contactSection = document.getElementById("chat-background");
+    //             if (contactSection) {
+    //                 contactSection.scrollIntoView({ behavior: "smooth" });
+    //             }
+    //     }, 100);
+    // }, [])
 
 
     const items: MenuProps['items'] = [
         {
             label: 'media files',
-            key: '0',
-            onClick: openDrawer, 
+            key: '1',
+            onClick: openDrawerMedia,
         },
         {
             label: 'chat settings',
-            key: '1',
-            onClick: navigateToChatSettings,
+            key: '0',
+            onClick: openDrawerSettings, 
         },
+        // {
+        //     label: 'chat settings',
+        //     key: '1',
+        //     onClick: navigateToChatSettings,
+        // },
         {
             type: 'divider',
         },

@@ -38,7 +38,7 @@ export const ChatBackground:React.FC = () => {
                                 value={item.value} 
                                 key={item.id}
                             >
-                                <Background $url={item.url}/>
+                                <Background $url={item.preview}/>
                             </RadioItem>
                         ))}
                     </Group>

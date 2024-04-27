@@ -13,10 +13,12 @@ import { useChatChecking } from 'hooks/chat/useChatChecking'
 import { useMessageSending } from 'hooks/chat/useMessageSending'
 import { EmojiPopup } from '@components/popups/Emoji/EmojiPopup'
 import { MouseDownEvent } from 'emoji-picker-react/dist/config/config';
-import { ChatDrawer } from '../components/Drawer/ChatDrawer'
 import { fetchInputFocusData } from 'rdx/slices/chatSlice'
 import { TypingAnimation } from '@components/animations/TypingAnimation/TypingAnimation'
 import { useUnreadMessages } from 'hooks/chat/useUreadMessages'
+import { ChatMessageItem } from 'types/ChatMessage'
+import { BackgroundSettingsDrawer } from '../components/Drawers/BackgroundSettingsDrawer/BackgroundSettingsDrawer'
+import { MediaFilesDrawer } from '../components/Drawers/MediaFilesDrawer/MediaFilesDrawer'
 
 
 interface ChatProps {
@@ -116,14 +118,24 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
 
 
     //drawer
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isDrawerMediaOpen, setIsDrawerMediaOpen] = useState(false)
 
-    const onOpenDrawer = useCallback(() => {
-        setIsDrawerOpen(true)
-    }, [isDrawerOpen])
-    const onCloseDrawer = useCallback(() => {
-        setIsDrawerOpen(false)
-    }, [isDrawerOpen])
+    const onOpenDrawerMedia = useCallback(() => {
+        setIsDrawerMediaOpen(true)
+    }, [isDrawerMediaOpen])
+    const onCloseDrawerMedia = useCallback(() => {
+        setIsDrawerMediaOpen(false)
+    }, [isDrawerMediaOpen])
+
+
+    const [isDrawerSettingsOpen, setIsDrawerSettingsOpen] = useState(false)
+
+    const onOpenDrawerSettings = useCallback(() => {
+        setIsDrawerSettingsOpen(true)
+    }, [isDrawerSettingsOpen])
+    const onCloseDrawerSettings = useCallback(() => {
+        setIsDrawerSettingsOpen(false)
+    }, [isDrawerSettingsOpen])
 
 
 
@@ -152,13 +164,14 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
             <Container>
                 <ChatHeader 
                     user={user} 
-                    onOpenDrawer={onOpenDrawer} 
+                    onOpenDrawerMedia={onOpenDrawerMedia} 
+                    onOpenDrawerSettings={onOpenDrawerSettings} 
                     chatId={isSelectedChat.chatId}
                 />
                 <ContainerBackground $url={bgUrl}>
                     {chatMessages?.length > 0 ? (
                         <MessagesContainer $isUserTyping={userIsTyping}>
-                            {chatMessages.map((item) => (
+                            {chatMessages.map((item:ChatMessageItem ) => (
                                 <MessageRow 
                                     $sender={getMessageSender(item.senderId)}
                                     key={item.messageId}
@@ -192,10 +205,17 @@ export const Chat:React.FC<ChatProps> = ({user}) => {
                         getEmoji={addEmojiToMessage}
                         role='chat'
                     />
-                    <ChatDrawer
-                        isOpen={isDrawerOpen}
-                        onOpen={onOpenDrawer}
-                        onClose={onCloseDrawer}
+                    <BackgroundSettingsDrawer
+                        isOpen={isDrawerSettingsOpen}
+                        onOpen={onOpenDrawerSettings}
+                        onClose={onCloseDrawerSettings}
+                        user={user}
+                        chatId={isSelectedChat.chatId}
+                    />
+                    <MediaFilesDrawer
+                        isOpen={isDrawerMediaOpen}
+                        onOpen={onOpenDrawerMedia}
+                        onClose={onCloseDrawerMedia}
                         user={user}
                         chatId={isSelectedChat.chatId}
                     />

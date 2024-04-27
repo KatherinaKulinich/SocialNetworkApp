@@ -12,12 +12,13 @@ import { useChatManagement } from "hooks/chat/useChatManagement";
 
 interface ChatHeaderProps {
     user: UserProfile,
-    onOpenDrawer: () => void,
+    onOpenDrawerMedia: () => void,
+    onOpenDrawerSettings: () => void,
     chatId: string,
 }
 
 
-export const ChatHeader:React.FC<ChatHeaderProps> = ({user, onOpenDrawer, chatId}) => {
+export const ChatHeader:React.FC<ChatHeaderProps> = ({user, onOpenDrawerMedia, onOpenDrawerSettings, chatId}) => {
     const { userFullname } = user?.personalData;
     const { userAvatar} = user?.profileData;
     const myData = useAppSelector(state => state.userData.user)
@@ -47,7 +48,8 @@ export const ChatHeader:React.FC<ChatHeaderProps> = ({user, onOpenDrawer, chatId
                 </Name>
             </UserInfo>
             <DropdownMenu 
-                openDrawer={onOpenDrawer} 
+                openDrawerMedia={onOpenDrawerMedia} 
+                openDrawerSettings={onOpenDrawerSettings} 
                 deleteChat={deleteChat}
             />
         </Container>

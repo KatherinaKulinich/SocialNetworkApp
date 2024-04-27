@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Column, FlexCenter, FullSize } from '@styles/mixins';
-import { Drawer } from "antd";
+import { FullSize } from '@styles/mixins';
+
 
 
 export const DrawerContainer = styled.div`
