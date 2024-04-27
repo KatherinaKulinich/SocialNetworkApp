@@ -1,8 +1,0 @@
-[
-  {
-    "origin": ["https://katherinakulinich.github.io"],
-    "method": [ "GET", "POST", "PUT", "DELETE" ],
-    "maxAgeSeconds": 3600
-  }
-]
-
